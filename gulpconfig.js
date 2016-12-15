@@ -1,13 +1,27 @@
-var argv = require('yargs').argv
-var rev = require('git-rev-sync')
-var moment = require('moment')
+let argv    = require('yargs').argv
+let rev     = require('git-rev-sync')
+let moment  = require('moment')
+let pkg     = require('./package.json')
 
-// Initialization
-var version = '0.1'
-var environment = argv.environment || 'production'
-var revision = rev.short()
-var date = moment().format('YYYY-MM-DD')
-var serverPort = 7777
+// Configuration
+let config = {
+  server: {
+    port: 7777
+  },
+  build: {
+    version  : pkg.version,
+    revision : rev.short(),
+    date     : moment().format('YYYY-MM-DD'),
+    files    : {
+      lite: `skald.lite.js`,
+      full: `skald.min.js`,
+    },
+    dependencies: [
+      'bower_components/jsen/dist/jsen.min.js',
+      'bower_components/pixi.js/dist/pixi.min.js',
+    ]
+  }
+}
 
-// Configuration varaibles
-module.exports = {version, environment, revision, date, serverPort}
+// Export
+module.exports = config
