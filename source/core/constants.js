@@ -63,12 +63,3 @@ export const LOGGER_LEVEL = enumeration({
   ERROR  : 'error',
   FATAL  : 'fatal',
 })
-
-export const LOGGER_HANDLER = enumeration({
-  CONSOLE : 'console',
-  DOM     : 'dom',
-  FILE    : 'file',
-})
-export const LOGGER_FORMATTER = enumeration({
-  SIMPLE : 'simple',
-})

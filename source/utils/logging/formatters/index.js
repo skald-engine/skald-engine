@@ -1,0 +1,1 @@
+export {default as simpleFormatter} from 'utils/logging/formatters/simpleFormatter'

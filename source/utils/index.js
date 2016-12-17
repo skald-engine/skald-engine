@@ -1,1 +1,4 @@
-export {default as enumeration} from 'utils/functions/enumeration.js'
+import * as logging from 'utils/logging'
+
+export {logging}
+export * from 'utils/functions'

@@ -57,9 +57,6 @@ gulp.task('_build_lite_lib', function() {
 
     // Save the file
     .pipe(gulp.dest('build/lib/'))
-
-    // Reload the server (if running)
-    .pipe(connect.reload())
 })
 
 
