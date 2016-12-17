@@ -18,10 +18,14 @@ export const POSITION = enumeration({
 })
 
 export const DIRECTION = enumeration({
-  TOP    : 'top',
-  BOTTOM : 'bottom',
-  LEFT   : 'left',
-  RIGHT  : 'right',
+  TOP_LEFT     : 'top_left',
+  TOP_RIGHT    : 'top_right',
+  BOTTOM_LEFT  : 'bottom_left',
+  BOTTOM_RIGHT : 'bottom_right',
+  TOP          : 'top',
+  BOTTOM       : 'bottom',
+  LEFT         : 'left',
+  RIGHT        : 'right',
 })
 
 export const RENDERER = enumeration({
