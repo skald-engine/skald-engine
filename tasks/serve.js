@@ -13,7 +13,7 @@ gulp.task('_serve', [
 gulp.task('_livereload', function() {
   connect.server({
     livereload : true,
-    root       : 'build',
+    root       : '.',
     port       : config.server.port,
   });
 });
@@ -21,5 +21,6 @@ gulp.task('_livereload', function() {
 
 gulp.task('_watch', ['_livereload'], function() {
   gulp.watch('source/**/*', ['_build']);
+  gulp.watch('ignore-tests/**/*', ['_build']);
   // gulp.watch('tests/**/*',  ['_build_tests']);
 });
