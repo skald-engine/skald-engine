@@ -1,5 +1,23 @@
 /**
- * Creates an enumeration.
+ * Creates an enumeration. It receives a map `<key, value>` and returns a 
+ * freezed object with the final enumeration. 
+ *
+ * Usage example:
+ *
+ *     const BROKEN_COMPASS = skald.utils.enumeration({
+ *       NORTH: 'north',
+ *       SOUTH: 'south'
+ *     })
+ *     console.log(BROKEN_COMPASS.NORTH) // prints 'north'
+ *
+ * You may inverse lookup a key on the enumeration:
+ *
+ *     console.log(BROKEN_COMPASS('north')) // prints 'NORTH'
+ *
+ * 
+ * @param {Object} map - The dict containing the `<key, value>` pairs of the 
+ *        enumeration.
+ * @return {Object} a freezed object with the enumeration.
  */
 export default function enumeration(map) {
   // list of keys
