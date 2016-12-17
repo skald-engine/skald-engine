@@ -7,6 +7,9 @@ gulp.task('_docs', ['_docs_api'])
 gulp.task('_docs_api', function() {
   return gulp.src('source/')
     .pipe(esdoc({
-      destination: 'build/docs/api'
+      destination: 'build/docs/api',
+      plugins: [
+        {name:'./tasks/esdoc-plugins/properMembers.js'}
+      ]
     }))
 });
