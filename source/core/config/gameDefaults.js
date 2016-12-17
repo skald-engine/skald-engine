@@ -1,11 +1,12 @@
 export default {
-  project    : 'batma_game',
+  project    : 'skald_game',
   version    : 'v1.0.0',
   parent     : null,
 
   logger: {
-    level   : 'error',
-    handler : 'console'
+    level     : 'warn',
+    handler   : 'console',
+    formatter : 'simple'
   },
 
   display : {

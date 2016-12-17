@@ -23,8 +23,9 @@ export default {
       type: 'object',
       required: ['level', 'handler'],
       properties: {
-        level   : { type: 'string' }, //, enum: c.LOGGER_LEVEL.values() 
-        handler : { type: 'string' }, //, enum: c.LOGGER_HANDLER.values() 
+        level     : { type: 'string', enum: c.LOGGER_LEVEL.values() },
+        handler   : { type: 'string' },
+        formatter : { type: 'string' },
       }
     },
     

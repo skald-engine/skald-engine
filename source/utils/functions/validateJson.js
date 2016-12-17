@@ -44,5 +44,7 @@ export default function validateJson(json, defaults, schema) {
       console.error(validate.errors)
       throw new Error(`Invalid json, check the console to see more details.`)
     }
+    
+    return json
   }
 }

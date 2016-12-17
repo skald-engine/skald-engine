@@ -1,4 +1,4 @@
-import * as c from 'core/constants'
+import {LOGGER_LEVEL} from 'core/constants'
 import isFunction from 'utils/functions/isFunction'
 
 /**
@@ -152,7 +152,7 @@ export default class Logger {
   log(level, message) {
     let weight = this._levels.indexOf(level)
 
-    if (weight && weight <= this._levelPriority) {
+    if (weight && weight >= this._levelPriority) {
       this._handler(this._formatter(message, level), level)
     }
   }
@@ -163,7 +163,7 @@ export default class Logger {
    * @param {String} message - The message to be logged.
    */
   trace(message) {
-    this.log(c.LOGGER_LEVEL.TRACE, message)
+    this.log(LOGGER_LEVEL.TRACE, message)
   }
 
   /**
@@ -172,7 +172,7 @@ export default class Logger {
    * @param {String} message - The message to be logged.
    */
   debug(message) {
-    this.log(c.LOGGER_LEVEL.DEBUG, message)
+    this.log(LOGGER_LEVEL.DEBUG, message)
   }
 
   /**
@@ -181,7 +181,7 @@ export default class Logger {
    * @param {String} message - The message to be logged.
    */
   info(message) {
-    this.log(c.LOGGER_LEVEL.INFO, message)
+    this.log(LOGGER_LEVEL.INFO, message)
   }
 
   /**
@@ -190,7 +190,7 @@ export default class Logger {
    * @param {String} message - The message to be logged.
    */
   warn(message) {
-    this.log(c.LOGGER_LEVEL.WARN, message)
+    this.log(LOGGER_LEVEL.WARN, message)
   }
 
   /**
@@ -199,7 +199,7 @@ export default class Logger {
    * @param {String} message - The message to be logged.
    */
   error(message) {
-    this.log(c.LOGGER_LEVEL.ERROR, message)
+    this.log(LOGGER_LEVEL.ERROR, message)
   }
 
   /**
@@ -208,7 +208,7 @@ export default class Logger {
    * @param {String} message - The message to be logged.
    */
   fatal(message) {
-    this.log(c.LOGGER_LEVEL.FATAL, message)
+    this.log(LOGGER_LEVEL.FATAL, message)
   }
 }
 
