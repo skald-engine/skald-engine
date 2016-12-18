@@ -51,6 +51,32 @@ export default class Game extends EventEmitter {
     this._initialize(config)
   }
 
+
+  /**
+   * The PIXI renderer object. Readonly.
+   * @type {PIXI.SystemRenderer}
+   */
+  get renderer() { return this._renderer }
+
+  /**
+   * The game global container. Readonly.
+   * @type {PIXI.Container}
+   */
+  get stage() { return this._stage }
+
+  /**
+   * The parent HTML element of this game. Readonly.
+   * @type {HTTMLELement}
+   */
+  get parent() { return this._parent }
+
+  /**
+   * The configuration object, filtered and validated. Readonly.
+   * @type {Object}
+   */
+  get config() { return this._config }
+
+
   /**
    * Initialize all elements of the game.
    */
@@ -123,14 +149,14 @@ export default class Game extends EventEmitter {
    * Initialize the game managers
    */
   _initializeManagers() {
-    this.time = new managers.TimeManager(this)
-    this.device = new managers.DeviceManager(this)
-    this.display = new managers.DisplayManager(this)
+    this.time = new managers.TimeManager()
+    this.device = new managers.DeviceManager()
+    this.display = new managers.DisplayManager()
 
 
-    this.time.setup()
-    this.device.setup()
-    this.display.setup()
+    this.time.setup(this)
+    this.device.setup(this)
+    this.display.setup(this)
   }
 
   /**

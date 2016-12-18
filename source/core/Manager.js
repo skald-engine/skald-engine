@@ -1,10 +1,12 @@
 
 export default class Manager {
-  constructor(game) {
-    this.game = game
+  constructor() {
+    this.game = null
   }
 
-  setup() {}
+  setup(game) {
+    this.game = game
+  }
   
   preUpdate(delta) {}
   update(delta) {}

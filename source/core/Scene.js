@@ -4,10 +4,16 @@ export default class Scene extends EventEmitter {
   constructor() {
     super()
     
+    this._game = null
     this._world = new PIXI.Container()
   }
 
-  setup(game) {}
+  get game() { return this.game }
+  get world() { return this.world }
+
+  setup(game) {
+    this._game = game
+  }
 
   enter() {}
   start() {}

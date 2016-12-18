@@ -15,8 +15,8 @@ import Manager from 'core/Manager'
  * - [Feature.js library](https://github.com/viljamis/feature.js/)
  */
 export default class DeviceManager extends Manager {
-  constructor(game) {
-    super(game)
+  constructor() {
+    super()
 
     /**
      * Browser user agent, same as `navigator.userAgent`.
@@ -306,7 +306,9 @@ export default class DeviceManager extends Manager {
    * Initialize the manager. This method is called by the engine and shouldn't 
    * be called directly.
    */
-  setup() {
+  setup(game) {
+    super.setup(game)
+
     this.userAgent = navigator.userAgent
 
     this._getBrowser()

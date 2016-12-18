@@ -15,8 +15,8 @@ import OrientationEvent from 'core/events/OrientationEvent'
  * access `game._renderer` (the PIXI renderer object).
  */
 export default class DisplayManager extends Manager {
-  constructor(game) {
-    super(game)
+  constructor() {
+    super()
 
     // internal use
     this._pendingResize = false
@@ -186,7 +186,9 @@ export default class DisplayManager extends Manager {
   /**
    * Manager setup. Called internally by the engine. Do not call it manually.
    */
-  setup() {
+  setup(game) {
+    super.setup(game)
+
     this._setupVariables()
     this._setupFullscreen()
     this._setupEvents()
