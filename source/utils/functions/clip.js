@@ -10,7 +10,7 @@
  * @param {Number} value - The base number.
  * @param {Number} min - The minimum value.
  * @param {Number} max - The maximum value.
- * @returns {Number} A clipped value.
+ * @return {Number} A clipped value.
  */
 export default function clip(value, min, max) {
   return Math.max(Math.min(value, max), min)
