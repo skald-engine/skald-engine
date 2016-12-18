@@ -107,8 +107,8 @@ export default class Logger {
    * via `skald.utils.logging.registerFormatter` or the function itself.
    *
    * @param {String|Function} formatterOrName - formatter name or function.
-   * @throw {Error} if formatter is not a function or a registered formatter
-   *        name.
+   * @throws {Error} if formatter is not a function or a registered formatter
+   *         name.
    */
   setFormatter(formatterOrName) {
     if (isFunction(formatterOrName)) {
@@ -127,8 +127,8 @@ export default class Logger {
    * via `skald.utils.logging.registerHandler` or the function itself.
    *
    * @param {String|Function} handlerOrName - handler name or function.
-   * @throw {Error} if handler is not a function or a registered handler
-   *        name.
+   * @throws {Error} if handler is not a function or a registered handler
+   *         name.
    */
   setHandler(handlerOrName) {
     if (isFunction(handlerOrName)) {
