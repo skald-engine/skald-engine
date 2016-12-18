@@ -1,6 +1,7 @@
 import * as utils from 'utils'
-export {utils}
+import * as transitions from 'transitions'
 
+export {utils, transitions}
 export * from 'core'
 
 
