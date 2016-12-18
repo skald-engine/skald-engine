@@ -4,6 +4,8 @@ import gameDefaults from 'core/config/gameDefaults'
 import gameSchema from 'core/config/gameSchema'
 
 import * as utils from 'utils'
+import * as managers from 'core/managers'
+
 import {RENDERER} from 'core/constants'
 
 /**
@@ -120,18 +122,34 @@ export default class Game extends EventEmitter {
   /**
    * Initialize the game managers
    */
-  _initializeManagers() {}
+  _initializeManagers() {
+    this.time = new managers.TimeManager(this)
+    this.device = new managers.DeviceManager(this)
+    this.display = new managers.DisplayManager(this)
+
+
+    this.time.setup()
+    this.device.setup()
+    this.display.setup()
+  }
 
   /**
    * Start the game
    */
-  _initializeGame() {}
+  _initializeGame() {
+    this._updateGame()
+  }
 
   /**
    * The game loop
    */
   _updateGame() {
     requestAnimationFrame(()=>this._updateGame())
+
+    this.time.preUpdate()
+    let delta = this.time.delta
+
+    this.display.preUpdate(delta)
 
     this._renderer.render(this._stage)
   }
