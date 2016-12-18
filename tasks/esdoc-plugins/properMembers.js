@@ -15,9 +15,5 @@ exports.onHandleTag = function(ev) {
         memberList.push(key)
       }
     }
-
-    if (tag.memberof === 'source/utils/logging/Logger.js~Logger') {
-      console.log(tag)
-    }
   }
 };
