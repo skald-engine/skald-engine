@@ -152,11 +152,13 @@ export default class Game extends EventEmitter {
     this.time = new managers.TimeManager()
     this.device = new managers.DeviceManager()
     this.display = new managers.DisplayManager()
+    this.director = new managers.DirectorManager()
 
 
     this.time.setup(this)
     this.device.setup(this)
     this.display.setup(this)
+    this.director.setup(this)
   }
 
   /**
@@ -176,6 +178,8 @@ export default class Game extends EventEmitter {
     let delta = this.time.delta
 
     this.display.preUpdate(delta)
+
+    this.director.update(delta)
 
     this._renderer.render(this._stage)
   }
