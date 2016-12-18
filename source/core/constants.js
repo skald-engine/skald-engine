@@ -111,7 +111,7 @@ export const SCALE_MODE = enumeration({
  */
 export const MATH = enumeration({
   PI      : 3.14159265359,
-  PI_2    : 6.28318530718,
+  PI2     : 6.28318530718,
   HALF_PI : 1.57079632679,
   INV_PI  : 0.31830988618,
   E       : 2.71828182846,

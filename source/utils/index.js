@@ -1,4 +1,5 @@
 import * as logging from 'utils/logging'
+import * as easing from 'utils/easing'
 
-export {logging}
+export {logging, easing}
 export * from 'utils/functions'
