@@ -56,12 +56,26 @@ export default class Scene extends EventEmitter() {
       return
     }
 
+    // removes entities attached to this layer
     let layer = this._layers[layerName]
+    let entities = this._mapLayerToEntity[layerName]
+
+    for (let entity of entities) {
+      let tags = entity._tags || []
+
+      this._entities.delete(entity)
+
+      for (let j=0; j<tags.length; j++) {
+        let tag = tags[j]
+        let entities = this._mapTagToEntity[tag]
+        if (entities) entities.delete(entity)
+      }
+    }
+
+    // removes the layer
     delete this._layers[layerName]
     delete this._mapLayerToEntity[layerName]
     this._world.removeChild(layer)
-
-    // should remove all entities from the scene too
   }
 
   addEntity(entity, layerName) {
