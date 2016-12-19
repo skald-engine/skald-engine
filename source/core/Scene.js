@@ -112,7 +112,11 @@ export default class Scene extends EventEmitter() {
 
       entities.add(entity)      
     }
+
+    // setup the entity
+    entity.setup(this.game, this)
   }
+  
   removeEntity(entity, layerName) {
     if (!entity) {
       throw new Error(`Trying to remove an invalid entity.`)

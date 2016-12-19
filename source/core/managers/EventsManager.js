@@ -35,7 +35,7 @@ export default class EventsManager extends Manager {
     }
 
 
-    if (target && !(target instanceof EventEmitter)) {
+    if (target && !target.emit) {
       throw new Error(`Target must be an instance of skald.EventEmitter.`)
     }
 
