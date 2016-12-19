@@ -34,19 +34,19 @@ export default class Game extends EventEmitter {
     this.log = null
 
     this.time = null
-    this.event = null
+    this.events = null
     this.device = null
     this.display = null
     this.director = null
-    this.sound = null
-    this.input = null
+    this.sounds = null
+    this.inputs = null
     this.keyboard = null
     this.mouse = null
-    this.gamepad = null
-    this.touch = null
+    this.gamepads = null
+    this.touches = null
     this.storage = null
     this.physics = null
-    this.resource = null
+    this.resources = null
 
     this._initialize(config)
   }
@@ -150,12 +150,14 @@ export default class Game extends EventEmitter {
    */
   _initializeManagers() {
     this.time = new managers.TimeManager()
+    this.events = new managers.EventsManager()
     this.device = new managers.DeviceManager()
     this.display = new managers.DisplayManager()
     this.director = new managers.DirectorManager()
 
 
     this.time.setup(this)
+    this.events.setup(this)
     this.device.setup(this)
     this.display.setup(this)
     this.director.setup(this)
@@ -179,6 +181,7 @@ export default class Game extends EventEmitter {
 
     this.display.preUpdate(delta)
 
+    this.events.update(delta)
     this.director.update(delta)
 
     this._renderer.render(this._stage)

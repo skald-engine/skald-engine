@@ -1,3 +1,6 @@
+import * as events from 'core/events'
+
+export {events}
 export * from 'core/constants.js'
 
 export {default as EventEmitter} from 'core/EventEmitter.js'

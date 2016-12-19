@@ -8,8 +8,8 @@ export default class Scene extends EventEmitter {
     this._world = new PIXI.Container()
   }
 
-  get game() { return this.game }
-  get world() { return this.world }
+  get game() { return this._game }
+  get world() { return this._world }
 
   setup(game) {
     this._game = game

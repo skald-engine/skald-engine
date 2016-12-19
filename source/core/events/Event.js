@@ -88,6 +88,7 @@ export default class Event {
    */
   stopImmediatePropagation() {
     if (this._cancelable)
+      this._stopped = true
       this._immediateStopped = true
   }
 }

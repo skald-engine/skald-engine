@@ -133,6 +133,8 @@ export default class DirectorManager extends Manager {
                       `scene, you must inherit from skald.Scene.`)
     }
 
+    scene.setup(this.game)
+
     this._scenes[sceneId] = scene
   }
 
@@ -353,7 +355,7 @@ export default class DirectorManager extends Manager {
    * Set the current scene, internally.
    */
   _setCurrentScene(sceneId, scene) {
-    this.game.log.engine(`DIRECTOR: Setting current scene with "${sceneId}"`)
+    this.game.log.trace(`DIRECTOR: Setting current scene with "${sceneId}"`)
 
     this.game._stage.addChild(scene._world)
     this._currentSceneId = sceneId
@@ -364,7 +366,7 @@ export default class DirectorManager extends Manager {
    * Set the next scene, internally.
    */
   _setNextScene(sceneId, scene) {
-    this.game.log.engine(`DIRECTOR: Setting next scene with "${sceneId}"`)
+    this.game.log.trace(`DIRECTOR: Setting next scene with "${sceneId}"`)
 
     this.game._stage.addChild(scene._world)
     this._nextSceneId = sceneId
@@ -387,7 +389,7 @@ export default class DirectorManager extends Manager {
    */
   _promoteNextScene() {
     if (!this._nextScene) return;
-    this.game.log.engine(`DIRECTOR: Promoting next scene to current scene`)
+    this.game.log.trace(`DIRECTOR: Promoting next scene to current scene`)
 
     this._currentSceneId = this._nextSceneId
     this._currentScene = this._nextScene
@@ -398,7 +400,7 @@ export default class DirectorManager extends Manager {
    */
   _removeCurrentScene() {
     if (!this._currentScene) return;
-    this.game.log.engine(`DIRECTOR: Removing current scene "${this._currentSceneId}"`)
+    this.game.log.trace(`DIRECTOR: Removing current scene "${this._currentSceneId}"`)
 
     this.game._stage.removeChild(this._currentScene._world)
     this._currentSceneId = null
@@ -409,7 +411,7 @@ export default class DirectorManager extends Manager {
    * Start a transition.
    */
   _startTransition(transition) {
-    transition.setScenes(this._currentScene, this._nextScene)
+    transition.setup(this.game, this._currentScene, this._nextScene)
     transition.start()
     this._transition = transition
   }
