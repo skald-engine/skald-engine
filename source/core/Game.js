@@ -15,7 +15,7 @@ import {RENDERER} from 'core/constants'
  *
  * 
  */
-export default class Game extends EventEmitter {
+export default class Game extends EventEmitter() {
 
   /**
    * Creates a new game.

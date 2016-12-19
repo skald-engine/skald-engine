@@ -1,2 +1,15 @@
+import EventEmitter from 'core/EventEmitter'
 
-export default class Entity {}
+/**
+ * @ignore
+ */
+export default function Entity(baseclass) {
+
+  /**
+   * 
+   */
+  return class Entity extends EventEmitter(baseclass) {
+
+  }
+
+}

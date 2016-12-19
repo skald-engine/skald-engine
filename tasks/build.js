@@ -29,6 +29,7 @@ gulp.task('_build_lite_lib', function() {
     // Tranform ES6 to ES5
     .transform(babelify.configure({
       presets: ['es2015'],
+      sourceMaps: true
     }))
     .bundle()
 
@@ -37,7 +38,7 @@ gulp.task('_build_lite_lib', function() {
     .pipe(buffer())
 
     // Open source map
-    .pipe(sourcemaps.init())
+    .pipe(sourcemaps.init({loadMaps: true}))
 
       // Uglify the file
       .pipe(uglify({preserveComments:'license'})

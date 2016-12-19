@@ -1,0 +1,1 @@
+export { default as Sprite } from 'core/entities/Sprite'
