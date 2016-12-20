@@ -151,7 +151,10 @@ export default class Scene extends EventEmitter() {
     return entities && Array.from(entities) || []
   }
 
-  addEventSheet(eventSheet) {}
+  addEventSheet(eventSheet) {
+    
+  }
+
   removeEventSheet(eventSheet) {}
 
 }

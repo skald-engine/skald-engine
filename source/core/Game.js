@@ -180,7 +180,8 @@ export default class Game extends EventEmitter() {
     let delta = this.time.delta
 
     this.display.preUpdate(delta)
-
+    this.director.preUpdate(delta)
+    
     this.events.update(delta)
     this.director.update(delta)
 
