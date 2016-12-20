@@ -25,8 +25,6 @@ export default class DisplayManager extends Manager {
     // internal use
     this._pendingResize = false
     this._inWrongOrientation = false
-    this._originalWidth = null
-    this._originalHeight = null
     this._beforeFullscreenWidth = null
     this._beforeFullscreenHeight = null
     this._fullscreenRequest = null
@@ -35,6 +33,8 @@ export default class DisplayManager extends Manager {
     // internal due to getter access
     this._width = null
     this._height = null
+    this._canvasWidth = null
+    this._canvasHeight = null
     this._scaleMode = null
     this._fullscreenScaleMode = null
     this._forceOrientation = null
@@ -51,6 +51,18 @@ export default class DisplayManager extends Manager {
    * @type {Number}
    */
   get height() { return this._height }
+
+  /**
+   * Returns the **current** game width. Readonly.
+   * @type {Number}
+   */
+  get canvasWidth() { return this._canvasWidth }
+
+  /**
+   * Returns the **current** game height. Readonly.
+   * @type {Number}
+   */
+  get canvasHeight() { return this._canvasHeight }
 
   /**
    * Returns the game orientation. This is computed using the window height
@@ -216,8 +228,8 @@ export default class DisplayManager extends Manager {
 
     this._width = config.display.width
     this._height = config.display.height
-    this._originalWidth = config.display.width
-    this._originalHeight = config.display.height
+    this._canvasWidth = config.display.width
+    this._canvasHeight = config.display.height
     this._scaleMode = config.display.scaleMode
     this._fullscreenScaleMode = config.display.fullscreenScaleMode
     this._forceOrientation = config.display.forceOrientation
@@ -272,8 +284,8 @@ export default class DisplayManager extends Manager {
     this._pendingResize = false
 
     // Variables
-    let width = this._originalWidth
-    let height = this._originalHeight
+    let width = this._width
+    let height = this._height
     let clientWidth = window.innerWidth ||
                       document.documentElement.clientWidth
                       document.body.clientWidth
@@ -295,41 +307,42 @@ export default class DisplayManager extends Manager {
     if (scaleMode === SCALE_MODE.NOSCALE) {
       stageScaleX = 1
       stageScaleY = 1
+      this._canvasWidth = this._width
+      this._canvasHeight = this._height
     }
 
     else if (scaleMode === SCALE_MODE.STRETCH) {
       stageScaleX = clientWidth/width
       stageScaleY = clientHeight/height
-      this._width = clientWidth
-      this._height = clientHeight
+      this._canvasWidth = clientWidth
+      this._canvasHeight = clientHeight
     }
 
     else if (scaleMode === SCALE_MODE.FIT) {
       let ratio = Math.min(clientWidth/width, clientHeight/height)
       stageScaleX = ratio
       stageScaleY = ratio
-      this._width = width*ratio
-      this._height = height*ratio
+      this._canvasWidth = width*ratio
+      this._canvasHeight = height*ratio
     }
 
     else if (scaleMode === SCALE_MODE.FILL) {
-      let ratio = Math.min(clientWidth/width, clientHeight/height)
-
+      let ratio = Math.max(clientWidth/width, clientHeight/height)
       stageScaleX = ratio
       stageScaleY = ratio
       stagePositionX = (clientWidth - width*ratio)/2
       stagePositionY = (clientHeight - height*ratio)/2
-      this._width = clientWidth
-      this._height = clientHeight
+      this._canvasWidth = clientWidth
+      this._canvasHeight = clientHeight
     }
 
     this.game._stage.position.x = stagePositionX
     this.game._stage.position.y = stagePositionY
     this.game._stage.scale.x = stageScaleX
     this.game._stage.scale.y = stageScaleY
-    this.game._renderer.resize(this._width, this._height)
-    this.game._renderer.view.style.width = this._width+'px'
-    this.game._renderer.view.style.height = this._height+'px'
+    this.game._renderer.resize(this._canvasWidth, this._canvasHeight)
+    this.game._renderer.view.style.width = this._canvasWidth+'px'
+    this.game._renderer.view.style.height = this._canvasHeight+'px'
 
     // TODO ENABLE THIS: this.game.event.dispatchToScene(new Event('resize'))
   }
