@@ -4,8 +4,8 @@
  * This class provides just the skeleton and base initialization for managers.
  */
 export default class Manager {
-  constructor() {
-    this._game = null
+  constructor(game) {
+    this._game = game
   }
 
 

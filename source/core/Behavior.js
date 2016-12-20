@@ -1,8 +1,8 @@
 
 
 export default class Behavior {
-  constructor() {
-    this._name = null
+  constructor(name) {
+    this._name = name
     this._entity = null
   }
 

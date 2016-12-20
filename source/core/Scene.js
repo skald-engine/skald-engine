@@ -3,7 +3,7 @@ import Entity from 'core/Entity'
 
 const DEFAULT_LAYER = '~default'
 
-export default class Scene extends EventEmitter() {
+export default class Scene extends EventEmitter {
   constructor() {
     super()
     

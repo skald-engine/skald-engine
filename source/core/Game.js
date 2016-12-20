@@ -15,7 +15,7 @@ import {RENDERER} from 'core/constants'
  *
  * 
  */
-export default class Game extends EventEmitter() {
+export default class Game extends EventEmitter {
 
   /**
    * Creates a new game.
@@ -31,26 +31,25 @@ export default class Game extends EventEmitter() {
     this._config = null
     this._plugins = null
 
-    this.log = null
+    this._log = null
 
-    this.time = null
-    this.events = null
-    this.device = null
-    this.display = null
-    this.director = null
-    this.sounds = null
-    this.inputs = null
-    this.keyboard = null
-    this.mouse = null
-    this.gamepads = null
-    this.touches = null
-    this.storage = null
-    this.physics = null
-    this.resources = null
+    this._time = null
+    this._events = null
+    this._device = null
+    this._display = null
+    this._director = null
+    this._sounds = null
+    this._inputs = null
+    this._keyboard = null
+    this._mouse = null
+    this._gamepads = null
+    this._touches = null
+    this._storage = null
+    this._physics = null
+    this._resources = null
 
     this._initialize(config)
   }
-
 
   /**
    * The PIXI renderer object. Readonly.
@@ -76,6 +75,97 @@ export default class Game extends EventEmitter() {
    */
   get config() { return this._config }
 
+  /**
+   * Logger.
+   * @type {Logger}
+   */
+  get log() { return this._log }
+
+  /**
+   * Time manager.
+   * @type {TimeManager}
+   */
+  get time() { return this._time }
+
+  /**
+   * Events manager.
+   * @type {EventsManager}
+   */
+  get events() { return this._events }
+
+  /**
+   * Device manager.
+   * @type {DeviceManager}
+   */
+  get device() { return this._device }
+
+  /**
+   * Display manager.
+   * @type {DisplayManager}
+   */
+  get display() { return this._display }
+
+  /**
+   * Director manager.
+   * @type {DirectorManager}
+   */
+  get director() { return this._director }
+
+  /**
+   * Sounds manager.
+   * @type {SoundsManager}
+   */
+  get sounds() { return this._sounds }
+
+  /**
+   * Inputs manager.
+   * @type {InputsManager}
+   */
+  get inputs() { return this._inputs }
+
+  /**
+   * Keyboard manager.
+   * @type {KeyboardManager}
+   */
+  get keyboard() { return this._keyboard }
+
+  /**
+   * Mouse manager.
+   * @type {MouseManager}
+   */
+  get mouse() { return this._mouse }
+
+  /**
+   * Gamepads manager.
+   * @type {GamepadsManager}
+   */
+  get gamepads() { return this._gamepads }
+
+  /**
+   * Touches manager.
+   * @type {TouchesManager}
+   */
+  get touches() { return this._touches }
+
+  /**
+   * Storage manager.
+   * @type {StorageManager}
+   */
+  get storage() { return this._storage }
+
+  /**
+   * Physics manager.
+   * @type {PhysicsManager}
+   */
+  get physics() { return this._physics }
+
+  /**
+   * Resources manager.
+   * @type {ResourcesManager}
+   */
+  get resources() { return this._resources }
+
+
 
   /**
    * Initialize all elements of the game.
@@ -100,10 +190,10 @@ export default class Game extends EventEmitter() {
    * Initialize and configure the game logger.
    */
   _initializeLogger() {
-    this.log = new utils.logging.Logger()
-    this.log.level = this._config.logger.level
-    this.log.setHandler(this._config.logger.handler)
-    this.log.setFormatter(this._config.logger.formatter)
+    this._log = new utils.logging.Logger()
+    this._log.level = this._config.logger.level
+    this._log.setHandler(this._config.logger.handler)
+    this._log.setFormatter(this._config.logger.formatter)
   }
 
   /**
@@ -149,11 +239,11 @@ export default class Game extends EventEmitter() {
    * Initialize the game managers
    */
   _initializeManagers() {
-    this.time = new managers.TimeManager()
-    this.events = new managers.EventsManager()
-    this.device = new managers.DeviceManager()
-    this.display = new managers.DisplayManager()
-    this.director = new managers.DirectorManager()
+    this._time = new managers.TimeManager()
+    this._events = new managers.EventsManager()
+    this._device = new managers.DeviceManager()
+    this._display = new managers.DisplayManager()
+    this._director = new managers.DirectorManager()
 
 
     this.time.setup(this)
@@ -180,11 +270,27 @@ export default class Game extends EventEmitter() {
     let delta = this.time.delta
 
     this.display.preUpdate(delta)
-    this.director.preUpdate(delta)
     
+      
+    this._updateEntities(delta)
     this.events.update(delta)
     this.director.update(delta)
 
     this._renderer.render(this._stage)
+  }
+
+  /**
+   * Temporary wordkaround to update the entities of the game. This is not 
+   * called on the director because it must run before the event digest and the
+   * scene update, however, it also part of the update phaser.
+   */
+  _updateEntities(delta) {
+    let scene = this.director.currentScene
+
+    if (scene && !this.director.inTransition()) {
+      for (let entity of scene._entities) {
+        if (entity.updatable) entity.update(delta)
+      }
+    }
   }
 }

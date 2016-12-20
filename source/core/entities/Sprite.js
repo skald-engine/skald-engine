@@ -1,5 +1,5 @@
 import Entity from 'core/Entity'
 
-export default class Sprite extends Entity(PIXI.Sprite) {
+export default class Sprite extends Entity {
 
 }

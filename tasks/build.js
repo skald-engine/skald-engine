@@ -29,6 +29,7 @@ gulp.task('_build_lite_lib', function() {
     // Tranform ES6 to ES5
     .transform(babelify.configure({
       presets: ['es2015'],
+      sourceMapsAbsolute: true,
       sourceMaps: true
     }))
     .bundle()
