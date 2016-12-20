@@ -51,8 +51,12 @@ import Transition from 'core/Transition'
  *
  */
 export default class DirectorManager extends Manager {
-  constructor() {
-    super()
+  
+  /**
+   * @param {Game} game - The game instance.
+   */
+  constructor(game) {
+    super(game)
 
     this._scenes = {}
     this._transitions = {}

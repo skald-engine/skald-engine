@@ -1,10 +1,22 @@
+import Game from 'core/Game'
+
 /**
  * Base class for all managers in Skald.
  *
  * This class provides just the skeleton and base initialization for managers.
  */
 export default class Manager {
+  
+  /**
+   * @param {Game} game - The game instance.
+   */
   constructor(game) {
+    if (!game || !(game instanceof Game)) {
+      return new TypeError(
+        `Trying to instantiate a Manager without an instance of sk.Game.`
+      )
+    }
+
     this._game = game
   }
 
@@ -23,8 +35,7 @@ export default class Manager {
    *
    * @param {Game} game - The game instance
    */
-  setup(game) {
-    this._game = game
+  setup() {
   }
   
   /**

@@ -239,18 +239,17 @@ export default class Game extends EventEmitter {
    * Initialize the game managers
    */
   _initializeManagers() {
-    this._time = new managers.TimeManager()
-    this._events = new managers.EventsManager()
-    this._device = new managers.DeviceManager()
-    this._display = new managers.DisplayManager()
-    this._director = new managers.DirectorManager()
+    this._time = new managers.TimeManager(this)
+    this._events = new managers.EventsManager(this)
+    this._device = new managers.DeviceManager(this)
+    this._display = new managers.DisplayManager(this)
+    this._director = new managers.DirectorManager(this)
 
-
-    this.time.setup(this)
-    this.events.setup(this)
-    this.device.setup(this)
-    this.display.setup(this)
-    this.director.setup(this)
+    this._time.setup()
+    this._events.setup()
+    this._device.setup()
+    this._display.setup()
+    this._director.setup()
   }
 
   /**

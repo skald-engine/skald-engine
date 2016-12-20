@@ -4,8 +4,12 @@ import Manager from 'core/Manager'
  * Handle the time-based information of the engine.
  */
 export default class TimeManager extends Manager {
-  constructor() {
-    super()
+  
+  /**
+   * @param {Game} game - The game instance.
+   */
+  constructor(game) {
+    super(game)
 
     this._time = 0
     this._prevTime = 0
@@ -55,9 +59,7 @@ export default class TimeManager extends Manager {
    * Initializes the manager. Called by the engine, thus, do not call it 
    * manually.
    */
-  setup(game) {
-    super.setup(game)
-
+  setup() {
     this._time = Date.now()
     this._prevTime = Date.now()
     this._delta = 0

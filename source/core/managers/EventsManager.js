@@ -10,8 +10,12 @@ import EventEmitter from 'core/EventEmitter'
  * after entities and behaviors update, and before the scene update.
  */
 export default class EventsManager extends Manager {
-  constructor() {
-    super()
+  
+  /**
+   * @param {Game} game - The game instance.
+   */
+  constructor(game) {
+    super(game)
 
     this._eventPool = []
   }
