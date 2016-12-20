@@ -1,6 +1,7 @@
 import Manager from 'core/Manager' 
 import Scene from 'core/Scene' 
 import Transition from 'core/Transition' 
+import {tryToInstantiate} from 'utils' 
 
 /**
  * This manager handle scenes and transitions.
@@ -106,6 +107,8 @@ export default class DirectorManager extends Manager {
    * @throws {Error} If the scene is not an Scene class or object.
    */
   addScene(sceneId, scene) {
+    scene = tryToInstantiate(scene, this.game)
+
     if (typeof sceneId !== 'string') {
       throw new Error(`ID must be string, received "${sceneId}" instead.`)
     }
@@ -119,25 +122,10 @@ export default class DirectorManager extends Manager {
                          `present in Director and linked to another scene.`)
     }
 
-
-    try {
-      // try to instantiate it as Class
-      scene = new scene()
-    } catch(e) {
-      try {
-        // try to call it as a function
-        scene = scene()
-      } catch(e) {
-        // scene is already instantiated
-      }
-    }
-
     if (!(scene instanceof Scene)) {
       throw new Error(`Invalid scene object. If you are creating your own `+
                       `scene, you must inherit from skald.Scene.`)
     }
-
-    scene.setup(this.game)
 
     this._scenes[sceneId] = scene
   }
@@ -359,7 +347,7 @@ export default class DirectorManager extends Manager {
    * Set the current scene, internally.
    */
   _setCurrentScene(sceneId, scene) {
-    this.game.log.trace(`DIRECTOR: Setting current scene with "${sceneId}"`)
+    this.game.log.trace(`(director) Setting current scene with "${sceneId}"`)
 
     this.game._stage.addChild(scene._world)
     this._currentSceneId = sceneId
@@ -370,7 +358,7 @@ export default class DirectorManager extends Manager {
    * Set the next scene, internally.
    */
   _setNextScene(sceneId, scene) {
-    this.game.log.trace(`DIRECTOR: Setting next scene with "${sceneId}"`)
+    this.game.log.trace(`(director) Setting next scene with "${sceneId}"`)
 
     this.game._stage.addChild(scene._world)
     this._nextSceneId = sceneId
@@ -393,7 +381,7 @@ export default class DirectorManager extends Manager {
    */
   _promoteNextScene() {
     if (!this._nextScene) return;
-    this.game.log.trace(`DIRECTOR: Promoting next scene to current scene`)
+    this.game.log.trace(`(director) Promoting next scene to current scene`)
 
     this._currentSceneId = this._nextSceneId
     this._currentScene = this._nextScene
@@ -404,7 +392,7 @@ export default class DirectorManager extends Manager {
    */
   _removeCurrentScene() {
     if (!this._currentScene) return;
-    this.game.log.trace(`DIRECTOR: Removing current scene "${this._currentSceneId}"`)
+    this.game.log.trace(`(director) Removing current scene "${this._currentSceneId}"`)
 
     this.game._stage.removeChild(this._currentScene._world)
     this._currentSceneId = null

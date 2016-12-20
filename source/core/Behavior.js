@@ -1,28 +1,22 @@
 
-
 export default class Behavior {
-  constructor(name) {
+  constructor(game, scene, entity) {
     this._name = name
-    this._entity = null
+    this._game = game
+    this._scene = scene
+    this._entity = entity
+
+    this.initialize()
   }
 
   get name() { return this._name }
+  set name(value) { this._name = value}
+
   get entity() { return this._entity }
-  get scene() {
-    let entity = this._entity
-    return entity && entity.scene
-  }
-  get game() {
-    let entity = this._entity
-    let scene = entity && entity.scene
-    return scene && scene.game
-  }
+  get scene() { return this._scene }
+  get game() { return this._game }
 
-  setup(entity) {
-    this._entity = entity
-  }
-
-  // ?
+  initialize() {}
   update(delta) {}
   processEntity() {}
   processGroup() {}

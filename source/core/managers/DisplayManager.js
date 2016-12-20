@@ -38,7 +38,6 @@ export default class DisplayManager extends Manager {
     this._scaleMode = null
     this._fullscreenScaleMode = null
     this._forceOrientation = null
-
   }
 
   /**
@@ -80,7 +79,7 @@ export default class DisplayManager extends Manager {
   get scaleMode() { return this._scaleMode }
   set scaleMode(mode) {
     if (!SCALE_MODE(mode)) {
-      throw Error(`Invalid scale mode "${mode}"`)
+      throw Error(`Invalid scale mode "${mode}".`)
     }
     
     this._scaleMode = mode
@@ -94,7 +93,7 @@ export default class DisplayManager extends Manager {
   get fullscreenScaleMode() { return this._fullscreenScaleMode }
   set fullscreenScaleMode(mode) {
     if (!SCALE_MODE(mode)) {
-      throw Error(`Invalid fullscreen scale mode "${mode}"`)
+      throw Error(`Invalid fullscreen scale mode "${mode}."`)
     }
     
     this._fullscreenScaleMode = mode
@@ -109,7 +108,7 @@ export default class DisplayManager extends Manager {
   get forceOrientation() { return this._forceOrientation }
   set forceOrientation(orientation) {
     if (orientation !== null && !ORIENTATION(orientation)) {
-      throw Error(`Invalid orientation "${orientation}"`)
+      throw Error(`Invalid orientation "${orientation}".`)
     }
     this._forceOrientation = orientation
   }

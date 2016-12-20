@@ -1,13 +1,21 @@
 import EventEmitter from 'core/EventEmitter'
 import Entity from 'core/Entity'
+import Game from 'core/Game'
+import {tryToInstantiate} from 'utils'
 
 const DEFAULT_LAYER = '~default'
 
 export default class Scene extends EventEmitter {
-  constructor() {
+  constructor(game) {
     super()
+
+    if (!game || !(game instanceof Game)) {
+      return new TypeError(
+        `Trying to instantiate a Scene without an instance of sk.Game.`
+      )
+    }
     
-    this._game = null
+    this._game = game
     this._world = new PIXI.Container()
     this._layers = {}
     this._entities = new Set()
@@ -16,14 +24,14 @@ export default class Scene extends EventEmitter {
     this._mapTagToEntity = {}
 
     this.addLayer(DEFAULT_LAYER)
+
+    this.initialize()
   }
 
   get game() { return this._game }
   get world() { return this._world }
 
-  setup(game) {
-    this._game = game
-  }
+  initialize() {}
 
   enter() {}
   start() {}
@@ -61,7 +69,7 @@ export default class Scene extends EventEmitter {
     let entities = this._mapLayerToEntity[layerName]
 
     for (let entity of entities) {
-      let tags = entity._tags || []
+      let tags = entity.tags
 
       this._entities.delete(entity)
 
@@ -79,21 +87,28 @@ export default class Scene extends EventEmitter {
   }
 
   addEntity(entity, layerName) {
-    if (!entity) {
-      throw new Error(`Trying to add an invalid entity. You must provide an `+
-                      `instance of an skald.Entity class or subclass.`)
-    }
+    entity = tryToInstantiate(entity, this.game, this)
 
     layerName = layerName || DEFAULT_LAYER
     let layer = this._layers[layerName]
-    let tags = entity._tags || []
+    let tags = entity.tags
+
+
+    if (!entity) {
+      throw new Error(`You must provide an entity.`)
+    }
+
+    if (!(entity instanceof Entity)) {
+      throw new Error(`You must provide an instance of sk.Entity or of one `+
+                      `of its subclasses.`)
+    }
 
     if (!layer) {
       throw new Error(`Trying to add an entity to an invalid layer "${layerName}".`)
     }
 
     // add entity to container
-    layer.addChild(entity)
+    layer.addChild(entity.displayObject)
 
     // full entity list
     this._entities.add(entity)
@@ -112,9 +127,6 @@ export default class Scene extends EventEmitter {
 
       entities.add(entity)      
     }
-
-    // setup the entity
-    entity.setup(this.game, this)
   }
   
   removeEntity(entity, layerName) {
@@ -124,13 +136,13 @@ export default class Scene extends EventEmitter {
 
     layerName = layerName || DEFAULT_LAYER
     let layer = this._layers[layerName]
-    let tags = entity._tags || []
+    let tags = entity.tags
 
     if (!layer) {
       throw new Error(`Trying to remove an entity from an invalid layer "${layerName}".`)
     }
 
-    layer.removeChild(entity)
+    layer.removeChild(entity.displayObject)
     this._entities.delete(entity)
     this._mapLayerToEntity[layerName].delete(entity)
 

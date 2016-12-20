@@ -1,4 +1,6 @@
 import EventEmitter from 'core/EventEmitter'
+import Game from 'core/Game'
+import Scene from 'core/Scene'
 import {tryToInstantiate} from 'utils'
 
 
@@ -6,28 +8,75 @@ import {tryToInstantiate} from 'utils'
  * 
  */
 export default class Entity extends EventEmitter {
-  constructor(...args) {
-    super(...args)
+  constructor(game, scene, displayObject) {
+    super()
+
+    if (!game || !(game instanceof Game)) {
+      return new TypeError(
+        `Trying to instantiate a Game without an instance of sk.Game.`
+      )
+    }
+
+    if (!scene || !(scene instanceof Scene)) {
+      return new TypeError(
+        `Trying to instantiate a Scene without an instance of sk.Scene.`
+      )
+    }
+
+    if (!displayObject) {
+      return new TypeError(
+        `Trying to instantiate a Scene without a display object.`
+      )
+    }
+
 
     this._tags = []
-    this._game = null
-    this._scene = null
+    this._game = game
+    this._scene = scene
+    this._displayObject = displayObject
 
     this._behaviors = {}
 
     this.updatable = true
     this.alive = true
+
+    this.initialize()
   }
 
-  get tags() { return this._tags }
   get game() { return this._game }
   get scene() { return this._scene }
   get behaviors() { return this._behaviors }
+  get displayObject() { return this._displayObject }
 
-  setup(game, scene) {
-    this._game = game
-    this._scene = scene
-  }
+  get tags() { return this._tags || [] }
+  set tags(value) { return this._tags = value }
+
+  get x() { return this._displayObject.position.x }
+  set x(value) { this._displayObject.position.x = value}
+
+  get y() { return this._displayObject.position.y }
+  set y(value) { this._displayObject.position.y = value}
+
+  get position() { return this._displayObject.position }
+  set position(value) { this._displayObject.position = value}
+
+  get scale() { return this._displayObject.scale }
+  set scale(value) { this._displayObject.scale = value}
+
+  get pivot() { return this._displayObject.pivot }
+  set pivot(value) { this._displayObject.pivot = value}
+
+  get skew() { return this._displayObject.skew }
+  set skew(value) { this._displayObject.skew = value}
+
+  get rotation() { return this._displayObject.rotation }
+  set rotation(value) { this._displayObject.rotation = value}
+
+  get mask() { return this._displayObject.mask }
+  set mask(value) { this._displayObject.mask = value}
+
+  get filters() { return this._displayObject.filters }
+  set filters(value) { this._displayObject.filters = value}
 
   update(delta) {
     for (let name in this._behaviors) {
@@ -36,7 +85,7 @@ export default class Entity extends EventEmitter {
   }
 
   addBehavior(behavior) {
-    behavior = tryToInstantiate(behavior)
+    behavior = tryToInstantiate(behavior, this.game, this.scene, this)
 
     if (!behavior) {
       throw new Error(`You must provide a behavior.`)
@@ -51,7 +100,6 @@ export default class Entity extends EventEmitter {
                       `already registered.`)
     }
 
-    behavior.setup(this)
     this._behaviors[behavior.name] = behavior
   }
 
