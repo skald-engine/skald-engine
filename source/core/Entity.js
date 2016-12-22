@@ -126,4 +126,13 @@ export default class Entity extends EventEmitter {
   hasBehavior(behaviorName) {
     return !!this._behaviors[behaviorName]
   }
+
+  revive() {}
+  kill() {}
+  destroy() {}
+
+  getBounds() {}
+  hitTest() {}
+
+  isGroup() {}
 }
