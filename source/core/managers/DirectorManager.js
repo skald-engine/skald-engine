@@ -128,6 +128,7 @@ export default class DirectorManager extends Manager {
     }
 
     this._scenes[sceneId] = scene
+    return scene
   }
 
   /**

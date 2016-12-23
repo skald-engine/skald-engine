@@ -1,5 +1,6 @@
 import EventEmitter from 'core/EventEmitter'
 import Entity from 'core/Entity'
+import EventSheet from 'core/EventSheet'
 import Game from 'core/Game'
 import {tryToInstantiate} from 'utils'
 
@@ -57,6 +58,8 @@ export default class Scene extends EventEmitter {
     this._layers[layerName] = layer
     this._mapLayerToEntity[layerName] = new Set()
     this._world.addChild(layer)
+
+    return layer
   }
   removeLayer(layerName) {
     if (!this._layers[layerName]) {
@@ -127,6 +130,8 @@ export default class Scene extends EventEmitter {
 
       entities.add(entity)      
     }
+
+    return entity
   }
   
   removeEntity(entity, layerName) {
@@ -164,9 +169,29 @@ export default class Scene extends EventEmitter {
   }
 
   addEventSheet(eventSheet) {
-    
+    eventSheet = tryToInstantiate(eventSheet, this.game, this)
+
+    if (!eventSheet) {
+      throw new Error(`You must provide an event sheet.`)
+    }
+
+    if (!(eventSheet instanceof EventSheet)) {
+      throw new Error(`You must provide an instance of sk.EventSheet or of `+
+                      `one of its subclasses.`)
+    }
+
+    // add entity to container
+    this._eventSheets.push(eventSheet)
+
+    return eventSheet
   }
 
-  removeEventSheet(eventSheet) {}
+  removeEventSheet(eventSheet) {
+    if (!eventSheet) {
+      throw new Error(`Trying to remove an invalid event sheet.`)
+    }
 
+    eventSheet.leave()
+    this._eventSheets.splice(this._eventSheets.indexOf(eventSheet), 1)
+  }
 }

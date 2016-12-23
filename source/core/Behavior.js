@@ -18,6 +18,4 @@ export default class Behavior {
 
   initialize() {}
   update(delta) {}
-  processEntity() {}
-  processGroup() {}
 }

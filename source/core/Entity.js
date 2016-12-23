@@ -8,7 +8,7 @@ import {tryToInstantiate} from 'utils'
  * 
  */
 export default class Entity extends EventEmitter {
-  constructor(game, scene, displayObject) {
+  constructor(game, scene, displayObject, suppressInitialize=false) {
     super()
 
     if (!game || !(game instanceof Game)) {
@@ -40,7 +40,9 @@ export default class Entity extends EventEmitter {
     this.updatable = true
     this.alive = true
 
-    this.initialize()
+    if (!suppressInitialize) {
+      this.initialize()
+    }
   }
 
   get game() { return this._game }
