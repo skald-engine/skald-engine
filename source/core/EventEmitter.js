@@ -65,7 +65,7 @@ export default class EventEmitter {
         if (event.immediateStopped) return
 
         let e = listeners[i]
-        e.listener.call(e.context, event)
+        Reflect.apply(e.listener, e.context, [event])
       }
     }
   }
@@ -96,10 +96,9 @@ export default class EventEmitter {
    */
   removeListener(eventType, listener) {
     let events = this._listeners[eventType]
-
     if (!events) return
 
-    let i = events.indexOf(listener)
+    let i = events.findIndex(e => e.listener === listener)
     if (i < 0) return
 
     events.splice(i, 1)
@@ -128,7 +127,7 @@ export default class EventEmitter {
         if (event.immediateStopped) return
 
         let e = listeners[i]
-        e.listener.call(e.context, event)
+        Reflect.apply(e.listener, e.context, [event])
       }
     }
   }
