@@ -107,7 +107,7 @@ export default class DirectorManager extends Manager {
    * @throws {Error} If the scene is not an Scene class or object.
    */
   addScene(sceneId, scene) {
-    scene = tryToInstantiate(scene, this.game)
+    // scene = tryToInstantiate(scene, this.game)
 
     if (typeof sceneId !== 'string') {
       throw new Error(`ID must be string, received "${sceneId}" instead.`)
@@ -122,10 +122,10 @@ export default class DirectorManager extends Manager {
                          `present in Director and linked to another scene.`)
     }
 
-    if (!(scene instanceof Scene)) {
-      throw new Error(`Invalid scene object. If you are creating your own `+
-                      `scene, you must inherit from skald.Scene.`)
-    }
+    // if (!(scene instanceof Scene)) {
+    //   throw new Error(`Invalid scene object. If you are creating your own `+
+    //                   `scene, you must inherit from skald.Scene.`)
+    // }
 
     this._scenes[sceneId] = scene
     return scene
@@ -263,7 +263,7 @@ export default class DirectorManager extends Manager {
     // split scene object and scene id
     if (typeof sceneOrId === 'string') {
       sceneId = sceneOrId
-      scene = this._scenes[sceneId]
+      scene = tryToInstantiate(this._scenes[sceneId], this.game)
     } else {
       scene = sceneOrId
     }
