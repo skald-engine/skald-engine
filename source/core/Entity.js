@@ -77,14 +77,24 @@ export default class Entity extends EventEmitter {
   get mask() { return this._displayObject.mask }
   set mask(value) { this._displayObject.mask = value}
 
+  get tint() { return this._displayObject.tint }
+  set tint(value) { this._displayObject.tint = value}
+
   get filters() { return this._displayObject.filters }
   set filters(value) { this._displayObject.filters = value}
+
+  initialize() {}
+
+  configure(config) {
+    Object.assign(this, config)
+  }
 
   update(delta) {
     for (let name in this._behaviors) {
       this._behaviors[name].update(delta)
     }
   }
+
 
   addBehavior(behavior) {
     behavior = tryToInstantiate(behavior, this.game, this.scene, this)

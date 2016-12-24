@@ -33,6 +33,10 @@ export default class Scene extends EventEmitter {
   get world() { return this._world }
 
   initialize() {}
+  
+  configure(config) {
+    Object.assign(this, config)
+  }
 
   enter() {}
   start() {}

@@ -27,6 +27,10 @@ export default class EventSheet {
 
   initialize() {}
 
+  configure(config) {
+    Object.assign(this, config)
+  }
+  
   event(eventType, callback) {
     let events = this._events[eventType]
     if (!events) {

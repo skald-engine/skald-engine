@@ -17,5 +17,10 @@ export default class Behavior {
   get game() { return this._game }
 
   initialize() {}
+
+  configure(config) {
+    Object.assign(this, config)
+  }
+  
   update(delta) {}
 }
