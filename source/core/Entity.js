@@ -203,7 +203,7 @@ export default class Entity extends EventEmitter {
   }
 
   /**
-   * Called automatically be the engine every tick. If you override this 
+   * Called automatically by the engine every tick. If you override this 
    * method, make sure to call `super.update` 
    *
    * @param {Number} delta - The elapsed time.
