@@ -5,7 +5,7 @@ import EventEmitter from 'core/EventEmitter'
 /**
  * This manager handles the game event pool.
  *
- * When you add an event (via `addEvent`), the event will stay at the event 
+ * When you add an event (via `dispatch`), the event will stay at the event 
  * pool until the next update phase. The events will be dispatched and digested
  * after entities and behaviors update, and before the scene update.
  */
@@ -33,7 +33,7 @@ export default class EventsManager extends Manager {
    * @param {Event|String} event - The event type or an Event object.
    * @param {EventEmitter} [target] - The event target.
    */
-  addEvent(event, target) {
+  dispatch(event, target) {
     if (typeof event !== 'string' && !(event instanceof Event)) {
       throw new Error(`Event must be an instance of skald.events.Event class.`)
     }
