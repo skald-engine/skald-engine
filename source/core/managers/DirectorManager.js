@@ -396,6 +396,12 @@ export default class DirectorManager extends Manager {
     this.game.log.trace(`(director) Removing current scene "${this._currentSceneId}"`)
 
     this.game._stage.removeChild(this._currentScene._world)
+
+    // only call destroy if the scene were created by the director
+    if (this._currentSceneId) {
+      this._currentScene.destroy()
+    }
+    
     this._currentSceneId = null
     this._currentScene = null
   }
