@@ -76,91 +76,91 @@ export default class Game extends EventEmitter {
   get config() { return this._config }
 
   /**
-   * Logger.
+   * Logger. Readonly.
    * @type {Logger}
    */
   get log() { return this._log }
 
   /**
-   * Time manager.
+   * Time manager. Readonly.
    * @type {TimeManager}
    */
   get time() { return this._time }
 
   /**
-   * Events manager.
+   * Events manager. Readonly.
    * @type {EventsManager}
    */
   get events() { return this._events }
 
   /**
-   * Device manager.
+   * Device manager. Readonly.
    * @type {DeviceManager}
    */
   get device() { return this._device }
 
   /**
-   * Display manager.
+   * Display manager. Readonly.
    * @type {DisplayManager}
    */
   get display() { return this._display }
 
   /**
-   * Director manager.
+   * Director manager. Readonly.
    * @type {DirectorManager}
    */
   get director() { return this._director }
 
   /**
-   * Sounds manager.
+   * Sounds manager. Readonly.
    * @type {SoundsManager}
    */
   get sounds() { return this._sounds }
 
   /**
-   * Inputs manager.
+   * Inputs manager. Readonly.
    * @type {InputsManager}
    */
   get inputs() { return this._inputs }
 
   /**
-   * Keyboard manager.
+   * Keyboard manager. Readonly.
    * @type {KeyboardManager}
    */
   get keyboard() { return this._keyboard }
 
   /**
-   * Mouse manager.
+   * Mouse manager. Readonly.
    * @type {MouseManager}
    */
   get mouse() { return this._mouse }
 
   /**
-   * Gamepads manager.
+   * Gamepads manager. Readonly.
    * @type {GamepadsManager}
    */
   get gamepads() { return this._gamepads }
 
   /**
-   * Touches manager.
+   * Touches manager. Readonly.
    * @type {TouchesManager}
    */
   get touches() { return this._touches }
 
   /**
-   * Storage manager.
+   * Storage manager. Readonly.
    * @type {StorageManager}
    */
   get storage() { return this._storage }
 
   /**
-   * Physics manager.
+   * Physics manager. Readonly.
    * @type {PhysicsManager}
    */
   get physics() { return this._physics }
 
   /**
-   * Resources manager.
+   * Resources manager. Readonly.
    * @type {ResourcesManager}
    */
   get resources() { return this._resources }
