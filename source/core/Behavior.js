@@ -31,7 +31,7 @@ export default class Behavior {
     this.initialize()
 
     if (this._name === null) {
-      return new Error(`You must set the behavior name when it initializes.`)
+      throw new Error(`You must set the behavior name when it initializes.`)
     }
   }
 
@@ -42,7 +42,7 @@ export default class Behavior {
    */
   get name() { return this._name }
   set name(value) {
-    if (!this._name) {
+    if (!!this._name) {
       throw new Error(`Behavior name cannot be set twice.`)
     }
     this._name = value

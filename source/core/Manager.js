@@ -12,7 +12,7 @@ export default class Manager {
    */
   constructor(game) {
     if (!game || !(game instanceof Game)) {
-      return new TypeError(
+      throw new TypeError(
         `Trying to instantiate a Manager without an instance of sk.Game.`
       )
     }

@@ -38,13 +38,13 @@ export default class EventSheet {
    */
   constructor(game, scene) {
     if (!game || !(game instanceof Game)) {
-      return new TypeError(
+      throw new TypeError(
         `Trying to instantiate a Game without an instance of sk.Game.`
       )
     }
 
     if (!scene || !(scene instanceof Scene)) {
-      return new TypeError(
+      throw new TypeError(
         `Trying to instantiate a Scene without an instance of sk.Scene.`
       )
     }
@@ -97,8 +97,8 @@ export default class EventSheet {
       this._events[eventType] = events = []
     }
 
-    events.push(callback)
-    this.scene.on(eventType, callback, this)
+    events.push(listener)
+    this.scene.on(eventType, listener, this)
   }
 
   /**

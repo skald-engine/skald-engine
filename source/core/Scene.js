@@ -64,7 +64,7 @@ export default class Scene extends EventEmitter {
     super()
 
     if (!game || !(game instanceof Game)) {
-      return new TypeError(
+      throw new TypeError(
         `Trying to instantiate a Scene without an instance of sk.Game.`
       )
     }

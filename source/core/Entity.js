@@ -35,19 +35,19 @@ export default class Entity extends EventEmitter {
     super()
 
     if (!game || !(game instanceof Game)) {
-      return new TypeError(
+      throw new TypeError(
         `Trying to instantiate a Game without an instance of sk.Game.`
       )
     }
 
     if (!scene || !(scene instanceof Scene)) {
-      return new TypeError(
+      throw new TypeError(
         `Trying to instantiate a Scene without an instance of sk.Scene.`
       )
     }
 
     if (!displayObject) {
-      return new TypeError(
+      throw new TypeError(
         `Trying to instantiate a Scene without a display object.`
       )
     }
