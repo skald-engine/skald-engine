@@ -29,7 +29,7 @@ export default class Game extends EventEmitter {
     this._stage = null
     this._parent = null
     this._config = null
-    this._plugins = null
+    this._plugins = {}
 
     this._log = null
 
@@ -74,6 +74,12 @@ export default class Game extends EventEmitter {
    * @type {Object}
    */
   get config() { return this._config }
+
+  /**
+   * The dict of plugins. Readonly.
+   * @type {Object}
+   */
+  get plugins() { return this._plugins }
 
   /**
    * Logger. Readonly.
@@ -291,5 +297,26 @@ export default class Game extends EventEmitter {
         if (entity.updatable) entity.update(delta)
       }
     }
+  }
+
+  /**
+   * Register a plugin into the game.
+   */
+  addPlugin(plugin) {
+
+  }
+
+  /**
+   * Remove plugin.
+   */
+  removePlugin(pluginOrName) {
+
+  }
+
+  /**
+   * 
+   */
+  hasPlugin(pluginName) {
+    
   }
 }

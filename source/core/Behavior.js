@@ -23,12 +23,16 @@ export default class Behavior {
    * @param {Entity} entity - The entity instance.
    */
   constructor(game, scene, entity) {
-    this._name = name
+    this._name = null
     this._game = game
     this._scene = scene
     this._entity = entity
 
     this.initialize()
+
+    if (this._name === null) {
+      return new Error(`You must set the behavior name when it initializes.`)
+    }
   }
 
   /**
