@@ -8,12 +8,11 @@ import * as managers from 'core/managers'
 
 import {RENDERER} from 'core/constants'
 
+
 /**
  * This class represent a Skald game, and it is responsible for the
  * initialization of the canvas, aggregate and handle the managers and plugins,
- * receive global events and for the execution of the game loop.
- *
- * 
+ * receive global events and for the execution of the game loop. 
  */
 export default class Game extends EventEmitter {
 
@@ -274,14 +273,37 @@ export default class Game extends EventEmitter {
     this.time.preUpdate()
     let delta = this.time.delta
 
+    // Pre update
     this.display.preUpdate(delta)
+    for (let name in this._plugins) {
+      this._plugins[name].preUpdate(delta)
+    }
     
-      
+    // Update
+    for (let name in this._plugins) {
+      this._plugins[name].update(delta)
+    }
+    
     this._updateEntities(delta)
     this.events.update(delta)
     this.director.update(delta)
 
+    // Post update
+    for (let name in this._plugins) {
+      this._plugins[name].postUpdate(delta)
+    }
+    
+    // Pre draw
+    for (let name in this._plugins) {
+      this._plugins[name].preDraw()
+    }
+
+    // Draw
     this._renderer.render(this._stage)
+
+    for (let name in this._plugins) {
+      this._plugins[name].draw()
+    }
   }
 
   /**
@@ -303,20 +325,54 @@ export default class Game extends EventEmitter {
    * Register a plugin into the game.
    */
   addPlugin(plugin) {
+    plugin = utils.tryToInstantiate(plugin, this)
 
+    if (!plugin) {
+      throw new Error(`You must provide a plugin.`)
+    }
+
+    if (!plugin.name) {
+      throw new Error(`Trying to add a plugin without a name.`)
+    }
+
+    if (this._plugins[plugin.name]) {
+      throw new Error(`Trying to add a plugin with the same name of one `+
+                      `already registered.`)
+    }
+
+    this._plugins[plugin.name] = plugin
   }
 
   /**
    * Remove plugin.
    */
   removePlugin(pluginOrName) {
+    if (!pluginOrName) {
+      throw new Error(`You must provide a plugin or a plugin name to `+
+                      `remove it from the game.`)
+    }
 
+    // remove the behavior by key
+    if (typeof pluginOrName === 'string') {
+      delete this._plugins[pluginOrName]
+
+    // remove plugin by object
+    } else {
+      let plugins = this._plugins
+      let names = Object.keys(plugins)
+      let name = names.find(key => plugins[key] === pluginOrName)
+
+      if (name) delete this._plugins[name]
+    }
   }
 
   /**
-   * 
+   * Verify if this game has an plugin by its name.
+   *
+   * @param {String} pluginName - The name of the plugin.
+   * @return {Boolean} Whether this game has the plugin or not.
    */
   hasPlugin(pluginName) {
-    
+    return !!this._plugins[pluginName]
   }
 }
