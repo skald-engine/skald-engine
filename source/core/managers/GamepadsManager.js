@@ -1,5 +1,6 @@
 import Manager from 'core/Manager' 
 import Gamepad from 'core/managers/inputs/Gamepad'
+import GamepadEvent from 'core/events/GamepadEvent'
 
 export default class GamepadsManager extends Manager {
   
@@ -79,10 +80,10 @@ export default class GamepadsManager extends Manager {
    */
   _setupGamepads() {
     this._gamepads = [
-      new Gamepad(this.game),
-      new Gamepad(this.game),
-      new Gamepad(this.game),
-      new Gamepad(this.game)
+      new Gamepad(0, this.game),
+      new Gamepad(1, this.game),
+      new Gamepad(2, this.game),
+      new Gamepad(3, this.game)
     ]
 
     let gamepads = this._getGamepads()
@@ -101,23 +102,47 @@ export default class GamepadsManager extends Manager {
     window.addEventListener('gamepaddisconnected', e=>this._onGamepadDisonnected(e), false)
   }
 
+  /**
+   * Dispatch a browser gamepad event to the game.
+   *
+   * @param {String} eventType - The type of the event.
+   * @param {Event} event - The browser event.
+   */
+  _dispatchEvent(eventType, event, gamepad) {
+    if (!this._allowEvents) return
+
+    this.game.events.dispatch(new GamepadEvent(
+      eventType,
+      gamepad,
+      event
+    ))
+  }
+
+  /**
+   * Callback for the gamepad connected.
+   *
+   * @param {Event} event - The browser event.
+   */
   _onGamepadConnected(event) {
-    for (let i=0; i<this._gamepads.length; i++) {
-      let gamepad = this._gamepads[i]
-      if (!gamepad.connected) {
-        gamepad.bind(event.gamepad)
-        // TODO EVENT gamepadconnected
-      }
+    let gamepad = this._gamepads[event.gamepad.index]
+    if (!gamepad.connected) {
+      gamepad.bind(event.gamepad)
+      this._dispatchEvent('gamepadconnected', event, gamepad)
+      return
     }
   }
 
+  /**
+   * Callback for the gamepad disconnected.
+   *
+   * @param {Event} event - The browser event.
+   */
   _onGamepadDisonnected(event) {
-    for (let i=0; i<this._gamepads.length; i++) {
-      let gamepad = this._gamepads[i]
-      if (gamepad.isBoundedTo(event.gamepad)) {
-        gamepad.unbind()
-        // TODO EVENT gamepaddisconnected
-      }
+    let gamepad = this._gamepads[event.gamepad.index]
+    if (gamepad.isBoundedTo(event.gamepad)) {
+      gamepad.unbind()
+      this._dispatchEvent('gamepaddisconnected', event, gamepad)
+      return
     }
   }
 

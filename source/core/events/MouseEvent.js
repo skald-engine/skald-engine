@@ -1,6 +1,6 @@
 import InputEvent from 'core/events/InputEvent'
 
-export default class Mouse0Event extends InputEvent {
+export default class MouseEvent extends InputEvent {
   constructor(type, button, x, y, nativeEvent, cancelable) {
     super(type, cancelable)
 

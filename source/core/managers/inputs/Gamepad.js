@@ -1,6 +1,7 @@
 
 export default class Gamepad {
-  constructor(game) {
+  constructor(id, game) {
+    this._id = id
     this._game = game
     this._connected = false
 
@@ -24,6 +25,7 @@ export default class Gamepad {
     this._gamepad = null
   }
 
+  get id() { return this._id }
   get game() { return this._game }
   get connected() { return this._connected }
   get rawLeftStickX() { return this._rawLeftStickX }
