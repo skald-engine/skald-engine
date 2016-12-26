@@ -7,19 +7,20 @@ import WheelEvent from 'core/events/WheelEvent'
  * accessed via `game.mouse`.
  *
  * This manager uses the browser events to keep the mouse state updated. The
- * state is the set of the status of each individual keys in a given time step.
+ * state is the set of the status of each individual buttons in a given time 
+ * step.
  *
- * You may use the constants {@link KEYS} with this manager.
+ * You may use the constants {@link BUTTONS} with this manager.
  *
  * Usage example:
  *
  *    update() {
- *      if (game.mouse.isDown(sk.KEYS.UP)) {
- *        // move play forward
+ *      if (game.mouse.isDown(sk.BUTTONS.LEFT)) {
+ *        // click left
  *      })
  *
- *      if (game.mouse.isDown(sk.KEYS.SPACE)) {
- *        // shoot!
+ *      if (game.mouse.isDown(sk.BUTTONS.RIGHT)) {
+ *        // click right
  *      }
  *    }
  */
