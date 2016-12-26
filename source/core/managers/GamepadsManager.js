@@ -13,6 +13,7 @@ export default class GamepadsManager extends Manager {
     this._preventDefaults = null
     this._allowEvents     = null
     this._gamepads        = null
+    this._numConnecteds   = 0
   }
 
   /**
@@ -36,7 +37,6 @@ export default class GamepadsManager extends Manager {
   setup() {
     this._setupConfig()
     this._setupGamepads()
-    this._setupEvents()
   }
 
   /**
@@ -46,7 +46,22 @@ export default class GamepadsManager extends Manager {
    */
   preUpdate(delta) {
     // call get gamepads every tick to force browser to get the updated values
-    this._getGamepads()
+    let gamepads = this._getGamepads()
+
+    // verifies if there is any connection or disconnection (the browser 
+    // events for it are unreliable)
+    for (let i=0; i<gamepads.length; i++) {
+      let browserGamepad = gamepads[i]        
+      let skaldGamepad = this._gamepads[i]
+
+      if (skaldGamepad.connected && !skaldGamepad.isBoundedTo(browserGamepad)) {
+        this._disconnectGamepad(i)
+      }
+
+      if (!skaldGamepad.connected && browserGamepad) {
+        this._connectGamepad(browserGamepad)
+      }
+    }
 
     this._gamepads[0].preUpdate(delta)
     this._gamepads[1].preUpdate(delta)
@@ -89,17 +104,9 @@ export default class GamepadsManager extends Manager {
     let gamepads = this._getGamepads()
     for (let i=0; i<gamepads.length; i++) {
       if (gamepads[i]) {
-        this._onGamepadConnected({gamepad:gamepads[i]})
+        this._connectGamepad(gamepads[i])
       }
     }
-  }
-
-  /**
-   * Setup the events on the canvas.
-   */
-  _setupEvents() {
-    window.addEventListener('gamepadconnected', e=>this._onGamepadConnected(e), false)
-    window.addEventListener('gamepaddisconnected', e=>this._onGamepadDisonnected(e), false)
   }
 
   /**
@@ -108,44 +115,44 @@ export default class GamepadsManager extends Manager {
    * @param {String} eventType - The type of the event.
    * @param {Event} event - The browser event.
    */
-  _dispatchEvent(eventType, event, gamepad) {
+  _dispatchEvent(eventType, gamepad) {
     if (!this._allowEvents) return
 
-    this.game.events.dispatch(new GamepadEvent(
-      eventType,
-      gamepad,
-      event
-    ))
+    this.game.events.dispatch(new GamepadEvent(eventType, gamepad))
   }
 
   /**
-   * Callback for the gamepad connected.
+   * Connects a gamepad.
    *
-   * @param {Event} event - The browser event.
+   * @param {Gamepad} browserGamepad - The browser gamepad.
    */
-  _onGamepadConnected(event) {
-    let gamepad = this._gamepads[event.gamepad.index]
-    if (!gamepad.connected) {
-      gamepad.bind(event.gamepad)
-      this._dispatchEvent('gamepadconnected', event, gamepad)
+  _connectGamepad(browserGamepad) {
+    let skaldGamepad = this._gamepads[browserGamepad.index]
+    if (!skaldGamepad.connected) {
+      this._numConnecteds++
+      skaldGamepad.bind(browserGamepad)
+      this._dispatchEvent('gamepadconnected', skaldGamepad)
       return
     }
   }
 
   /**
-   * Callback for the gamepad disconnected.
+   * Disconnects a gamepad.
    *
-   * @param {Event} event - The browser event.
+   * @param {Number} id - The index of the gamepad to be removed.
    */
-  _onGamepadDisonnected(event) {
-    let gamepad = this._gamepads[event.gamepad.index]
-    if (gamepad.isBoundedTo(event.gamepad)) {
-      gamepad.unbind()
-      this._dispatchEvent('gamepaddisconnected', event, gamepad)
-      return
-    }
+  _disconnectGamepad(id) {
+    let gamepad = this._gamepads[id]
+    this._numConnecteds--
+    gamepad.unbind()
+    this._dispatchEvent('gamepaddisconnected', gamepad)
   }
 
+  /**
+   * Get browser gamepads.
+   *
+   * @return {Array<Gamepad>} The list of the browser gamepads.
+   */
   _getGamepads() {
     return navigator.getGamepads && navigator.getGamepads() ||
            navigator.webkitGetGamepads && navigator.webkitGetGamepads() ||
@@ -154,20 +161,53 @@ export default class GamepadsManager extends Manager {
            []
   }
 
-  get(i) {
-    return this._gamepads[i]
+  /**
+   * Get a gamepad by its id.
+   *
+   * @param {Number} id - The gamepad id, should be 0, 1, 2, or 3.
+   * @return {Gamepad} The gamepad object.
+   */
+  get(id) {
+    return this._gamepads[id]
   }
-  getNumGamepads() {
-    let n=0
-    for (let i=0; i<this._gamepads.lenght; i++) {
+
+  /**
+   * Get the first gamepad connected.
+   *
+   * @return {Gamepad} The gamepad object.
+   */
+  getFirstConnected() {
+    for (let i=0; i<this._gamepads.length; i++) {
       if (this._gamepads[i].connected) {
-        n++
+        return this._gamepads[i]
       }
     }
-
-    return n
   }
-  getConnectedGamepads() {
+
+  /**
+   * Get the number of connected gamepads.
+   *
+   * @return {Number} Number of connected gamepads.
+   */
+  getNumConnecteds() {
+    return this._numConnecteds
+  }
+
+  /**
+   * Get all connected gamepads.
+   *
+   * @return {Array<Gamepad>} The list of connected gamepads.
+   */
+  getConnecteds() {
     return this._gamepads.filter(g => g.connected)
+  }
+
+  /**
+   * Get all gamepads.
+   *
+   * @return {Array<Gamepad>} The list of all gamepads.
+   */
+  getAll() {
+    return this._gamepads.slice()
   }
 }
