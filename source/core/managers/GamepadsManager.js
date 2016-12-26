@@ -2,6 +2,20 @@ import Manager from 'core/Manager'
 import Gamepad from 'core/managers/inputs/Gamepad'
 import GamepadEvent from 'core/events/GamepadEvent'
 
+/**
+ * The gamepad manager is used to handle gamepad controllers via the HTML5 api.
+ * It is created by the engine and can be accessed via `game.gamepads`.
+ *
+ * Notice that, a gamepad can only be used if the browser supports it. Check it
+ * out this link to see the browser support:
+ *
+ * - http://caniuse.com/#feat=gamepad
+ * 
+ * This manager can handle up to 4 gamepads in the x-input format (such as the
+ * XBOX controller). Each gamepad has its own state and can be accessed with
+ * the getters functions, such as `gamepads.get(id)` or 
+ * `gamepads.getFirstConnected()`.
+ */
 export default class GamepadsManager extends Manager {
   
   /**

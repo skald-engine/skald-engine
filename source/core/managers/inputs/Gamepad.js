@@ -1,4 +1,21 @@
 
+/**
+ * The gamepad object stores the controller state for one of the 4 supported 
+ * gamepads. The gamepad objects are created by the gamepads manager and can
+ * be accessed using `game.gamepads.get(id)`.
+ *
+ * This class handle the stick dead zone automatically by the scaled circular
+ * dead zone method. Thus, when you ask for the `leftStickX`, `leftStickY`,
+ * `rightStickX`, `rightStickY` values, you will receive the processed values
+ * instead. If you want to use the raw values, please use `rawLeftStickX`, etc.
+ *
+ * A gamepad object also provides a "stick force" value, which is a scalar 
+ * describing how much the player if moving the stick away from the center, 
+ * being 0 when the stick is resting and 1 when it is in its maximum position.
+ * The force is already processed by the dead zone method.
+ *
+ * You can use the `skald.GAMEPAD` to get the enum of gamepad buttons.
+ */
 export default class Gamepad {
   constructor(id, game) {
     this._id = id
@@ -25,20 +42,102 @@ export default class Gamepad {
     this._gamepad = null
   }
 
+  /**
+   * The gamepad id (and index of the manager list). Readonly.
+   * @type {Number}
+   */
   get id() { return this._id }
+
+  /**
+   * The game instance. Readonly.
+   * @type {Game}
+   */
   get game() { return this._game }
+
+  /**
+   * Flag telling if this gamepad is connected. Readonly
+   * @type {Boolean}
+   */
   get connected() { return this._connected }
+
+  /**
+   * Raw value (before dead zone computation) in the x-axis of the left stick.
+   * Readonly.
+   * @type {Number}
+   */
   get rawLeftStickX() { return this._rawLeftStickX }
+
+  /**
+   * Raw value (before dead zone computation) in the y-axis of the left stick.
+   * Readonly.
+   * @type {Number}
+   */
   get rawLeftStickY() { return this._rawLeftStickY }
+
+  /**
+   * Raw value (before dead zone computation) in the x-axis of the right stick.
+   * Readonly.
+   * @type {Number}
+   */
   get rawRightStickX() { return this._rawRightStickX }
+
+  /**
+   * Raw value (before dead zone computation) in the y-axis of the right stick.
+   * Readonly.
+   * @type {Number}
+   */
   get rawRightStickY() { return this._rawRightStickY }
+
+  /**
+   * The value (after dead zone computation) in the x-axis of the left stick.
+   * Readonly.
+   * @type {Number}
+   */
   get leftStickX() { return this._leftStickX }
+
+  /**
+   * The value (after dead zone computation) in the y-axis of the left stick.
+   * Readonly.
+   * @type {Number}
+   */
   get leftStickY() { return this._leftStickY }
+
+  /**
+   * The value (after dead zone computation) in the x-axis of the right stick.
+   * Readonly.
+   * @type {Number}
+   */
   get rightStickX() { return this._rightStickX }
+
+  /**
+   * The value (after dead zone computation) in the y-axis of the right stick.
+   * Readonly.
+   * @type {Number}
+   */
   get rightStickY() { return this._rightStickY }
+
+  /**
+   * The left stick force. Readonly.
+   * @type {Number}
+   */
   get leftStickForce() { return this._leftStickForce }
+
+  /**
+   * The right stick force. Readonly.
+   * @type {Number}
+   */
   get rightStickForce() { return this._rightStickForce }
+
+  /**
+   * The left trigger force. Readonly.
+   * @type {Number}
+   */
   get leftTrigger() { return this._leftTrigger }
+
+  /**
+   * The right trigger force. Readonly.
+   * @type {Number}
+   */
   get rightTrigger() { return this._rightTrigger }
 
   /**
