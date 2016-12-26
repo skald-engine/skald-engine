@@ -47,4 +47,11 @@ export default {
     preventDefaults : true,
   },
 
+  gamepads: {
+    leftStickDeadzone  : 0.25,
+    rightStickDeadzone : 0.25,
+    allowEvents        : true,
+    preventDefaults    : true,
+  }
+
 }
