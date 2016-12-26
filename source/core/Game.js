@@ -254,6 +254,7 @@ export default class Game extends EventEmitter {
     this._display = new managers.DisplayManager(this)
     this._director = new managers.DirectorManager(this)
     this._keyboard = new managers.KeyboardManager(this)
+    this._mouse = new managers.MouseManager(this)
 
     this._time.setup()
     this._events.setup()
@@ -261,6 +262,7 @@ export default class Game extends EventEmitter {
     this._display.setup()
     this._director.setup()
     this._keyboard.setup()
+    this._mouse.setup()
   }
 
   /**
@@ -296,6 +298,7 @@ export default class Game extends EventEmitter {
 
     // Post update
     this.keyboard.postUpdate(delta)
+    this.mouse.postUpdate(delta)
     for (let name in this._plugins) {
       this._plugins[name].postUpdate(delta)
     }
