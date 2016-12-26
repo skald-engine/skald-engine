@@ -13,10 +13,18 @@ export default class KeyboardManager extends Manager {
   constructor(game) {
     super(game)
 
-    this._lastState = []
-    this._state = []
-    this._preventDefaults = true
+    this._lastState       = []
+    this._state           = []
+    this._preventDefaults = null
+    this._allowEvents     = null
   }
+
+  get preventDefaults() { return this._preventDefaults }
+  set preventDefaults(value) { this._preventDefaults = !!value}
+
+  get allowEvents() { return this._allowEvents }
+  set allowEvents(value) { this._allowEvents = !!value}
+
   
   setup() {
     this._setupConfig()
@@ -69,7 +77,9 @@ export default class KeyboardManager extends Manager {
 
 
   _setupConfig() {
-
+    let config = this.game.config
+    this._preventDefaults = config.keyboard.preventDefaults
+    this._allowEvents     = config.keyboard.allowEvents
   }
 
   _setupEvents() {
@@ -82,6 +92,8 @@ export default class KeyboardManager extends Manager {
   }
 
   _dispatchEvent(type, event) {
+    if (!this._allowEvents) return
+
     this.game.events.dispatch(new KeyboardEvent(
       type,
       event.keyCode||event.which,

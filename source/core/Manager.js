@@ -17,7 +17,7 @@ export default class Manager {
       )
     }
 
-    this._game = game
+    this._game    = game
   }
 
 
@@ -29,14 +29,12 @@ export default class Manager {
     return this._game
   }
 
-
   /**
    * Setup method. Called internally by game, do not call manually.
    *
    * @param {Game} game - The game instance
    */
-  setup() {
-  }
+  setup() {}
   
   /**
    * preUpdate method. Called internally by game, do not call manually.

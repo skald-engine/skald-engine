@@ -34,6 +34,12 @@ export default {
   },
 
   storage: {
-    namespace: null, // uses project name
-  }
+    namespace : null, // uses project name
+  },
+
+  keyboard: {
+    allowEvents     : true,
+    preventDefaults : true,
+  },
+
 }
