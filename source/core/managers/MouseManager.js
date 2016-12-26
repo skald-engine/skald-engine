@@ -218,7 +218,7 @@ export default class MouseManager extends Manager {
    * @param {Event} event - The browser event.
    */
   _onClick(event) {
-    this._dispatchMouseEvent('click', event)
+    this._dispatchMouseEvent('mouseclick', event)
 
     if (this._preventDefaults) {
       event.preventDefault()
@@ -232,7 +232,7 @@ export default class MouseManager extends Manager {
    * @param {Event} event - The browser event.
    */
   _onDblClick(event) {
-    this._dispatchMouseEvent('doubleclick', event)
+    this._dispatchMouseEvent('mousedoubleclick', event)
 
     if (this._preventDefaults) {
       event.preventDefault()
