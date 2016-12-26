@@ -81,6 +81,18 @@ export default class KeyboardManager extends Manager {
     view.addEventListener('keyup', e=>this._onKeyUp(e), false)
   }
 
+  _dispatchEvent(type, event) {
+    this.game.events.dispatch(new KeyboardEvent(
+      type,
+      event.keyCode||event.which,
+      event.shiftKey,
+      event.ctrlKey,
+      event.metaKey,
+      event.altKey,
+      event
+    ))
+  }
+
   _onBlur(event) {
     this._state = []
   }
@@ -90,10 +102,11 @@ export default class KeyboardManager extends Manager {
     // Pressing key the first time
     if (!event.repeat) {
       this._state.push(event.keyCode||event.which)
+      this._dispatchEvent('keydown', event)
 
     // Holding key
     } else {
-
+      this._dispatchEvent('keyhold', event)
     }
 
     if (this._preventDefaults) {
@@ -109,6 +122,7 @@ export default class KeyboardManager extends Manager {
   }
   _onKeyUp(event) {
     this._state.splice(this._state.indexOf(event.keyCode||event.which), 1)
+    this._dispatchEvent('keyup', event)
 
     if (this._preventDefaults) {
       event.preventDefault()
