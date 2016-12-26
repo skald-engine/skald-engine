@@ -41,5 +41,10 @@ export default {
     allowEvents     : true,
     preventDefaults : true,
   },
+  
+  mouse: {
+    allowEvents     : true,
+    preventDefaults : true,
+  },
 
 }

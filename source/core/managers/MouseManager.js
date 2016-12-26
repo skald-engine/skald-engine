@@ -1,11 +1,12 @@
 import Manager from 'core/Manager' 
 import MouseEvent from 'core/events/MouseEvent'
+import WheelEvent from 'core/events/WheelEvent'
 
 /**
- * A manager that handles the keyboard state. It is created by the game and can be
- * accessed via `game.keyboard`.
+ * A manager that handles the mouse state. It is created by the game and can be
+ * accessed via `game.mouse`.
  *
- * This manager uses the browser events to keep the keyboard state updated. The
+ * This manager uses the browser events to keep the mouse state updated. The
  * state is the set of the status of each individual keys in a given time step.
  *
  * You may use the constants {@link KEYS} with this manager.
@@ -13,11 +14,11 @@ import MouseEvent from 'core/events/MouseEvent'
  * Usage example:
  *
  *    update() {
- *      if (game.keyboard.isDown(sk.KEYS.UP)) {
+ *      if (game.mouse.isDown(sk.KEYS.UP)) {
  *        // move play forward
  *      })
  *
- *      if (game.keyboard.isDown(sk.KEYS.SPACE)) {
+ *      if (game.mouse.isDown(sk.KEYS.SPACE)) {
  *        // shoot!
  *      }
  *    }
@@ -36,10 +37,13 @@ export default class MouseManager extends Manager {
     this._allowEvents     = null
     this._x               = 0
     this._y               = 0
+    this._deltaX          = 0
+    this._deltaY          = 0
+    this._deltaZ          = 0
   }
 
   /**
-   * Whether this manager should prevent the default keyboard event behavior or
+   * Whether this manager should prevent the default mouse event behavior or
    * not.
    * @type {Boolean}
    */
@@ -66,6 +70,24 @@ export default class MouseManager extends Manager {
   get y() { return this._y }
 
   /**
+   * Wheel delta X accumulative scroll. Readonly.
+   * @type {Number}
+   */
+  get deltaX() { return this._deltaX }
+
+  /**
+   * Wheel delta Y accumulative scroll. Readonly.
+   * @type {Number}
+   */
+  get deltaY() { return this._deltaY }
+
+  /**
+   * Wheel delta Z accumulative scroll. Readonly.
+   * @type {Number}
+   */
+  get deltaZ() { return this._deltaZ }
+
+  /**
    * Cursor position. Readonly.
    * @type {PIXI.Point}
    */
@@ -86,6 +108,9 @@ export default class MouseManager extends Manager {
    */
   postUpdate(delta) {
     this._lastState = this._state.slice()
+    this._deltaX = 0
+    this._deltaY = 0
+    this._deltaZ = 0
   }
 
   /**
@@ -93,8 +118,8 @@ export default class MouseManager extends Manager {
    */
   _setupConfig() {
     let config = this.game.config
-    this._preventDefaults = config.keyboard.preventDefaults
-    this._allowEvents     = config.keyboard.allowEvents
+    this._preventDefaults = config.mouse.preventDefaults
+    this._allowEvents     = config.mouse.allowEvents
   }
 
   /**
@@ -116,12 +141,48 @@ export default class MouseManager extends Manager {
   }
 
   /**
-   * Dispatch a browser keyboard event to the game.
+   * Dispatch a browser mouse event to the game.
    *
    * @param {String} eventType - The type of the event.
    * @param {Event} event - The browser event.
    */
-  _dispatchEvent(eventType, event) {
+  _dispatchMouseEvent(eventType, event) {
+    if (!this._allowEvents) return
+
+    this.game.events.dispatch(new MouseEvent(
+      eventType,
+      event.button,
+      event.x,
+      event.y,
+      event
+    ))
+  }
+
+  /**
+   * Dispatch a browser wheel event to the game.
+   *
+   * @param {String} eventType - The type of the event.
+   * @param {Event} event - The browser event.
+   */
+  _dispatchWheelEvent(eventType, event) {
+    if (!this._allowEvents) return
+
+    this.game.events.dispatch(new WheelEvent(
+      eventType,
+      event.deltaX,
+      event.deltaY,
+      event.deltaZ,
+      event
+    ))
+  }
+
+  /**
+   * Dispatch a browser mouse event to the game.
+   *
+   * @param {String} eventType - The type of the event.
+   * @param {Event} event - The browser event.
+   */
+  _dispatchMouseEvent(eventType, event) {
     if (!this._allowEvents) return
 
     this.game.events.dispatch(new MouseEvent(
@@ -156,7 +217,7 @@ export default class MouseManager extends Manager {
    * @param {Event} event - The browser event.
    */
   _onClick(event) {
-    this._dispatchEvent('click', event)
+    this._dispatchMouseEvent('click', event)
 
     if (this._preventDefaults) {
       event.preventDefault()
@@ -170,7 +231,7 @@ export default class MouseManager extends Manager {
    * @param {Event} event - The browser event.
    */
   _onDblClick(event) {
-    this._dispatchEvent('doubleclick', event)
+    this._dispatchMouseEvent('doubleclick', event)
 
     if (this._preventDefaults) {
       event.preventDefault()
@@ -185,7 +246,7 @@ export default class MouseManager extends Manager {
    */
   _onMouseDown(event) {
     this._state.push(event.button)
-    this._dispatchEvent('mousedown', event)
+    this._dispatchMouseEvent('mousedown', event)
 
     if (this._preventDefaults) {
       event.preventDefault()
@@ -200,7 +261,7 @@ export default class MouseManager extends Manager {
    */
   _onMouseUp(event) {
     this._state.splice(this._state.indexOf(event.button), 1);
-    this._dispatchEvent('mouseup', event)
+    this._dispatchMouseEvent('mouseup', event)
 
     if (this._preventDefaults) {
       event.preventDefault()
@@ -214,7 +275,7 @@ export default class MouseManager extends Manager {
    * @param {Event} event - The browser event.
    */
   _onMouseMove(event) {
-    this._dispatchEvent('mousemove', event)
+    this._dispatchMouseEvent('mousemove', event)
 
     if (this._preventDefaults) {
       event.preventDefault()
@@ -228,7 +289,7 @@ export default class MouseManager extends Manager {
    * @param {Event} event - The browser event.
    */
   _onMouseOut(event) {
-    this._dispatchEvent('mouseleave', event)
+    this._dispatchMouseEvent('mouseleave', event)
 
     if (this._preventDefaults) {
       event.preventDefault()
@@ -242,7 +303,7 @@ export default class MouseManager extends Manager {
    * @param {Event} event - The browser event.
    */
   _onMouseOver(event) {
-    this._dispatchEvent('mouseenter', event)
+    this._dispatchMouseEvent('mouseenter', event)
 
     if (this._preventDefaults) {
       event.preventDefault()
@@ -256,7 +317,10 @@ export default class MouseManager extends Manager {
    * @param {Event} event - The browser event.
    */
   _onWheel(event) {
-    // this._dispatchEvent('click', event)
+    this._deltaX += event.deltaX||0
+    this._deltaY += event.deltaY||0
+    this._deltaZ += event.deltaZ||0
+    this._dispatchWheelEvent('mousewheel', event)
 
     if (this._preventDefaults) {
       event.preventDefault()
@@ -275,12 +339,6 @@ export default class MouseManager extends Manager {
       return false
     }
   }
-
-
-
-
-
-
 
   /**
    * Verifies if a given button is down.

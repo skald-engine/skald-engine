@@ -1,2 +1,6 @@
 export {default as Event} from 'core/events/Event'
 export {default as OrientationEvent} from 'core/events/OrientationEvent'
+export {default as InputEvent} from 'core/events/InputEvent'
+export {default as KeyboardEvent} from 'core/events/KeyboardEvent'
+export {default as MouseEvent} from 'core/events/MouseEvent'
+export {default as WheelEvent} from 'core/events/WheelEvent'
