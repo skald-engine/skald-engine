@@ -341,6 +341,8 @@ export default class DirectorManager extends Manager {
         this._removeCurrentScene()
         this._promoteNextScene()
       }
+    } else if (this._currentScene) {
+      this._currentScene.update(delta)
     }
   }
 

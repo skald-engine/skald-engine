@@ -233,6 +233,10 @@ export default class Game extends EventEmitter {
       }
     )
 
+    // enable focus on the game (and remove pixi interation)
+    this._renderer.plugins.interaction.destroy()
+    this._renderer.view.setAttribute('tabindex', '1')
+
     // add the renderer to the html
     this._parent.appendChild(this._renderer.view)
 
@@ -249,12 +253,14 @@ export default class Game extends EventEmitter {
     this._device = new managers.DeviceManager(this)
     this._display = new managers.DisplayManager(this)
     this._director = new managers.DirectorManager(this)
+    this._keyboard = new managers.KeyboardManager(this)
 
     this._time.setup()
     this._events.setup()
     this._device.setup()
     this._display.setup()
     this._director.setup()
+    this._keyboard.setup()
   }
 
   /**
@@ -289,6 +295,7 @@ export default class Game extends EventEmitter {
     this.director.update(delta)
 
     // Post update
+    this.keyboard.postUpdate(delta)
     for (let name in this._plugins) {
       this._plugins[name].postUpdate(delta)
     }

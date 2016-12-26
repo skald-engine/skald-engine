@@ -344,7 +344,7 @@ export default class DisplayManager extends Manager {
     this.game._renderer.view.style.width = this._canvasWidth+'px'
     this.game._renderer.view.style.height = this._canvasHeight+'px'
 
-    // TODO ENABLE THIS: this.game.event.dispatchToScene(new Event('resize'))
+    this.game.events.dispatch(new Event('resize'))
   }
 
   /**
@@ -359,9 +359,9 @@ export default class DisplayManager extends Manager {
     // Wrong orientation
     let inWrongOrientation = this._forceOrientation && this.orientation !== this._forceOrientation
     if (!this._inWrongOrientation && inWrongOrientation) {
-      // TODO ENABLE THIS: this.game.event.dispatchToScene(new OrientationEvent('wrongorientationenter', o, a, b, g))
+      this.game.events.dispatch(new OrientationEvent('wrongorientationenter', o, a, b, g))
     } else if (this._inWrongOrientation && !inWrongOrientation) {
-      // TODO ENABLE THIS: this.game.event.dispatchToScene(new OrientationEvent('wrongorientationleave', o, a, b, g))
+      this.game.events.dispatch(new OrientationEvent('wrongorientationleave', o, a, b, g))
     }
 
     this._inWrongOrientation = inWrongOrientation
@@ -371,12 +371,12 @@ export default class DisplayManager extends Manager {
    * Callback for browser fullscreen event.
    */
   _onFullscreenChange(browserEvent) {
-    // TODO ENABLE THIS: this.game.event.dispatchToScene(new Event('fullscreenchange'))
+    this.game.events.dispatch(new Event('fullscreenchange'))
 
     if (this.fullscreen) {
-      // TODO ENABLE THIS: this.game.event.dispatchToScene(new Event('fullscreenenter'))
+      this.game.events.dispatch(new Event('fullscreenenter'))
     } else {
-      // TODO ENABLE THIS: this.game.event.dispatchToScene(new Event('fullscreenleave'))
+      this.game.events.dispatch(new Event('fullscreenleave'))
     }
   }
 
@@ -399,7 +399,7 @@ export default class DisplayManager extends Manager {
     let o = this.orientation
 
     // Orientation change
-    // TODO ENABLE THIS: this.game.event.dispatchToScene(new OrientationEvent('orientationchange', o, a, b, g))
+    this.game.events.dispatch(new OrientationEvent('orientationchange', o, a, b, g))
 
     this._checkOrientation(a, b, g)
   }
