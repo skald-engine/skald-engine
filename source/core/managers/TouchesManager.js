@@ -1,7 +1,13 @@
 import Manager from 'core/Manager' 
 import Touch from 'core/managers/inputs/Touch'
 
-
+/**
+ * This manager is responsible for handling the browser touch events. It is
+ * created by the engine and can be accessed using `game.touches`.
+ *
+ * The TouchManager stores 10 `Touch` objects and update them using the browser
+ * events.
+ */
 export default class TouchesManager extends Manager {
   
   /**
@@ -79,6 +85,11 @@ export default class TouchesManager extends Manager {
     ]
   }
 
+  /**
+   * Handles canvas blur event.
+   *
+   * @param {Event} event - The browser event.
+   */
   _onBlur(event) {
     this._numTouches = 0
 
@@ -86,6 +97,12 @@ export default class TouchesManager extends Manager {
       this._touches[i].unbind()
     }
   }
+
+  /**
+   * Handles touch start event.
+   *
+   * @param {Event} event - The browser event.
+   */
   _onTouchStart(event) {
     for (let i=0; i<event.changedTouches.length; i++) {
       let browserTouch = event.changedTouches[i]
@@ -107,6 +124,12 @@ export default class TouchesManager extends Manager {
       return false
     }
   }
+
+  /**
+   * Handles touch move event.
+   *
+   * @param {Event} event - The browser event.
+   */
   _onTouchMove(event) {
     for (let i=0; i<event.changedTouches.length; i++) {
       let browserTouch = event.changedTouches[i]
@@ -127,6 +150,12 @@ export default class TouchesManager extends Manager {
       return false
     }
   }
+
+  /**
+   * Handles touch end event.
+   *
+   * @param {Event} event - The browser event.
+   */
   _onTouchEnd(event) {
     for (let i=0; i<event.changedTouches.length; i++) {
       let browserTouch = event.changedTouches[i]
@@ -148,6 +177,12 @@ export default class TouchesManager extends Manager {
       return false
     }
   }
+
+  /**
+   * Handles touch cancel event.
+   *
+   * @param {Event} event - The browser event.
+   */
   _onTouchCancel(event) {
     this._numTouches = 0
 
@@ -160,10 +195,21 @@ export default class TouchesManager extends Manager {
     }
   }
 
-
+  /**
+   * Get a touch by its index.
+   *
+   * @param {Number} index - The touch id, should be 0-9.
+   * @return {Touch} The touch object.
+   */
   get(index) {
     return this._touches[index]
   }
+
+  /**
+   * Get the first touch down object.
+   *
+   * @return {Touch} The touch object.
+   */
   getFirstTouch() {
     for (let i=0; i<this._touches.length; i++) {
       if (this._touches[i].down) {
@@ -171,12 +217,30 @@ export default class TouchesManager extends Manager {
       }
     }
   }
+
+  /**
+   * Get the number of touches in the screen.
+   *
+   * @return {Number} Number of touches down.
+   */
   getNumTouches() {
     return this._numTouches
   }
+
+  /**
+   * Get all touch down.
+   *
+   * @return {Array<Touch>} The list of touches.
+   */
   getDownTouches() {
     return this._touches.filter(t => t.down)
   }
+
+  /**
+   * Get all touches.
+   *
+   * @return {Array<Touch>} The list of all touches.
+   */
   getAll() {
     return this._touches.slice()
   }
