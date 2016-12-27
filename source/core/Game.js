@@ -257,6 +257,7 @@ export default class Game extends EventEmitter {
     this._mouse = new managers.MouseManager(this)
     this._gamepads = new managers.GamepadsManager(this)
     this._touches = new managers.TouchesManager(this)
+    this._inputs = new managers.InputsManager(this)
 
     this._time.setup()
     this._events.setup()
@@ -267,6 +268,7 @@ export default class Game extends EventEmitter {
     this._mouse.setup()
     this._gamepads.setup()
     this._touches.setup()
+    this._inputs.setup()
   }
 
   /**

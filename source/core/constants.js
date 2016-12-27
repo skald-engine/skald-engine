@@ -336,3 +336,10 @@ export const GAMEPAD_AXIS = enumeration({
   LEFT_TRIGGER      : 'left_trigger',
   RIGHT_TRIGGER     : 'right_trigger',
 })
+
+export const INPUT_DEVICES = enumeration({
+  KEYBOARD : 'keyboard',
+  MOUSE    : 'mouse',
+  TOUCH    : 'touch',
+  GAMEPAD  : 'gamepad',
+})
