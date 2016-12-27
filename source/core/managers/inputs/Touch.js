@@ -125,8 +125,17 @@ export default class Touch {
    * @param {Touch} touch - The browser touch object.
    */
   notify(touch) {
-    this._x = touch.pageX
-    this._y = touch.pageY
+    let view = this.game.renderer.view
+    let display = this.game.display
+
+    let rect = view.getBoundingClientRect();
+    let res = display.resolution;
+
+    let x = ((touch.pageX - rect.left) * (display.width/rect.width)) * res;
+    let y = ((touch.pageY - rect.top) * (display.height/rect.height)) * res;
+
+    this._x = x
+    this._y = y
     this._force = touch.force || touch.webkitForce || 0
     this._radiusX = touch.radiusX || touch.webkitRadiusX || 0
     this._radiusY = touch.radiusY || touch.webkitRadiusY || 0

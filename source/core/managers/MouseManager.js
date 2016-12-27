@@ -41,6 +41,7 @@ export default class MouseManager extends Manager {
     this._deltaX          = 0
     this._deltaY          = 0
     this._deltaZ          = 0
+    console.log(game.display.width, game.display.height)
   }
 
   /**
@@ -98,6 +99,8 @@ export default class MouseManager extends Manager {
    * Setup the this manager. Called by the engine, do not call it manually.
    */
   setup() {
+    this._x = this.game.display.width/2
+    this._y = this.game.display.height/2
     this._setupConfig()
     this._setupEvents()
   }
@@ -189,8 +192,8 @@ export default class MouseManager extends Manager {
     this.game.events.dispatch(new MouseEvent(
       eventType,
       event.button,
-      event.x,
-      event.y,
+      this._x,
+      this._y,
       event
     ))
   }
@@ -276,6 +279,7 @@ export default class MouseManager extends Manager {
    * @param {Event} event - The browser event.
    */
   _onMouseMove(event) {
+    this._updateMouse(event)
     this._dispatchMouseEvent('mousemove', event)
 
     if (this._preventDefaults) {
@@ -339,6 +343,28 @@ export default class MouseManager extends Manager {
       event.preventDefault()
       return false
     }
+  }
+
+  /**
+   * Update the mouse position.
+   *
+   * @param {Event} event - The mouse event.
+   */
+  _updateMouse(event) {
+    let x = event.clientX
+    let y = event.clientY
+
+    let view = this.game.renderer.view
+    let display = this.game.display
+
+    let rect = view.getBoundingClientRect();
+    let res = display.resolution;
+
+    x = ((x - rect.left) * (display.width/rect.width)) * res;
+    y = ((y - rect.top) * (display.height/rect.height)) * res;
+
+    this._x = x
+    this._y = y
   }
 
   /**
