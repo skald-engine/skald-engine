@@ -369,7 +369,7 @@ export default class MouseManager extends Manager {
   /**
    * Verifies if a given button is down.
    *
-   * @param {Number} button - The button code.
+   * @param {BUTTON} button - The button code.
    * @return {Boolean} The button status.
    */
   isDown(button) {
@@ -390,7 +390,7 @@ export default class MouseManager extends Manager {
    * Verifies if a given button has changed its status from up to down (this is
    * only valid for a single tick).
    *
-   * @param {Number} button - The button code.
+   * @param {BUTTON} button - The button code.
    * @return {Boolean} The button status.
    */
   isPressed(button) {
@@ -402,7 +402,7 @@ export default class MouseManager extends Manager {
    * Verifies if a given button has changed its status from down to up (this is
    * only valid for a single tick).
    *
-   * @param {Number} button - The button code.
+   * @param {BUTTON} button - The button code.
    * @return {Boolean} The button status.
    */
   isReleased(button) {
@@ -413,7 +413,7 @@ export default class MouseManager extends Manager {
   /**
    * Verifies if any button is down.
    *
-   * @param {Number} button - The button code.
+   * @param {BUTTON} button - The button code.
    * @return {Boolean} The button status.
    */
   isAnyDown(button) {
@@ -424,7 +424,7 @@ export default class MouseManager extends Manager {
    * Verifies if any button has changed its status from up to down (this is only
    * valid for a single tick).
    *
-   * @param {Number} button - The button code.
+   * @param {BUTTON} button - The button code.
    * @return {Boolean} The button status.
    */
   isAnyPressed(button) {
@@ -440,7 +440,7 @@ export default class MouseManager extends Manager {
    * Verifies if any button has changed its status from down to up (this is only
    * valid for a single tick).
    *
-   * @param {Number} button - The button code.
+   * @param {BUTTON} button - The button code.
    * @return {Boolean} The button status.
    */
   isAnyReleased(button) {
@@ -450,6 +450,17 @@ export default class MouseManager extends Manager {
     }
 
     return false
+  }
+
+  /**
+   * Returns 1 is the button is beign pressed, returns 0 otherwise. This 
+   * method is useful for the inputs manager.
+   *
+   * @param {BUTTON} button - The button code.
+   * @return {Number} 1 if key is pressed, 0 otherwise.
+   */
+  getInput(button) {
+    return this.isDown(button)? 1:0
   }
 
 }

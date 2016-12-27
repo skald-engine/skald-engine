@@ -142,7 +142,7 @@ export const LOGGER_LEVEL = enumeration({
 /**
  * Keyboard keys.
  */
-export const KEYS = enumeration({
+export const KEY = enumeration({
   BACKSPACE         : 8,
   TAB               : 9,
   NUMLOCK           : 12,
@@ -274,7 +274,7 @@ export const KEYS = enumeration({
 /**
  * Mouse buttons
  */
-export const BUTTONS = enumeration({
+export const BUTTON = enumeration({
   PRIMARY   : 0,
   LEFT      : 0,
   AUXILIARY : 1,
@@ -296,8 +296,8 @@ export const GAMEPAD = enumeration({
   B              : 1,
   X              : 2,
   Y              : 3,
-  LEFT_SHOULDER  : 4,
   LB             : 4,
+  LEFT_SHOULDER  : 4,
   LEFT_BUMPER    : 4,
   RB             : 5,
   RIGHT_SHOULDER : 5,
@@ -320,4 +320,19 @@ export const GAMEPAD = enumeration({
   LEFT           : 14,
   RIGHT          : 15,
   META           : 16,
+})
+
+
+/**
+ * INPUT AXES CONSTANTS
+ */
+export const GAMEPAD_AXIS = enumeration({
+  LEFT_STICK_X      : 'left_stick_x',
+  LEFT_STICK_Y      : 'left_stick_y',
+  LEFT_STICK_FORCE  : 'left_stick_force',
+  RIGHT_STICK_X     : 'right_stick_x',
+  RIGHT_STICK_Y     : 'right_stick_y',
+  RIGHT_STICK_FORCE : 'right_stick_force',
+  LEFT_TRIGGER      : 'left_trigger',
+  RIGHT_TRIGGER     : 'right_trigger',
 })

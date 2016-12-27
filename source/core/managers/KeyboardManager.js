@@ -178,7 +178,7 @@ export default class KeyboardManager extends Manager {
   /**
    * Verifies if a given key is down.
    *
-   * @param {Number} key - The key code.
+   * @param {KEY} key - The key code.
    * @return {Boolean} The key status.
    */
   isDown(key) {
@@ -188,7 +188,7 @@ export default class KeyboardManager extends Manager {
   /**
    * Verifies if a given key is up.
    *
-   * @param {Number} key - The key code.
+   * @param {KEY} key - The key code.
    * @return {Boolean} The key status.
    */
   isUp(key) {
@@ -199,7 +199,7 @@ export default class KeyboardManager extends Manager {
    * Verifies if a given key has changed its status from up to down (this is
    * only valid for a single tick).
    *
-   * @param {Number} key - The key code.
+   * @param {KEY} key - The key code.
    * @return {Boolean} The key status.
    */
   isPressed(key) {
@@ -222,7 +222,7 @@ export default class KeyboardManager extends Manager {
   /**
    * Verifies if any key is down.
    *
-   * @param {Number} key - The key code.
+   * @param {KEY} key - The key code.
    * @return {Boolean} The key status.
    */
   isAnyDown(key) {
@@ -233,7 +233,7 @@ export default class KeyboardManager extends Manager {
    * Verifies if any key has changed its status from up to down (this is only
    * valid for a single tick).
    *
-   * @param {Number} key - The key code.
+   * @param {KEY} key - The key code.
    * @return {Boolean} The key status.
    */
   isAnyPressed(key) {
@@ -249,7 +249,7 @@ export default class KeyboardManager extends Manager {
    * Verifies if any key has changed its status from down to up (this is only
    * valid for a single tick).
    *
-   * @param {Number} key - The key code.
+   * @param {KEY} key - The key code.
    * @return {Boolean} The key status.
    */
   isAnyReleased(key) {
@@ -261,4 +261,14 @@ export default class KeyboardManager extends Manager {
     return false
   }
 
+  /**
+   * Returns 1 is the key is beign pressed, returns 0 otherwise. This method is
+   * useful for the inputs manager.
+   *
+   * @param {KEY} key - The key code.
+   * @return {Number} 1 if key is pressed, 0 otherwise.
+   */
+  getInput(key) {
+    return this.isDown(key)? 1:0
+  }
 }

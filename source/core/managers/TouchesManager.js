@@ -244,4 +244,11 @@ export default class TouchesManager extends Manager {
   getAll() {
     return this._touches.slice()
   }
+
+  /**
+   * 
+   */
+  getInput() {
+    return 0
+  }
 }

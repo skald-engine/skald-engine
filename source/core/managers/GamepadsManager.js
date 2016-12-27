@@ -1,6 +1,7 @@
 import Manager from 'core/Manager' 
 import Gamepad from 'core/managers/inputs/Gamepad'
 import GamepadEvent from 'core/events/GamepadEvent'
+import {GAMEPAD_AXIS} from 'core/constants'
 
 /**
  * The gamepad manager is used to handle gamepad controllers via the HTML5 api.
@@ -28,6 +29,7 @@ export default class GamepadsManager extends Manager {
     this._allowEvents     = null
     this._gamepads        = null
     this._numConnecteds   = 0
+    this._inputAxesMap    = null
   }
 
   /**
@@ -51,6 +53,17 @@ export default class GamepadsManager extends Manager {
   setup() {
     this._setupConfig()
     this._setupGamepads()
+
+    this._inputAxesMap = {
+      [GAMEPAD_AXIS.LEFT_STICK_X]      : 'leftStickX',
+      [GAMEPAD_AXIS.LEFT_STICK_Y]      : 'leftStickY',
+      [GAMEPAD_AXIS.LEFT_STICK_FORCE]  : 'leftStickForce',
+      [GAMEPAD_AXIS.RIGHT_STICK_X]     : 'rightStickX',
+      [GAMEPAD_AXIS.RIGHT_STICK_Y]     : 'rightStickY',
+      [GAMEPAD_AXIS.RIGHT_STICK_FORCE] : 'rightStickForce',
+      [GAMEPAD_AXIS.LEFT_TRIGGER]      : 'leftTrigger',
+      [GAMEPAD_AXIS.RIGHT_TRIGGER]     : 'rightTrigger',
+    }
   }
 
   /**
@@ -223,5 +236,36 @@ export default class GamepadsManager extends Manager {
    */
   getAll() {
     return this._gamepads.slice()
+  }
+
+  /**
+   * Returns 1 is the button is beign pressed, returns 0 otherwise. It may 
+   * return a value between 0 and 1 when working with sticks and trigger.
+   *
+   * @param {BUTTON} button - The button code.
+   * @return {Number} 1 if key is pressed, 0 otherwise.
+   */
+  getInput(button, i) {
+    let gamepads = this._gamepads
+    if (typeof i !== 'undefined') {
+      gamepads = this._gamepads[Math.min(i, this._gamepads.length)]
+    }
+
+    for (var i=0; i<gamepads.length; i++) {
+      let gamepad = gamepads[i]
+
+      if (this._inputAxesMap[button]) {
+        let value = gamepad[this._inputAxesMap[button]]
+        if (value) {
+          return value
+        }
+      } else {
+        if (gamepad.isDown(button)) {
+          return 1
+        }
+      }
+    }
+
+    return 0
   }
 }
