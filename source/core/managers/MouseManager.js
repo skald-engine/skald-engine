@@ -41,7 +41,6 @@ export default class MouseManager extends Manager {
     this._deltaX          = 0
     this._deltaY          = 0
     this._deltaZ          = 0
-    console.log(game.display.width, game.display.height)
   }
 
   /**
