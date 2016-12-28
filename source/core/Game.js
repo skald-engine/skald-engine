@@ -283,7 +283,7 @@ export default class Game extends EventEmitter {
    */
   _updateGame() {
     requestAnimationFrame(()=>this._updateGame())
-
+        
     this.time.preUpdate()
     let delta = this.time.delta
 
