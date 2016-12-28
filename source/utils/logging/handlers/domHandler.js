@@ -46,7 +46,7 @@ function createElement() {
 
 function createParagraph(element, text, level) {
   let p = document.createElement('p')
-  p.innerHTML = `[${level.toUpperCase()}] ${text}`
+  p.innerHTML = text
   p.style['font-family'] = 'monospace'
   p.style['font-size'] = '10pt'
   

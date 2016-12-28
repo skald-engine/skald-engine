@@ -118,7 +118,8 @@ export default class Logger {
       this._formatter = Logger._formatters[formatterOrName]
     }
     else {
-      throw new Error(`Invalid formatter. Please provide a function or an ID.`)
+      throw new Error(`Invalid formatter "${formatterOrName}". `+
+                      `Please provide a function or a formatterOrName ID.`)
     }
   }
 
@@ -138,7 +139,8 @@ export default class Logger {
       this._handler = Logger._handlers[handlerOrName]
     }
     else {
-      throw new Error(`Invalid handler. Please provide a function or an ID.`)
+      throw new Error(`Invalid handler "${handlerOrName}". `+
+                      `Please provide a function or a handler ID.`)
     }
   }
 
@@ -152,7 +154,7 @@ export default class Logger {
   log(level, message) {
     let weight = this._levels.indexOf(level)
 
-    if (weight && weight >= this._levelPriority) {
+    if (typeof weight !== undefined && weight >= this._levelPriority) {
       this._handler(this._formatter(message, level), level)
     }
   }
