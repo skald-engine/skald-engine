@@ -140,7 +140,7 @@ export default class InterpolationTransition extends Transition {
     // recompute the theta value considering the delay and the duration of
     // the transition
     theta = (theta-transition.delay)/transition.duration
-    theta = batma.utils.clip(theta, 0, 1)
+    theta = skald.utils.clip(theta, 0, 1)
 
     Object.keys(transition.properties).forEach(p => {
       let range = transition.properties[p]

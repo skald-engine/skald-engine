@@ -127,6 +127,7 @@ export default class DirectorManager extends Manager {
     //                   `scene, you must inherit from skald.Scene.`)
     // }
 
+    this.game.log.trace(`(director) Adding scene "${sceneId}".`)
     this._scenes[sceneId] = scene
     return scene
   }
@@ -146,6 +147,7 @@ export default class DirectorManager extends Manager {
    * @param {String} sceneId - The scene ID.
    */
   removeScene(sceneId) {
+    this.game.log.trace(`(director) Removing scene "${sceneId}".`)
     delete this._scenes[sceneId]
     delete this._transitions[sceneId]
     Object.keys(this._transitions).forEach(map => {
@@ -210,6 +212,8 @@ export default class DirectorManager extends Manager {
     }
 
 
+    this.game.log.trace(`(director) Adding transition from "${sceneFromId}" `+
+                        `to "${sceneToId}."`)
     transition._game = this.game
     let toMap = this._transitions[sceneFromId]
     if (!toMap) toMap = this._transitions[sceneFromId] = {}
@@ -235,6 +239,8 @@ export default class DirectorManager extends Manager {
    * @param {String} sceneToId - The unique ID for the second scene.
    */
   removeTransition(sceneFromId, sceneToId) {
+    this.game.log.trace(`(director) Removing transition from `+
+                        `"${sceneFromId}" to "${sceneToId}."`)
     if (sceneFromId in this._transitions) {
       delete this._transitions[sceneFromId][sceneToId]
     }
@@ -304,6 +310,7 @@ export default class DirectorManager extends Manager {
 
     // if we could not find any transition, replace it immediately
     if (!transition) {
+      this.game.events.dispatch('scenestop', this._currentScene)
       this._removeCurrentScene()
       this._setCurrentScene(sceneId, scene)
 
@@ -355,6 +362,9 @@ export default class DirectorManager extends Manager {
     this.game._stage.addChild(scene._world)
     this._currentSceneId = sceneId
     this._currentScene = scene
+
+    this.game.events.dispatch('sceneenter', this._currentScene)
+    this.game.events.dispatch('scenestart', this._currentScene)
   }
 
   /**
@@ -366,6 +376,8 @@ export default class DirectorManager extends Manager {
     this.game._stage.addChild(scene._world)
     this._nextSceneId = sceneId
     this._nextScene = scene
+
+    this.game.events.dispatch('sceneenter', this._nextScene)
   }
 
   /**
@@ -388,6 +400,8 @@ export default class DirectorManager extends Manager {
 
     this._currentSceneId = this._nextSceneId
     this._currentScene = this._nextScene
+
+    this.game.events.dispatch('scenestart', this._currentScene)
   }
 
   /**
@@ -398,6 +412,8 @@ export default class DirectorManager extends Manager {
     this.game.log.trace(`(director) Removing current scene "${this._currentSceneId}"`)
 
     this.game._stage.removeChild(this._currentScene._world)
+
+    this.game.events.dispatch('sceneleave', this._currentScene)
 
     // only call destroy if the scene were created by the director
     if (this._currentSceneId) {
@@ -412,6 +428,7 @@ export default class DirectorManager extends Manager {
    * Start a transition.
    */
   _startTransition(transition) {
+    this.game.events.dispatch('scenestop', this._currentScene)
     transition.setup(this.game, this._currentScene, this._nextScene)
     transition.start()
     this._transition = transition
