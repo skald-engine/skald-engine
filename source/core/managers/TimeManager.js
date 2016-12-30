@@ -16,6 +16,8 @@ export default class TimeManager extends Manager {
     this._delta = 0
     this._elapsed = 0
     this._fps = 0
+
+    this._maxElapsed = 100 // 10fps
   }
   
 
@@ -74,7 +76,7 @@ export default class TimeManager extends Manager {
   preUpdate() {
     this._prevTime = this._time
     this._time = Date.now()
-    this._elapsed = this._time - this._prevTime
+    this._elapsed = Math.min(this._time - this._prevTime, this._maxElapsed)
     this._delta = this._elapsed/1000
     this._fps = this._fps*0.9 + this._elapsed*0.1
   }
