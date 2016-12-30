@@ -258,6 +258,7 @@ export default class Game extends EventEmitter {
     this._gamepads = new managers.GamepadsManager(this)
     this._touches = new managers.TouchesManager(this)
     this._inputs = new managers.InputsManager(this)
+    this._resources = new managers.ResourcesManager(this)
 
     this._time.setup()
     this._events.setup()
@@ -269,6 +270,7 @@ export default class Game extends EventEmitter {
     this._gamepads.setup()
     this._touches.setup()
     this._inputs.setup()
+    this._resources.setup()
   }
 
   /**
@@ -282,6 +284,7 @@ export default class Game extends EventEmitter {
    * The game loop
    */
   _updateGame() {
+    stats.begin()
     requestAnimationFrame(()=>this._updateGame())
         
     this.time.preUpdate()
@@ -322,6 +325,7 @@ export default class Game extends EventEmitter {
     for (let name in this._plugins) {
       this._plugins[name].draw()
     }
+    stats.end()
   }
 
   /**
