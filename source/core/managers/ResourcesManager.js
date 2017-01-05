@@ -3,6 +3,7 @@ import ResourceEvent from 'core/events/ResourceEvent'
 import ProgressEvent from 'core/events/ProgressEvent'
 import ErrorEvent from 'core/events/ErrorEvent'
 import textureMiddleware from 'core/managers/resources/textureMiddleware'
+import audioMiddleware from 'core/managers/resources/audioMiddleware'
 
 export default class ResourcesManager extends Manager {
   constructor(game) {
@@ -27,6 +28,16 @@ export default class ResourcesManager extends Manager {
     let maxConcurrency = config.resources.maxConcurrency
 
     this._loader = new PIXI.loaders.Loader(basePath, maxConcurrency)
+
+    let Resource = PIXI.loaders.Resource
+
+    // https://github.com/englercj/resource-loader/issues/31
+    let audioExtensions = ['ogg', 'opus', 'mp3', 'wav', 'm4a', 'webm', 'ac3']
+    for (let i=0; i<audioExtensions.length; i++) {
+      let ext = audioExtensions[i]
+      Resource.setExtensionLoadType(ext, Resource.LOAD_TYPE.XHR);
+      Resource.setExtensionXhrType(ext, Resource.XHR_RESPONSE_TYPE.BUFFER);
+    }
   }
 
   _setupMiddlewares() {
@@ -35,6 +46,7 @@ export default class ResourcesManager extends Manager {
     // pixi game running in the same page.
     this._loader._afterMiddleware = []
     this._loader.use(textureMiddleware(this.game))
+    this._loader.use(audioMiddleware(this.game))
   }
 
   _setupEvents() {
@@ -77,7 +89,7 @@ export default class ResourcesManager extends Manager {
   }
   
   _onLoad(loader, resource) {
-    let r = this._resources[resource.name]
+    let r = this._resources[resource.name] || {}
     this.game.events.dispatch(
       new ResourceEvent(
         'resourceload',
@@ -106,13 +118,23 @@ export default class ResourcesManager extends Manager {
     this._loader.load()
   }
 
-  loadAudio(id, url) {}
+  loadAudio(id, url) {
+    this.game.log.trace(`(resources) Loading audio "${id}" from "${url}".`)
+
+    this._loader.add(id, url, {metadata:{type: 'audio'}})
+    this._loader.load()
+  }
+
   loadJson(id, url) {}
   loadScript(id, url) {}
   loadStyle(id, url) {}
   loadSpriteSheet(id, url, data) {}
   loadAudioSprite(id, url, data) {}
   loadRaw(id, url) {}
+
+  list() {
+    return Object.keys(this._resources)
+  }
 
   get(id) {
     let r = this._resources[id]
@@ -123,7 +145,8 @@ export default class ResourcesManager extends Manager {
     if (r) { return r.metadata }
   }
 
-  isLoading() {}
-  hasFinished() {}
+  isLoading() {
+    return this._loader.loading
+  }
 
 }

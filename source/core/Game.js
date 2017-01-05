@@ -259,18 +259,20 @@ export default class Game extends EventEmitter {
     this._touches = new managers.TouchesManager(this)
     this._inputs = new managers.InputsManager(this)
     this._resources = new managers.ResourcesManager(this)
+    this._sounds = new managers.SoundsManager(this)
 
     this._time.setup()
     this._events.setup()
     this._device.setup()
     this._display.setup()
+    this._resources.setup()
     this._director.setup()
     this._keyboard.setup()
     this._mouse.setup()
     this._gamepads.setup()
     this._touches.setup()
     this._inputs.setup()
-    this._resources.setup()
+    this._sounds.setup()
   }
 
   /**
