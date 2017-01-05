@@ -3,21 +3,11 @@ import Audio from 'audio/WebAudioAudio'
 
 export default class WebAudioSystem extends AudioSystem {
   constructor(game) {
-    super(game, true)
+    super(game)
     
     this._audioContext = null
     this._masterGain = null
 
-    this.initialize()
-  }
-
-  get game() { return this._game }
-
-  static canUse() {
-    return !!window.AudioContext || !!window.webkitAudioContext
-  }
-
-  initialize() {
     if (!WebAudioSystem.canUse()) {
       throw new Error(`Trying to use web audio system in a platform that `+ 
                       `does not support it.`)
@@ -30,6 +20,12 @@ export default class WebAudioSystem extends AudioSystem {
     this._masterGain = this.createGainNode()
     this._masterGain.gain.value = 1
     this._masterGain.connect(this._audioContext.destination)
+  }
+
+  get game() { return this._game }
+
+  static canUse() {
+    return !!window.AudioContext || !!window.webkitAudioContext
   }
 
   createAudio(buffer, data) {
