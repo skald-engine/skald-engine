@@ -15,6 +15,12 @@ export default class AudioSystem {
   }
 
   /**
+   * The game instance. Readonly.
+   * @type {Game}
+   */
+  get game() { return this._game }
+
+  /**
    * Sets a batch of variables.
    *
    * @param {Object} config - The dictionary of variables and their values.

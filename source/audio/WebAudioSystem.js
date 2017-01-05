@@ -22,8 +22,6 @@ export default class WebAudioSystem extends AudioSystem {
     this._masterGain.connect(this._audioContext.destination)
   }
 
-  get game() { return this._game }
-
   static canUse() {
     return !!window.AudioContext || !!window.webkitAudioContext
   }
