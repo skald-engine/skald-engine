@@ -1,7 +1,19 @@
 import AudioSystem from 'core/AudioSystem'
-import Audio from 'audio/WebAudioAudio'
+import Audio from 'audio/webaudio/WebAudioAudio'
 
+/**
+ * WebAudio audio system. This audio system implements the interface to the 
+ * browser WebAudio API, which is supported by most current browsers (see 
+ * http://caniuse.com/#feat=audio-api).
+ *
+ * This system creates {@link WebAudioAudio} objects to represent the audio 
+ * files.
+ */
 export default class WebAudioSystem extends AudioSystem {
+
+  /**
+   * @param {Game} game - The game instance
+   */
   constructor(game) {
     super(game)
     
@@ -14,7 +26,7 @@ export default class WebAudioSystem extends AudioSystem {
     }
 
     // Creates the audio context
-    this._audioContext = this._getAudioContext()
+    this._audioContext = this._createAudioContext()
 
     // Creates the gain node for master volume
     this._masterGain = this.createGainNode()
@@ -22,19 +34,31 @@ export default class WebAudioSystem extends AudioSystem {
     this._masterGain.connect(this._audioContext.destination)
   }
 
+  /**
+   * Verifies if browser supports the webaudio api.
+   *
+   * @return {Boolean}
+   */
   static canUse() {
     return !!window.AudioContext || !!window.webkitAudioContext
   }
 
+  /**
+   * Creates an audio given a buffer and a metadata object.
+   *
+   * @param {Object} buffer - The buffer object.
+   * @param {Object} data - The audio metadata.
+   * @return {WebAudioAudio} The audio object.
+   */
   createAudio(buffer, data) {
     let audio = new Audio(this, this._masterGain)
 
+    data = data || {}
     if (typeof data.offset === 'number') audio.offset = data.offset
     if (typeof data.duration === 'number') audio.duration = data.duration
     if (typeof data.volume === 'number') audio.volume = data.volume
     if (typeof data.loop === 'boolean') audio.loop = data.loop
     if (typeof data.allowMultiple === 'boolean') audio.allowMultiple = data.allowMultiple
-
 
     if (data.markers) {
       let keys = Object.keys(data.markers)
@@ -63,7 +87,12 @@ export default class WebAudioSystem extends AudioSystem {
     return audio
   }
 
-  _getAudioContext() {
+  /**
+   * Creates a new webaudio context.
+   *
+   * @return {AudioContext}
+   */
+  _createAudioContext() {
     if (window.AudioContext) {
       return new window.AudioContext()
     } else {
@@ -71,6 +100,11 @@ export default class WebAudioSystem extends AudioSystem {
     }
   }
 
+  /**
+   * Creates a webaudio gain node.
+   *
+   * @return {GainNode}
+   */
   createGainNode() {
     if (this._audioContext.createGainNode) {
       return this._audioContext.createGainNode()

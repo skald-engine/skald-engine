@@ -1,5 +1,5 @@
 import Manager from 'core/Manager' 
-import * as systems from 'audio'
+import * as audio from 'audio'
 
 /**
  * - https://www.html5rocks.com/en/tutorials/webaudio/intro/
@@ -49,7 +49,7 @@ export default class SoundsManager extends Manager {
   get system() { return this._system }
   
   setup() {
-    this._system = new systems.WebAudioSystem()
+    this._system = new audio.WebAudioSystem()
   }
 
   createAudio(id, buffer, data) {

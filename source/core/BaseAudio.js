@@ -175,14 +175,6 @@ export default class BaseAudio {
   }
 
   /**
-   * Resume a paused playback. If ID is not provided, this method will resume
-   * all paused playbacks.
-   *
-   * @param {Number} [id] - The playback ID.
-   */
-  resume(id) {}
-
-  /**
    * Stop a playback. If ID is not provided, this method will stop all 
    * playbacks.
    *
@@ -197,6 +189,14 @@ export default class BaseAudio {
    * @param {Number} [id] - The playback ID.
    */
   pause(id) {}
+
+  /**
+   * Resume a paused playback. If ID is not provided, this method will resume
+   * all paused playbacks.
+   *
+   * @param {Number} [id] - The playback ID.
+   */
+  resume(id) {}
 
   /**
    * Mute a playback. If ID is not provided, this method will mute all
