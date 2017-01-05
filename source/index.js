@@ -1,7 +1,8 @@
 import * as utils from 'utils'
 import * as transitions from 'transitions'
+import * as audio from 'audio'
 
-export {utils, transitions}
+export {utils, transitions, audio}
 export * from 'core'
 
 

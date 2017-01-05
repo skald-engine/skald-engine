@@ -1,9 +1,9 @@
 import Entity from 'core/Entity'
 
 export default class Sprite extends Entity {
-  constructor(game, scene) {
+  constructor(game, scene, suppressInitialize) {
     let displayObject = new PIXI.Sprite()
-    super(game, scene, displayObject)
+    super(game, scene, displayObject, suppressInitialize)
   }
 
   get texture() { return this._displayObject.texture }
