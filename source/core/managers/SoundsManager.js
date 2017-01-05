@@ -43,6 +43,7 @@ export default class SoundsManager extends Manager {
     super(game)
 
     this._system = null
+    this._audios = {}
   }
 
   get system() { return this._system }
@@ -51,8 +52,16 @@ export default class SoundsManager extends Manager {
     this._system = new systems.WebAudioSystem()
   }
 
-  createAudio(buffer, data) {
-    return this._system.createAudio(buffer, data)
+  createAudio(id, buffer, data) {
+    let audio = this._system.createAudio(buffer, data)
+    if (id) {
+      this._audios[id] = audio
+    }
+    return audio
+  }
+
+  get(id) {
+    return this._audios[id]
   }
 
 }

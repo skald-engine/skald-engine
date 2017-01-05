@@ -10,6 +10,7 @@ export default function audioMiddleware(game) {
     }
 
     resource.audio = game.sounds.createAudio(
+      resource.name,
       resource.data,
       resource.metadata.data
     )

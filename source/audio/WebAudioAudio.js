@@ -136,42 +136,17 @@ export default class WebAudioAudio extends BaseAudio {
   constructor(system, masterGain) {
     super(system)
 
-    this._system = system
     this._masterGain = masterGain
     this._buffer = null
     this._sounds = {}
     this._pendingSounds = []
     this._inactiveSounds = []
     this._type = 'webaudio'
-    this._allowMultiple = true
-
-    this._offset   = null
-    this._duration = null
-    this._volume   = null
-    this._loop     = null
   }
-
-
-  get offset() { return this._offset }
-  set offset(v) { this._offset = v}
-
-  get duration() { return this._duration }
-  set duration(v) { this._duration = v}
-
-  get volume() { return this._volume }
-  set volume(v) { this._volume = v}
-
-  get loop() { return this._loop }
-  set loop(v) { this._loop = !!v}
 
   get source() { return this._source }
   get gain() { return this._gain }
-  get system() { return this._system }
   get sound() { return this._sounds }
-  get type() { return this._type }
-  get allowMultiple() { return this._allowMultiple }
-  set allowMultiple(v) { this._allowMultiple = !!v}
-
   get buffer() { return this._buffer }
   set buffer(value) {
     this._buffer = value
