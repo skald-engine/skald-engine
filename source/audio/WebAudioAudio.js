@@ -82,19 +82,6 @@ class Sound {
     this._source.buffer = this._audio._buffer
     this._source.connect(this._gain)
 
-
-    console.log(
-      'playing audio with',
-      '\noffset', this.offset,
-      '\ndelay', this.delay,
-      '\nduration', this.duration,
-      '\nvolume', this.volume,
-      '\nloop', this.loop,
-      '\nloopStart', this._source.loopStart,
-      '\nloopEnd', this._source.loopEnd,
-      '\n======================'
-    )
-
     this._source.start(this.delay/1000, this.offset/1000, this.duration/1000)
     this._playing = true
     this._paused = false
