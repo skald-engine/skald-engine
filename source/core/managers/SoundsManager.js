@@ -51,4 +51,8 @@ export default class SoundsManager extends Manager {
     this._system = new systems.WebAudioSystem()
   }
 
+  createAudio(buffer, data) {
+    return this._system.createAudio(buffer, data)
+  }
+
 }

@@ -10,7 +10,6 @@ class Sound {
     this._id       = null
     this._offset   = null
     this._duration = null
-    this._delay    = null
     this._volume   = null
     this._loop     = null
 
@@ -33,9 +32,6 @@ class Sound {
 
   get duration() { return this._duration }
   set duration(v) { this._duration = v }
-
-  get delay() { return this._delay }
-  set delay(v) { this._delay = v }
 
   get volume() { return this._volume }
   set volume(v) {
@@ -82,7 +78,7 @@ class Sound {
     this._source.buffer = this._audio._buffer
     this._source.connect(this._gain)
 
-    this._source.start(this.delay/1000, this.offset/1000, this.duration/1000)
+    this._source.start(0, this.offset/1000, this.duration/1000)
     this._playing = true
     this._paused = false
 
@@ -151,7 +147,6 @@ export default class WebAudioAudio extends BaseAudio {
 
     this._offset   = null
     this._duration = null
-    this._delay    = null
     this._volume   = null
     this._loop     = null
   }
@@ -162,9 +157,6 @@ export default class WebAudioAudio extends BaseAudio {
 
   get duration() { return this._duration }
   set duration(v) { this._duration = v}
-
-  get delay() { return this._delay }
-  set delay(v) { this._delay = v}
 
   get volume() { return this._volume }
   set volume(v) { this._volume = v}
@@ -192,8 +184,7 @@ export default class WebAudioAudio extends BaseAudio {
           a[0],
           a[1],
           a[2],
-          a[3],
-          a[4]
+          a[3]
         )
       }
     }
@@ -247,19 +238,18 @@ export default class WebAudioAudio extends BaseAudio {
   }
 
 
-  play(markerOrId, offset, duration, delay, volume, loop) {
-    super.play(markerOrId, offset, duration, delay, volume, loop)
+  play(markerOrId, offset, duration, volume, loop) {
+    super.play(markerOrId, offset, duration, volume, loop)
 
     // get marker 
     if (typeof markerOrId === 'string') {
       let marker = this._markers[markerOrId]
       if (!marker) return // invalid marker
 
-      offset   = offset   || marker.offset
-      duration = duration || marker.duration
-      delay    = delay    || marker.delay
-      volume   = volume   || marker.volume
-      loop     = loop     || marker.loop
+      if (typeof offset !== 'number') offset = marker.offset
+      if (typeof duration !== 'number') duration = marker.duration
+      if (typeof volume !== 'number') volume = marker.volume
+      if (typeof loop === 'undefined') loop = marker.loop
     }
 
     // get sound id
@@ -271,7 +261,7 @@ export default class WebAudioAudio extends BaseAudio {
 
     // if the sound is not ready, we add it to pending
     if (!this.isReady()) {
-      this._pendingSounds.push([offset, duration, delay, volume, loop])
+      this._pendingSounds.push([offset, duration, volume, loop])
       return id
     }
 
@@ -295,12 +285,15 @@ export default class WebAudioAudio extends BaseAudio {
     }
 
     // default values
-    sound.offset   = offset || this._offset || 0
-    sound.duration = duration || this._duration || undefined
-    sound.delay    = delay || this._delay || 0
-    sound.volume   = utils.clip(volume || this._volume || 1, 0, 1)
-    sound.loop     = !!(loop || this._loop || false)
-
+    if (typeof offset !== 'number') offset = this._offset || 0
+    if (typeof duration !== 'number') duration = this._duration || undefined
+    if (typeof volume !== 'number') volume = utils.clip(this._volume||1, 0, 1)
+    if (typeof loop === 'undefined') loop = !!(this._loop || false)
+    sound.offset = offset
+    sound.duration = duration
+    sound.volume = volume
+    sound.loop = loop
+  
     // play it
     sound.play()
     return id

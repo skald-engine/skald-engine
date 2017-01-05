@@ -32,8 +32,35 @@ export default class WebAudioSystem extends AudioSystem {
     this._masterGain.connect(this._audioContext.destination)
   }
 
-  createAudio(buffer) {
+  createAudio(buffer, data) {
     let audio = new Audio(this, this._masterGain)
+
+    if (typeof data.offset === 'number') audio.offset = data.offset
+    if (typeof data.duration === 'number') audio.duration = data.duration
+    if (typeof data.volume === 'number') audio.volume = data.volume
+    if (typeof data.loop === 'boolean') audio.loop = data.loop
+    if (typeof data.allowMultiple === 'boolean') audio.allowMultiple = data.allowMultiple
+
+
+    if (data.markers) {
+      let keys = Object.keys(data.markers)
+      for (let i=0; i<keys.length; i++) {
+        let key = keys[i]
+        let marker = data.markers[key]
+
+        let offset = undefined
+        let duration = undefined
+        let volume = undefined
+        let loop = undefined
+
+        if (typeof marker.offset === 'number') offset = marker.offset
+        if (typeof marker.duration === 'number') duration = marker.duration
+        if (typeof marker.volume === 'number') volume = marker.volume
+        if (typeof marker.loop === 'boolean') loop = marker.loop
+
+        audio.addMarker(key, offset, duration, volume, loop)
+      }
+    }
     
     this._audioContext.decodeAudioData(buffer, function(buffer) {
       audio.buffer = buffer

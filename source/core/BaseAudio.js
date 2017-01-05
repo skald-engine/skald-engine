@@ -27,17 +27,13 @@ export default class BaseAudio {
   setLoop(id, value) {}
   getLoop(id) {}
 
-  play(markerOrId, offset, duration, delay, volume, loop) {
+  play(markerOrId, offset, duration, volume, loop) {
     if (offset && (typeof offset !== 'number' || offset < 0)) {
       throw new Error(`Invalid offset value "${offset}".`)
     }
 
-    if (duration && (typeof duration !== 'number' || delay < 0)) {
+    if (duration && (typeof duration !== 'number' || duration < 0)) {
       throw new Error(`Invalid duration value "${duration}".`)
-    }
-
-    if (delay && (typeof delay !== 'number' || delay < 0)) {
-      throw new Error(`Invalid delay value "${delay}".`)
     }
 
     if (volume && typeof volume !== 'number') {
@@ -56,8 +52,8 @@ export default class BaseAudio {
     if (typeof duration !== 'number') duration = undefined
     if (typeof volume !== 'number') volume = undefined
     if (typeof volume === 'number') volume = utils.clip(volume, 0, 1)
+    loop = !!loop
     
-    lopp = !!loop
     this._markers[markerName] = {
       name     : name,
       offset   : offset,

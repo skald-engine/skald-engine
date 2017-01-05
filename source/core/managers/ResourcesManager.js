@@ -1,9 +1,14 @@
 import Manager from 'core/Manager'
+
 import ResourceEvent from 'core/events/ResourceEvent'
 import ProgressEvent from 'core/events/ProgressEvent'
 import ErrorEvent from 'core/events/ErrorEvent'
+
 import textureMiddleware from 'core/managers/resources/textureMiddleware'
 import audioMiddleware from 'core/managers/resources/audioMiddleware'
+
+import * as utils from 'utils'
+import audioMetadataSchema from 'core/config/audioMetadataSchema'
 
 export default class ResourcesManager extends Manager {
   constructor(game) {
@@ -118,10 +123,11 @@ export default class ResourcesManager extends Manager {
     this._loader.load()
   }
 
-  loadAudio(id, url) {
-    this.game.log.trace(`(resources) Loading audio "${id}" from "${url}".`)
+  loadAudio(id, url, data) {
+    this.game.log.trace(`(resources) Loading audio "${id}" from "${url}".`)    
+    data = utils.validateJson(data||{}, {}, audioMetadataSchema)
 
-    this._loader.add(id, url, {metadata:{type: 'audio'}})
+    this._loader.add(id, url, { metadata: { type: 'audio', data: data } })
     this._loader.load()
   }
 
