@@ -46,7 +46,7 @@ class Sound {
   }
 
   get loop() { return this._loop }
-  set loop(v) { this._loop = v }
+  set loop(v) { this._loop = !!v }
 
 
   isPlaying() {
@@ -60,7 +60,11 @@ class Sound {
   }
 
   _onFinish() {
-    this._audio.stop(this._id)
+    if (!this._loop) {
+      this._audio.stop(this._id)
+    } else {
+      this.play()
+    }
   }
 
   reset() {
@@ -71,13 +75,25 @@ class Sound {
   }
 
   play() {
+    this._duration = this._duration || this._audio._buffer.duration*1000
+
     this._source = this._system._audioContext.createBufferSource()
     this._source.onended = () => this._onFinish()
     this._source.buffer = this._audio._buffer
-    this._source.loop = this.loop
     this._source.connect(this._gain)
 
-    this._duration = this._duration || this._source.buffer.duration*1000
+
+    console.log(
+      'playing audio with',
+      '\noffset', this.offset,
+      '\ndelay', this.delay,
+      '\nduration', this.duration,
+      '\nvolume', this.volume,
+      '\nloop', this.loop,
+      '\nloopStart', this._source.loopStart,
+      '\nloopEnd', this._source.loopEnd,
+      '\n======================'
+    )
 
     this._source.start(this.delay/1000, this.offset/1000, this.duration/1000)
     this._playing = true
@@ -106,7 +122,6 @@ class Sound {
     this._source = this._system._audioContext.createBufferSource()
     this._source.onended = () => this._onFinish()
     this._source.buffer = this._audio._buffer
-    this._source.loop = this.loop
     this._source.connect(this._gain)
     this._source.start(0, offset, duration)
     this._paused = false
@@ -146,7 +161,29 @@ export default class WebAudioAudio extends BaseAudio {
     this._inactiveSounds = []
     this._type = 'webaudio'
     this._allowMultiple = true
+
+    this._offset   = null
+    this._duration = null
+    this._delay    = null
+    this._volume   = null
+    this._loop     = null
   }
+
+
+  get offset() { return this._offset }
+  set offset(v) { this._offset = v}
+
+  get duration() { return this._duration }
+  set duration(v) { this._duration = v}
+
+  get delay() { return this._delay }
+  set delay(v) { this._delay = v}
+
+  get volume() { return this._volume }
+  set volume(v) { this._volume = v}
+
+  get loop() { return this._loop }
+  set loop(v) { this._loop = !!v}
 
   get source() { return this._source }
   get gain() { return this._gain }
@@ -238,16 +275,6 @@ export default class WebAudioAudio extends BaseAudio {
       loop     = loop     || marker.loop
     }
 
-    // default values
-    offset   = offset   || 0
-    duration = duration || undefined
-    delay    = delay    || 0
-    volume   = volume   || 1
-    loop     = loop     || false
-
-    volume = utils.clip(volume, 0, 1)
-    loop = !!loop
-
     // get sound id
     let id = null
     if (typeof markerOrId === 'number') {
@@ -280,6 +307,14 @@ export default class WebAudioAudio extends BaseAudio {
       this._sounds = {id:sound}
     }
 
+    // default values
+    sound.offset   = offset || this._offset || 0
+    sound.duration = duration || this._duration || undefined
+    sound.delay    = delay || this._delay || 0
+    sound.volume   = utils.clip(volume || this._volume || 1, 0, 1)
+    sound.loop     = !!(loop || this._loop || false)
+
+    // play it
     sound.play()
     return id
   }
@@ -342,7 +377,6 @@ export default class WebAudioAudio extends BaseAudio {
     }
   }
   unmute(id) {
-
     let ids = [id]
     if (typeof id !== 'number') {
       ids = Object.keys(this._sounds)
