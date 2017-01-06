@@ -53,11 +53,19 @@ export default class SoundsManager extends Manager {
 
   get system() { return this._system }
 
-  get volume() {}
-  set volume(v) {}
+  get volume() {
+    if (this._system) {
+      return this._system.volume
+    }
+  }
+  set volume(v) {
+    if (this._system) {
+      this._system.volume = v
+    }
+  }
   
   setup() {
-    this._system = new audio.WebAudioSystem()
+    this._system = new audio.WebAudioSystem(this.game)
   }
 
   createAudio(id, buffer, data) {

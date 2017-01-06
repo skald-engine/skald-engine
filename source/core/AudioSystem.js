@@ -21,6 +21,13 @@ export default class AudioSystem {
   get game() { return this._game }
 
   /**
+   * Sets or gets the volume.
+   * @type {Number}
+   */
+  get volume() {}
+  set volume(v) {}
+
+  /**
    * Sets a batch of variables.
    *
    * @param {Object} config - The dictionary of variables and their values.

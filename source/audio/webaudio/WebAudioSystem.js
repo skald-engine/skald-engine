@@ -19,19 +19,25 @@ export default class WebAudioSystem extends AudioSystem {
     
     this._audioContext = null
     this._masterGain = null
+    this._scratchBuffer = null
 
     if (!WebAudioSystem.canUse()) {
       throw new Error(`Trying to use web audio system in a platform that `+ 
                       `does not support it.`)
     }
 
-    // Creates the audio context
-    this._audioContext = this._createAudioContext()
+    this._initialize()
+  }
 
-    // Creates the gain node for master volume
-    this._masterGain = this.createGainNode()
-    this._masterGain.gain.value = 1
-    this._masterGain.connect(this._audioContext.destination)
+  /**
+   * Master volume.
+   * @type {Number}
+   */
+  get volume() {
+    return this._masterGain.gain.value
+  }
+  set volume(v) {
+    this._masterGain.gain.value = v
   }
 
   /**
@@ -88,6 +94,76 @@ export default class WebAudioSystem extends AudioSystem {
   }
 
   /**
+   * Creates a webaudio gain node.
+   *
+   * @return {GainNode}
+   */
+  createGainNode() {
+    if (this._audioContext.createGainNode) {
+      return this._audioContext.createGainNode()
+    } else {
+      return this._audioContext.createGain()
+    }
+  }
+
+  /**
+   * Initialize the system.
+   */
+  _initialize() {
+    this._initializeAudioContext()
+    this._initializeMasterVolume()
+    this._initializeTouchLock()
+  }
+
+  /**
+   * Creates the audio context.
+   */
+  _initializeAudioContext() {
+    this._audioContext = this._createAudioContext()
+  }
+
+  /**
+   * Creates the gain node for master volume.
+   */
+  _initializeMasterVolume() {
+    this._masterGain = this.createGainNode()
+    this._masterGain.gain.value = 1
+    this._masterGain.connect(this._audioContext.destination)
+  }
+
+  /**
+   * Sets up the touch lock for iOs.
+   * http://stackoverflow.com/questions/24119684
+   */
+  _initializeTouchLock() {    
+    this._scratchBuffer = this._audioContext.createBuffer(1, 1, 22050)
+    this.game.log.trace('starting touch lock')
+
+    let self = this
+    function unlock() {
+      // Create an empty buffer.
+      var source = self._audioContext.createBufferSource()
+      source.buffer = self._scratchBuffer
+      source.connect(self._audioContext.destination)
+
+      // Play the empty buffer.
+      if (typeof source.start === 'undefined') {
+        source.noteOn(0)
+      } else {
+        source.start(0)
+      }
+
+      // Setup a timeout to check that we are unlocked on the next event loop.
+      source.onended = function() {
+        source.disconnect(0)
+        this.game.view.removeEventListener('touchend', unlock, true)
+      }
+    }
+    this.game.view.addEventListener('touchend', unlock, true)
+
+  }
+
+  /**
    * Creates a new webaudio context.
    *
    * @return {AudioContext}
@@ -100,16 +176,4 @@ export default class WebAudioSystem extends AudioSystem {
     }
   }
 
-  /**
-   * Creates a webaudio gain node.
-   *
-   * @return {GainNode}
-   */
-  createGainNode() {
-    if (this._audioContext.createGainNode) {
-      return this._audioContext.createGainNode()
-    } else {
-      return this._audioContext.createGain()
-    }
-  }
 }
