@@ -12,6 +12,7 @@ export default class AudioSystem {
    */
   constructor(game) {
     this._game = game
+    this._type = null
   }
 
   /**
@@ -26,6 +27,12 @@ export default class AudioSystem {
    */
   get volume() {}
   set volume(v) {}
+
+  /**
+   * The name of the system. Readonly.
+   * @type {String}
+   */
+  get type() { return this._type }
 
   /**
    * Sets a batch of variables.

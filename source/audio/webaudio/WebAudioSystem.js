@@ -17,6 +17,7 @@ export default class WebAudioSystem extends AudioSystem {
   constructor(game) {
     super(game)
     
+    this._type = 'webaudio'
     this._audioContext = null
     this._masterGain = null
     this._scratchBuffer = null

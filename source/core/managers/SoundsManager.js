@@ -1,5 +1,6 @@
 import Manager from 'core/Manager' 
 import * as audio from 'audio'
+import * as globals from 'globals_'
 
 /**
  * The sounds manager handle the storage and initialization of the game audios.
@@ -65,10 +66,21 @@ export default class SoundsManager extends Manager {
   }
   
   setup() {
-    this._system = new audio.WebAudioSystem(this.game)
+    if (globals.audioSystems.length) {
+      for (let i=0; i<globals.audioSystems.length; i++) {
+        if (globals.audioSystems[i].canUse()) {
+          this._system = new globals.audioSystems[i](this.game)
+          return
+        }
+      }
+    }
+
+    this.game.log.warn(`(sounds) No audio system was detected.`)
   }
 
   createAudio(id, buffer, data) {
+    if (!this._system) return
+
     let audio = this._system.createAudio(buffer, data)
     if (id) {
       this._audios[id] = audio
@@ -77,6 +89,8 @@ export default class SoundsManager extends Manager {
   }
 
   get(id) {
+    if (!this._system) return
+
     return this._audios[id]
   }
 
