@@ -1,19 +1,26 @@
 import * as utils from 'utils'
 import * as transitions from 'transitions'
 import * as audio from 'audio'
+import * as globals from 'globals_'
 
-export {utils, transitions, audio}
+export {utils, transitions, audio, globals}
 export * from 'core'
 
 
 // Initialize
 // Register formatters and handlers
-utils.logging.registerFormatter('simple', utils.logging.formatters.simpleFormatter)
-utils.logging.registerFormatter('level', utils.logging.formatters.levelFormatter)
-utils.logging.registerFormatter('detailed', utils.logging.formatters.detailedFormatter)
-utils.logging.registerHandler('console', utils.logging.handlers.consoleHandler)
-utils.logging.registerHandler('dom', utils.logging.handlers.domHandler)
-utils.logging.registerHandler('file', utils.logging.handlers.fileHandler)
+globals.addLoggerFormatter('simple', utils.logging.formatters.simpleFormatter)
+globals.addLoggerFormatter('level', utils.logging.formatters.levelFormatter)
+globals.addLoggerFormatter('detailed', utils.logging.formatters.detailedFormatter)
+
+globals.addLoggerHandler('console', utils.logging.handlers.consoleHandler)
+globals.addLoggerHandler('dom', utils.logging.handlers.domHandler)
+globals.addLoggerHandler('file', utils.logging.handlers.fileHandler)
+
+globals.setAudioSystems([
+  audio.WebAudioSystem,
+  audio.HTML5AudioSystem,
+])
 
 
 global.sk = exports

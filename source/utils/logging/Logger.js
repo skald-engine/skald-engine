@@ -1,5 +1,6 @@
 import {LOGGER_LEVEL} from 'core/constants'
 import isFunction from 'utils/functions/isFunction'
+import * as globals from 'globals_'
 
 /**
  * Logger utility class provide a relatively flexible logging system for the 
@@ -114,8 +115,8 @@ export default class Logger {
     if (isFunction(formatterOrName)) {
       this._formatter = formatterOrName
     }
-    else if (Logger._formatters[formatterOrName]) {
-      this._formatter = Logger._formatters[formatterOrName]
+    else if (globals.loggerFormatters[formatterOrName]) {
+      this._formatter = globals.loggerFormatters[formatterOrName]
     }
     else {
       throw new Error(`Invalid formatter "${formatterOrName}". `+
@@ -135,8 +136,8 @@ export default class Logger {
     if (isFunction(handlerOrName)) {
       this._handler = handlerOrName
     }
-    else if (Logger._handlers[handlerOrName]) {
-      this._handler = Logger._handlers[handlerOrName]
+    else if (globals.loggerHandlers[handlerOrName]) {
+      this._handler = globals.loggerHandlers[handlerOrName]
     }
     else {
       throw new Error(`Invalid handler "${handlerOrName}". `+
@@ -213,13 +214,3 @@ export default class Logger {
     this.log(LOGGER_LEVEL.FATAL, message)
   }
 }
-
-/**
- * List of registered formatters
- */
-Logger._formatters = {}
-
-/**
- * List of registered handlers
- */
-Logger._handlers = {}
