@@ -45,6 +45,9 @@ import * as globals from 'globals_'
  */
 export default class SoundsManager extends Manager {
   
+  /**
+   * @param {Game} game - The game instance.
+   */
   constructor(game) {
     super(game)
 
@@ -52,8 +55,16 @@ export default class SoundsManager extends Manager {
     this._audios = {}
   }
 
+  /**
+   * The loaded system instance. Readonly.
+   * @type {AudioSystem}
+   */
   get system() { return this._system }
 
+  /**
+   * The master volume.
+   * @type {Number}
+   */
   get volume() {
     if (this._system) {
       return this._system.volume
@@ -65,6 +76,10 @@ export default class SoundsManager extends Manager {
     }
   }
   
+  /**
+   * Initializes the manager. Called automatically by the game, do not call it
+   * manually.
+   */
   setup() {
     if (globals.audioSystems.length) {
       for (let i=0; i<globals.audioSystems.length; i++) {
@@ -78,6 +93,14 @@ export default class SoundsManager extends Manager {
     this.game.log.warn(`(sounds) No audio system was detected.`)
   }
 
+  /**
+   * Creates a new audio. Called by resources.
+   *
+   * @param {String} id - The audio ID, same used in the resources for loading.
+   * @param {Object} buffer - The audio buffer.
+   * @param {Object} data - The audio metadata.
+   * @return {BaseAudio}
+   */
   createAudio(id, buffer, data) {
     if (!this._system) return
 
@@ -88,6 +111,12 @@ export default class SoundsManager extends Manager {
     return audio
   }
 
+  /**
+   * Gets and audio.
+   * 
+   * @param {String} id - The audio ID, same used in the resources for loading.
+   * @return {BaseAudio}
+   */
   get(id) {
     if (!this._system) return
 
