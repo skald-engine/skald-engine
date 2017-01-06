@@ -7,6 +7,7 @@ import ErrorEvent from 'core/events/ErrorEvent'
 import textureMiddleware from 'core/managers/resources/textureMiddleware'
 import audioMiddleware from 'core/managers/resources/audioMiddleware'
 import jsonMiddleware from 'core/managers/resources/jsonMiddleware'
+import rawMiddleware from 'core/managers/resources/rawMiddleware'
 
 import * as utils from 'utils'
 import audioMetadataSchema from 'core/config/audioMetadataSchema'
@@ -55,6 +56,7 @@ export default class ResourcesManager extends Manager {
     this._loader.use(textureMiddleware(this.game))
     this._loader.use(audioMiddleware(this.game))
     this._loader.use(jsonMiddleware(this.game))
+    this._loader.use(rawMiddleware(this.game))
   }
 
   _setupEvents() {

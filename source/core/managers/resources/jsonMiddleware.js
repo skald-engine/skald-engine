@@ -5,7 +5,7 @@ export default function jsonMiddleware(game) {
     }
 
     if (!resource.data) {
-      resource.error = `Invalid audio file.`
+      resource.error = `Invalid json file.`
       return next()
     }
 
