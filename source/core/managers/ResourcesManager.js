@@ -157,7 +157,43 @@ export default class ResourcesManager extends Manager {
   }
 
   loadAudio(id, url, data) {
-    this.game.log.trace(`(resources) Loading audio "${id}" from "${url}".`)    
+
+    if (Array.isArray(url)) {
+      let codecs = {
+        'ogg'   : 'ogg',
+        'ogv'   : 'ogg',
+        'oga'   : 'ogg',
+        'ogx'   : 'ogg',
+        'ogm'   : 'ogg',
+        'spx'   : 'ogg',
+        'opus'  : 'opus',
+        'm4a'   : 'm4a',
+        'mp4'   : 'm4a',
+        'm4p'   : 'm4a',
+        'm4b'   : 'm4a',
+        'm4r'   : 'm4a',
+        'm4v'   : 'm4a',
+        'mp3'   : 'mp3',
+        'wav'   : 'wav',
+        'wave'  : 'wav',
+        'webm'  : 'webm',
+        'ac3'   : 'dolby',
+      }
+      let extensions = Object.keys(codecs)
+      let device = this.game.device
+
+      for (let i=0; i<url.length; i++) {
+        let file = url[i].toLowerCase()
+
+        let extension = extensions.find(e => file.endsWith(e))
+        if (extension && device[codecs[extension]]) {
+          url  = url[i]
+          break
+        }
+      }
+    }
+
+    this.game.log.trace(`(resources) Loading audio "${id}" from "${url}".`)
     data = utils.validateJson(data||{}, {}, audioMetadataSchema)
 
     this._loader.add(id, url, {metadata: {type: 'audio', data: data}})
