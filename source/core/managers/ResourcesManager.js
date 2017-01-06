@@ -6,9 +6,11 @@ import ErrorEvent from 'core/events/ErrorEvent'
 
 import textureMiddleware from 'core/managers/resources/textureMiddleware'
 import audioMiddleware from 'core/managers/resources/audioMiddleware'
+import jsonMiddleware from 'core/managers/resources/jsonMiddleware'
 
 import * as utils from 'utils'
 import audioMetadataSchema from 'core/config/audioMetadataSchema'
+
 
 export default class ResourcesManager extends Manager {
   constructor(game) {
@@ -52,6 +54,7 @@ export default class ResourcesManager extends Manager {
     this._loader._afterMiddleware = []
     this._loader.use(textureMiddleware(this.game))
     this._loader.use(audioMiddleware(this.game))
+    this._loader.use(jsonMiddleware(this.game))
   }
 
   _setupEvents() {
@@ -127,16 +130,29 @@ export default class ResourcesManager extends Manager {
     this.game.log.trace(`(resources) Loading audio "${id}" from "${url}".`)    
     data = utils.validateJson(data||{}, {}, audioMetadataSchema)
 
-    this._loader.add(id, url, { metadata: { type: 'audio', data: data } })
+    this._loader.add(id, url, {metadata: {type: 'audio', data: data}})
     this._loader.load()
   }
 
-  loadJson(id, url) {}
-  loadScript(id, url) {}
-  loadStyle(id, url) {}
-  loadSpriteSheet(id, url, data) {}
-  loadAudioSprite(id, url, data) {}
-  loadRaw(id, url) {}
+  loadJson(id, url) {
+    this.game.log.trace(`(resources) Loading json "${id}" from "${url}".`)
+    this._loader.add(id, url, {metadata: {type: 'json'}})
+    this._loader.load()
+  }
+
+  loadSpriteSheet(id, url, data) {
+    this.game.log.trace(`(resources) Loading sprite sheet "${id}" from "${url}".`)
+  }
+
+  loadAudioSprite(id, url, data) {
+    this.game.log.trace(`(resources) Loading audio sprite "${id}" from "${url}".`)
+  }
+
+  loadRaw(id, url) {
+    this.game.log.trace(`(resources) Loading raw "${id}" from "${url}".`)
+    this._loader.add(id, url, {metadata: {type: 'raw'}})
+    this._loader.load()
+  }
 
   list() {
     return Object.keys(this._resources)
