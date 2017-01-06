@@ -120,6 +120,8 @@ export default class ResourcesManager extends Manager {
   }
 
   loadManifest(manifest) {
+    this.game.log.trace(`(resources) Loading manifest.`)
+
     let loaders = {
       texture     : (id, url, data) => this.loadTexture(id, url, data),
       audio       : (id, url, data) => this.loadAudio(id, url, data),
