@@ -57,6 +57,12 @@ export default class Game extends EventEmitter {
   get renderer() { return this._renderer }
 
   /**
+   * The canvas object. Readonly.
+   * @type {Canvas}
+   */
+  get view() { return this._renderer && this._renderer.view}
+
+  /**
    * The game global container. Readonly.
    * @type {PIXI.Container}
    */
