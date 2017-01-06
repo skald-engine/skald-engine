@@ -119,7 +119,33 @@ export default class ResourcesManager extends Manager {
     this._resources[id] = {resource, metadata}
   }
 
-  loadManifest(manifest) {}
+  loadManifest(manifest) {
+    let loaders = {
+      texture     : (id, url, data) => this.loadTexture(id, url, data),
+      audio       : (id, url, data) => this.loadAudio(id, url, data),
+      json        : (id, url, data) => this.loadJson(id, url, data),
+      spriteSheet : (id, url, data) => this.loadSpriteSheet(id, url, data),
+      audioSprite : (id, url, data) => this.loadAudioSprite(id, url, data),
+      raw         : (id, url, data) => this.loadRaw(id, url, data),
+    }
+
+    if (!Array.isArray(manifest)) {
+      throw new Error(`Manifest must be an array.`)
+    }
+
+    for (let i=0; i<manifest.length; i++) {
+      let data = manifest[i]
+
+      if (!data.id) throw new Error(`Manifest item "${i}" with no ID.`)
+      if (!data.url) throw new Error(`Manifest item "${i}" with no URL.`)
+      if (!data.type) throw new Error(`Manifest item "${i}" with no type.`)
+
+      let loader = loaders[data.type]
+      if (!loader) throw new Error(`Manifest item "${i}" with invalid type "${data.type}".`)
+
+      loader(data.id, data.url, data)
+    }
+  }
 
   loadTexture(id, url) {
     this.game.log.trace(`(resources) Loading texture "${id}" from "${url}".`)

@@ -21,7 +21,7 @@ export default class Game extends EventEmitter {
    * 
    * @param {Object} config - The initial configuration of the game.
    */
-  constructor(config) {
+  constructor(config, manifest) {
     super()
 
     this._renderer = null
@@ -47,7 +47,7 @@ export default class Game extends EventEmitter {
     this._physics = null
     this._resources = null
 
-    this._initialize(config)
+    this._initialize(config, manifest)
   }
 
   /**
@@ -181,11 +181,12 @@ export default class Game extends EventEmitter {
   /**
    * Initialize all elements of the game.
    */
-  _initialize(config) {
+  _initialize(config, manifest) {
     this._initializeConfig(config)
     this._initializeLogger()
     this._initializeRenderer()
     this._initializeManagers()
+    this._initializeLoader(manifest)
     this._initializeGame()
   }
 
@@ -279,6 +280,15 @@ export default class Game extends EventEmitter {
     this._touches.setup()
     this._inputs.setup()
     this._sounds.setup()
+  }
+
+  /**
+   * Load the manifest.
+   */
+  _initializeLoader(manifest) {
+    if (manifest) {
+      this.resources.loadManifest(manifest)
+    }
   }
 
   /**

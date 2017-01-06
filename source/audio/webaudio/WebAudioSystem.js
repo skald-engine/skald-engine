@@ -138,7 +138,6 @@ export default class WebAudioSystem extends AudioSystem {
    */
   _initializeTouchLock() {    
     this._scratchBuffer = this._audioContext.createBuffer(1, 1, 22050)
-    this.game.log.trace('starting touch lock')
 
     let self = this
     function unlock() {
