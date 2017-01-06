@@ -101,7 +101,7 @@ export default class ResourcesManager extends Manager {
         resource.name,
         resource.url,
         r.resource,
-        r.metadata,
+        r.metadata
       )
     )
   }

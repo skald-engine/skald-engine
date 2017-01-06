@@ -10,13 +10,13 @@ export default class AnimatedSprite extends Sprite {
     this._playing = false
   }
 
-  _updateTexture()
+  _updateTexture() {}
 
 
-  play()
-  stop()
-  gotoAndPlay()
-  gotoAndStop()
-  update()
-  destroy()
+  play() {}
+  stop() {}
+  gotoAndPlay() {}
+  gotoAndStop() {}
+  update() {}
+  destroy() {}
 }
