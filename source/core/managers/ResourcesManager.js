@@ -8,9 +8,32 @@ import textureMiddleware from 'core/managers/resources/textureMiddleware'
 import audioMiddleware from 'core/managers/resources/audioMiddleware'
 import jsonMiddleware from 'core/managers/resources/jsonMiddleware'
 import rawMiddleware from 'core/managers/resources/rawMiddleware'
+import audioSpriteMiddleware from 'core/managers/resources/audioSpriteMiddleware'
 
 import * as utils from 'utils'
 import audioMetadataSchema from 'core/config/audioMetadataSchema'
+import audioSpriteMetadataSchema from 'core/config/audioSpriteMetadataSchema'
+
+const CODECS = {
+  'ogg'   : 'ogg',
+  'ogv'   : 'ogg',
+  'oga'   : 'ogg',
+  'ogx'   : 'ogg',
+  'ogm'   : 'ogg',
+  'spx'   : 'ogg',
+  'opus'  : 'opus',
+  'm4a'   : 'm4a',
+  'mp4'   : 'm4a',
+  'm4p'   : 'm4a',
+  'm4b'   : 'm4a',
+  'm4r'   : 'm4a',
+  'm4v'   : 'm4a',
+  'mp3'   : 'mp3',
+  'wav'   : 'wav',
+  'wave'  : 'wav',
+  'webm'  : 'webm',
+  'ac3'   : 'dolby',
+}
 
 
 export default class ResourcesManager extends Manager {
@@ -57,6 +80,7 @@ export default class ResourcesManager extends Manager {
     this._loader.use(audioMiddleware(this.game))
     this._loader.use(jsonMiddleware(this.game))
     this._loader.use(rawMiddleware(this.game))
+    this._loader.use(audioSpriteMiddleware(this.game))
   }
 
   _setupEvents() {
@@ -115,6 +139,25 @@ export default class ResourcesManager extends Manager {
     this.game.events.dispatch('resourcecomplete')
   }
 
+  _getAudioUrl(url) {
+    if (Array.isArray(url)) {
+      let extensions = Object.keys(CODECS)
+      let device = this.game.device
+
+      for (let i=0; i<url.length; i++) {
+        let file = url[i].toLowerCase()
+
+        let extension = extensions.find(e => file.endsWith(e))
+        if (extension && device[CODECS[extension]]) {
+          url  = url[i]
+          break
+        }
+      }
+    }
+
+    return url
+  }
+
   cacheResource(id, resource, metadata) {
     this._resources[id] = {resource, metadata}
   }
@@ -127,7 +170,7 @@ export default class ResourcesManager extends Manager {
       audio       : (id, url, data) => this.loadAudio(id, url, data),
       json        : (id, url, data) => this.loadJson(id, url, data),
       spriteSheet : (id, url, data) => this.loadSpriteSheet(id, url, data),
-      audioSprite : (id, url, data) => this.loadAudioSprite(id, url, data),
+      audioSprite : (id, url, data) => this.loadAudioSprite(url, data.sounds),
       raw         : (id, url, data) => this.loadRaw(id, url, data),
     }
 
@@ -138,9 +181,11 @@ export default class ResourcesManager extends Manager {
     for (let i=0; i<manifest.length; i++) {
       let data = manifest[i]
 
-      if (!data.id) throw new Error(`Manifest item "${i}" with no ID.`)
       if (!data.url) throw new Error(`Manifest item "${i}" with no URL.`)
       if (!data.type) throw new Error(`Manifest item "${i}" with no type.`)
+      if (data.type !== 'audioSprite' && !data.id) {
+        throw new Error(`Manifest item "${i}" with no ID.`)
+      }
 
       let loader = loaders[data.type]
       if (!loader) throw new Error(`Manifest item "${i}" with invalid type "${data.type}".`)
@@ -157,41 +202,7 @@ export default class ResourcesManager extends Manager {
   }
 
   loadAudio(id, url, data) {
-
-    if (Array.isArray(url)) {
-      let codecs = {
-        'ogg'   : 'ogg',
-        'ogv'   : 'ogg',
-        'oga'   : 'ogg',
-        'ogx'   : 'ogg',
-        'ogm'   : 'ogg',
-        'spx'   : 'ogg',
-        'opus'  : 'opus',
-        'm4a'   : 'm4a',
-        'mp4'   : 'm4a',
-        'm4p'   : 'm4a',
-        'm4b'   : 'm4a',
-        'm4r'   : 'm4a',
-        'm4v'   : 'm4a',
-        'mp3'   : 'mp3',
-        'wav'   : 'wav',
-        'wave'  : 'wav',
-        'webm'  : 'webm',
-        'ac3'   : 'dolby',
-      }
-      let extensions = Object.keys(codecs)
-      let device = this.game.device
-
-      for (let i=0; i<url.length; i++) {
-        let file = url[i].toLowerCase()
-
-        let extension = extensions.find(e => file.endsWith(e))
-        if (extension && device[codecs[extension]]) {
-          url  = url[i]
-          break
-        }
-      }
-    }
+    url = this._getAudioUrl(url)
 
     this.game.log.trace(`(resources) Loading audio "${id}" from "${url}".`)
     data = utils.validateJson(data||{}, {}, audioMetadataSchema)
@@ -210,8 +221,15 @@ export default class ResourcesManager extends Manager {
     this.game.log.trace(`(resources) Loading sprite sheet "${id}" from "${url}".`)
   }
 
-  loadAudioSprite(id, url, data) {
-    this.game.log.trace(`(resources) Loading audio sprite "${id}" from "${url}".`)
+  loadAudioSprite(url, data) {
+    url = this._getAudioUrl(url)
+
+    this.game.log.trace(`(resources) Loading audio sprite from "${url}".`)
+    data = utils.validateJson(data||{}, {}, audioSpriteMetadataSchema)
+
+    let randomId = ('$audiosprite-' + Math.random()).substring(15)
+    this._loader.add(randomId, url, {metadata: {type: 'audiosprite', data: data}})
+    this._loader.load()
   }
 
   loadRaw(id, url) {
