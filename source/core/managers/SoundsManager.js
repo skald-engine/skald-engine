@@ -73,8 +73,15 @@ export default class SoundsManager extends Manager {
    * manually.
    */
   setup() {
-    this.volume = this.game.config.sounds.masterVolume
+    this._setupSystem()
 
+    this.volume = this.game.config.sounds.masterVolume
+  }
+
+  /**
+   * Setup system
+   */
+  _setupSystem() {
     if (globals.audioSystems.length) {
       for (let i=0; i<globals.audioSystems.length; i++) {
         if (globals.audioSystems[i].canUse()) {
