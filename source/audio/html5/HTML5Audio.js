@@ -6,10 +6,18 @@ import * as utils from 'utils'
  */
 let NEXT_ID = 1
 
+/**
+ * HTML5 audio tag implementation of skald audio. You shouldn't create this
+ * object manually, instead use {@SoundsManager.createAudio}.
+ */
 export default class HTML5Audio extends BaseAudio {
 
   /**
+   * @param {AudioSystem} game - The game instance.
    * @param {AudioSystem} system - The system instance.
+   * @param {AudioSystem} id - The resource id.
+   * @param {AudioSystem} buffer - The resource buffer.
+   * @param {AudioSystem} url - The resource url.
    */
   constructor(game, system, id, buffer, url) {
     super(system)
@@ -25,7 +33,7 @@ export default class HTML5Audio extends BaseAudio {
   }
 
   /**
-   * The audio ID.
+   * The audio ID. Readonly.
    * @type {String}
    */
   get id() { return this._id }
@@ -323,6 +331,12 @@ export default class HTML5Audio extends BaseAudio {
     }
   }
 
+  /**
+   * Adjust the current playbacks to use the new master volume. This method is
+   * called automatically by the engine, do not call it manually.
+   * 
+   * @param {Number} v - The master volume.
+   */
   adjustMasterVolume(v) {
     let ids = Object.keys(this._sounds)
     for (let i=0; i<ids.length; i++) {

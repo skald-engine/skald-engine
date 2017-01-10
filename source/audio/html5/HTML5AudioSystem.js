@@ -2,7 +2,13 @@ import AudioSystem from 'core/AudioSystem'
 import Audio from 'audio/html5/HTML5Audio'
 import * as utils from 'utils'
 
-
+/**
+ * HTML5 audio system. This audio system implements the interface to the 
+ * browser HTML5 audio tags, which is supported by most current browser (see
+ * https://developer.mozilla.org/en/docs/Web/API/HTMLAudioElement).
+ *
+ * This system creates {@link HTML5Audio} objects to represent the audio files.
+ */
 export default class HTML5AudioSystem extends AudioSystem {
 
   /**
@@ -23,6 +29,10 @@ export default class HTML5AudioSystem extends AudioSystem {
     this._initialize()
   }
 
+  /**
+   * Master volume.
+   * @type {Number}
+   */
   get volume() {
     return this._volume
   }
@@ -43,10 +53,24 @@ export default class HTML5AudioSystem extends AudioSystem {
     }
   }
 
+  /**
+   * Verifies if browser supports the HTML5 audio.
+   *
+   * @return {Boolean}
+   */
   static canUse() {
     return !!window.Audio
   }
 
+  /**
+   * Creates an audio given a buffer and a metadata object.
+   *
+   * @param {Object} id - The resource ID.
+   * @param {Object} buffer - The buffer object.
+   * @param {Object} data - The audio metadata.
+   * @param {Object} url - The resource url.
+   * @return {WebAudioAudio} The audio object.
+   */
   createAudio(id, buffer, data, url) {
     let audio = new Audio(this.game, this, id, buffer, url)
 
@@ -80,13 +104,27 @@ export default class HTML5AudioSystem extends AudioSystem {
     return audio
   }
   
+  /**
+   * Get inactive HTML5 tag. It creates a new tag if none is available.
+   *
+   * @return {HTMLAudioElement}
+   */
   getInactiveTag() {
     return this._inactiveTags.shift() || new window.Audio()
   }
+
+  /**
+   * Adds an HTML5 tag to the inactive pool.
+   * 
+   * @patam {HTMLAudioElement} tag - The HTML5 tag.
+   */
   addInactiveTag(tag) {
     this._inactiveTags.push(tag)
   }
 
+  /**
+   * Initialize the system.
+   */
   _initialize() {
     // pre create html5 audio tags
     for (let i=0; i<4; i++) {

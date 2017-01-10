@@ -53,8 +53,10 @@ export default class WebAudioSystem extends AudioSystem {
   /**
    * Creates an audio given a buffer and a metadata object.
    *
+   * @param {Object} id - The resource ID.
    * @param {Object} buffer - The buffer object.
    * @param {Object} data - The audio metadata.
+   * @param {Object} url - The resource url.
    * @return {WebAudioAudio} The audio object.
    */
   createAudio(id, buffer, data, url) {

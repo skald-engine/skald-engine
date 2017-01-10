@@ -2,6 +2,7 @@ import Manager from 'core/Manager'
 import * as audio from 'audio'
 import * as globals from 'globals_'
 
+
 /**
  * The sounds manager handle the storage and initialization of the game audios.
  * This manager is created by the game and can be accessed via `game.sounds`.
@@ -33,15 +34,6 @@ import * as globals from 'globals_'
  * platform, and will select the first one that works. Notice that, you must
  * set the audio systems BEFORE the creation of the game and it can't be 
  * changed after that.
- *
- *
- * Role:
- *
- * - Control master volume
- * - Handle sound groups
- * - Initialize and configure the browser audio system
- * - Store individual audios
- * * 
  */
 export default class SoundsManager extends Manager {
   
@@ -99,6 +91,7 @@ export default class SoundsManager extends Manager {
    * @param {String} id - The audio ID, same used in the resources for loading.
    * @param {Object} buffer - The audio buffer.
    * @param {Object} data - The audio metadata.
+   * @param {Object} url - The audio URL.
    * @return {BaseAudio}
    */
   createAudio(id, buffer, data, url) {
