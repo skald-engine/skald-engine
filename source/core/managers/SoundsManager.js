@@ -101,10 +101,10 @@ export default class SoundsManager extends Manager {
    * @param {Object} data - The audio metadata.
    * @return {BaseAudio}
    */
-  createAudio(id, buffer, data) {
+  createAudio(id, buffer, data, url) {
     if (!this._system) return
 
-    let audio = this._system.createAudio(buffer, data)
+    let audio = this._system.createAudio(id, buffer, data, url)
     if (id) {
       this._audios[id] = audio
     }
@@ -123,4 +123,10 @@ export default class SoundsManager extends Manager {
     return this._audios[id]
   }
 
+  /**
+   * List all audios.
+   */
+  list() {
+    return Object.keys(this._audios)
+  }
 }

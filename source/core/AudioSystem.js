@@ -50,7 +50,7 @@ export default class AudioSystem {
    * @param {Object} data - The audio metadata.
    * @return {BaseAudio} - The audio object.
    */
-  createAudio(buffer, data) {}
+  createAudio(id, buffer, data, url) {}
 
   /**
    * Whether the browser can use this system or not.

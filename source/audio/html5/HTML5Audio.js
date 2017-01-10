@@ -6,43 +6,36 @@ import * as utils from 'utils'
  */
 let NEXT_ID = 1
 
-/**
- * Webaudio implementation of skald audio. You shouldn't create this object 
- * manually, instead use {@SoundsManager.createAudio}.
- */
-export default class WebAudioAudio extends BaseAudio {
+export default class HTML5Audio extends BaseAudio {
 
   /**
    * @param {AudioSystem} system - The system instance.
-   * @param {GainNode} masterGain - The master gain node.
    */
-  constructor(system, masterGain) {
+  constructor(game, system, id, buffer, url) {
     super(system)
 
-    this._masterGain = masterGain
-    this._buffer = null
+    this._game = game
+    this._id = id
+    this._url = url
+    this._buffer = buffer
+    this._ready = true
     this._sounds = {}
-    this._pendingSounds = []
     this._inactiveSounds = []
-    this._type = 'webaudio'
+    this._type = 'html5'
   }
+
+  /**
+   * The audio ID.
+   * @type {String}
+   */
+  get id() { return this._id }
 
   /**
    * The audio buffer object.
    * @type {Object}
    */
   get buffer() { return this._buffer }
-  set buffer(value) {
-    this._buffer = value
-    this._ready = true
-
-    if (this._pendingSounds.length) {
-      for (let i=0; i<this._pendingSounds.length; i++) {
-        let a = this._pendingSounds[i]
-        this.play(null, a[0], a[1], a[2], a[3])
-      }
-    }
-  }
+  set buffer(value) { this._buffer = value }
 
   /**
    * Check if this audio is ready to play. You may still call the `play` 
@@ -50,9 +43,7 @@ export default class WebAudioAudio extends BaseAudio {
    *
    * @return {Boolean}
    */
-  isReady() {
-    return this._ready
-  }
+  isReady() { return this._ready }
 
   /**
    * Check if this audio or an specific playback is playing. Notice that paused
@@ -354,17 +345,20 @@ class Sound {
     this._volume   = null
     this._loop     = null
 
-    this._source   = null
-    this._gain     = null
-
     this._startedAt   = null
     this._currentTime = 0
     this._playing     = false
     this._paused      = false
     this._muted       = false
 
-    this._gain = system.createGainNode()
-    this._gain.connect(audio._masterGain)
+    this._timeout = null
+
+    let self = this
+    this._onEndedCallback = () => self._onFinish()
+    this._onSuspendedCallback = () => self._onFinish()
+    this._onPauseCallback = () => self._onFinish()
+    this._onErrorCallback = () => self._onFinish()
+    this._onTimeoutCallback = () => self._onFinish()
   }
 
 
@@ -377,9 +371,7 @@ class Sound {
   get volume() { return this._volume }
   set volume(v) {
     this._volume = v
-    if (!this._muted) {
-      this._gain.gain.value = v
-    }
+    if (this._source) this._source.volume = v
   }
 
   get loop() { return this._loop }
@@ -397,9 +389,11 @@ class Sound {
   }
 
   _onFinish() {
+    this._audio.stop(this._id)
     if (!this._loop) {
       this._audio.stop(this._id)
     } else {
+      this.stop()
       this.play()
     }
   }
@@ -412,42 +406,28 @@ class Sound {
   }
 
   play() {
-    this._duration = this._duration || this._audio._buffer.duration*1000
-
-    this._source = this._system._audioContext.createBufferSource()
-    this._source.onended = () => this._onFinish()
-    this._source.buffer = this._audio._buffer
-    this._source.connect(this._gain)
-
-    this._source.start(0, this.offset/1000, this.duration/1000)
+    this._playSound(this._offset/1000, (this._duration||0)/1000)
     this._playing = true
     this._paused = false
-
     this._startedAt = Date.now()
     this._currentTime = this._offset
   }
   stop() {
     this._playing = false
     this._paused = false
-    this._source.onended = null
-    this._source.stop()
+    this._stopSound()
   }
   pause() {
     this._paused = true
     this._playing = false
     this._currentTime += Date.now() - this._startedAt
-    this._source.onended = null
-    this._source.stop()
+    this._stopSound()
   }
   resume() {
     let offset = this._currentTime/1000
     let duration = this._duration/1000 - offset
 
-    this._source = this._system._audioContext.createBufferSource()
-    this._source.onended = () => this._onFinish()
-    this._source.buffer = this._audio._buffer
-    this._source.connect(this._gain)
-    this._source.start(0, offset, duration)
+    this._playSound(offset, duration)
     this._paused = false
     this._playing = true
     this._startedAt = Date.now()
@@ -455,10 +435,44 @@ class Sound {
 
   mute() {
     this._muted = true
-    this._gain.gain.value = 0
+    if (this._source) this._source.muted = true
   }
   unmute() {
     this._muted = false
-    this._gain.gain.value = this._volume
+    if (this._source) this._source.muted = false
+  }
+
+  _playSound(offset, duration) {
+    this._source = this._system.getInactiveTag()
+    this._source.addEventListener('ended', this._onEndedCallback)
+    this._source.addEventListener('suspended', this._onSuspendedCallback)
+    this._source.addEventListener('pause', this._onPauseCallback)
+    this._source.addEventListener('error', this._onErrorCallback)
+
+    this._source.src = this._audio._url
+    this._source.currentTime = offset
+    this._source.volume = this._volume
+    this._source.preload = 'auto'
+    this._source.load()
+    this._source.play()
+
+    if (duration) {
+      this._timeout = setTimeout(this._onTimeoutCallback, duration*1000)
+    }
+  }
+
+  _stopSound() {
+    this._source.removeEventListener('ended', this._onEndedCallback)
+    this._source.removeEventListener('suspended', this._onSuspendedCallback)
+    this._source.removeEventListener('pause', this._onPauseCallback)
+    this._source.removeEventListener('error', this._onErrorCallback)
+
+    this._source.pause()
+    this._system.addInactiveTag(this._source)
+    this._source = null
+
+    if (this._timeout) {
+      clearTimeout(this._timeout)
+    }
   }
 }

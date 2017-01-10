@@ -57,7 +57,7 @@ export default class WebAudioSystem extends AudioSystem {
    * @param {Object} data - The audio metadata.
    * @return {WebAudioAudio} The audio object.
    */
-  createAudio(buffer, data) {
+  createAudio(id, buffer, data, url) {
     let audio = new Audio(this, this._masterGain)
 
     data = data || {}

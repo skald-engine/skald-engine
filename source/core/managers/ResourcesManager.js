@@ -158,8 +158,8 @@ export default class ResourcesManager extends Manager {
     return url
   }
 
-  cacheResource(id, resource, metadata) {
-    this._resources[id] = {resource, metadata}
+  cacheResource(id, url, resource, metadata) {
+    this._resources[id] = {url, resource, metadata}
   }
 
   loadManifest(manifest) {
@@ -246,6 +246,12 @@ export default class ResourcesManager extends Manager {
     let r = this._resources[id]
     if (r) { return r.resource }
   }
+
+  getUrl(id) {
+    let r = this._resources[id]
+    if (r) { return r.url }
+  }
+
   getMetadata(id) {
     let r = this._resources[id]
     if (r) { return r.metadata }

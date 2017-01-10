@@ -30,6 +30,7 @@ export default function textureMiddleware(game) {
     // Add the texture to game resources
     game.resources.cacheResource(
       resource.name,
+      resource.url,
       resource.texture,
       resource.metadata
     )

@@ -13,6 +13,7 @@ export default function jsonMiddleware(game) {
 
     game.resources.cacheResource(
       resource.name,
+      resource.url,
       resource.json,
       resource.metadata
     )

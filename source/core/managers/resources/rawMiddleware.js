@@ -13,6 +13,7 @@ export default function rawMiddleware(game) {
 
     game.resources.cacheResource(
       resource.name,
+      resource.url,
       resource.raw,
       resource.metadata
     )

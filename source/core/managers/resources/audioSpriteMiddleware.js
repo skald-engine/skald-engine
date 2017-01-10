@@ -16,11 +16,13 @@ export default function audioSpriteMiddleware(game) {
       let audio = game.sounds.createAudio(
         data.id,
         resource.data,
-        data
+        data,
+        resource.url
       )
       
       game.resources.cacheResource(
         data.id,
+        resource.url,
         audio,
         resource.metadata
       )
