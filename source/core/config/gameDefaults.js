@@ -52,6 +52,10 @@ export default {
     rightStickDeadzone : 0.25,
     allowEvents        : true,
     preventDefaults    : true,
+  },
+
+  sounds: {
+    masterVolume: 1
   }
 
 }

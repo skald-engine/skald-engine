@@ -46,8 +46,10 @@ export default class AudioSystem {
   /**
    * Creates a new audio given a buffer object and a metadata.
    *
+   * @param {String} id - The resource string.
    * @param {Object} buffer - The buffer object.
    * @param {Object} data - The audio metadata.
+   * @param {String} url - The resource URL.
    * @return {BaseAudio} - The audio object.
    */
   createAudio(id, buffer, data, url) {}

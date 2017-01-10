@@ -10,7 +10,11 @@ export default {
     'managers',
     'display',
     'resources',
-    'storage'
+    'storage',
+    'mouse',
+    'keyboard',
+    'gamepadsa',
+    'sounds'
   ],
   properties: {
     // Base
@@ -72,14 +76,70 @@ export default {
       }
     },
 
-    // resources: {
-    //   type: 'object',
-    //   required: ['basePath', 'maxConcurrency']
-    // },
+    resources: {
+      type: 'object',
+      required: [
+        'basePath',
+        'maxConcurrency'
+      ],
+      properties: {
+        basePath       : { type: ['string', 'null'] },
+        maxConcurrency : { type: 'integer', minimum: 0 },
+      }
+    },
 
-    // storage: {
-    //   type: 'object',
-    //   required: ['namescape']
-    // }
+    keyboard: {
+      type: 'object',
+      required: [
+        'allowEvents',
+        'preventDefaults'
+      ],
+      properties: {
+        allowEvents : { type: 'boolean' },
+        preventDefaults : { type: 'boolean' },
+      }
+    },
+
+    mouse: {
+      type: 'object',
+      required: [
+        'allowEvents',
+        'preventDefaults'
+      ],
+      properties: {
+        allowEvents : { type: 'boolean' },
+        preventDefaults : { type: 'boolean' },
+      }
+    },
+
+    gamepads: {
+      type: 'object',
+      required: [
+        'leftStickDeadzone',
+        'rightStickDeadzone',
+        'allowEvents',
+        'preventDefaults'
+      ],
+      properties: {
+        leftStickDeadzone: { type: 'number', minimum: 0, maximum: 1 },
+        rightStickDeadzone: { type: 'number', minimum: 0, maximum: 1 },
+        allowEvents: { type: 'boolean' },
+        preventDefaults: { type: 'boolean' },
+      }
+    },
+
+    sounds: {
+      type: 'object',
+      required: [
+        'masterVolume'
+      ],
+      properties: {
+        masterVolume: { type: 'number', minimum: 0, maximum: 1 }
+      }
+    },
+
+    storage: {
+      type: 'object'
+    }
   }
 }

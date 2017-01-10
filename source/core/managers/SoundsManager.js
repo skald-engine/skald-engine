@@ -73,6 +73,8 @@ export default class SoundsManager extends Manager {
    * manually.
    */
   setup() {
+    this.volume = this.game.config.sounds.masterVolume
+
     if (globals.audioSystems.length) {
       for (let i=0; i<globals.audioSystems.length; i++) {
         if (globals.audioSystems[i].canUse()) {
@@ -91,7 +93,7 @@ export default class SoundsManager extends Manager {
    * @param {String} id - The audio ID, same used in the resources for loading.
    * @param {Object} buffer - The audio buffer.
    * @param {Object} data - The audio metadata.
-   * @param {Object} url - The audio URL.
+   * @param {String} url - The audio URL.
    * @return {BaseAudio}
    */
   createAudio(id, buffer, data, url) {
