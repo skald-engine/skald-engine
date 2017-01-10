@@ -18,8 +18,8 @@ globals.addLoggerHandler('dom', utils.logging.handlers.domHandler)
 globals.addLoggerHandler('file', utils.logging.handlers.fileHandler)
 
 globals.setAudioSystems([
-  audio.HTML5AudioSystem,
   audio.WebAudioSystem,
+  audio.HTML5AudioSystem,
 ])
 
 
