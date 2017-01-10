@@ -31,6 +31,29 @@ export default class HTML5Audio extends BaseAudio {
   get id() { return this._id }
 
   /**
+   * Volume of the audio.
+   * @type {Number}
+   */
+  set volume(v) {
+    if (typeof v !== 'number') {
+      throw new Error(`Invalid volume value, you must provide a number `+
+                      `between 0 and 1.`)
+    }
+
+    v = utils.clip(v, 0, 1)
+
+    let ids = Object.keys(this._sounds)
+    for (let i=0; i<ids.length; i++) {
+      let sound = this._sounds[ids[i]]
+      if (sound.volume === this._volume) {
+        sound.volume = v
+      }
+    }
+
+    this._volume = v
+  }
+
+  /**
    * The audio buffer object.
    * @type {Object}
    */
@@ -300,6 +323,14 @@ export default class HTML5Audio extends BaseAudio {
     }
   }
 
+  adjustMasterVolume(v) {
+    let ids = Object.keys(this._sounds)
+    for (let i=0; i<ids.length; i++) {
+      let sound = this._sounds[ids[i]]
+      sound.volume = sound.volume // forces new master volume
+    }
+  }
+
   /**
    * Creates a new playback instance.
    * 
@@ -371,7 +402,9 @@ class Sound {
   get volume() { return this._volume }
   set volume(v) {
     this._volume = v
-    if (this._source) this._source.volume = v
+    if (this._source) {
+      this._source.volume = v * this._system.volume
+    }
   }
 
   get loop() { return this._loop }
@@ -451,7 +484,7 @@ class Sound {
 
     this._source.src = this._audio._url
     this._source.currentTime = offset
-    this._source.volume = this._volume
+    this._source.volume = this._volume * this._system.volume
     this._source.preload = 'auto'
     this._source.load()
     this._source.play()

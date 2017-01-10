@@ -1,5 +1,6 @@
 import AudioSystem from 'core/AudioSystem'
 import Audio from 'audio/html5/HTML5Audio'
+import * as utils from 'utils'
 
 
 export default class HTML5AudioSystem extends AudioSystem {
@@ -26,6 +27,13 @@ export default class HTML5AudioSystem extends AudioSystem {
     return this._volume
   }
   set volume(v) {
+    if (typeof v !== 'number') {
+      throw new Error(`Invalid volume value, you must provide a number `+
+                      `between 0 and 1.`)
+    }
+
+    v = utils.clip(v, 0, 1)
+    
     this._volume = v
     let audioIds = this._game.sounds.list()
     for (let i=0; i<audioIds.length; i++) {
