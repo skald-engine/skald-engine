@@ -422,7 +422,6 @@ class Sound {
   }
 
   _onFinish() {
-    this._audio.stop(this._id)
     if (!this._loop) {
       this._audio.stop(this._id)
     } else {
