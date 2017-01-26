@@ -88,5 +88,6 @@ export default class Behavior {
    */
   configure(config) {
     Object.assign(this, config)
+    return this
   }
 }

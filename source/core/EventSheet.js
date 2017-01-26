@@ -82,6 +82,7 @@ export default class EventSheet {
    */
   configure(config) {
     Object.assign(this, config)
+    return this
   }
   
   /**

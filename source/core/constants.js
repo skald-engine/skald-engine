@@ -343,3 +343,52 @@ export const INPUT_DEVICES = enumeration({
   TOUCH    : 'touch',
   GAMEPAD  : 'gamepad',
 })
+
+
+// FROM PIXI
+
+export const BLEND_MODES = enumeration({
+  NORMAL      : 0,
+  ADD         : 1,
+  MULTIPLY    : 2,
+  SCREEN      : 3,
+  OVERLAY     : 4,
+  DARKEN      : 5,
+  LIGHTEN     : 6,
+  COLOR_DODGE : 7,
+  COLOR_BURN  : 8,
+  HARD_LIGHT  : 9,
+  SOFT_LIGHT  : 10,
+  DIFFERENCE  : 11,
+  EXCLUSION   : 12,
+  HUE         : 13,
+  SATURATION  : 14,
+  COLOR       : 15,
+  LUMINOSITY  : 16,
+})
+
+export const DRAW_MODES = enumeration({
+  POINTS         : 0,
+  LINES          : 1,
+  LINE_LOOP      : 2,
+  LINE_STRIP     : 3,
+  TRIANGLES      : 4,
+  TRIANGLE_STRIP : 5,
+  TRIANGLE_FAN   : 6,
+})
+
+export const SCALE_MODES = enumeration({
+  LINEAR  : 0,
+  NEAREST : 1,
+})
+
+export const WRAP_MODES = enumeration({
+  CLAMP           : 0,
+  REPEAT          : 1,
+  MIRRORED_REPEAT : 2,
+})
+
+export const TEXT_GRADIENT = enumeration({
+  LINEAR_VERTICAL   : 0,
+  LINEAR_HORIZONTAL : 1,
+})

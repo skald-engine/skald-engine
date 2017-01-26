@@ -96,6 +96,7 @@ export default class BaseAudio {
    */
   configure(config) {
     Object.assign(this, config)
+    return this
   }
 
   /**

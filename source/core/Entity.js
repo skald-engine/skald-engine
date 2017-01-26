@@ -200,6 +200,7 @@ export default class Entity extends EventEmitter {
    */
   configure(config) {
     Object.assign(this, config)
+    return this
   }
 
   /**

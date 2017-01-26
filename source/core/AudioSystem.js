@@ -41,6 +41,7 @@ export default class AudioSystem {
    */
   configure(config) {
     Object.assign(this, config)
+    return this
   }
 
   /**

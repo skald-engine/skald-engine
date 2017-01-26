@@ -52,6 +52,9 @@ export default class DisplayManager extends Manager {
    */
   get height() { return this._height }
 
+  get halfWidth() { return this._width/2 }
+  get halfHeight() { return this._height/2 }
+
   /**
    * Returns the **current** game width. Readonly.
    * @type {Number}
