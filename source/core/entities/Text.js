@@ -13,11 +13,18 @@ export default class Text extends Entity {
   set anchor(value) { this._displayObject.anchor = value }
 
   get width() { return this._displayObject.width }
+  set width(value) { this._displayObject.width = value }
 
   get height() { return this._displayObject.height }
+  set height(value) { this._displayObject.height = value }
 
   get style() { return this.displayObject.style }
-  set style(style) { this.displayObject.style = style }
+  set style(style) {
+    if (!(style instanceof FontStyle)) {
+      style = new FontStyle(style)
+    }
+    this.displayObject.style = style
+   }
 
   get text() { return this.displayObject.text }
   set text(text) { this.displayObject.text = text }
