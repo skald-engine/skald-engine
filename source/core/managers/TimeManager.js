@@ -78,6 +78,6 @@ export default class TimeManager extends Manager {
     this._time = Date.now()
     this._elapsed = Math.min(this._time - this._prevTime, this._maxElapsed)
     this._delta = this._elapsed/1000
-    this._fps = this._fps*0.9 + this._elapsed*0.1
+    this._fps = this._fps*0.99 + (1000/this._elapsed)*0.01
   }
 }
