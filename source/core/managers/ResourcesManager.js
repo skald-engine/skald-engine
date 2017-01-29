@@ -9,6 +9,7 @@ import audioMiddleware from 'core/managers/resources/audioMiddleware'
 import jsonMiddleware from 'core/managers/resources/jsonMiddleware'
 import rawMiddleware from 'core/managers/resources/rawMiddleware'
 import audioSpriteMiddleware from 'core/managers/resources/audioSpriteMiddleware'
+import bitmapTextMiddleware from 'core/managers/resources/bitmapTextMiddleware'
 
 import * as utils from 'utils'
 import audioMetadataSchema from 'core/config/audioMetadataSchema'
@@ -81,6 +82,7 @@ export default class ResourcesManager extends Manager {
     this._loader.use(jsonMiddleware(this.game))
     this._loader.use(rawMiddleware(this.game))
     this._loader.use(audioSpriteMiddleware(this.game))
+    this._loader.use(bitmapTextMiddleware(this.game))
   }
 
   _setupEvents() {
@@ -171,6 +173,7 @@ export default class ResourcesManager extends Manager {
       json        : (id, url, data) => this.loadJson(id, url, data),
       spriteSheet : (id, url, data) => this.loadSpriteSheet(id, url, data),
       audioSprite : (id, url, data) => this.loadAudioSprite(url, data.sounds),
+      bitmapFont  : (id, url, data) => this.loadBitmapFont(id, url, data),
       raw         : (id, url, data) => this.loadRaw(id, url, data),
     }
 
@@ -198,6 +201,13 @@ export default class ResourcesManager extends Manager {
     this.game.log.trace(`(resources) Loading texture "${id}" from "${url}".`)
 
     this._loader.add(id, url, {metadata:{type: 'texture'}})
+    this._loader.load()
+  }
+
+  loadBitmapFont(id, url) {
+    this.game.log.trace(`(resources) Loading bitmap font "${id}" from "${url}".`)
+
+    this._loader.add(id, url, {metadata:{type: 'bitmapfont'}})
     this._loader.load()
   }
 
