@@ -10,6 +10,7 @@ import jsonMiddleware from 'core/managers/resources/jsonMiddleware'
 import rawMiddleware from 'core/managers/resources/rawMiddleware'
 import audioSpriteMiddleware from 'core/managers/resources/audioSpriteMiddleware'
 import bitmapTextMiddleware from 'core/managers/resources/bitmapTextMiddleware'
+import spriteSheetMiddleware from 'core/managers/resources/spriteSheetMiddleware'
 
 import * as utils from 'utils'
 import audioMetadataSchema from 'core/config/audioMetadataSchema'
@@ -83,6 +84,7 @@ export default class ResourcesManager extends Manager {
     this._loader.use(rawMiddleware(this.game))
     this._loader.use(audioSpriteMiddleware(this.game))
     this._loader.use(bitmapTextMiddleware(this.game))
+    this._loader.use(spriteSheetMiddleware(this.game))
   }
 
   _setupEvents() {
@@ -171,7 +173,7 @@ export default class ResourcesManager extends Manager {
       texture     : (id, url, data) => this.loadTexture(id, url, data),
       audio       : (id, url, data) => this.loadAudio(id, url, data),
       json        : (id, url, data) => this.loadJson(id, url, data),
-      spriteSheet : (id, url, data) => this.loadSpriteSheet(id, url, data),
+      spriteSheet : (id, url, data) => this.loadSpriteSheet(id, url, data.data),
       audioSprite : (id, url, data) => this.loadAudioSprite(url, data.sounds),
       bitmapFont  : (id, url, data) => this.loadBitmapFont(id, url, data),
       raw         : (id, url, data) => this.loadRaw(id, url, data),
@@ -207,7 +209,7 @@ export default class ResourcesManager extends Manager {
   loadBitmapFont(id, url) {
     this.game.log.trace(`(resources) Loading bitmap font "${id}" from "${url}".`)
 
-    this._loader.add(id, url, {metadata:{type: 'bitmapfont'}})
+    this._loader.add(id, url, {metadata:{type: 'bitmapFont'}})
     this._loader.load()
   }
 
@@ -229,6 +231,8 @@ export default class ResourcesManager extends Manager {
 
   loadSpriteSheet(id, url, data) {
     this.game.log.trace(`(resources) Loading sprite sheet "${id}" from "${url}".`)
+    this._loader.add(id, url, {metadata: {type: 'spriteSheet', data: data}})
+    this._loader.load()
   }
 
   loadAudioSprite(url, data) {
@@ -238,7 +242,7 @@ export default class ResourcesManager extends Manager {
     data = utils.validateJson(data||{}, {}, audioSpriteMetadataSchema)
 
     let randomId = ('$audiosprite-' + Math.random()).substring(15)
-    this._loader.add(randomId, url, {metadata: {type: 'audiosprite', data: data}})
+    this._loader.add(randomId, url, {metadata: {type: 'audioSprite', data: data}})
     this._loader.load()
   }
 

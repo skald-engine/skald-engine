@@ -2,7 +2,7 @@ import * as globals from 'globals_'
 
 export default function bitmapTextMiddleware(game) {
   return function(resource, next) {
-    if (resource.metadata.type !== 'bitmapfont') {
+    if (resource.metadata.type !== 'bitmapFont') {
       return next()
     }
 

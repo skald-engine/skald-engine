@@ -3,7 +3,8 @@ export * from 'core/aliases'
 export * from 'core/entities'
 
 import * as events from 'core/events'
-export {events}
+import * as config from 'core/config'
+export {events, config}
 
 export {default as EventEmitter} from 'core/EventEmitter.js'
 export {default as Game} from 'core/Game.js'

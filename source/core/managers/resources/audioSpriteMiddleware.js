@@ -1,6 +1,6 @@
 export default function audioSpriteMiddleware(game) {
   return function(resource, next) {
-    if (resource.metadata.type !== 'audiosprite') {
+    if (resource.metadata.type !== 'audioSprite') {
       return next()
     }
 
