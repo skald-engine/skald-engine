@@ -1,4 +1,5 @@
 import spriteSheetMetadataSchema from 'core/config/spriteSheetMetadataSchema'
+import spriteSheetMetadataDefaults from 'core/config/spriteSheetMetadataDefaults'
 import SpriteSheet from 'core/SpriteSheet'
 import * as utils from 'utils'
 
@@ -27,7 +28,7 @@ export default function spriteSheetMiddleware(game) {
 
     let data = {}
     try {
-      data = utils.validateJson(metadata, {}, spriteSheetMetadataSchema)
+      data = utils.validateJson(metadata, spriteSheetMetadataDefaults, spriteSheetMetadataSchema)
     } catch (e) {
       console.log(e)
       resource.error = `Invalid spritesheet metadata (id "${id}").`

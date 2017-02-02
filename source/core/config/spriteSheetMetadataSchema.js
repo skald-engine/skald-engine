@@ -1,21 +1,3 @@
-const FRAME_IRREGULAR = {
-  type: 'array',
-  items: [
-    {
-      type: 'object',
-      required: ['x', 'y', 'width', 'height'],
-      properties: {
-        x      : {type: 'integer', minimum: 0},
-        y      : {type: 'integer', minimum: 0},
-        width  : {type: 'integer', minimum: 1},
-        height : {type: 'integer', minimum: 1},
-        index  : {type: 'integer', minimum: 0},
-        label  : {type: 'string'},
-      }
-    }
-  ]
-}
-
 const FRAME_REGULAR = {
   type: 'object',
   required: ['width', 'height'],
@@ -25,12 +7,54 @@ const FRAME_REGULAR = {
     count   : {type: 'integer', minimum: 1},
     spacing : {type: 'integer', minimum: 0},
     margin  : {type: 'integer', minimum: 0},
-    label   : {type: 'string'},
+    anchor: {
+      type: 'object',
+      properties: {
+        x : {type: 'number', minimum: 0},
+        y : {type: 'number', minimum: 0},
+      }
+    },
   }  
 }
 
+const FRAME_IRREGULAR = {
+  type: 'array',
+  items: [
+    {
+      type: 'object',
+      required: ['id', 'rect'],
+      properties: {
+        id: {type: 'string'},
+        scale: {type: 'number', minimum: 0, exclusiveMinimum: true},
+        rotation: {type: 'number'},
+        rect: {
+          type: 'object',
+          required: ['x', 'y', 'width', 'height'],
+          properties: {
+            x      : {type: 'integer', minimum: 0},
+            y      : {type: 'integer', minimum: 0},
+            width  : {type: 'integer', minimum: 1},
+            height : {type: 'integer', minimum: 1},
+          }
+        },
+        anchor: {
+          type: 'object',
+          properties: {
+            x : {type: 'number', minimum: 0},
+            y : {type: 'number', minimum: 0},
+          }
+        },
+      }
+    }
+  ]
+}
+
 const ANIMATION_SIMPLE = {
-  type: 'array'
+  type: 'array',
+  items: [
+    {type: 'integer', minimum: 0},
+    {type: 'string'}
+  ]
 }
 
 const ANIMATION_COMPLETE = {
@@ -45,10 +69,10 @@ const ANIMATION_COMPLETE = {
 
 export default {
   type: 'object',
-  required: ['image', 'frames'],
+  required: ['image', 'frames', 'framerate'],
   properties: {
     image : { type: 'string', minLength: 1 },
-    fps: { type: 'integer', minimum: 1 },
+    framerate: { type: 'integer', minimum: 1 },
     frames : { 
       oneOf: [FRAME_REGULAR, FRAME_IRREGULAR]
     },
