@@ -1,6 +1,6 @@
 import * as globals from 'globals_'
 
-export default function bitmapTextMiddleware(game) {
+export default function bitmapFontMiddleware(game) {
   return function(resource, next) {
     if (resource.metadata.type !== 'bitmapFont') {
       return next()

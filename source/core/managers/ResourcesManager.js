@@ -9,7 +9,7 @@ import audioMiddleware from 'core/managers/resources/audioMiddleware'
 import jsonMiddleware from 'core/managers/resources/jsonMiddleware'
 import rawMiddleware from 'core/managers/resources/rawMiddleware'
 import audioSpriteMiddleware from 'core/managers/resources/audioSpriteMiddleware'
-import bitmapTextMiddleware from 'core/managers/resources/bitmapTextMiddleware'
+import bitmapFontMiddleware from 'core/managers/resources/bitmapFontMiddleware'
 import spriteSheetMiddleware from 'core/managers/resources/spriteSheetMiddleware'
 
 import * as utils from 'utils'
@@ -83,7 +83,7 @@ export default class ResourcesManager extends Manager {
     this._loader.use(jsonMiddleware(this.game))
     this._loader.use(rawMiddleware(this.game))
     this._loader.use(audioSpriteMiddleware(this.game))
-    this._loader.use(bitmapTextMiddleware(this.game))
+    this._loader.use(bitmapFontMiddleware(this.game))
     this._loader.use(spriteSheetMiddleware(this.game))
   }
 
