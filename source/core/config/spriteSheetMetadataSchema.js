@@ -25,8 +25,7 @@ const FRAME_IRREGULAR = {
       required: ['id', 'rect'],
       properties: {
         id: {type: 'string'},
-        scale: {type: 'number', minimum: 0, exclusiveMinimum: true},
-        rotation: {type: 'number'},
+        rotated: {type: 'boolean'},
         rect: {
           type: 'object',
           required: ['x', 'y', 'width', 'height'],
@@ -69,10 +68,12 @@ const ANIMATION_COMPLETE = {
 
 export default {
   type: 'object',
-  required: ['image', 'frames', 'framerate'],
+  required: ['image', 'frames', 'framerate', 'resolution'],
   properties: {
-    image : { type: 'string', minLength: 1 },
-    framerate: { type: 'integer', minimum: 1 },
+    image : {type: 'string', minLength: 1},
+    framerate: {type: 'integer', minimum: 1},
+    resolution: {type: 'number'},
+    scale: {type: 'number', minimum: 0, exclusiveMinimum: true},
     frames : { 
       oneOf: [FRAME_REGULAR, FRAME_IRREGULAR]
     },
