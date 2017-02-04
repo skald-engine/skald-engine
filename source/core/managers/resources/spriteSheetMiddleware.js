@@ -138,7 +138,6 @@ export default function spriteSheetMiddleware(game) {
   }
 
   function processIrregular(metadata, baseTexture) {
-    console.log('processing irregular', metadata)
     let resolution = metadata.resolution
     let textures = {}
 
@@ -178,8 +177,6 @@ export default function spriteSheetMiddleware(game) {
   }
 
   function processRegular(metadata, baseTexture) {
-    console.log('processing regular', metadata)
-    console.log(baseTexture)
     let resolution = metadata.resolution
     let frames = metadata.frames
 
