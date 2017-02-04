@@ -115,7 +115,11 @@ export default function spriteSheetMiddleware(game) {
     }
 
     // Save spritesheet object
-    let spriteSheet = new SpriteSheet(textures, dataInfo.data.animations)
+    let spriteSheet = new SpriteSheet(
+      textures,
+      dataInfo.data.animations,
+      dataInfo.data.frameRate
+    )
     game.resources.cacheResource(id, null, spriteSheet)
 
     // Save base texture and metadata
@@ -186,6 +190,8 @@ export default function spriteSheetMiddleware(game) {
 
     let textures = {}
     while (y < baseTexture.height && !(frames.count && count >= frames.count)) {
+      
+      x = frames.margin
       while (x < baseTexture.width) {
         count += 1
         if (frames.count && count >= frames.count) {

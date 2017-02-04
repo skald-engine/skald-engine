@@ -60,9 +60,10 @@ const ANIMATION_COMPLETE = {
   type: 'object',
   required: ['frames'],
   properties: {
-    frames: {type: 'array', items:[{type:'integer'}, {type:'string'}]},
+    frames: {type: 'array', items:{anyOf:[{type:'integer'}, {type:'string'}]}},
     next: {type: 'string'},
     speed: {type: 'number'},
+    repeat: {type: 'boolean'}
   }
 }
 
@@ -71,7 +72,7 @@ export default {
   required: ['image', 'frames', 'framerate', 'resolution'],
   properties: {
     image : {type: 'string', minLength: 1},
-    framerate: {type: 'integer', minimum: 1},
+    frameRate: {type: 'integer', minimum: 1},
     resolution: {type: 'number'},
     scale: {type: 'number', minimum: 0, exclusiveMinimum: true},
     frames : { 
