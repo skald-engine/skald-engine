@@ -63,7 +63,7 @@ export default function spriteSheetMiddleware(game) {
 
       //Load the texture
       game.resources._loader.add(textureId, textureUrl, options, (res) => {
-        parse(
+        resource.spriteSheet = parse(
           resource.name,
           {url:resource.url, data:data},
           {url:textureUrl, texture:res.data}
@@ -72,7 +72,7 @@ export default function spriteSheetMiddleware(game) {
       })
     } else {
       let textureId = resource.name+'_texture'
-      parse(
+      resource.spriteSheet = parse(
         resource.name,
         {url:null, data:data},
         {url:resource.url, texture:textureData}
@@ -115,9 +115,8 @@ export default function spriteSheetMiddleware(game) {
     }
 
     // Save spritesheet object
-
-    // let spriteSheet = new SpriteSheet(textures, dataInfo.data.animations)
-
+    let spriteSheet = new SpriteSheet(textures, dataInfo.data.animations)
+    game.resources.cacheResource(id, null, spriteSheet)
 
     // Save base texture and metadata
     let texture = new PIXI.Texture(baseTexture)
@@ -134,6 +133,8 @@ export default function spriteSheetMiddleware(game) {
       texture,
       null
     )
+
+    return spriteSheet
   }
 
   function processIrregular(metadata, baseTexture) {

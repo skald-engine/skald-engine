@@ -2,27 +2,25 @@ import spriteSheetMetadataSchema from 'core/config/spriteSheetMetadataSchema'
 import * as utils from 'utils'
 
 export default class SpriteSheet {
-  constructor(metadata) {
-    this._texture = null
-    this._frames = {}
+  constructor(textures, animations) {
+    this._textures = null
     this._numFrames = 0
-    this._width = 0
-    this._height = 0
-    this._animations = {}
+    this._animations = null
 
-    this._setMetadata(metadata)
+    this.textures = textures
+    if (animations) this.animations = animations
   }
 
-  get texture() {}
-  get numFrames() {}
-  get scale() {}
-  get size() {}
-  get width() {}
-  get height() {}
+  set textures(value) {
+    this._numFrames = Object.keys(value).length
+    this._textures = value
+  }
+  set animations(value) {
+    this._animations = value
+  }
 
-  _setMetadata(metadata) {
-    // let data = utils.validateJson(metadata, {}, spriteSheetMetadataSchema)
-    // console.log(data)
+  get numFrames() {
+    return this._numFrames
   }
 
   configure(config) {
@@ -30,7 +28,11 @@ export default class SpriteSheet {
     return this
   }
 
-  getFrame(name) {}
-  getFrameMeta(name) {}
-  getAnimation(name) {}
+  getFrame(name) {
+    return this._textures[name]
+  }
+
+  getAnimation(name) {
+    return this.animations? this._animations[name] : null
+  }
 }
