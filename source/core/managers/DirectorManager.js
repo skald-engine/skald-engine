@@ -2,6 +2,7 @@ import Manager from 'core/Manager'
 import Scene from 'core/Scene' 
 import Transition from 'core/Transition' 
 import {tryToInstantiate} from 'utils' 
+import * as utils from 'utils'
 
 /**
  * This manager handle scenes and transitions.
@@ -94,6 +95,11 @@ export default class DirectorManager extends Manager {
    * @type {String}
    */
   get nextSceneId() { return this._nextSceneId }
+
+  setup() {
+    utils.profiling.begin('boot.managers.director')
+    utils.profiling.end('boot.managers.director')
+  }
 
 
   /**

@@ -1,5 +1,6 @@
 import Manager from 'core/Manager' 
 import Touch from 'core/managers/inputs/Touch'
+import * as utils from 'utils'
 
 /**
  * This manager is responsible for handling the browser touch events. It is
@@ -41,9 +42,11 @@ export default class TouchesManager extends Manager {
    * Setup the this manager. Called by the engine, do not call it manually.
    */
   setup() {
+    utils.profiling.begin('boot.managers.touches')
     this._setupConfig()
     this._setupEvents()
     this._setupTouches()
+    utils.profiling.end('boot.managers.touches')
   }
 
   /**

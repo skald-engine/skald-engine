@@ -2,6 +2,7 @@ import Manager from 'core/Manager'
 import Gamepad from 'core/managers/inputs/Gamepad'
 import GamepadEvent from 'core/events/GamepadEvent'
 import {GAMEPAD_AXIS} from 'core/constants'
+import * as utils from 'utils'
 
 /**
  * The gamepad manager is used to handle gamepad controllers via the HTML5 api.
@@ -51,6 +52,7 @@ export default class GamepadsManager extends Manager {
    * Setup the this manager. Called by the engine, do not call it manually.
    */
   setup() {
+    utils.profiling.begin('boot.managers.gamepads')
     this._setupConfig()
     this._setupGamepads()
 
@@ -64,6 +66,7 @@ export default class GamepadsManager extends Manager {
       [GAMEPAD_AXIS.LEFT_TRIGGER]      : 'leftTrigger',
       [GAMEPAD_AXIS.RIGHT_TRIGGER]     : 'rightTrigger',
     }
+    utils.profiling.end('boot.managers.gamepads')
   }
 
   /**

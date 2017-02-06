@@ -1,6 +1,7 @@
 import Manager from 'core/Manager' 
 import MouseEvent from 'core/events/MouseEvent'
 import WheelEvent from 'core/events/WheelEvent'
+import * as utils from 'utils'
 
 /**
  * A manager that handles the mouse state. It is created by the game and can be
@@ -98,10 +99,12 @@ export default class MouseManager extends Manager {
    * Setup the this manager. Called by the engine, do not call it manually.
    */
   setup() {
+    utils.profiling.begin('boot.managers.mouse')
     this._x = this.game.display.width/2
     this._y = this.game.display.height/2
     this._setupConfig()
     this._setupEvents()
+    utils.profiling.end('boot.managers.mouse')
   }
 
   /**

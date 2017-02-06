@@ -1,6 +1,7 @@
 import Manager from 'core/Manager' 
 import * as audio from 'audio'
 import * as globals from 'globals_'
+import * as utils from 'utils'
 
 
 /**
@@ -73,9 +74,11 @@ export default class SoundsManager extends Manager {
    * manually.
    */
   setup() {
+    utils.profiling.begin('boot.managers.sounds')
     this._setupSystem()
 
     this.volume = this.game.config.sounds.masterVolume
+    utils.profiling.end('boot.managers.sounds')
   }
 
   /**

@@ -1,7 +1,7 @@
 import Manager from 'core/Manager' 
 import Action from 'core/managers/inputs/Action' 
 import {INPUT_DEVICES, GAMEPAD_AXIS, KEY, BUTTON, GAMEPAD} from 'core/constants'
-
+import * as utils from 'utils'
 
 /**
  * The inputs manager is responsible to handle a configurable map of inputs. It
@@ -52,6 +52,7 @@ export default class InputsManager extends Manager {
    * do not call it manually.
    */
   setup() {
+    utils.profiling.begin('boot.managers.inputs')
     this._actions = {}
 
     this.action('horizontal')
@@ -76,6 +77,7 @@ export default class InputsManager extends Manager {
         .add(INPUT_DEVICES.KEYBOARD, KEY.SPACE)
         .add(INPUT_DEVICES.GAMEPAD,  GAMEPAD.A)
 
+    utils.profiling.end('boot.managers.inputs')
   }
   
   /**

@@ -50,9 +50,11 @@ export default class ResourcesManager extends Manager {
   get maxConcurrency() { return this._loader._queue.concurrency }
 
   setup() {
+    utils.profiling.begin('boot.managers.resources')
     this._setupLoader()
     this._setupMiddlewares()
     this._setupEvents()
+    utils.profiling.end('boot.managers.resources')
   }
 
   _setupLoader() {

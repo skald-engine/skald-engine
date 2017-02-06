@@ -1,4 +1,5 @@
 import Manager from 'core/Manager'
+import * as utils from 'utils'
 
 /**
  * The device manager handles browser, platform and feature identification. It
@@ -368,6 +369,7 @@ export default class DeviceManager extends Manager {
    * be called directly.
    */
   setup() {
+    utils.profiling.begin('boot.managers.device')
     this._userAgent = navigator.userAgent
 
     this._getBrowser()
@@ -378,6 +380,7 @@ export default class DeviceManager extends Manager {
 
     this._setPlatformShortcuts()
     this._setFeaturesShortcuts()
+    utils.profiling.end('boot.managers.device')
   }
 
   _getBrowser() {

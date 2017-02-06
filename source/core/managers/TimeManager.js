@@ -1,4 +1,5 @@
 import Manager from 'core/Manager' 
+import * as utils from 'utils'
 
 /**
  * Handle the time-based information of the engine.
@@ -62,11 +63,13 @@ export default class TimeManager extends Manager {
    * manually.
    */
   setup() {
+    utils.profiling.begin('boot.managers.time')
     this._time = Date.now()
     this._prevTime = Date.now()
     this._delta = 0
     this._elapsed = 0
     this._fps = 60
+    utils.profiling.end('boot.managers.time')
   }
 
   /**

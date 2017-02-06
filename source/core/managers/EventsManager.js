@@ -1,6 +1,7 @@
 import Manager from 'core/Manager' 
 import Event from 'core/events/Event'
 import EventEmitter from 'core/EventEmitter'
+import * as utils from 'utils'
 
 /**
  * This manager handles the game event pool.
@@ -18,6 +19,11 @@ export default class EventsManager extends Manager {
     super(game)
 
     this._eventPool = []
+  }
+
+  setup() {
+    utils.profiling.begin('boot.managers.events')
+    utils.profiling.end('boot.managers.events')
   }
   
   /**

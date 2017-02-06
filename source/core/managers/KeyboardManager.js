@@ -1,5 +1,6 @@
 import Manager from 'core/Manager' 
 import KeyboardEvent from 'core/events/KeyboardEvent'
+import * as utils from 'utils'
 
 /**
  * A manager that handles the keyboard state. It is created by the game and can be
@@ -55,8 +56,10 @@ export default class KeyboardManager extends Manager {
    * Setup the this manager. Called by the engine, do not call it manually.
    */
   setup() {
+    utils.profiling.begin('boot.managers.keyboard')
     this._setupConfig()
     this._setupEvents()
+    utils.profiling.end('boot.managers.keyboard')
   }
 
   /**

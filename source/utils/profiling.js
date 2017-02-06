@@ -6,7 +6,10 @@ function begin(id) {
     profiles[id] = {
       label   : id,
       current : null,
-      history : []
+      executions: 0,
+      average: 0,
+      minimum: 0,
+      maximum: 0
     }
   }
   profiles[id].current = performance.now()
@@ -17,7 +20,11 @@ function end(id) {
   }
 
   let p = profiles[id]
-  p.history.push(performance.now()-p.current)
+  let t = performance.now()-p.current
+  p.executions++
+  p.average += (t-p.average)/p.executions
+  p.minimum = p.executions===1? t:Math.min(p.average, t)
+  p.maximum = p.executions===1? t:Math.max(p.average, t)
 }
 function clear() {
   profiles = {}
@@ -54,21 +61,24 @@ function report() {
       }
 
       item.label = profile.label
-      item.executions = history.length
-      item.average = history.reduce((a,b)=>a+b)/history.length
-      item.minimum = history.reduce((a,b)=>Math.min(a,b))
-      item.maximum = history.reduce((a,b)=>Math.max(a,b))
+      item.executions = profile.executions
+      item.average = profile.average
+      item.minimum = profile.minimum
+      item.maximum = profile.maximum
     })
 
 
   const colors = {
-    executions: 'color: #C4C4C4',
-    label: 'color: #000; font-style: italic',
+    base: 'color: #000; font-weight: normal',
+    executions: 'color: #C4C4C4; font-weight: normal',
+    label: 'color: #000; font-style: italic; font-weight: normal',
     value: 'color: #000; font-weight: bold'
   }
-  function recursiveReport(items, i=0) {
+  function recursiveReport(items, tab=0) {
+    const supportGroup = !!console.group
+
     let ids = Object.keys(items)
-    let padding = Array(i).join(' ')
+    let padding = supportGroup? '':Array(tab*4).join(' ')
 
     let largestSize = ids.map(x=>x.length)
                          .reduce((a,b)=>Math.max(a,b))
@@ -76,12 +86,17 @@ function report() {
     for (let i=0; i<ids.length; i++) {
       let id = ids[i]
       let item = items[id]
+      let hasChildren = !!Object.keys(item.children).length
 
       let printableId = id + Array(largestSize-id.length+1).join(' ')
 
+      let logFunction = (...args) => { console.log(...args) }
+      if (hasChildren && supportGroup) logFunction = (...args) => { console.group(...args) }
+      
       if (item.executions === 1) {
-        console.log(
-          `${padding}${printableId} %conce %caverage:%c${formatFloat(item.average)}%cms`,
+        logFunction(
+          `%c${padding}${printableId}  %conce %caverage:%c${formatFloat(item.average)}%cms`,
+          colors.base,
           colors.executions,
           colors.label,
           colors.value,
@@ -93,13 +108,19 @@ function report() {
         let x3 = formatFloat(item.minimum)
         let x4 = formatFloat(item.maximum)
 
-        console.log(
-          `${padding}${printableId}%c${x1}x %caverage:%c${x2}%cms %cmin:%c${x3}%cms %cmax:%c${x4}%cms`,
+        logFunction(
+          `%c${padding}${printableId} %c${x1}x %caverage:%c${x2}%cms %cmin:%c${x3}%cms %cmax:%c${x4}%cms`,
+          colors.base,
           colors.executions,
           colors.label, colors.value, colors.label,
           colors.label, colors.value, colors.label,
           colors.label, colors.value, colors.label,
         )
+      }
+
+      if (hasChildren) {
+        recursiveReport(item.children, tab+1)
+        if (supportGroup) console.groupEnd()
       }
     }
   }

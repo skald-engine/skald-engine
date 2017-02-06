@@ -2,6 +2,7 @@ import {ORIENTATION, SCALE_MODE} from 'core/constants'
 import Manager from 'core/Manager' 
 import Event from 'core/events/Event' 
 import OrientationEvent from 'core/events/OrientationEvent' 
+import * as utils from 'utils'
 
 /**
  * The manager of the display settings and variables of the game. This class 
@@ -205,12 +206,14 @@ export default class DisplayManager extends Manager {
    * Manager setup. Called internally by the engine. Do not call it manually.
    */
   setup() {
+    utils.profiling.begin('boot.managers.display')
     this._setupVariables()
     this._setupFullscreen()
     this._setupEvents()
 
     this._checkOrientation()
     this._doResize()
+    utils.profiling.end('boot.managers.display')
   }
 
   /**
