@@ -371,6 +371,8 @@ export default class Game extends EventEmitter {
   }
 
   step(delta=0.166666) {
+    if (this._autoUpdate) return
+      
     this._updateGame(delta)
   }
 
