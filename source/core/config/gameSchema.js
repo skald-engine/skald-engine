@@ -6,6 +6,7 @@ export default {
     'project',
     'version',
     'parent',
+    'autoUpdate',
     'logger',
     'managers',
     'display',
@@ -18,9 +19,10 @@ export default {
   ],
   properties: {
     // Base
-    project : { type: 'string' },
-    version : { type: 'string' },
-    parent  : { type: ['string', 'null'] },
+    project    : { type: 'string' },
+    version    : { type: 'string' },
+    parent     : { type: ['string', 'null'] },
+    autoUpdate : { type: 'boolean' },
     
     // Logger
     logger: {

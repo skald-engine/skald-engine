@@ -29,6 +29,7 @@ export default class Game extends EventEmitter {
     this._parent = null
     this._config = null
     this._plugins = {}
+    this._autoUpdate = true
 
     this._log = null
 
@@ -79,6 +80,10 @@ export default class Game extends EventEmitter {
    * @type {Object}
    */
   get config() { return this._config }
+
+
+  get autoUpdate() { return this._autoUpdate }
+  set autoUpdate(value) { this._autoUpdate = !!value }
 
   /**
    * The dict of plugins. Readonly.
@@ -196,6 +201,8 @@ export default class Game extends EventEmitter {
    */
   _initializeConfig(config) {
     this._config = utils.validateJson(config||{}, gameDefaults, gameSchema)
+
+    this._autoUpdate = this._config.autoUpdate
   }
 
   /**
@@ -301,12 +308,14 @@ export default class Game extends EventEmitter {
   /**
    * The game loop
    */
-  _updateGame() {
+  _updateGame(overriddenDelta=0) {
     stats.begin()
-    requestAnimationFrame(()=>this._updateGame())
+    if (this._autoUpdate) {
+      requestAnimationFrame(()=>this._updateGame())
+    }
         
     this.time.preUpdate()
-    let delta = this.time.delta
+    let delta = overriddenDelta || this.time.delta
 
     // Pre update
     this.display.preUpdate(delta)
@@ -359,6 +368,10 @@ export default class Game extends EventEmitter {
         if (entity.updatable) entity.update(delta)
       }
     }
+  }
+
+  step(delta=0.166666) {
+    this._updateGame(delta)
   }
 
   /**

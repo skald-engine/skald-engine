@@ -2,6 +2,7 @@ export default {
   project    : 'skald_game',
   version    : '1.0.0',
   parent     : null,
+  autoUpdate : true,
 
   logger: {
     level     : 'warn',
