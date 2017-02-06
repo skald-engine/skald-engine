@@ -384,6 +384,7 @@ export default class DeviceManager extends Manager {
   }
 
   _getBrowser() {
+    utils.profiling.begin('boot.managers.device.browser')
     let ua = this._userAgent
     let guess = BROWSERS.find(guess => {
       return RegExp('\\b'+guess.pattern+'\\b', 'i').exec(ua)
@@ -393,9 +394,11 @@ export default class DeviceManager extends Manager {
       this._browser = guess.label
       this._getBrowserVersion(guess)
     }
+    utils.profiling.end('boot.managers.device.browser')
   }
 
   _getBrowserVersion(guess) {
+    utils.profiling.begin('boot.managers.device.browserVersion')
     let ua = this._userAgent
     let browser = this._browser
     let string = RegExp('\\b'+guess.pattern+'(?:/[\\d.]+|[ \\w.]*)', 'i').exec(ua)[0]
@@ -407,18 +410,22 @@ export default class DeviceManager extends Manager {
     }
 
     this._browserVersion = version
+    utils.profiling.end('boot.managers.device.browserVersion')
   }
 
   _getLayoutEngine() {
+    utils.profiling.begin('boot.managers.device.layoutEngine')
     let ua = this._userAgent
     let guess = LAYOUTS.find(guess => {
       return RegExp('\\b'+guess.pattern+'\\b', 'i').exec(ua)
     })
     
     if (guess) { this._browserLayout = guess.label }
+    utils.profiling.end('boot.managers.device.layoutEngine')
   }
 
   _getOS() {
+    utils.profiling.begin('boot.managers.device.os')
     let ua = this._userAgent
     let guess = OSS.find(guess => {
       return RegExp('\\b'+guess.pattern+'(?:/[\\d.]+|[ \\w.]*)', 'i').test(ua)
@@ -428,9 +435,11 @@ export default class DeviceManager extends Manager {
       this._os = guess.label
       this._getOSVersion(guess)
     }
+    utils.profiling.end('boot.managers.device.os')
   }
 
   _getOSVersion(guess) {
+    utils.profiling.begin('boot.managers.device.osVersion')
     let ua = this._userAgent
     let os = this._os
     let string = RegExp('\\b'+guess.pattern+'(?:/[\\d.]+|[ \\w.]*)', 'i').exec(ua)[0]
@@ -450,9 +459,11 @@ export default class DeviceManager extends Manager {
     }
 
     this._osVersion = version
+    utils.profiling.end('boot.managers.device.osVersion')
   }
 
   _getDevice() {
+    utils.profiling.begin('boot.managers.device.device')
     let ua = this._userAgent
     let guess = DEVICES.find(guess => {
       return (
@@ -463,9 +474,11 @@ export default class DeviceManager extends Manager {
     })
 
     if (guess) { this._device = guess.label }
+    utils.profiling.end('boot.managers.device.device')
   }
 
   _getManufacturer() {
+    utils.profiling.begin('boot.managers.device.manufacturer')
     let ua = this._userAgent
     let device = this._device
     let guess = MANUFACTURERS.find(guess => {
@@ -475,9 +488,11 @@ export default class DeviceManager extends Manager {
     })
 
     if (guess) { this._manufacturer = guess.label }
+    utils.profiling.end('boot.managers.device.manufacturer')
   }
 
   _setPlatformShortcuts() {
+    utils.profiling.begin('boot.managers.device.platform')
     this._chrome = matchAny(this._browser, 'Chrome', 'Chrome Mobile')
     this._safari = matchAny(this._browser, 'Safari')
     this._edge = matchAny(this._browser, 'Edge')
@@ -499,15 +514,19 @@ export default class DeviceManager extends Manager {
                                          'Xbox 360', 'Xbox')
     this._desktop = (this._windows||this._linux||this._macOS)&&!this._console
     this._mobile = !this._desktop && !this._console
+    utils.profiling.end('boot.managers.device.platform')
   }
 
   _setFeaturesShortcuts() {
+    utils.profiling.begin('boot.managers.device.features')
     this._checkAudio()
     this._checkVideo()
     this._checkFeatures()
+    utils.profiling.end('boot.managers.device.features')
   }
 
   _checkAudio() {
+    utils.profiling.begin('boot.managers.device.features.audio')
     let element = document.createElement('audio')
     let canPlay = type => !!element.canPlayType(type).replace(/^no$/, '')
 
@@ -527,9 +546,11 @@ export default class DeviceManager extends Manager {
         this._dolby = canPlay('audio/mp4; codecs="ec-3"') && this._edge
       }
     } catch(e) {}
+    utils.profiling.end('boot.managers.device.features.audio')
   }
 
   _checkVideo() {
+    utils.profiling.begin('boot.managers.device.features.video')
     let element = document.createElement('video')
     let canPlay = type => !!element.canPlayType(type).replace(/^no$/, '')
     
@@ -543,9 +564,11 @@ export default class DeviceManager extends Manager {
         this._hlsVideo = canPlay('application/x-mpegURL; codecs="avc1.42E01E"')
       }
     } catch(e) {}
+    utils.profiling.end('boot.managers.device.features.video')
   }
 
   _checkFeatures() {
+    utils.profiling.begin('boot.managers.device.features.general')
     // vibration
     try {
       navigator.vibrate = navigator.vibrate ||
@@ -598,6 +621,7 @@ export default class DeviceManager extends Manager {
                 !!window.FileList &&
                 !!window.Blob
     this._pixelRatio = window.devicePixelRatio || 1;
+    utils.profiling.end('boot.managers.device.features.general')
   }
 }
 

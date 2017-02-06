@@ -91,7 +91,13 @@ function report() {
       let printableId = id + Array(largestSize-id.length+1).join(' ')
 
       let logFunction = (...args) => { console.log(...args) }
-      if (hasChildren && supportGroup) logFunction = (...args) => { console.group(...args) }
+      if (hasChildren && supportGroup) {
+        if (tab <= 1) {
+          logFunction = (...args) => { console.group(...args) }
+        } else {
+          logFunction = (...args) => { console.groupCollapsed(...args) }
+        }
+      }
       
       if (item.executions === 1) {
         logFunction(
