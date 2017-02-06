@@ -202,31 +202,31 @@ export default class Game extends EventEmitter {
    * default.
    */
   _initializeConfig(config) {
-    utils.profiling.begin('boot.config')
+    utils.profiling.begin('config')
 
     this._config = utils.validateJson(config||{}, gameDefaults, gameSchema)
 
     this._autoUpdate = this._config.autoUpdate
-    utils.profiling.end('boot.config')
+    utils.profiling.end('config')
   }
 
   /**
    * Initialize and configure the game logger.
    */
   _initializeLogger() {
-    utils.profiling.begin('boot.logger')
+    utils.profiling.begin('logger')
     this._log = new utils.logging.Logger()
     this._log.level = this._config.logger.level
     this._log.setHandler(this._config.logger.handler)
     this._log.setFormatter(this._config.logger.formatter)
-    utils.profiling.end('boot.logger')
+    utils.profiling.end('logger')
   }
 
   /**
    * Initialize the PIXI renderer
    */
   _initializeRenderer() {
-    utils.profiling.begin('boot.renderer')
+    utils.profiling.begin('renderer')
     // ge parent element
     this._parent = document.body
     if (this._config.parent) {
@@ -264,16 +264,16 @@ export default class Game extends EventEmitter {
 
     // create the game global stage
     this._stage = new PIXI.Container()
-    utils.profiling.end('boot.renderer')
+    utils.profiling.end('renderer')
   }
 
   /**
    * Initialize the game managers
    */
   _initializeManagers() {
-    utils.profiling.begin('boot.managers')
+    utils.profiling.begin('managers')
 
-    utils.profiling.begin('boot.managers.instatiation')
+    utils.profiling.begin('instatiation')
     this._time = new managers.TimeManager(this)
     this._events = new managers.EventsManager(this)
     this._device = new managers.DeviceManager(this)
@@ -286,7 +286,7 @@ export default class Game extends EventEmitter {
     this._inputs = new managers.InputsManager(this)
     this._resources = new managers.ResourcesManager(this)
     this._sounds = new managers.SoundsManager(this)
-    utils.profiling.end('boot.managers.instatiation')
+    utils.profiling.end('instatiation')
 
     this._time.setup()
     this._events.setup()
@@ -300,27 +300,27 @@ export default class Game extends EventEmitter {
     this._touches.setup()
     this._inputs.setup()
     this._sounds.setup()
-    utils.profiling.end('boot.managers')
+    utils.profiling.end('managers')
   }
 
   /**
    * Load the manifest.
    */
   _initializeLoader(manifest) {
-    utils.profiling.begin('boot.loader')
+    utils.profiling.begin('loader')
     if (manifest) {
       this.resources.loadManifest(manifest)
     }
-    utils.profiling.end('boot.loader')
+    utils.profiling.end('loader')
   }
 
   /**
    * Start the game
    */
   _initializeGame() {
-    utils.profiling.begin('boot.game')
+    utils.profiling.begin('game')
     this._updateGame()
-    utils.profiling.end('boot.game')
+    utils.profiling.end('game')
   }
 
   /**
@@ -335,7 +335,7 @@ export default class Game extends EventEmitter {
       requestAnimationFrame(()=>this._updateGame())
     }
     
-    utils.profiling.begin('update.preupdate')    
+    utils.profiling.begin('preupdate')    
     this.time.preUpdate()
     let delta = overriddenDelta || this.time.delta
 
@@ -345,10 +345,10 @@ export default class Game extends EventEmitter {
     for (let name in this._plugins) {
       this._plugins[name].preUpdate(delta)
     }
-    utils.profiling.end('update.preupdate')
+    utils.profiling.end('preupdate')
     
     // Update
-    utils.profiling.begin('update.update')
+    utils.profiling.begin('update')
     for (let name in this._plugins) {
       this._plugins[name].update(delta)
     }
@@ -356,33 +356,33 @@ export default class Game extends EventEmitter {
     this._updateEntities(delta)
     this.events.update(delta)
     this.director.update(delta)
-    utils.profiling.end('update.update')
+    utils.profiling.end('update')
 
     // Post update
-    utils.profiling.begin('update.postupdate')
+    utils.profiling.begin('postupdate')
     this.keyboard.postUpdate(delta)
     this.mouse.postUpdate(delta)
     this.gamepads.postUpdate(delta)
     for (let name in this._plugins) {
       this._plugins[name].postUpdate(delta)
     }
-    utils.profiling.end('update.postupdate')
+    utils.profiling.end('postupdate')
     
     // Pre draw
-    utils.profiling.begin('update.predraw')
+    utils.profiling.begin('predraw')
     for (let name in this._plugins) {
       this._plugins[name].preDraw()
     }
-    utils.profiling.end('update.predraw')
+    utils.profiling.end('predraw')
 
     // Draw
-    utils.profiling.begin('update.draw')
+    utils.profiling.begin('draw')
     this._renderer.render(this._stage)
 
     for (let name in this._plugins) {
       this._plugins[name].draw()
     }
-    utils.profiling.end('update.draw')
+    utils.profiling.end('draw')
 
     utils.profiling.end('update')
     stats.end()

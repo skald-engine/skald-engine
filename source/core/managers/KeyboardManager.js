@@ -56,10 +56,10 @@ export default class KeyboardManager extends Manager {
    * Setup the this manager. Called by the engine, do not call it manually.
    */
   setup() {
-    utils.profiling.begin('boot.managers.keyboard')
+    utils.profiling.begin('keyboard')
     this._setupConfig()
     this._setupEvents()
-    utils.profiling.end('boot.managers.keyboard')
+    utils.profiling.end('keyboard')
   }
 
   /**

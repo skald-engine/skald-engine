@@ -206,14 +206,14 @@ export default class DisplayManager extends Manager {
    * Manager setup. Called internally by the engine. Do not call it manually.
    */
   setup() {
-    utils.profiling.begin('boot.managers.display')
+    utils.profiling.begin('display')
     this._setupVariables()
     this._setupFullscreen()
     this._setupEvents()
 
     this._checkOrientation()
     this._doResize()
-    utils.profiling.end('boot.managers.display')
+    utils.profiling.end('display')
   }
 
   /**

@@ -97,8 +97,8 @@ export default class DirectorManager extends Manager {
   get nextSceneId() { return this._nextSceneId }
 
   setup() {
-    utils.profiling.begin('boot.managers.director')
-    utils.profiling.end('boot.managers.director')
+    utils.profiling.begin('director')
+    utils.profiling.end('director')
   }
 
 

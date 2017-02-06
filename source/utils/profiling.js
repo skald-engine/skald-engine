@@ -1,7 +1,11 @@
 
 let profiles = {}
+let stack = []
 
 function begin(id) {
+  stack.push(id)
+  id = stack.join('.')
+
   if (!profiles[id]) {
     profiles[id] = {
       label   : id,
@@ -14,8 +18,10 @@ function begin(id) {
   }
   profiles[id].current = performance.now()
 }
-function end(id) {
-  if (!profiles[id]) {
+function end(rid) {
+  let id = stack.join('.')
+
+  if (!profiles[id] || rid !== stack[stack.length-1]) {
     throw new Error(`Trying to finish an unknown profile "${id}".`)
   }
 
@@ -25,6 +31,7 @@ function end(id) {
   p.average += (t-p.average)/p.executions
   p.minimum = p.executions===1? t:Math.min(p.average, t)
   p.maximum = p.executions===1? t:Math.max(p.average, t)
+  stack.pop()
 }
 function clear() {
   profiles = {}

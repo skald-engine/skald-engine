@@ -52,7 +52,7 @@ export default class InputsManager extends Manager {
    * do not call it manually.
    */
   setup() {
-    utils.profiling.begin('boot.managers.inputs')
+    utils.profiling.begin('inputs')
     this._actions = {}
 
     this.action('horizontal')
@@ -77,7 +77,7 @@ export default class InputsManager extends Manager {
         .add(INPUT_DEVICES.KEYBOARD, KEY.SPACE)
         .add(INPUT_DEVICES.GAMEPAD,  GAMEPAD.A)
 
-    utils.profiling.end('boot.managers.inputs')
+    utils.profiling.end('inputs')
   }
   
   /**

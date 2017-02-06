@@ -99,12 +99,12 @@ export default class MouseManager extends Manager {
    * Setup the this manager. Called by the engine, do not call it manually.
    */
   setup() {
-    utils.profiling.begin('boot.managers.mouse')
+    utils.profiling.begin('mouse')
     this._x = this.game.display.width/2
     this._y = this.game.display.height/2
     this._setupConfig()
     this._setupEvents()
-    utils.profiling.end('boot.managers.mouse')
+    utils.profiling.end('mouse')
   }
 
   /**

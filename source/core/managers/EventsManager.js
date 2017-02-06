@@ -22,8 +22,8 @@ export default class EventsManager extends Manager {
   }
 
   setup() {
-    utils.profiling.begin('boot.managers.events')
-    utils.profiling.end('boot.managers.events')
+    utils.profiling.begin('events')
+    utils.profiling.end('events')
   }
   
   /**

@@ -74,11 +74,11 @@ export default class SoundsManager extends Manager {
    * manually.
    */
   setup() {
-    utils.profiling.begin('boot.managers.sounds')
+    utils.profiling.begin('sounds')
     this._setupSystem()
 
     this.volume = this.game.config.sounds.masterVolume
-    utils.profiling.end('boot.managers.sounds')
+    utils.profiling.end('sounds')
   }
 
   /**

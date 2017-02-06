@@ -52,7 +52,7 @@ export default class GamepadsManager extends Manager {
    * Setup the this manager. Called by the engine, do not call it manually.
    */
   setup() {
-    utils.profiling.begin('boot.managers.gamepads')
+    utils.profiling.begin('gamepads')
     this._setupConfig()
     this._setupGamepads()
 
@@ -66,7 +66,7 @@ export default class GamepadsManager extends Manager {
       [GAMEPAD_AXIS.LEFT_TRIGGER]      : 'leftTrigger',
       [GAMEPAD_AXIS.RIGHT_TRIGGER]     : 'rightTrigger',
     }
-    utils.profiling.end('boot.managers.gamepads')
+    utils.profiling.end('gamepads')
   }
 
   /**

@@ -42,11 +42,11 @@ export default class TouchesManager extends Manager {
    * Setup the this manager. Called by the engine, do not call it manually.
    */
   setup() {
-    utils.profiling.begin('boot.managers.touches')
+    utils.profiling.begin('touches')
     this._setupConfig()
     this._setupEvents()
     this._setupTouches()
-    utils.profiling.end('boot.managers.touches')
+    utils.profiling.end('touches')
   }
 
   /**
