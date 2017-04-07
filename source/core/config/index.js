@@ -1,7 +1,0 @@
-import audioMetadataSchema from "core/config/audioMetadataSchema"
-import audioSpriteMetadataSchema from "core/config/audioSpriteMetadataSchema"
-import spriteSheetMetadataSchema from "core/config/spriteSheetMetadataSchema"
-import spriteSheetMetadataDefaults from "core/config/spriteSheetMetadataDefaults"
-import fontStyleDefaults from "core/config/fontStyleDefaults"
-import gameDefaults from "core/config/gameDefaults"
-import gameSchema from "core/config/gameSchema"
