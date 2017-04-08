@@ -12,10 +12,7 @@ let config = {
     version  : pkg.version,
     revision : rev.short(),
     date     : moment().format('YYYY-MM-DD'),
-    files    : {
-      lite: `skald.lite.js`,
-      full: `skald.min.js`,
-    },
+    file     : `skald.min.js`,
     dependencies: [
       'bower_components/jsen/dist/jsen.min.js',
       'bower_components/pixi.js/dist/pixi.min.js',
