@@ -2,7 +2,7 @@ var gulp = require('gulp')
 var config = require('../gulpconfig.js')
 var esdoc = require('gulp-esdoc')
 
-gulp.task('_api', function() {
+gulp.task('_api', () => {
   return gulp.src('source/')
     .pipe(esdoc({
       lint: false,

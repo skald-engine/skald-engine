@@ -13,7 +13,7 @@ var source     = require('vinyl-source-stream')
 var buffer     = require('vinyl-buffer')
 var addsrc     = require('gulp-add-src')
 
-gulp.task('_build', function() {
+gulp.task('_build', () => {
   // Merge all files from the `source/index.js`, imports will be relative to source/
   return browserify({
       debug   : true,
