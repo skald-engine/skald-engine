@@ -8,8 +8,8 @@ gulp.task('_api', function() {
       lint: false,
       destination: 'build/docs/api',
       plugins: [
-        {name:'./custom/esdoc-plugins/properMembers.js'},
-        {name:'./custom/esdoc-plugins/forceTags.js'},
+        {name:'./tasks/custom/properMembers.js'},
+        {name:'./tasks/custom/forceTags.js'},
       ]
     }))
 });
