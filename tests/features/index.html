@@ -7,25 +7,25 @@
 </head>
 <body>
   <div id="menu">
-    <a id="home" href="#" onclick="change('../home')">
+    <a id="home" onclick="change('../home')">
       <i class="fa fa-home"></i>
       Home
     </a>
       
     <ul>
       <h3>Teste</h3>
-      <li><a href="#" onclick="change('blah')">Blah</a></li>
-      <li><a href="#" onclick="change('blah')">Blah</a></li>
-      <li><a href="#" onclick="change('blah')">Blah</a></li>
-      <li><a href="#" onclick="change('blah')">Blah</a></li>
-      <li><a href="#" onclick="change('blah')">Blah</a></li>
+      <li><a onclick="change('blah')">Blah</a></li>
+      <li><a onclick="change('blah')">Blah</a></li>
+      <li><a onclick="change('blah')">Blah</a></li>
+      <li><a onclick="change('blah')">Blah</a></li>
+      <li><a onclick="change('blah')">Blah</a></li>
     </ul>
       
     <ul>
       <h3>Teste</h3>
-      <li><a href="#" onclick="change('blah')">Blah</a></li>
-      <li><a href="#" onclick="change('blah')">Blah</a></li>
-      <li><a href="#" onclick="change('blah')">Blah</a></li>
+      <li><a onclick="change('blah')">Blah</a></li>
+      <li><a onclick="change('blah')">Blah</a></li>
+      <li><a onclick="change('blah')">Blah</a></li>
     </ul>
   </div>
   
@@ -33,7 +33,7 @@
     <div id="title">
       <i class="fa fa-file-code-o"></i> <span id="title-text">home.html</span>
     </div>
-    <iframe src="home.html" frameborder="0" id="frame">
+    <iframe id="frame" src="" frameborder="0">
     </iframe>
   </div>
 
@@ -61,6 +61,7 @@
       padding: 5px 10px 5px 10px;
       text-decoration: none;
       transition: all .3s ease;
+      cursor: pointer;
     }
     #menu a:hover {
       color: #D9D9D9;
@@ -125,11 +126,14 @@
       document.getElementById('frame').src = 'source/'+page+'.html'
 
       if (page === '../home') {
+        window.location.hash = '#'
         document.getElementById('title-text').innerText = 'home.html'
       } else {
+        window.location.hash = '#'+page
         document.getElementById('title-text').innerText = 'source/'+page+'.html'
       }
     }
+    change(window.location.hash.substring(1) || '../home')
   </script>
 
 </body>

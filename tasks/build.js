@@ -58,4 +58,7 @@ gulp.task('_build', () => {
 
     // Save the file
     .pipe(gulp.dest('build/lib/'))
+
+    // Reload if running on serve
+    .pipe(connect.reload())
 })

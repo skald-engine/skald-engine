@@ -1,7 +1,7 @@
 const gulp = require('gulp');
 const mocha = require('gulp-mocha');
 
-gulp.task('unit', () =>
+gulp.task('_test', () =>
   gulp.src('tests/**/*.test.js', {read: false})
     .pipe(mocha({
       ui        : 'bdd',
