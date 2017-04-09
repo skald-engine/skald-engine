@@ -16,6 +16,18 @@ let _profiles = {}
 // the update scene as part of it).
 let _stack = []
 
+// Format an int with a fixed number of digits
+function _formatInt(i, s=4, c=' ') {
+  var r = '' + i
+  while (r.length < s) r = c + r
+  return r
+}
+
+// Format a float with fixed number of digits
+function _formatFloat(x, s=6) {
+  return x.toFixed(s).replace(/\.?0*$/,'');
+}
+
 /**
  * Starts a new profiling run for the provided profile. You will use this 
  * function together with `profiling.end` function, which will finish the run 
@@ -26,15 +38,15 @@ let _stack = []
  *
  * Usage:
  *
- *   function update() {
- *     sk.utils.profiling.begin('game_update')
- *     ... code ...
- *     sk.utils.profiling.end('game_update')
- *   }
+ *     function update() {
+ *       sk.utils.profiling.begin('game_update')
+ *       ... code ...
+ *       sk.utils.profiling.end('game_update')
+ *     }
  *
  * than you can call `report`, which will print the result in the console:
  *
- *   sk.utils.profiling.report()
+ *     sk.utils.profiling.report()
  *
  * 
  * @param {String} id The profile ID.
@@ -176,7 +188,7 @@ function report() {
           colors.executions,
           colors.label,
           colors.value,
-          colors.label,
+          colors.label
         )
       } else {
         let x1 = _formatInt(item.executions)
@@ -190,7 +202,7 @@ function report() {
           colors.executions,
           colors.label, colors.value, colors.label,
           colors.label, colors.value, colors.label,
-          colors.label, colors.value, colors.label,
+          colors.label, colors.value, colors.label
         )
       }
 
@@ -201,18 +213,6 @@ function report() {
     }
   }
   recursiveReport(groups)
-}
-
-// Format an int with a fixed number of digits
-function _formatInt(i, s=4, c=' ') {
-  var r = '' + i
-  while (r.length < s) r = c + r
-  return r
-}
-
-// Format a float with fixed number of digits
-function _formatFloat(x, s=6) {
-  return x.toFixed(s).replace(/\.?0*$/,'');
 }
 
 
