@@ -1,3 +1,3 @@
-(() => {
-  console.log('working with es6')
-})()
+import * as utils from 'utils'
+
+export {utils}

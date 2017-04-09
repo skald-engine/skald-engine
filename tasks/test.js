@@ -9,4 +9,7 @@ gulp.task('_test', () =>
       require   : ['./tests/unit/common.js'],
       compilers : 'js:babel-core/register'
     }))
+    .once('error', () => {
+      process.exit(1);
+    })
 );
