@@ -3,11 +3,11 @@ import * as utils from 'utils'
 export {utils}
 
 // Global namespace elements
-import * as globals from 'globals_'
 export * from 'globals_'
+export * from 'constants.js'
 
 // Initialize the library
-import * as bootstrap from 'bootstrap'
+import * as bootstrap from 'bootstrap.js'
 
 // Exporting namespace
 global.sk = exports

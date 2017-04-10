@@ -13,7 +13,11 @@ var source     = require('vinyl-source-stream')
 var buffer     = require('vinyl-buffer')
 var addsrc     = require('gulp-add-src')
 
-gulp.task('_build', () => {
+gulp.task('_build', [
+  '_build_merge'
+])
+
+gulp.task('_build_skald', () => {
   // Merge all files from the `source/index.js`, imports will be relative to source/
   return browserify({
       debug   : true,
@@ -30,26 +34,22 @@ gulp.task('_build', () => {
     .bundle()
 
     // Create temp file in memory
-    .pipe(source(config.build.file))
+    .pipe(source(config.build.files.temp))
     .pipe(buffer())
 
     // Open source map
-    .pipe(sourcemaps.init({loadMaps: true}))
+    // .pipe(sourcemaps.init({loadMaps: true}))
 
       // Uglify the file
       .pipe(uglify({preserveComments:'license'})
         .on('error', e => {
-        console.error(`Error: ${e.message}\nLine: ${e.lineNumber}`)
-      }))
+          console.error(`Error: ${e.message}\nLine: ${e.lineNumber}`)
+        }))
 
     // Close and save source map
-    .pipe(sourcemaps.write('.', {
-      sourceRoot: 'source/',
-    }))
-
-    // Concat with dependencies
-    .pipe(addsrc.prepend(config.build.dependencies))
-    .pipe(concat(config.build.file, {newLine: '\n\n//new file\n'}))
+    // .pipe(sourcemaps.write('.', {
+    //   sourceRoot: 'source/',
+    // }))
 
     // Replace variables
     .pipe(replace('%VERSION%', config.build.version))
@@ -57,6 +57,16 @@ gulp.task('_build', () => {
     .pipe(replace('%REVISION%', config.build.revision))
 
     // Save the file
+    .pipe(gulp.dest('build/lib/'))
+
+})
+
+gulp.task('_build_merge', ['_build_skald'], () => {
+  let temp = [`build/lib/${config.build.files.temp}`]
+  let files = config.build.dependencies.concat(temp)
+
+  return gulp.src(files)
+    .pipe(concat(config.build.files.main, {newLine: '\n\n\n'}))
     .pipe(gulp.dest('build/lib/'))
 
     // Reload if running on serve
