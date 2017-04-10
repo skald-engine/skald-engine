@@ -19,4 +19,5 @@ export default function consoleHandler(message, level) {
     default:
       console.log(message)
       break
+    }
   }

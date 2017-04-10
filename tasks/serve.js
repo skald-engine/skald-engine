@@ -3,6 +3,7 @@ var config  = require('../gulpconfig.js')
 
 var connect = require('gulp-connect')
 var open = require('gulp-open')
+var argv = require('yargs').argv
 
 
 gulp.task('_serve', [
@@ -18,8 +19,10 @@ gulp.task('_livereload', function() {
     port       : config.server.port,
   })
 
-  return gulp.src('')
-    .pipe(open({uri: `http://127.0.0.1:${config.server.port}/tests/features`}))
+  if (!argv.noshow) {
+    return gulp.src('')
+      .pipe(open({uri: `http://127.0.0.1:${config.server.port}/tests/features`}))
+  }
 })
 
 

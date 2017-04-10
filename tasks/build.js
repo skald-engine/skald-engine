@@ -30,7 +30,7 @@ gulp.task('_build', () => {
     .bundle()
 
     // Create temp file in memory
-    .pipe(source(config.build.file+'_temp'))
+    .pipe(source(config.build.file))
     .pipe(buffer())
 
     // Open source map
@@ -49,7 +49,7 @@ gulp.task('_build', () => {
 
     // Concat with dependencies
     .pipe(addsrc.prepend(config.build.dependencies))
-    .pipe(concat(config.build.file, {newLine: '\n\n\n'}))
+    .pipe(concat(config.build.file, {newLine: '\n\n//new file\n'}))
 
     // Replace variables
     .pipe(replace('%VERSION%', config.build.version))
