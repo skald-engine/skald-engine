@@ -1,5 +1,5 @@
 describe('EventEmitter.js', () => {
-  let EventEmitter = sourceRequire('EventEmitter.js').default
+  let EventEmitter = sourceRequire('core/EventEmitter.js').default
 
   it('should dispatch event', () => {
     let emitter = new EventEmitter()

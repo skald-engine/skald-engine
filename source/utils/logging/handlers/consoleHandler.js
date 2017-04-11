@@ -1,4 +1,4 @@
-import {LOGGER_LEVEL} from 'constants'
+import {LOGGER_LEVEL} from 'globals_/constants'
 
 /**
  * Prints the message to the console.

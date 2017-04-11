@@ -4,7 +4,7 @@ export {utils}
 
 // Global namespace elements
 export * from 'globals_'
-export * from 'constants.js'
+export * from 'core'
 
 // Initialize the library
 import * as bootstrap from 'bootstrap.js'

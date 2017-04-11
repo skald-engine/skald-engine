@@ -29,6 +29,8 @@
     "gulp-replace": "^0.5.4",
     "gulp-sourcemaps": "^2.2.0",
     "gulp-uglify": "^2.0.0",
+    "insta": "0.0.1",
+    "istanbul": "^0.4.5",
     "mockery": "^2.0.0",
     "moment": "^2.16.0",
     "requiredir": "^1.0.7",

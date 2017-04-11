@@ -1,4 +1,4 @@
-import {LOGGER_LEVEL} from 'constants'
+import {LOGGER_LEVEL} from 'globals_/constants'
 import isFunction from 'utils/functions/isFunction'
 import * as globals from 'globals_'
 

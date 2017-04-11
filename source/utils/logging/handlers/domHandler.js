@@ -1,4 +1,4 @@
-import {LOGGER_LEVEL} from 'constants'
+import {LOGGER_LEVEL} from 'globals_/constants'
 
 const ELEMENT_ID = 'SKALD-LOGGER-'+Math.random().toString(16).substring(2)
 
