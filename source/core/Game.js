@@ -191,7 +191,7 @@ export default class Game extends EventEmitter {
     this._initializeRenderer()
     this._initializeManagers()
     // this._initializeLoader(manifest)
-    // this._initializeGame()
+    this._initializeGame()
     utils.profiling.end('boot')
   }
 
@@ -212,8 +212,6 @@ export default class Game extends EventEmitter {
    * Initialize and configure the game logger.
    */
   _initializeLogger() {
-    console.log(this._config)
-    
     utils.profiling.begin('logger')
     this._log = new utils.logging.Logger()
     this._log.level = this._config.logger.level
@@ -274,9 +272,9 @@ export default class Game extends EventEmitter {
 
     utils.profiling.begin('instatiation')
     this._time = new managers.TimeManager(this)
-    // this._events = new managers.EventsManager(this)
+    this._events = new managers.EventsManager(this)
     this._device = new managers.DeviceManager(this)
-    // this._display = new managers.DisplayManager(this)
+    this._display = new managers.DisplayManager(this)
     // this._director = new managers.DirectorManager(this)
     // this._keyboard = new managers.KeyboardManager(this)
     // this._mouse = new managers.MouseManager(this)
@@ -288,9 +286,9 @@ export default class Game extends EventEmitter {
     utils.profiling.end('instatiation')
 
     this._time.setup()
-    // this._events.setup()
+    this._events.setup()
     this._device.setup()
-    // this._display.setup()
+    this._display.setup()
     // this._resources.setup()
     // this._director.setup()
     // this._keyboard.setup()
@@ -326,8 +324,6 @@ export default class Game extends EventEmitter {
    * The game loop
    */
   _updateGame(overriddenDelta=0) {
-    stats.begin()
-
     utils.profiling.begin('update')
 
     if (this._autoUpdate) {
@@ -340,7 +336,7 @@ export default class Game extends EventEmitter {
 
     // Pre update
     this.display.preUpdate(delta)
-    this.gamepads.preUpdate(delta)
+    // this.gamepads.preUpdate(delta)
     for (let name in this._plugins) {
       this._plugins[name].preUpdate(delta)
     }
@@ -352,16 +348,16 @@ export default class Game extends EventEmitter {
       this._plugins[name].update(delta)
     }
     
-    this._updateEntities(delta)
+    // this._updateEntities(delta)
     this.events.update(delta)
-    this.director.update(delta)
+    // this.director.update(delta)
     utils.profiling.end('update')
 
     // Post update
     utils.profiling.begin('postupdate')
-    this.keyboard.postUpdate(delta)
-    this.mouse.postUpdate(delta)
-    this.gamepads.postUpdate(delta)
+    // this.keyboard.postUpdate(delta)
+    // this.mouse.postUpdate(delta)
+    // this.gamepads.postUpdate(delta)
     for (let name in this._plugins) {
       this._plugins[name].postUpdate(delta)
     }
@@ -384,7 +380,6 @@ export default class Game extends EventEmitter {
     utils.profiling.end('draw')
 
     utils.profiling.end('update')
-    stats.end()
   }
 
   /**

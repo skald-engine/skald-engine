@@ -1,6 +1,6 @@
 import Manager from 'core/Manager' 
-// import Event from 'core/events/Event'
 import EventEmitter from 'core/EventEmitter'
+import Event from 'events_/Event'
 import * as utils from 'utils'
 
 /**
@@ -40,26 +40,27 @@ export default class EventsManager extends Manager {
    * @param {EventEmitter} [target] - The event target.
    */
   dispatch(event, target) {
-    // if (typeof event !== 'string' && !(event instanceof Event)) {
-    //   throw new Error(`Event must be an instance of skald.events.Event class.`)
-    // }
+    if (typeof event !== 'string' && !(event instanceof Event)) {
+      throw new Error(`Event must be an instance of skald.events.Event class.`)
+    }
 
-    // if (target && !(target instanceof EventEmitter)) {
-    //   throw new Error(`Target must be an instance of skald.EventEmitter.`)
-    // }
+    if (target && !(target instanceof EventEmitter)) {
+      throw new Error(`Target must be an instance of skald.EventEmitter.`)
+    }
 
-    // if (typeof event === 'string') {
-    //   event = new Event(event)
-    // }
+    if (typeof event === 'string') {
+      event = new Event(event)
+    }
 
-    // if (!target) {
-    //   let scene = this.game.director.currentScene
-    //   target = scene || this.game
-    // }
+    if (!target) {
+      // TODO: let scene = this.game.director.currentScene
+      let scene = null
+      target = scene || this.game
+    }
 
-    // event.setup(target)
+    event.setup(target)
 
-    // this._eventPool.push(event)
+    this._eventPool.push(event)
   }
 
   /**
@@ -69,24 +70,25 @@ export default class EventsManager extends Manager {
    * @param {Number} delta
    */
   update(delta) {
-    // for (var i=0; i<this._eventPool.length; i++) {
-    //   let event = this._eventPool[i]
+    for (var i=0; i<this._eventPool.length; i++) {
+      let event = this._eventPool[i]
 
-    //   let target = event.target
+      let target = event.target
 
-    //   target.emit(event)
-    //   if (event.stopped) continue
+      target.emit(event)
+      if (event.stopped) continue
 
-    //   if (target.scene && target.scene.emit) {
-    //     target.scene.emit(event)
-    //     if (event.stopped) continue
-    //   }
+      // TODO:
+      // if (target.scene && target.scene.emit) {
+      //   target.scene.emit(event)
+      //   if (event.stopped) continue
+      // }
 
-    //   if (target.game && target.game.emit) {
-    //     target.game.emit(event)
-    //   }
-    // }
+      // if (target.game && target.game.emit) {
+      //   target.game.emit(event)
+      // }
+    }
 
-    // this._eventPool = []
+    this._eventPool = []
   }
 }

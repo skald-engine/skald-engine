@@ -1,7 +1,8 @@
 // Sub namespace elements
 import * as utils from 'utils'
 import * as config from 'config'
-export {utils, config}
+import * as events from 'events_'
+export {utils, config, events}
 
 // Global namespace elements
 export * from 'globals_'

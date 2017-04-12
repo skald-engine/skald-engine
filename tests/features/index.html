@@ -4,25 +4,29 @@
   <title></title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
   <link href="https://fonts.googleapis.com/css?family=Montserrat|Roboto" rel="stylesheet">
-
-  <script type="text/javascript" src="../../build/lib/skald.min.js"></script>
+  
+  <script type="text/javascript" src="/build/lib/skald.min.js"></script>
 </head>
 <body>
   <div id="menu">
-    <a id="home" onclick="change('../home')">
+    <a id="home" onclick="change('home')">
       <i class="fa fa-home"></i>
       Home
     </a>
       
     <ul>
-      <h3>Basics</h3>
-      <li><a onclick="change('blah')">Blah</a></li>
+      <h3>Display</h3>
+      <li><a onclick="change('display/fullscreen')">Fullscreen</a></li>
+      <li><a onclick="change('display/orientation')">Orientation</a></li>
+      <li><a onclick="change('display/scale_fill')">Auto-scale: fill</a></li>
+      <li><a onclick="change('display/scale_fit')">Auto-scale: fit</a></li>
+      <li><a onclick="change('display/scale_stretch')">Auto-scale: stretch</a></li>
     </ul>
       
-    <ul>
+    <!-- <ul>
       <h3>Teste</h3>
       <li><a onclick="change('blah')">Blah</a></li>
-    </ul>
+    </ul> -->
   </div>
   
   <div id="content">
@@ -122,15 +126,15 @@
     function change(page) {
       document.getElementById('frame').src = 'source/'+page+'.html'
 
-      if (page === '../home') {
+      if (page === 'home') {
         window.location.hash = '#'
         document.getElementById('title-text').innerText = 'home.html'
       } else {
         window.location.hash = '#'+page
-        document.getElementById('title-text').innerText = 'source/'+page+'.html'
+        document.getElementById('title-text').innerText = page+'.html'
       }
     }
-    change(window.location.hash.substring(1) || '../home')
+    change(window.location.hash.substring(1) || 'home')
   </script>
 
 </body>
