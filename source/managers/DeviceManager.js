@@ -527,13 +527,13 @@ export default class DeviceManager extends Manager {
 
   _checkAudio() {
     utils.profiling.begin('audio')
-    let element = document.createElement('audio')
-    let canPlay = type => !!element.canPlayType(type).replace(/^no$/, '')
-
-    this._audioData = !!window.Audio
-    this._webAudio = !!window.AudioContext || !!window.webkitAudioContext
-    
     try {
+      let element = document.createElement('audio')
+      let canPlay = type => !!element.canPlayType(type).replace(/^no$/, '')
+
+      this._audioData = !!window.Audio
+      this._webAudio = !!window.AudioContext || !!window.webkitAudioContext
+    
       if (!!element.canPlayType) {
         this._ogg = canPlay('audio/ogg; codecs="vorbis"')
         this._opus = canPlay('audio/ogg; codecs="opus"') ||
@@ -551,10 +551,10 @@ export default class DeviceManager extends Manager {
 
   _checkVideo() {
     utils.profiling.begin('video')
-    let element = document.createElement('video')
-    let canPlay = type => !!element.canPlayType(type).replace(/^no$/, '')
-    
     try {
+      let element = document.createElement('video')
+      let canPlay = type => !!element.canPlayType(type).replace(/^no$/, '')
+    
       if (!!element.canPlayType) {
         this._oggVideo = canPlay('video/ogg; codecs="theora"')
         this._h264Video = canPlay('video/mp4; codecs="avc1.42E01E"')
@@ -569,6 +569,7 @@ export default class DeviceManager extends Manager {
 
   _checkFeatures() {
     utils.profiling.begin('general')
+
     // vibration
     try {
       navigator.vibrate = navigator.vibrate ||
@@ -583,7 +584,7 @@ export default class DeviceManager extends Manager {
     try {
       let webglElement = document.createElement('canvas')
       webglElement.screencanvas = false;
-      this._webgl = !!(window.WebGLRenderingContext && (
+      this._webGL = !!(window.WebGLRenderingContext && (
                        webglElement.getContext('webgl') ||
                        webglElement.getContext('experimental-webgl')
                      ))
@@ -600,8 +601,10 @@ export default class DeviceManager extends Manager {
       'mozRequestFullScreen',
       'mozRequestFullscreen'
     ]
-    let fullscreenElement = document.createElement('div')
-    this._fullscreen = !!requestFullscreen.find(x=>fullscreenElement[x])
+    try {
+      let fullscreenElement = document.createElement('div')
+      this._fullscreen = !!requestFullscreen.find(x=>fullscreenElement[x])
+    } catch(e) {}
 
     // localStorage support
     try {

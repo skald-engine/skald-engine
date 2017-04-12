@@ -1,5 +1,6 @@
 import {enumeration} from 'utils'
 
+
 // Injected on the building process
 /** Skald engine version (we use semantic version). */
 export const VERSION = '%VERSION%'
@@ -13,7 +14,7 @@ export const DATE = '%DATE%'
 export const REVISION = '%REVISION%'
 
 /** Version of the PixiJS. */
-export const PIXI_VERSION = PIXI.VERSION
+export const PIXI_VERSION = (typeof PIXI === 'undefined'? 'unknown' : PIXI.VERSION)
 
 /**
  * Position enum, it holds the following values:

@@ -4,7 +4,7 @@ import EventEmitter from 'core/EventEmitter'
 // import gameSchema from 'config/gameSchema'
 
 import * as utils from 'utils'
-// import * as managers from 'managers'
+import * as managers from 'managers'
 
 import {RENDERER} from 'globals_/constants'
 
@@ -191,7 +191,7 @@ export default class Game extends EventEmitter {
     // this._initializeConfig(config)
     // this._initializeLogger()
     // this._initializeRenderer()
-    // this._initializeManagers()
+    this._initializeManagers()
     // this._initializeLoader(manifest)
     // this._initializeGame()
     utils.profiling.end('boot')
@@ -274,32 +274,32 @@ export default class Game extends EventEmitter {
     utils.profiling.begin('managers')
 
     utils.profiling.begin('instatiation')
-    this._time = new managers.TimeManager(this)
-    this._events = new managers.EventsManager(this)
+    // this._time = new managers.TimeManager(this)
+    // this._events = new managers.EventsManager(this)
     this._device = new managers.DeviceManager(this)
-    this._display = new managers.DisplayManager(this)
-    this._director = new managers.DirectorManager(this)
-    this._keyboard = new managers.KeyboardManager(this)
-    this._mouse = new managers.MouseManager(this)
-    this._gamepads = new managers.GamepadsManager(this)
-    this._touches = new managers.TouchesManager(this)
-    this._inputs = new managers.InputsManager(this)
-    this._resources = new managers.ResourcesManager(this)
-    this._sounds = new managers.SoundsManager(this)
+    // this._display = new managers.DisplayManager(this)
+    // this._director = new managers.DirectorManager(this)
+    // this._keyboard = new managers.KeyboardManager(this)
+    // this._mouse = new managers.MouseManager(this)
+    // this._gamepads = new managers.GamepadsManager(this)
+    // this._touches = new managers.TouchesManager(this)
+    // this._inputs = new managers.InputsManager(this)
+    // this._resources = new managers.ResourcesManager(this)
+    // this._sounds = new managers.SoundsManager(this)
     utils.profiling.end('instatiation')
 
-    this._time.setup()
-    this._events.setup()
+    // this._time.setup()
+    // this._events.setup()
     this._device.setup()
-    this._display.setup()
-    this._resources.setup()
-    this._director.setup()
-    this._keyboard.setup()
-    this._mouse.setup()
-    this._gamepads.setup()
-    this._touches.setup()
-    this._inputs.setup()
-    this._sounds.setup()
+    // this._display.setup()
+    // this._resources.setup()
+    // this._director.setup()
+    // this._keyboard.setup()
+    // this._mouse.setup()
+    // this._gamepads.setup()
+    // this._touches.setup()
+    // this._inputs.setup()
+    // this._sounds.setup()
     utils.profiling.end('managers')
   }
 
