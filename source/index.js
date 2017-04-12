@@ -1,6 +1,7 @@
 // Sub namespace elements
 import * as utils from 'utils'
-export {utils}
+import * as config from 'config'
+export {utils, config}
 
 // Global namespace elements
 export * from 'globals_'

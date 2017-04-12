@@ -21,12 +21,6 @@ global.assert = assert
 global.sinon = sinon
 global.mockery = mockery
 
-// internal dependencies
-global.window = {}
-global.document = {}
-global.navigator = {userAgent: ''}
-global.PIXI = {}
-
 global.testRequire = function(name) {
   return require(__dirname + '/' + name)
 }
@@ -36,7 +30,27 @@ global.sourceRequire = function(name) {
 global.rootRequire = function(name) {
   return require(__dirname + '/../../' + name)
 }
+global.startMockery = () => {
+  mockery.enable({
+    warnOnReplace      : false,
+    warnOnUnregistered : false,
+    useCleanCache      : true
+  })
+}
+global.stopMockery = () => {
+  mockery.deregisterAll()
+  mockery.disable()
+}
+global.resetGlobals = () => {
+  global.window = {}
+  global.document = {}
+  global.navigator = {userAgent: ''}
+  global.PIXI = {}
+}
 
 // Add source to node path so we can import packages in the library
 process.env.NODE_PATH = __dirname + '/../../source/'
 require('module').Module._initPaths()
+
+// Setup global variables
+resetGlobals()

@@ -1,13 +1,11 @@
 import EventEmitter from 'core/EventEmitter'
 
-// import gameDefaults from 'config/gameDefaults'
-// import gameSchema from 'config/gameSchema'
+import {gameDefaults, gameSchema} from 'config'
 
 import * as utils from 'utils'
 import * as managers from 'managers'
 
 import {RENDERER} from 'globals_/constants'
-
 
 /**
  * This class represent a Skald game and it is responsible for the
@@ -188,9 +186,9 @@ export default class Game extends EventEmitter {
    */
   _initialize(config, manifest) {
     utils.profiling.begin('boot')
-    // this._initializeConfig(config)
-    // this._initializeLogger()
-    // this._initializeRenderer()
+    this._initializeConfig(config)
+    this._initializeLogger()
+    this._initializeRenderer()
     this._initializeManagers()
     // this._initializeLoader(manifest)
     // this._initializeGame()
@@ -205,8 +203,8 @@ export default class Game extends EventEmitter {
     utils.profiling.begin('config')
 
     this._config = utils.validateJson(config||{}, gameDefaults, gameSchema)
-
     this._autoUpdate = this._config.autoUpdate
+
     utils.profiling.end('config')
   }
 
@@ -214,6 +212,8 @@ export default class Game extends EventEmitter {
    * Initialize and configure the game logger.
    */
   _initializeLogger() {
+    console.log(this._config)
+    
     utils.profiling.begin('logger')
     this._log = new utils.logging.Logger()
     this._log.level = this._config.logger.level
@@ -227,7 +227,6 @@ export default class Game extends EventEmitter {
    */
   _initializeRenderer() {
     utils.profiling.begin('renderer')
-    // ge parent element
     this._parent = document.body
     if (this._config.parent) {
       this._parent = document.getElementById(this._config.parent)

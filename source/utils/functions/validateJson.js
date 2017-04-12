@@ -1,5 +1,4 @@
 import deepMerge from 'utils/functions/deepMerge'
-import jsen from 'dependencies'
 
 /**
  * Set defaults and validate a json object. This functions uses JSEN library to
@@ -24,6 +23,7 @@ export default function validateJson(json, defaults, schema) {
     throw Error(`Invalid json object.`)
   }
 
+  
   // Set defaults if provided
   if (defaults) {
     json = deepMerge(defaults, json)
