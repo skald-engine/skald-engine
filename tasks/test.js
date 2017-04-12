@@ -1,8 +1,8 @@
 const gulp = require('gulp');
 const mocha = require('gulp-mocha');
 
-gulp.task('_test', () =>
-  gulp.src('tests/**/*.test.js', {read: false})
+gulp.task('_test', () => {
+  return gulp.src('tests/**/*.test.js', {read: false})
     .pipe(mocha({
       ui        : 'bdd',
       reporter  : 'dot',
@@ -12,4 +12,5 @@ gulp.task('_test', () =>
     .once('error', () => {
       process.exit(1);
     })
+  }
 );

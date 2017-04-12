@@ -1,4 +1,4 @@
-describe('EventEmitter.js', () => {
+describe('core/EventEmitter.js', () => {
   let EventEmitter = sourceRequire('core/EventEmitter.js').default
 
   it('should dispatch event', () => {
