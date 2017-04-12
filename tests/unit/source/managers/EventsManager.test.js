@@ -1,0 +1,3 @@
+describe('managers/EventsManager.js', () => {
+  
+})
