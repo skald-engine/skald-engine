@@ -15,7 +15,16 @@
     <li><b>Pixi Version:</b> <script>document.write(sk.PIXI_VERSION)</script></li>
   </ul>
 
-  <canvas id="game"></canvas>
+  <div id="game"></div>
+  <script>
+    let game = new sk.Game({
+      parent:'game',
+      display: {
+        width: 280,
+        height: 5
+      }
+    })
+  </script>
 
 </body>
 </html>
