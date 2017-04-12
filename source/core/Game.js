@@ -33,7 +33,7 @@ export default class Game extends EventEmitter {
 
     this._log = null
 
-    this._time = null
+    // this._time = null
     this._events = null
     this._device = null
     this._display = null
@@ -274,7 +274,7 @@ export default class Game extends EventEmitter {
     utils.profiling.begin('managers')
 
     utils.profiling.begin('instatiation')
-    // this._time = new managers.TimeManager(this)
+    this._time = new managers.TimeManager(this)
     // this._events = new managers.EventsManager(this)
     this._device = new managers.DeviceManager(this)
     // this._display = new managers.DisplayManager(this)
@@ -288,7 +288,7 @@ export default class Game extends EventEmitter {
     // this._sounds = new managers.SoundsManager(this)
     utils.profiling.end('instatiation')
 
-    // this._time.setup()
+    this._time.setup()
     // this._events.setup()
     this._device.setup()
     // this._display.setup()
