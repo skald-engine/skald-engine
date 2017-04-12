@@ -20,9 +20,12 @@ global.expect = expect
 global.assert = assert
 global.sinon = sinon
 global.mockery = mockery
+
+// internal dependencies
 global.window = {}
 global.document = {}
 global.navigator = {userAgent: ''}
+global.PIXI = {}
 
 global.testRequire = function(name) {
   return require(__dirname + '/' + name)
@@ -35,5 +38,5 @@ global.rootRequire = function(name) {
 }
 
 // Add source to node path so we can import packages in the library
-process.env.NODE_PATH = __dirname + '/../../source/';
-require('module').Module._initPaths();
+process.env.NODE_PATH = __dirname + '/../../source/'
+require('module').Module._initPaths()

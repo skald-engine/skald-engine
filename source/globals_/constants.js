@@ -14,7 +14,7 @@ export const DATE = '%DATE%'
 export const REVISION = '%REVISION%'
 
 /** Version of the PixiJS. */
-export const PIXI_VERSION = (typeof PIXI === 'undefined'? 'unknown' : PIXI.VERSION)
+export const PIXI_VERSION = PIXI.VERSION
 
 /**
  * Position enum, it holds the following values:
