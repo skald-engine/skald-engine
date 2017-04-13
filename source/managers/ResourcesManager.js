@@ -143,11 +143,7 @@ export default class ResourcesManager extends Manager {
     }
     
     this.game.events.dispatch(
-      new ProgressEvent(
-        'resourceprogress', 
-        loaded,
-        total
-      )
+      new ProgressEvent('resourceprogress', loaded, total)
     )
   }
   
