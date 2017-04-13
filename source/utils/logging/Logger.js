@@ -115,8 +115,8 @@ export default class Logger {
     if (isFunction(formatterOrName)) {
       this._formatter = formatterOrName
     
-    } else if (globals.loggerFormatters[formatterOrName]) {
-      this._formatter = globals.loggerFormatters[formatterOrName]
+    } else if (globals._loggerFormatters[formatterOrName]) {
+      this._formatter = globals._loggerFormatters[formatterOrName]
     
     } else {
       throw new Error(`Invalid formatter "${formatterOrName}". `+
@@ -136,8 +136,8 @@ export default class Logger {
     if (isFunction(handlerOrName)) {
       this._handler = handlerOrName
     
-    } else if (globals.loggerHandlers[handlerOrName]) {
-      this._handler = globals.loggerHandlers[handlerOrName]
+    } else if (globals._loggerHandlers[handlerOrName]) {
+      this._handler = globals._loggerHandlers[handlerOrName]
     
     } else {
       throw new Error(`Invalid handler "${handlerOrName}". `+

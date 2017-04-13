@@ -1,7 +1,7 @@
 /**
  * Dict of logger handlers.
  */
-export let loggerHandlers = {}
+export let _loggerHandlers = {}
 
 /**
  * Register a logger handler. If the format is already registered, it will be
@@ -11,9 +11,9 @@ export let loggerHandlers = {}
  * @param {Function} handler - The handler function.
  */
 export function registerLoggerHandler(name, handler) {
-  if (loggerHandlers[name]) {
+  if (_loggerHandlers[name]) {
     console.warn(`Handler "${name}" beign replaced.`)
   }
 
-  loggerHandlers[name] = handler
+  _loggerHandlers[name] = handler
 }

@@ -1,7 +1,7 @@
 /**
  * Dict of logger formatters.
  */
-export let loggerFormatters = {}
+export let _loggerFormatters = {}
 
 /**
  * Register a logger formatter. If the format is already registered, it will be
@@ -11,9 +11,9 @@ export let loggerFormatters = {}
  * @param {Function} formatter - The formatter function.
  */
 export function registerLoggerFormatter(name, formatter) {
-  if (loggerFormatters[name]) {
+  if (_loggerFormatters[name]) {
     console.warn(`Formatter "${name}" beign replaced.`)
   }
 
-  loggerFormatters[name] = formatter
+  _loggerFormatters[name] = formatter
 }
