@@ -35,7 +35,8 @@ export default class Game extends EventEmitter {
     this._events = null
     this._device = null
     this._display = null
-    this._director = null
+    this._scenes = null
+    this._create = null
     this._sounds = null
     this._inputs = null
     this._keyboard = null
@@ -114,6 +115,12 @@ export default class Game extends EventEmitter {
   get device() { return this._device }
 
   /**
+   * Factory manager. Readonly.
+   * @type {CreateManager}
+   */
+  get create() { return this._create }
+
+  /**
    * Display manager. Readonly.
    * @type {DisplayManager}
    */
@@ -123,7 +130,7 @@ export default class Game extends EventEmitter {
    * Director manager. Readonly.
    * @type {DirectorManager}
    */
-  get director() { return this._director }
+  get scenes() { return this._scenes }
 
   /**
    * Sounds manager. Readonly.
@@ -275,13 +282,14 @@ export default class Game extends EventEmitter {
     this._events = new managers.EventsManager(this)
     this._device = new managers.DeviceManager(this)
     this._display = new managers.DisplayManager(this)
-    // this._director = new managers.DirectorManager(this)
+    this._scenes = new managers.ScenesManager(this)
+    this._create = new managers.CreateManager(this)
+    this._resources = new managers.ResourcesManager(this)
     // this._keyboard = new managers.KeyboardManager(this)
     // this._mouse = new managers.MouseManager(this)
     // this._gamepads = new managers.GamepadsManager(this)
     // this._touches = new managers.TouchesManager(this)
     // this._inputs = new managers.InputsManager(this)
-    // this._resources = new managers.ResourcesManager(this)
     // this._sounds = new managers.SoundsManager(this)
     utils.profiling.end('instatiation')
 
@@ -289,8 +297,9 @@ export default class Game extends EventEmitter {
     this._events.setup()
     this._device.setup()
     this._display.setup()
-    // this._resources.setup()
-    // this._director.setup()
+    this._create.setup()
+    this._resources.setup()
+    this._scenes.setup()
     // this._keyboard.setup()
     // this._mouse.setup()
     // this._gamepads.setup()
@@ -350,7 +359,7 @@ export default class Game extends EventEmitter {
     
     // this._updateEntities(delta)
     this.events.update(delta)
-    // this.director.update(delta)
+    this.scenes.update(delta)
     utils.profiling.end('update')
 
     // Post update
@@ -384,18 +393,18 @@ export default class Game extends EventEmitter {
 
   /**
    * Temporary wordkaround to update the entities of the game. This is not 
-   * called on the director because it must run before the event digest and the
+   * called on the scenes because it must run before the event digest and the
    * scene update, however, it also part of the update phaser.
    */
-  _updateEntities(delta) {
-    let scene = this.director.currentScene
+  // _updateEntities(delta) {
+  //   let scene = this.scenes.currentScene
 
-    if (scene && !this.director.inTransition()) {
-      for (let entity of scene._entities) {
-        if (entity.updatable) entity.update(delta)
-      }
-    }
-  }
+  //   if (scene && !this.scenes.inTransition()) {
+  //     for (let entity of scene._entities) {
+  //       if (entity.updatable) entity.update(delta)
+  //     }
+  //   }
+  // }
 
   step(delta=0.166666) {
     if (this._autoUpdate) return
