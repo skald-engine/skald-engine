@@ -11,6 +11,8 @@ export default class Scene extends EventEmitter {
     this._entities = null
     this._systems = null
     this._eventSheets = null
+
+    this.initialize()
   }
 
   get game() { return this._game }
