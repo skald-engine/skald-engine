@@ -12,7 +12,7 @@ export let _loggerFormatters = {}
  */
 export function registerLoggerFormatter(name, formatter) {
   if (_loggerFormatters[name]) {
-    console.warn(`Formatter "${name}" beign replaced.`)
+    console.warn(`Formatter "${name}" being replaced.`)
   }
 
   _loggerFormatters[name] = formatter

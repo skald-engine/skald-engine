@@ -12,7 +12,7 @@ export let _loggerHandlers = {}
  */
 export function registerLoggerHandler(name, handler) {
   if (_loggerHandlers[name]) {
-    console.warn(`Handler "${name}" beign replaced.`)
+    console.warn(`Handler "${name}" being replaced.`)
   }
 
   _loggerHandlers[name] = handler
