@@ -2,14 +2,13 @@ import _components from 'globals_/components'
 import _displayObjects from 'globals_/displayObjects'
 
 export default class Entity {
-  constructor(game, scene, display, components) {
+  constructor(game, display, components) {
     this._game = game
-    this._scene = scene
 
     this._name = null
     this._display = null
     this._components = {}
-    this._$components = null
+    this._$components = components
 
     // Create the display object
     {
@@ -33,7 +32,6 @@ export default class Entity {
   }
 
   get game() { return this._game }
-  get scene() { return this._scene }
   get name() { return this._name }
   get display() { return this._display }
   get components() { return this._components }

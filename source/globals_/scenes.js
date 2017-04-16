@@ -35,8 +35,8 @@ export function scene(spec) {
 
   // Create the scene sub class
   class Other extends Scene {}
-  Other.spec = spec
-  Other.prototype.spec = spec
+  Other.$spec = Object.freeze(spec)
+  Other.prototype.$spec = Other.$spec
   Other.prototype.name = spec.name
   if (spec.initialize) Other.prototype.initialize = spec.initialize
   if (spec.enter) Other.prototype.enter = spec.enter

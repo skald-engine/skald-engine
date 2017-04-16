@@ -14,6 +14,14 @@ export default class CreateManager extends Manager {
   }
 
   entity(id) {
+    if (!globals._entities[id]) {
+      throw new Error(`Trying to create a non-existing entity "${id}".`)
+    }
+
+    let E = globals._entities[id]
+    let spec = E.spec
+
+    return new E(this.game, spec.display, spec.components)
   }
   scene(id) {
     if (!globals._scenes[id]) {
@@ -22,7 +30,17 @@ export default class CreateManager extends Manager {
 
     return new (globals._scenes[id])(this.game)
   }
-  component(id) {}
+
+  component(id, entity) {
+    let Component = globals._components[id]
+    
+    if (!Component) {
+      throw new Error(`Trying to create a non-existing component "${id}".`)
+    }
+
+    return new Component(entity)
+  }
+
   system(id) {}
   eventSheet(id) {}
 }

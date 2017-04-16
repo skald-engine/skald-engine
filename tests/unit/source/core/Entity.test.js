@@ -18,15 +18,13 @@ describe('core/Entity.js', () => {
 
     // Create an entity instance
     let game = sinon.spy()
-    let scene = sinon.spy()
     let display = 'sample'
     let components = []
 
-    let entity = new Entity(game, scene, display, components)
+    let entity = new Entity(game, display, components)
 
     // Asserts
     assert.equal(entity.game, game)
-    assert.equal(entity.scene, scene)
     assert.isTrue(entity.display instanceof DisplayObjectClass)
     assert.isDefined(entity.name)
     assert.isDefined(entity.components)
@@ -48,11 +46,10 @@ describe('core/Entity.js', () => {
 
     // Assert
     let game = sinon.spy()
-    let scene = sinon.spy()
     let display = 'sample'
     let components = []
 
-    let entity = new GenericEntity(game, scene, display, components)
+    let entity = new GenericEntity(game, display, components)
 
     assert.isTrue(initialize.called)
   })
@@ -75,11 +72,10 @@ describe('core/Entity.js', () => {
 
     // Configure generic sub class
     let game = sinon.spy()
-    let scene = sinon.spy()
     let display = 'sample'
     let components = ['sample1', 'sample3']
 
-    let entity = new Entity(game, scene, display, components)
+    let entity = new Entity(game, display, components)
 
     // Assert
     assert.isDefined(entity.components.sample1)
@@ -91,7 +87,7 @@ describe('core/Entity.js', () => {
   it('should export values to json', () => {
     let Entity = _genericRequire()
 
-    let e = new Entity(sinon.spy(), sinon.spy(), 'sample', [])
+    let e = new Entity(sinon.spy(), 'sample', [])
     e._name = 'zEntity'
     e._components = {
       'c1': {toJson: () => { return {k1:'value'}} },
@@ -114,7 +110,7 @@ describe('core/Entity.js', () => {
 
     let c1 = sinon.spy()
     let c2 = sinon.spy()
-    let e = new Entity(sinon.spy(), sinon.spy(), 'sample', [])
+    let e = new Entity(sinon.spy(), 'sample', [])
     e._components = {
       'c1': {fromJson: c1 },
       'c2': {fromJson: c2 },
