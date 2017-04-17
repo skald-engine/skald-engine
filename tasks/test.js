@@ -1,11 +1,18 @@
-const gulp = require('gulp');
-const mocha = require('gulp-mocha');
+const gulp = require('gulp')
+const mocha = require('gulp-mocha')
+const argv = require('yargs').argv
 
 gulp.task('_test', () => {
-  return gulp.src('source/**/*.test.js', {read: false})
+  let file = argv.files || argv.file || '*'
+  let dir = argv.dir? `**/${argv.dir}/**` : `**`
+
+  let src = `source/${dir}/${file}.test.js`
+  console.log('> Looking for tests: ', src)
+
+  return gulp.src(src, {read: false})
     .pipe(mocha({
       ui        : 'bdd',
-      reporter  : 'dot',
+      reporter  : argv.style||'dot',
       require   : ['./tests/unit/common.js'],
       compilers : 'js:babel-core/register'
     }))
