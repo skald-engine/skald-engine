@@ -100,6 +100,34 @@ export default class CreateManager extends Manager {
 
     return new System(this.game, scene)
   }
+
+  /**
+   * Creates an event sheet.
+   *
+   * @param {String} name - The event sheet name.
+   */
+  eventSheet(name, scene) {
+    if (!scene) {
+      throw new Error(`You must provide a scene instance in order to create `+
+                      `an event sheet object.`)
+    }
+
+    let EventSheet = $.eventSheets[name]
+
+    if (!EventSheet) {
+      throw new Error(`Trying to create a non-existing event sheet "${name}".`)
+    }
+
+    let eventSheet = new EventSheet(this.game, scene)
+    for (let i=0; i<EventSheet._$eventNames.length; i++) {
+      let name = EventSheet._$eventNames[i]
+      let func = '_callback_'+name
+
+      scene.addEventListener(name, eventSheet[func])
+    }
+
+    return eventSheet
+  }
 }
 
 
