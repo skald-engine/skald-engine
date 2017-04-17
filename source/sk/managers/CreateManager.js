@@ -6,8 +6,7 @@ import * as utils from 'sk/utils'
 /**
  * The factory manager.
  *
- * Use this manager to create manually the objects registered in the engine, 
- * such as scenes and entities.
+ * This manager is mainly for internal usage.
  */
 export default class CreateManager extends Manager {
 
@@ -86,19 +85,14 @@ export default class CreateManager extends Manager {
    *
    * @param {String} name - The system name.
    */
-  system(name, scene) {
-    if (!scene) {
-      throw new Error(`You must provide a scene instance in order to create `+
-                      `a system object.`)
-    }
-
+  system(name) {
     let System = $.systems[name]
 
     if (!System) {
       throw new Error(`Trying to create a non-existing system "${name}".`)
     }
 
-    return new System(this.game, scene)
+    return new System(this.game)
   }
 
   /**
@@ -106,19 +100,14 @@ export default class CreateManager extends Manager {
    *
    * @param {String} name - The event sheet name.
    */
-  eventSheet(name, scene) {
-    if (!scene) {
-      throw new Error(`You must provide a scene instance in order to create `+
-                      `an event sheet object.`)
-    }
-
+  eventSheet(name) {
     let EventSheet = $.eventSheets[name]
 
     if (!EventSheet) {
       throw new Error(`Trying to create a non-existing event sheet "${name}".`)
     }
 
-    let eventSheet = new EventSheet(this.game, scene)
+    let eventSheet = new EventSheet(this.game)
     for (let i=0; i<EventSheet._$eventNames.length; i++) {
       let name = EventSheet._$eventNames[i]
       let func = '_callback_'+name
@@ -128,38 +117,37 @@ export default class CreateManager extends Manager {
 
     return eventSheet
   }
+
+  /**
+   * Creates a scene.
+   */
+  scene(name) {
+    let Scene = $.scenes[name]
+
+    if (!Scene) {
+      throw new Error(`Trying to create a non-existing scene "${name}".`)
+    }
+
+    // let scene = new Scene(this.game)
+
+    let layers = {}
+    for (let i=0; i<Scene.$layers; i++) {
+      let name = Scene.$layers[i]
+      layers[name] = new PIXI.Container()
+    }
+
+    let systems = {}
+    for (let i=0; i<Scene.systems.length; i++) {
+      let system = new Scene.systems[i]()
+      systems[system.access] = system
+    }
+
+    let eventSheets = {}
+    for (let i=0; i<Scene.eventSheets.length; i++) {
+      let eventSheet = new Scene.eventSheets[i]()
+      eventSheets[eventSheet.access] = eventSheet
+    }
+
+    return new Scene(this.game, layers, systems, eventSheets)
+  }
 }
-
-
-
-
-  // entity(id) {
-  //   if (!$.entities[id]) {
-  //     throw new Error(`Trying to create a non-existing entity "${id}".`)
-  //   }
-
-  //   let E = $.entities[id]
-  //   let spec = E.spec
-
-  //   return new E(this.game, spec.display, spec.components)
-  // }
-  // scene(id) {
-  //   if (!$.scenes[id]) {
-  //     throw new Error(`Trying to create a non-existing scene "${id}".`)
-  //   }
-
-  //   return new ($.scenes[id])(this.game)
-  // }
-
-  // component(id, entity) {
-  //   let Component = $.components[id]
-    
-  //   if (!Component) {
-  //     throw new Error(`Trying to create a non-existing component "${id}".`)
-  //   }
-
-  //   return new Component(entity)
-  // }
-
-  // system(id) {}
-  // eventSheet(id) {}
