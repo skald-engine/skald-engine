@@ -2,7 +2,7 @@ const gulp = require('gulp');
 const mocha = require('gulp-mocha');
 
 gulp.task('_test', () => {
-  return gulp.src('tests/**/*.test.js', {read: false})
+  return gulp.src('source/**/*.test.js', {read: false})
     .pipe(mocha({
       ui        : 'bdd',
       reporter  : 'dot',

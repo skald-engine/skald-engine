@@ -1,7 +1,7 @@
-describe('utils/easing/back.js', () => {
+describe('sk/sk/utils/easing/back.js', () => {
 
-  describe('sk.utils.easing.getBackIn', () => {
-    let getBackIn = sourceRequire('utils/easing/back.js').getBackIn
+  describe('getBackIn', () => {
+    let getBackIn = require('./back.js').getBackIn
 
     it('should create the correct function', () => {
       let f = getBackIn(1)
@@ -16,8 +16,8 @@ describe('utils/easing/back.js', () => {
     })
   })
 
-  describe('sk.utils.easing.getBackOut', () => {
-    let getBackOut = sourceRequire('utils/easing/back.js').getBackOut
+  describe('getBackOut', () => {
+    let getBackOut = require('./back.js').getBackOut
 
     it('should create the correct function', () => {
       let f = getBackOut(1)
@@ -32,8 +32,8 @@ describe('utils/easing/back.js', () => {
     })
   })
 
-  describe('sk.utils.easing.getBackInOut', () => {
-    let getBackInOut = sourceRequire('utils/easing/back.js').getBackInOut
+  describe('getBackInOut', () => {
+    let getBackInOut = require('./back.js').getBackInOut
 
     it('should create the correct function', () => {
       let f = getBackInOut(1)
@@ -48,8 +48,8 @@ describe('utils/easing/back.js', () => {
     })
   })
 
-  describe('sk.utils.easing.backIn', () => {
-    let backIn = sourceRequire('utils/easing/back.js').backIn
+  describe('backIn', () => {
+    let backIn = require('./back.js').backIn
 
     it('should return correct values', () => {
       assert.closeTo(backIn(0), 0, 0.001)
@@ -58,8 +58,8 @@ describe('utils/easing/back.js', () => {
     })
   })
 
-  describe('sk.utils.easing.backOut', () => {
-    let backOut = sourceRequire('utils/easing/back.js').backOut
+  describe('backOut', () => {
+    let backOut = require('./back.js').backOut
 
     it('should return correct values', () => {
       assert.closeTo(backOut(0), 0, 0.001)
@@ -68,8 +68,8 @@ describe('utils/easing/back.js', () => {
     })
   })
 
-  describe('sk.utils.easing.backInOut', () => {
-    let backInOut = sourceRequire('utils/easing/back.js').backInOut
+  describe('backInOut', () => {
+    let backInOut = require('./back.js').backInOut
 
     it('should return correct values', () => {
       assert.closeTo(backInOut(0), 0, 0.001)

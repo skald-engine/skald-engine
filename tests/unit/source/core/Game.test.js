@@ -1,3 +1,0 @@
-describe('core/Game.js', () => {
-  
-})
