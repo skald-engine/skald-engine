@@ -29,6 +29,22 @@ export default class CreateManager extends Manager {
   }
 
   /**
+   * Creates a display object.
+   *
+   * @param {Strign} name - The display object name.
+   */
+  displayObject(name) {
+    let DisplayObject = $.displayObjects[name]
+
+    if (!DisplayObject) {
+      throw new Error(`Trying to create a non-existing display object `+
+                      `"${name}".`)
+    }
+
+    return new DisplayObject()
+  }
+
+  /**
    * Creates a component.
    *
    * @param {String} name - The component name.
@@ -41,6 +57,28 @@ export default class CreateManager extends Manager {
     }
 
     return new Component()
+  }
+
+  /**
+   * Creates a entity.
+   *
+   * @param {String} name - The entity name.
+   */
+  entity(name) {
+    let Entity = $.entities[name]
+
+    if (!Entity) {
+      throw new Error(`Trying to create a non-existing entity "${name}".`)
+    }
+
+    let display = new Entity.display()
+    let components = {}
+    for (let i=0; i<Entity.components.length; i++) {
+      let c = new Entity.components[i]()
+      components[c.access] = c
+    }
+
+    return new Entity(name, display, components)
   }
 }
 

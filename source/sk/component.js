@@ -73,13 +73,13 @@ function _validate(spec) {
 
   // Empty spec
   if (!spec) {
-    throw new TypeError(`Empty component specification. Please provide an `
+    throw new TypeError(`Empty component specification. Please provide an `+
                         `object with the component declaration.`)
   }
 
   // Spec with no name
   if (!spec.name) {
-    throw new Error(`You must provide an component name.`)
+    throw new Error(`You must provide the component name.`)
   }
 
   // Duplicated component name
@@ -88,8 +88,9 @@ function _validate(spec) {
   }
 
   // Initialize is a function
-  if (spec.initialize && !utils.isFunction(spec[name])) {
-    throw new TypeError(`Parameter "${name}" must be a function.`)
+  if (spec.initialize && !utils.isFunction(spec.initialize)) {
+    throw new TypeError(`Initialize function for "${spec.name}" component `+
+                        `must be a function.`)
   }
 
   // Data items

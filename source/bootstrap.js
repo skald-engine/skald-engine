@@ -12,3 +12,8 @@ import * as sk from 'sk'
   sk.registerLoggerHandler('dom', handlers.domHandler)
   sk.registerLoggerHandler('file', handlers.fileHandler)
 }
+
+// Configuring pixi display objects
+{
+  sk.registerDisplayObject('sprite', PIXI.Sprite)
+}
