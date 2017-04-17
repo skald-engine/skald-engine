@@ -19,6 +19,11 @@ export let entities = {}
 export let systems = {}
 
 /**
+ * Map of registered scenes.
+ */
+export let scenes = {}
+
+/**
  * Map of registered event sheets.
  */
 export let eventSheets = {}
