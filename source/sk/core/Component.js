@@ -79,13 +79,16 @@ export default class Component {
    * @return {Object}
    */
   toJson() {
-    let data = {}
+    let result = {
+      name: this.name,
+      data: {}
+    }
     for (let i=0; i<this._$attributes; i++) {
       let name = this._$attributes[i]
-      data[name] = this[name]
+      result.data[name] = this[name]
     }
 
-    return data
+    return result
   }
 
   /**
@@ -95,9 +98,10 @@ export default class Component {
    */
   fromJson(data) {
     data = data || {}
+    data.data = data.data || {}
 
-    for (let name in data) {
-      this[name] = data[name]
+    for (let name in data.data) {
+      this[name] = data.data[name]
     }
   }
 }

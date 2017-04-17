@@ -80,6 +80,26 @@ export default class CreateManager extends Manager {
 
     return new Entity(name, display, components)
   }
+
+  /**
+   * Creates a system.
+   *
+   * @param {String} name - The system name.
+   */
+  system(name, scene) {
+    if (!scene) {
+      throw new Error(`You must provide a scene instance in order to create `+
+                      `a system object.`)
+    }
+
+    let System = $.systems[name]
+
+    if (!System) {
+      throw new Error(`Trying to create a non-existing system "${name}".`)
+    }
+
+    return new System(this.game, scene)
+  }
 }
 
 
