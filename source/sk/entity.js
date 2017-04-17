@@ -23,7 +23,7 @@ import * as utils from 'sk/utils'
  *        the engine (using registerDisplayObjects).
  * @param {Array<String>} spec.components - The component list. You must 
  *        provide the component name in this (not the component access).
- * @param {Function} initialize - The initialization function.
+ * @param {Function} spec.initialize - The initialization function.
  */
 export function entity(spec) {
   // Spec validation
