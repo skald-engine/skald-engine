@@ -10,11 +10,15 @@ export {$, utils, config, events, core, managers, middlewares}
 
 // Global namespace elements
 export * from 'sk/constants'
-export * from 'sk/displayObject'
 export * from 'sk/entity'
 export * from 'sk/component'
 export * from 'sk/system'
 export * from 'sk/eventSheet'
-export * from 'sk/loggerFormatter'
-export * from 'sk/loggerHandler'
-export * from 'sk/Game'
+export * from 'sk/registerDisplayObject'
+export * from 'sk/registerLoggerFormatter'
+export * from 'sk/registerLoggerHandler'
+// export * from 'sk/Game'
+
+import Game from 'sk/Game'
+export {Game}
+

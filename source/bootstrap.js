@@ -1,10 +1,14 @@
-import * as utils from 'sk/utils'
+import * as sk from 'sk'
 
 // Configuring logging
-// g.registerLoggerFormatter('simple', utils.logging.formatters.simpleFormatter)
-// g.registerLoggerFormatter('level', utils.logging.formatters.levelFormatter)
-// g.registerLoggerFormatter('detailed', utils.logging.formatters.detailedFormatter)
+{
+  let formatters = sk.utils.logging.formatters
+  sk.registerLoggerFormatter('simple', formatters.simpleFormatter)
+  sk.registerLoggerFormatter('level', formatters.levelFormatter)
+  sk.registerLoggerFormatter('detailed', formatters.detailedFormatter)
 
-// g.registerLoggerHandler('console', utils.logging.handlers.consoleHandler)
-// g.registerLoggerHandler('dom', utils.logging.handlers.domHandler)
-// g.registerLoggerHandler('file', utils.logging.handlers.fileHandler)
+  let handlers = sk.utils.logging.handlers
+  sk.registerLoggerHandler('console', handlers.consoleHandler)
+  sk.registerLoggerHandler('dom', handlers.domHandler)
+  sk.registerLoggerHandler('file', handlers.fileHandler)
+}
