@@ -1,16 +1,9 @@
-// Sub namespace elements
-import * as utils from 'utils'
-import * as config from 'config'
-import * as events from 'events_'
-export {utils, config, events}
-
-// Global namespace elements
-export * from 'globals_'
-export * from 'core'
+// Import the sk library
+export * from 'sk'
 
 // Initialize the library
-import * as bootstrap from 'bootstrap.js'
+import * as bootstrap from './bootstrap.js'
 
-// Exporting namespace
+// Sets global for default es5 access
 global.sk = exports
 global.skald = exports

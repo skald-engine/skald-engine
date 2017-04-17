@@ -1,0 +1,7 @@
+export {default as DeviceManager} from 'sk/managers/DeviceManager'
+export {default as DisplayManager} from 'sk/managers/DisplayManager'
+export {default as EventsManager} from 'sk/managers/EventsManager'
+export {default as TimeManager} from 'sk/managers/TimeManager'
+export {default as ScenesManager} from 'sk/managers/ScenesManager'
+export {default as CreateManager} from 'sk/managers/CreateManager'
+export {default as ResourcesManager} from 'sk/managers/ResourcesManager'
