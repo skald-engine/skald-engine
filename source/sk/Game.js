@@ -241,18 +241,19 @@ export default class Game extends EventEmitter {
     // get the proper pixi renderer
     let renderers = {
       [RENDERER.AUTO]   : PIXI.autoDetectRenderer,
-      [RENDERER.WEBGL]  : PIXI.CanvasRenderer,
-      [RENDERER.CANVAS] : PIXI.WebGLRenderer,
+      [RENDERER.WEBGL]  : PIXI.WebGLRenderer,
+      [RENDERER.CANVAS] : PIXI.CanvasRenderer,
     }
 
     // create the pixi renderer
     let display = this._config.display
+    let color = display.backgroundColor.substring(1)
     this._renderer = new renderers[display.renderer](
       display.width,
       display.height,
       {
         resolution      : display.resolution,
-        backgroundColor : display.backgroundColor,
+        backgroundColor : parseInt(color, 16),
         antialias       : display.antialias,
         transparent     : display.transparent,
         forceFXAA       : display.forceFXAA,

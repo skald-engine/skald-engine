@@ -21,7 +21,7 @@ export default {
     forceOrientation    : null,
     scaleMode           : 'noscale',
     fullscreenScaleMode : 'noscale',
-    backgroundColor     : '#000000',
+    backgroundColor     : '#1D97F9',
     resolution          : 1,
     antialias           : false,
     transparent         : false, 

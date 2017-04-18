@@ -5,8 +5,9 @@ import * as config from 'sk/config'
 import * as events from 'sk/events'
 import * as managers from 'sk/managers'
 import * as middlewares from 'sk/middlewares'
+import * as displayObjects from 'sk/displayObjects'
 import * as core from 'sk/core'
-export {$, utils, config, events, core, managers, middlewares}
+export {$, utils, config, events, core, managers, middlewares, displayObjects}
 
 // Global namespace elements
 export * from 'sk/constants'

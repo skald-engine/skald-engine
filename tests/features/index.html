@@ -15,6 +15,12 @@
     </a>
       
     <ul>
+      <h3>Entities</h3>
+      <li><a onclick="change('display_objects/sprite')">Sprite</a></li>
+      <li><a onclick="change('display_objects/text')">Text</a></li>
+    </ul>
+
+    <ul>
       <h3>Display</h3>
       <li><a onclick="change('display/fullscreen')">Fullscreen</a></li>
       <li><a onclick="change('display/orientation')">Orientation</a></li>
@@ -27,6 +33,7 @@
       <h3>Scenes</h3>
       <li><a onclick="change('scenes/basic_scene')">Basic scene</a></li>
     </ul>
+      
       
   </div>
   
@@ -125,6 +132,7 @@
 
   <script>
     function change(page) {
+      console && console.clear && console.clear()
       document.getElementById('frame').src = 'source/'+page+'.html'
 
       if (page === 'home') {

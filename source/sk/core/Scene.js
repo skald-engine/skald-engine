@@ -1,6 +1,8 @@
 import EventEmitter from 'sk/core/EventEmitter'
 import Game from 'sk/Game'
 
+const DEFAULT_LAYER = '~default'
+
 export default class Scene extends EventEmitter {
 
   constructor(game, layers, systems, eventSheets) {
@@ -24,6 +26,8 @@ export default class Scene extends EventEmitter {
       this._mapSystemToEntities[this._$systems[i]] = []
     }
 
+    this._layers[DEFAULT_LAYER] = new PIXI.Container()
+    for (let k in this._layers) { this._world.addChild(this._layers[k]) }
     for (let k in this._systems) { this._systems[k]._scene = this }
     for (let k in this._eventSheets) { this._eventSheets[k]._scene = this }
 
@@ -140,17 +144,35 @@ export default class Scene extends EventEmitter {
    * @param {String} layerName - The layer name.
    */
   addEntity(entityName, layerName) {
+    // Uses default layer if layer is not provided
+    layerName = layerName||DEFAULT_LAYER
+
+    // Creates the entity
     let entity = this.game.create.entity(entityName)
 
+    // Validate layer name 
+    let layer = this._layers[layerName]
+    if (!layer) {
+      throw new Error(`Invalid layer "${layerName}".`)
+    }
+
+    // Add entity to the system-entity map
     for (let key in this._systems) {
       if (this._systems[key].check(entity)) {
         this._mapSystemToEntities[key].push(entity)
       }
     }
 
-    this._world.addChild(entity.display)
+    // Add layer info to the entity
+    entity.$layer = layerName
+
+    // Add entity to the layer
+    layer.addChild(entity.display)
+
+    // Add entity to the general list
     this._entities.push(entity)
 
+    // Return the entity
     return entity
   }
 
@@ -160,7 +182,8 @@ export default class Scene extends EventEmitter {
    * @param {Entity} entity - The entity object.
    */
   removeEntity(entity) {
-    this._world.removeChild(entity.display)
+    let layer = this._layers[entity.$layer]
+    layer.removeChild(entity.display)
     this._entities.splice(this._entities.indexOf(entity))
 
     for (let key in this._systems) {
@@ -169,5 +192,40 @@ export default class Scene extends EventEmitter {
         list.splice(list.indexOf(entity))
       }
     }
+  }
+
+  /**
+   * Adds a static display object to the scene.
+   *
+   * @param {PIXI.DisplayObject} displayObject - The display object.
+   * @param {String} [layerName] - The layer.
+   * @return {PIXI.DisplayObject} The input display object.
+   */
+  addStatic(displayObject, layerName) {
+    // Uses default layer if layer is not provided
+    layerName = layerName||DEFAULT_LAYER
+
+    // Validate layer name 
+    let layer = this._layers[layerName]
+    if (!layer) {
+      throw new Error(`Invalid layer "${layerName}".`)
+    }
+
+    // Add layer info to the entity
+    displayObject.$layer = layerName
+
+    // Add entity to the layer
+    layer.addChild(displayObject)
+
+    // Return the entity
+    return displayObject
+  }
+
+  /**
+   * Removes a static texture
+   */
+  removeStatic(displayObject) {
+    let layer = this._layers[displayObject.$layer]
+    layer.removeChild(displayObject)
   }
 }

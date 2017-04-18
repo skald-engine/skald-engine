@@ -15,5 +15,10 @@ import * as sk from 'sk'
 
 // Configuring pixi display objects
 {
-  sk.registerDisplayObject('sprite', PIXI.Sprite)
+  let m = sk.displayObjects
+  sk.registerDisplayObject('sprite', m.Sprite)
+  sk.registerDisplayObject('bitmapText', m.BitmapText)
+  sk.registerDisplayObject('text', m.Text)
+  sk.registerDisplayObject('graphics', m.Graphics)
 }
+
