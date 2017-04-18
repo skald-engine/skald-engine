@@ -1,3 +1,5 @@
+export {default as audioMiddleware} from 'sk/middlewares/audioMiddleware'
+export {default as audioSpriteMiddleware} from 'sk/middlewares/audioSpriteMiddleware'
 export {default as textureMiddleware} from 'sk/middlewares/textureMiddleware'
 export {default as jsonMiddleware} from 'sk/middlewares/jsonMiddleware'
 export {default as rawMiddleware} from 'sk/middlewares/rawMiddleware'
