@@ -10,7 +10,7 @@ import rawMiddleware from 'sk/middlewares/rawMiddleware'
 // import audioMiddleware from 'sk/middlewares/audioMiddleware'
 // import audioSpriteMiddleware from 'sk/middlewares/audioSpriteMiddleware'
 // import bitmapFontMiddleware from 'sk/middlewares/bitmapFontMiddleware'
-// import spriteSheetMiddleware from 'sk/middlewares/spriteSheetMiddleware'
+import spriteSheetMiddleware from 'sk/middlewares/spriteSheetMiddleware'
 
 import * as utils from 'sk/utils'
 // import audioMetadataSchema from 'sk/config/audioMetadataSchema'
@@ -112,7 +112,7 @@ export default class ResourcesManager extends Manager {
     // this._loader.use(audioMiddleware(this.game))
     // this._loader.use(audioSpriteMiddleware(this.game))
     // this._loader.use(bitmapFontMiddleware(this.game))
-    // this._loader.use(spriteSheetMiddleware(this.game))
+    this._loader.use(spriteSheetMiddleware(this.game))
   }
 
   /**
