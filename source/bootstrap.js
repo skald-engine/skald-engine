@@ -17,6 +17,7 @@ import * as sk from 'sk'
 {
   let m = sk.displayObjects
   sk.registerDisplayObject('sprite', m.Sprite)
+  sk.registerDisplayObject('animatedSprite', m.AnimatedSprite)
   sk.registerDisplayObject('bitmapText', m.BitmapText)
   sk.registerDisplayObject('text', m.Text)
   sk.registerDisplayObject('graphics', m.Graphics)
