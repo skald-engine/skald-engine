@@ -4,6 +4,11 @@
 export let displayObjects = {}
 
 /**
+ * list of audio systems.
+ */
+export let audioSystems = []
+
+/**
  * Map of registered components.
  */
 export let components = {}

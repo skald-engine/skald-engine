@@ -1,6 +1,6 @@
 import * as sk from 'sk'
 
-// Configuring logging
+// Configure logging
 {
   let formatters = sk.utils.logging.formatters
   sk.registerLoggerFormatter('simple', formatters.simpleFormatter)
@@ -13,7 +13,7 @@ import * as sk from 'sk'
   sk.registerLoggerHandler('file', handlers.fileHandler)
 }
 
-// Configuring pixi display objects
+// Configure pixi display objects
 {
   let m = sk.displayObjects
   sk.registerDisplayObject('sprite', m.Sprite)
@@ -21,5 +21,13 @@ import * as sk from 'sk'
   sk.registerDisplayObject('bitmapText', m.BitmapText)
   sk.registerDisplayObject('text', m.Text)
   sk.registerDisplayObject('graphics', m.Graphics)
+}
+
+// Configure audio systems
+{
+  sk.setAudioSystems([
+    sk.audio.WebAudioSystem,
+    sk.audio.HTML5AudioSystem
+  ])
 }
 

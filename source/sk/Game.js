@@ -198,7 +198,7 @@ export default class Game extends EventEmitter {
     this._initializeLogger()
     this._initializeRenderer()
     this._initializeManagers()
-    // this._initializeLoader(manifest)
+    this._initializeLoader(manifest)
     this._initializeGame()
     utils.profiling.end('boot')
   }
@@ -287,12 +287,12 @@ export default class Game extends EventEmitter {
     this._scenes = new managers.ScenesManager(this)
     this._create = new managers.CreateManager(this)
     this._resources = new managers.ResourcesManager(this)
-    // this._keyboard = new managers.KeyboardManager(this)
-    // this._mouse = new managers.MouseManager(this)
+    this._keyboard = new managers.KeyboardManager(this)
+    this._mouse = new managers.MouseManager(this)
     // this._gamepads = new managers.GamepadsManager(this)
     // this._touches = new managers.TouchesManager(this)
     // this._inputs = new managers.InputsManager(this)
-    // this._sounds = new managers.SoundsManager(this)
+    this._sounds = new managers.SoundsManager(this)
     utils.profiling.end('instatiation')
 
     this._time.setup()
@@ -302,12 +302,12 @@ export default class Game extends EventEmitter {
     this._create.setup()
     this._resources.setup()
     this._scenes.setup()
-    // this._keyboard.setup()
-    // this._mouse.setup()
+    this._keyboard.setup()
+    this._mouse.setup()
     // this._gamepads.setup()
     // this._touches.setup()
     // this._inputs.setup()
-    // this._sounds.setup()
+    this._sounds.setup()
     utils.profiling.end('managers')
   }
 
@@ -366,8 +366,8 @@ export default class Game extends EventEmitter {
 
     // Post update
     utils.profiling.begin('postupdate')
-    // this.keyboard.postUpdate(delta)
-    // this.mouse.postUpdate(delta)
+    this.keyboard.postUpdate(delta)
+    this.mouse.postUpdate(delta)
     // this.gamepads.postUpdate(delta)
     for (let name in this._plugins) {
       this._plugins[name].postUpdate(delta)

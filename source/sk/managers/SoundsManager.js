@@ -1,4 +1,5 @@
 import Manager from 'sk/core/Manager' 
+import * as $ from 'sk/$' 
 import * as audio from 'sk/audio'
 import * as utils from 'sk/utils'
 
@@ -84,10 +85,10 @@ export default class SoundsManager extends Manager {
    * Setup system
    */
   _setupSystem() {
-    if (globals.audioSystems.length) {
-      for (let i=0; i<globals.audioSystems.length; i++) {
-        if (globals.audioSystems[i].canUse()) {
-          this._system = new globals.audioSystems[i](this.game)
+    if ($.audioSystems.length) {
+      for (let i=0; i<$.audioSystems.length; i++) {
+        if ($.audioSystems[i].canUse()) {
+          this._system = new $.audioSystems[i](this.game)
           return
         }
       }
