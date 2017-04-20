@@ -143,12 +143,14 @@ export default class Scene extends EventEmitter {
    * @param {String} entityName - The entity ID.
    * @param {String} layerName - The layer name.
    */
-  addEntity(entityName, layerName) {
+  addEntity(entity, layerName) {
     // Uses default layer if layer is not provided
     layerName = layerName||DEFAULT_LAYER
 
     // Creates the entity
-    let entity = this.game.create.entity(entityName)
+    if (typeof entity === 'String') {
+      entity = this.game.create.entity(entity)
+    }
 
     // Validate layer name 
     let layer = this._layers[layerName]
@@ -204,6 +206,11 @@ export default class Scene extends EventEmitter {
   addStatic(displayObject, layerName) {
     // Uses default layer if layer is not provided
     layerName = layerName||DEFAULT_LAYER
+
+    // Create the display object if needed
+    if (typeof displayObject === 'String') {
+      displayObject = this.game.create.displayObject(displayObject)
+    }
 
     // Validate layer name 
     let layer = this._layers[layerName]

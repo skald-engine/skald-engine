@@ -317,7 +317,11 @@ export default class Game extends EventEmitter {
   _initializeLoader(manifest) {
     utils.profiling.begin('loader')
     if (manifest) {
-      this.resources.loadManifest(manifest)
+      this.resources.addManifest(manifest)
+
+      if (this.config.autoPreload) {
+        this.resources.load()
+      }
     }
     utils.profiling.end('loader')
   }

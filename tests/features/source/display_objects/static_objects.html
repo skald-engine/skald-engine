@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <script type="text/javascript" src="/build/lib/skald.min.js"></script>
+</head>
+<body>
+  
+  <div>
+  </div>
+
+  <script>
+    // Configuration ----------------------------------------------------------
+    sk.scene({
+      name: 'base',
+      initialize: () => {
+        // this.addStatic('sprite', )
+        console.log('=)')
+
+    // Play
+  // - Sprite
+  // - AnimatedSprite
+  // - Text
+  // - Graphics
+  // - BitmapText
+      }
+    })
+
+    // Game initialization ----------------------------------------------------
+    const config = {
+      resources: {basePath: '../../assets/'},
+      display: {width: 300, height: 400},
+      logger: {level: 'trace'}
+    }
+    const manifest = [
+      {id: 'asset_texture', type: 'texture', url: 'textures/zombie.png'}
+    ]
+    let game = new sk.Game(config, manifest)
+
+    // Starting ---------------------------------------------------------------
+    game.addEventListener('resourcecomplete', () => {
+      game.scenes.play('base')
+    })
+
+  </script>
+
+</body>
+</html>
