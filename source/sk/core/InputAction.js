@@ -7,7 +7,7 @@ import {INPUT_DEVICES, GAMEPAD_AXIS, KEY, BUTTON, GAMEPAD} from 'sk/constants'
  * 
  * It holds a list of commands (pair of <device, button>).
  */
-export default class Action {
+export default class InputAction {
   /**
    * @param {String} name - The name of this action.
    * @param {Game} game - The game instance.
