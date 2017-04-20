@@ -289,8 +289,8 @@ export default class Game extends EventEmitter {
     this._resources = new managers.ResourcesManager(this)
     this._keyboard = new managers.KeyboardManager(this)
     this._mouse = new managers.MouseManager(this)
-    // this._gamepads = new managers.GamepadsManager(this)
-    // this._touches = new managers.TouchesManager(this)
+    this._gamepads = new managers.GamepadsManager(this)
+    this._touches = new managers.TouchesManager(this)
     // this._inputs = new managers.InputsManager(this)
     this._sounds = new managers.SoundsManager(this)
     utils.profiling.end('instatiation')
@@ -304,8 +304,8 @@ export default class Game extends EventEmitter {
     this._scenes.setup()
     this._keyboard.setup()
     this._mouse.setup()
-    // this._gamepads.setup()
-    // this._touches.setup()
+    this._gamepads.setup()
+    this._touches.setup()
     // this._inputs.setup()
     this._sounds.setup()
     utils.profiling.end('managers')
@@ -347,7 +347,7 @@ export default class Game extends EventEmitter {
 
     // Pre update
     this.display.preUpdate(delta)
-    // this.gamepads.preUpdate(delta)
+    this.gamepads.preUpdate(delta)
     for (let name in this._plugins) {
       this._plugins[name].preUpdate(delta)
     }
@@ -368,7 +368,7 @@ export default class Game extends EventEmitter {
     utils.profiling.begin('postupdate')
     this.keyboard.postUpdate(delta)
     this.mouse.postUpdate(delta)
-    // this.gamepads.postUpdate(delta)
+    this.gamepads.postUpdate(delta)
     for (let name in this._plugins) {
       this._plugins[name].postUpdate(delta)
     }
