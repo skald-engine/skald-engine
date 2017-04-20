@@ -7,6 +7,7 @@ export default {
     'version',
     'parent',
     'autoUpdate',
+    'autoPreload',
     'logger',
     'managers',
     'display',
@@ -19,10 +20,11 @@ export default {
   ],
   properties: {
     // Base
-    project    : { type: 'string' },
-    version    : { type: 'string' },
-    parent     : { type: ['string', 'null'] },
-    autoUpdate : { type: 'boolean' },
+    project     : { type: 'string' },
+    version     : { type: 'string' },
+    parent      : { type: ['string', 'null'] },
+    autoUpdate  : { type: 'boolean' },
+    autoPreload : { type: 'boolean' },
     
     // Logger
     logger: {

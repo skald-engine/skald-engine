@@ -6,14 +6,88 @@
 </head>
 <body>
   
-  <p>Fon.</p>
+  <div>
+    <h3>Loading log:</h3>
+    <p>It must finish with "Completed!" string and cannot have any red item.</p>
+    <ul id="log"></ul>
+    <div id="assets"></div>
+  </div>
 
   <script>
+    // Logging configuration --------------------------------------------------
+    let div = document.getElementById('log')
+    function log(value) {
+      div.innerHTML = div.innerHTML + `<li>${value}</li>`
+    }
+
+    // Game initialization ----------------------------------------------------
     let game = new sk.Game({
-      display: {width: 1, height: 1}
+      resources: {
+        basePath:  '../../assets/'
+      },
+      display: {
+        width: 1,
+        height: 1
+      }
     })
 
-    sk.utils.profiling.report()
+    // Callbacks --------------------------------------------------------------
+    game.addEventListener('resourceprogress', function(event) {
+      log(`<span style="color:#A2A2A2;"> `+
+            `Progress `+
+            `${parseInt(event.progress*100)}% `+
+            `(${event.loaded} of `+
+            `${event.total})`+
+          `</span>`)
+    })
+    game.addEventListener('resourceload', function(event) {
+      log(`Load "${event.url}" to id "${event.id}"`)
+    })
+    game.addEventListener('resourceerror', function(event) {
+      log(`<span style="color:#BA1616;">ERROR "${event.message}"</span>`)
+    })
+    game.addEventListener('resourcecomplete', function(event) {
+      log(`Completed!`)
+      let div = document.getElementById('assets')
+      div.innerHTML = '<h3>Assets loaded:</h3>'
+      div.innerHTML += game.resources.list().join('<br>')
+    })
+
+    // Starting ---------------------------------------------------------------
+    game.resources.addTexture('asset_texture', 'textures/zombie.png')
+    game.resources.addJson('asset_json', 'spritesheets/samurai_idle.json')
+    game.resources.addRaw('asset_raw', 'LICENSES.md')
+    game.resources.addAudio('asset_audio',
+      ['sfxs/coin_2.ogg', 'sfxs/coin_2.mp3'],
+      {offset: 0.1, duration: 1, volume: 0.1, loop: true}
+    )
+    game.resources.addAudioSprite(
+      ['sfxs/sprite.ogg', 'sfxs/sprite.mp3'],
+      [
+        {id:'asset_audiosprite_p1', offset:0, duration:640},
+        {id:'asset_audiosprite_p2', offset:1, duration:800},
+        {id:'asset_audiosprite_p3', offset:2, duration:640},
+        {id:'asset_audiosprite_p4', offset:3, duration:2273}
+      ]
+    )
+    game.resources.addBitmapFont('bitmapfont', 'bitmapfonts/wing.xml')
+    game.resources.addSpriteSheet('asset_irregular_spritesheet', 'spritesheets/samurai_idle.json')
+    game.resources.addSpriteSheet('asset_regular_spritesheet',
+      'spritesheets/zombie_walking.png',
+      {
+        "frames": {
+          "width": 400,
+          "height": 300,
+          "count": 18,
+          "spacing": 0,
+          "margin": 0,
+        }
+      }
+    )
+    game.resources.load()
+
+    // spritesheet
+
   </script>
 
 </body>

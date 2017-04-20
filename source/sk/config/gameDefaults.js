@@ -1,8 +1,9 @@
 export default {
-  project    : 'skald_game',
-  version    : '1.0.0',
-  parent     : null,
-  autoUpdate : true,
+  project     : 'skald_game',
+  version     : '1.0.0',
+  parent      : null,
+  autoUpdate  : true,
+  autoPreload : true,
 
   logger: {
     level     : 'warn',
@@ -30,7 +31,7 @@ export default {
   },
 
   resources: {
-    basePath       : null,
+    basePath       : '',
     maxConcurrency : 10,
   },
 

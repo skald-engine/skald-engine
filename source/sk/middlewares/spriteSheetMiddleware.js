@@ -57,12 +57,14 @@ export default function spriteSheetMiddleware(game) {
 
     resource.spriteSheetMetadata = data
 
-    // If texture has already been loaded
+    // If texture has not been loaded
     if (!textureRawData) {
 
       // Format options to load the spritesheet texture
       let urlItems = resource.url.replace(/\/*$/g, '').split('/')
       let baseUrl = resource.url.replace(urlItems.pop(), '')
+      let pruneLength = game.config.resources.basePath.length
+      baseUrl = baseUrl.substring(pruneLength)
       let textureUrl = baseUrl+metadata.image
 
       let Resource = PIXI.loaders.Resource
@@ -84,7 +86,7 @@ export default function spriteSheetMiddleware(game) {
         return next()
       })
 
-    // If texture has not been loaded
+    // If texture has been loaded
     } else {
       let textureId = resource.name+'_texture'
       resource.spriteSheet = parse(
@@ -208,10 +210,11 @@ export default function spriteSheetMiddleware(game) {
     let count = 0
 
     let textures = {}
-    while (y < baseTexture.height && !(frames.count && count >= frames.count)) {
+    while (y+frames.height < baseTexture.height && !(frames.count && count >= frames.count)) {
       
       x = frames.margin
-      while (x < baseTexture.width) {
+      while (x+frames.width < baseTexture.width) {
+
         count += 1
         if (frames.count && count >= frames.count) {
           break

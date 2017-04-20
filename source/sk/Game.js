@@ -32,7 +32,7 @@ export default class Game extends EventEmitter {
 
     this._log = null
 
-    // this._time = null
+    this._time = null
     this._events = null
     this._device = null
     this._display = null

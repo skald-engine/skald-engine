@@ -42,3 +42,8 @@ export let loggerHandlers = {}
  * Map of registered logger formatters.
  */
 export let loggerFormatters = {}
+
+/**
+ * Map of bitmap font data.
+ */
+export let bitmapFonts = {}

@@ -1,0 +1,10 @@
+{
+  "image": "zombie_walking.png",
+  "frames": {
+    "width": 400,
+    "height": 300,
+    "count": 18,
+    "spacing": 0,
+    "margin": 0,
+  }
+}

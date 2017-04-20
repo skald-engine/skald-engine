@@ -69,7 +69,7 @@ const ANIMATION_COMPLETE = {
 
 export default {
   type: 'object',
-  required: ['image', 'frames', 'framerate', 'resolution'],
+  required: ['frames', 'framerate', 'resolution'],
   properties: {
     image : {type: 'string', minLength: 1},
     frameRate: {type: 'integer', minimum: 1},

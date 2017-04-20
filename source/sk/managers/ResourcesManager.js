@@ -4,17 +4,12 @@ import ResourceEvent from 'sk/events/ResourceEvent'
 import ProgressEvent from 'sk/events/ProgressEvent'
 import ErrorEvent from 'sk/events/ErrorEvent'
 
-import textureMiddleware from 'sk/middlewares/textureMiddleware'
-import jsonMiddleware from 'sk/middlewares/jsonMiddleware'
-import rawMiddleware from 'sk/middlewares/rawMiddleware'
-// import audioMiddleware from 'sk/middlewares/audioMiddleware'
-// import audioSpriteMiddleware from 'sk/middlewares/audioSpriteMiddleware'
-// import bitmapFontMiddleware from 'sk/middlewares/bitmapFontMiddleware'
-import spriteSheetMiddleware from 'sk/middlewares/spriteSheetMiddleware'
+import audioMetadataSchema from 'sk/config/audioMetadataSchema'
+import audioSpriteMetadataSchema from 'sk/config/audioSpriteMetadataSchema'
 
+import * as middlewares from 'sk/middlewares'
 import * as utils from 'sk/utils'
-// import audioMetadataSchema from 'sk/config/audioMetadataSchema'
-// import audioSpriteMetadataSchema from 'sk/config/audioSpriteMetadataSchema'
+
 
 const CODECS = {
   'ogg'   : 'ogg',
@@ -50,6 +45,8 @@ export default class ResourcesManager extends Manager {
 
     this._loader = null
     this._resources = {}
+    
+    this._stackSize = 0
   }
 
   /**
@@ -81,7 +78,7 @@ export default class ResourcesManager extends Manager {
    */
   _setupLoader() {
     let config = this.game.config
-    let basePath = config.resources.basePath
+    let basePath = config.resources.basePath || ''
     let maxConcurrency = config.resources.maxConcurrency
     this._loader = new PIXI.loaders.Loader(basePath, maxConcurrency)
 
@@ -106,13 +103,13 @@ export default class ResourcesManager extends Manager {
     // pixi game running in the same page.
     this._loader._afterMiddleware = []
 
-    this._loader.use(textureMiddleware(this.game))
-    this._loader.use(jsonMiddleware(this.game))
-    this._loader.use(rawMiddleware(this.game))
-    // this._loader.use(audioMiddleware(this.game))
-    // this._loader.use(audioSpriteMiddleware(this.game))
-    // this._loader.use(bitmapFontMiddleware(this.game))
-    this._loader.use(spriteSheetMiddleware(this.game))
+    this._loader.use(middlewares.textureMiddleware(this.game))
+    this._loader.use(middlewares.jsonMiddleware(this.game))
+    this._loader.use(middlewares.rawMiddleware(this.game))
+    this._loader.use(middlewares.audioMiddleware(this.game))
+    this._loader.use(middlewares.audioSpriteMiddleware(this.game))
+    this._loader.use(middlewares.spriteSheetMiddleware(this.game))
+    this._loader.use(middlewares.bitmapFontMiddleware(this.game))
   }
 
   /**
@@ -129,18 +126,8 @@ export default class ResourcesManager extends Manager {
    * Handle progress event.
    */
   _onProgress(loader, resource) {
-    let total, loaded
-
-    let inverseProgress = 1-loader.progress/100
-
-    // we try to overcome a limitation of PIXI loader, which does not track
-    // how many files have been loaded.
-    if (inverseProgress < 0.0001) {
-      total = loaded = 1
-    } else {
-      total = Math.round((loader._numToLoad)/(inverseProgress))
-      loaded = total-loader._numToLoad
-    }
+    let total = this._stackSize
+    let loaded = parseInt(this._stackSize*loader.progress/100)
     
     this.game.events.dispatch(
       new ProgressEvent('resourceprogress', loaded, total)
@@ -180,6 +167,8 @@ export default class ResourcesManager extends Manager {
    */
   _onComplete(event) {
     this.game.events.dispatch('resourcecomplete')
+    this._stackSize = 0
+    this._loader.reset()
   }
 
   /**
@@ -222,7 +211,7 @@ export default class ResourcesManager extends Manager {
    *
    * @param {Array<Object>} manifest - A JSON object with the manifest.
    */
-  loadManifest(manifest) {
+  addManifest(manifest) {
     this.game.log.trace(`(resources) Loading manifest.`)
 
     // Only accepts arrays
@@ -232,13 +221,13 @@ export default class ResourcesManager extends Manager {
 
     // Shortcuts for the specific loaders
     let loaders = {
-      texture     : (id, url, data) => this.loadTexture(id, url, data),
-      audio       : (id, url, data) => this.loadAudio(id, url, data),
-      json        : (id, url, data) => this.loadJson(id, url, data),
-      spriteSheet : (id, url, data) => this.loadSpriteSheet(id, url, data.data),
-      audioSprite : (id, url, data) => this.loadAudioSprite(url, data.sounds),
-      bitmapFont  : (id, url, data) => this.loadBitmapFont(id, url, data),
-      raw         : (id, url, data) => this.loadRaw(id, url, data),
+      texture     : (id, url, data) => this.addTexture(id, url, data),
+      audio       : (id, url, data) => this.addAudio(id, url, data),
+      json        : (id, url, data) => this.addJson(id, url, data),
+      spriteSheet : (id, url, data) => this.addSpriteSheet(id, url, data.data),
+      audioSprite : (id, url, data) => this.addAudioSprite(url, data.sounds),
+      bitmapFont  : (id, url, data) => this.addBitmapFont(id, url, data),
+      raw         : (id, url, data) => this.addRaw(id, url, data),
     }
 
     // Loop through each resource manifest
@@ -268,10 +257,9 @@ export default class ResourcesManager extends Manager {
    * @param {String} id - The resource ID.
    * @param {String} url - The resource url.
    */
-  loadTexture(id, url) {
+  addTexture(id, url) {
     this.game.log.trace(`(resources) Loading texture "${id}" from "${url}".`)
     this._loader.add(id, url, {metadata:{type: 'texture'}})
-    this._loader.load()
   }
 
   /**
@@ -280,10 +268,9 @@ export default class ResourcesManager extends Manager {
    * @param {String} id - The resource ID.
    * @param {String} url - The resource url.
    */
-  loadJson(id, url) {
+  addJson(id, url) {
     this.game.log.trace(`(resources) Loading json "${id}" from "${url}".`)
     this._loader.add(id, url, {metadata: {type: 'json'}})
-    this._loader.load()
   }
 
   /**
@@ -292,52 +279,52 @@ export default class ResourcesManager extends Manager {
    * @param {String} id - The resource ID.
    * @param {String} url - The resource url.
    */
-  loadRaw(id, url) {
+  addRaw(id, url) {
     this.game.log.trace(`(resources) Loading raw "${id}" from "${url}".`)
     this._loader.add(id, url, {metadata: {type: 'raw'}})
-    this._loader.load()
   }
 
   /**
+   * The xml
+   * 
    * @param {String} id - The resource ID.
    * @param {String} url - The resource url.
    */
-  loadBitmapFont(id, url) {
+  addBitmapFont(id, url) {
     this.game.log.trace(`(resources) Loading bitmap font "${id}" from "${url}".`)
 
     this._loader.add(id, url, {metadata:{type: 'bitmapFont'}})
-    this._loader.load()
   }
 
   /**
+   * Send a url string or array of urls.
+   * 
    * @param {String} id - The resource ID.
    * @param {String} url - The resource url.
    */
-  loadAudio(id, url, data) {
+  addAudio(id, url, data) {
     url = this._getAudioUrl(url)
 
     this.game.log.trace(`(resources) Loading audio "${id}" from "${url}".`)
     data = utils.validateJson(data||{}, {}, audioMetadataSchema)
 
     this._loader.add(id, url, {metadata: {type: 'audio', data: data}})
-    this._loader.load()
   }
 
   /**
    * @param {String} id - The resource ID.
    * @param {String} url - The resource url.
    */
-  loadSpriteSheet(id, url, data) {
+  addSpriteSheet(id, url, data) {
     this.game.log.trace(`(resources) Loading sprite sheet "${id}" from "${url}".`)
     this._loader.add(id, url, {metadata: {type: 'spriteSheet', data: data}})
-    this._loader.load()
   }
 
   /**
    * @param {String} id - The resource ID.
    * @param {String} url - The resource url.
    */
-  loadAudioSprite(url, data) {
+  addAudioSprite(url, data) {
     url = this._getAudioUrl(url)
 
     this.game.log.trace(`(resources) Loading audio sprite from "${url}".`)
@@ -345,6 +332,10 @@ export default class ResourcesManager extends Manager {
 
     let randomId = ('$audiosprite-' + Math.random()).substring(15)
     this._loader.add(randomId, url, {metadata: {type: 'audioSprite', data: data}})
+  }
+
+  load() {
+    this._stackSize = this._loader._queue._tasks.length
     this._loader.load()
   }
 

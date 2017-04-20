@@ -21,6 +21,7 @@ export * from 'sk/eventSheet'
 export * from 'sk/registerDisplayObject'
 export * from 'sk/registerLoggerFormatter'
 export * from 'sk/registerLoggerHandler'
+export * from 'sk/registerBitmapFont'
 export * from 'sk/setAudioSystems'
 
 import Game from 'sk/Game'
