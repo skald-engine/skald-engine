@@ -54,36 +54,64 @@
     })
 
     // Starting ---------------------------------------------------------------
-    game.resources.addTexture('asset_texture', 'textures/zombie.png')
-    game.resources.addJson('asset_json', 'spritesheets/samurai_idle.json')
-    game.resources.addRaw('asset_raw', 'LICENSES.md')
-    game.resources.addAudio('asset_audio',
-      ['sfxs/coin_2.ogg', 'sfxs/coin_2.mp3'],
-      {offset: 0.1, duration: 1, volume: 0.1, loop: true}
-    )
-    game.resources.addAudioSprite(
-      ['sfxs/sprite.ogg', 'sfxs/sprite.mp3'],
-      [
-        {id:'asset_audiosprite_p1', offset:0, duration:640},
-        {id:'asset_audiosprite_p2', offset:1, duration:800},
-        {id:'asset_audiosprite_p3', offset:2, duration:640},
-        {id:'asset_audiosprite_p4', offset:3, duration:2273}
-      ]
-    )
-    game.resources.addBitmapFont('asset_bitmapfont', 'bitmapfonts/wing.xml')
-    game.resources.addSpriteSheet('asset_irregular_spritesheet', 'spritesheets/samurai_idle.json')
-    game.resources.addSpriteSheet('asset_regular_spritesheet',
-      'spritesheets/zombie_walking.png',
+    game.resources.addManifest([
       {
-        "frames": {
-          "width": 400,
-          "height": 300,
-          "count": 18,
-          "spacing": 0,
-          "margin": 0,
+        id   : 'asset_texture',
+        type : 'texture',
+        url  : 'textures/zombie.png'
+      },
+      {
+        id   : 'asset_json',
+        type : 'json',
+        url  : 'spritesheets/samurai_idle.json'
+      },
+      {
+        id   : 'asset_raw',
+        type : 'raw',
+        url  : 'LICENSES.md'
+      },
+      {
+        id   : 'asset_audio',
+        type : 'audio',
+        url  : ['sfxs/coin_2.ogg', 'sfxs/coin_2.mp3'],
+        data : {offset: 0.1, duration: 1, volume: 0.1, loop: true}
+      },
+      {
+        type : 'audioSprite',
+        url  : ['sfxs/sprite.ogg', 'sfxs/sprite.mp3'],
+        data : [
+          {id:'asset_audiosprite_p1', offset:0, duration:640},
+          {id:'asset_audiosprite_p2', offset:1, duration:800},
+          {id:'asset_audiosprite_p3', offset:2, duration:640},
+          {id:'asset_audiosprite_p4', offset:3, duration:2273}
+        ]
+      },
+      {
+        id   : 'asset_bitmapfont',
+        type : 'bitmapFont',
+        url  : 'bitmapfonts/wing.xml'
+      },
+      {
+        id   : 'asset_irregular_spritesheet',
+        type : 'spriteSheet',
+        url  : 'spritesheets/samurai_idle.json'
+      },
+      {
+        id   : 'asset_regular_spritesheet',
+        type : 'spriteSheet',
+        url  : 'spritesheets/zombie_walking.png',
+        data : {
+          frames: {
+            width   : 400,
+            height  : 300,
+            count   : 18,
+            spacing : 0,
+            margin  : 0,
+          }
         }
-      }
-    )
+      },
+
+    ])
     game.resources.load()
   </script>
 

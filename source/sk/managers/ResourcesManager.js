@@ -225,7 +225,7 @@ export default class ResourcesManager extends Manager {
       audio       : (id, url, data) => this.addAudio(id, url, data),
       json        : (id, url, data) => this.addJson(id, url, data),
       spriteSheet : (id, url, data) => this.addSpriteSheet(id, url, data.data),
-      audioSprite : (id, url, data) => this.addAudioSprite(url, data.sounds),
+      audioSprite : (id, url, data) => this.addAudioSprite(url, data.data),
       bitmapFont  : (id, url, data) => this.addBitmapFont(id, url, data),
       raw         : (id, url, data) => this.addRaw(id, url, data),
     }
