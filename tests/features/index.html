@@ -13,37 +13,88 @@
       <i class="fa fa-home"></i>
       Home
     </a>
-      
+
+    <h3>Assets</h3>
     <ul>
-      <h3>Entities</h3>
-      <li><a onclick="change('display_objects/sprite')">Sprite</a></li>
-      <li><a onclick="change('display_objects/text')">Text</a></li>
+      <li><a onclick="change('assets/individual_preloading')">Individual preloading</a></li>
+      <li><a onclick="change('assets/manifest_preloading')">Manifest preloading</a></li>
     </ul>
 
+    <h3>Display Objects</h3>
     <ul>
-      <h3>Display</h3>
-      <li><a onclick="change('display/fullscreen')">Fullscreen</a></li>
-      <li><a onclick="change('display/orientation')">Orientation</a></li>
-      <li><a onclick="change('display/scale_fill')">Auto-scale: fill</a></li>
-      <li><a onclick="change('display/scale_fit')">Auto-scale: fit</a></li>
-      <li><a onclick="change('display/scale_stretch')">Auto-scale: stretch</a></li>
+      <li><a onclick="change('display_objects/')">Static objects</a></li>
+      <li><a onclick="change('display_objects/')">Entities with display</a></li>
+      <li><a onclick="change('display_objects/')">Sprite sheets</a></li>
+    </ul>
+
+    <h3>Inputs</h3>
+    <ul>
+      <li><a onclick="change('inputs/')">Keyboard</a></li>
+      <li><a onclick="change('inputs/')">Mouse</a></li>
+      <li><a onclick="change('inputs/')">Gamepad</a></li>
+      <li><a onclick="change('inputs/')">Touch</a></li>
+      <li><a onclick="change('inputs/')">Input mapping</a></li>
+    </ul>
+
+    <h3>Audio</h3>
+    <ul>
+      <li><a onclick="change('audio/')">Web Audio</a></li>
+      <li><a onclick="change('audio/')">HTML5 Audio</a></li>
     </ul>
       
+    <h3>Scenes</h3>
     <ul>
-      <h3>Scenes</h3>
-      <li><a onclick="change('scenes/basic_scene')">Basic scene</a></li>
+      <li><a onclick="change('scenes/')">Transitions</a></li>
+      <li><a onclick="change('scenes/')">Event sheets</a></li>
+      <li><a onclick="change('scenes/')">ECS Management</a></li>
     </ul>
-      
-      
+
+    <h3>Other managers</h3>
+    <ul>
+      <li><a onclick="change('managers/')">Display modes</a></li>
+      <li><a onclick="change('managers/')">Display fullscreen</a></li>
+      <li><a onclick="change('managers/')">Device detection</a></li>
+    </ul>
+
   </div>
   
   <div id="content">
     <div id="title">
-      <i class="fa fa-file-code-o"></i> <span id="title-text">home.html</span>
+      <div class="name">
+        <i class="fa fa-file-code-o"></i> <span id="title-text">home.html</span>
+      </div>
+      <div class="options">
+        <a href="#" onclick="popup()">
+          <i class="fa fa-external-link-square"></i>
+        </a>
+      </div>
     </div>
     <iframe id="frame" src="" frameborder="0">
     </iframe>
   </div>
+
+
+  <script>
+    var currentPage = null
+
+    function popup() {
+      window.open('source/'+currentPage+'.html')
+    }
+
+    function change(page) {
+      console && console.clear && console.clear()
+      document.getElementById('frame').src = 'source/'+page+'.html'
+
+      if (page === 'home') {
+        window.location.hash = '#'
+      } else {
+        window.location.hash = '#'+page
+      }
+      document.getElementById('title-text').innerText = page+'.html'
+      currentPage = page
+    }
+    change(window.location.hash.substring(1) || 'home')
+  </script>
 
 
   <style>
@@ -121,6 +172,19 @@
       color: #909090;
       text-transform: lowercase;
     }
+    #content #title .options {
+      position: absolute;
+      right: 10px;
+      margin-top: -19px;
+    }
+    #content #title .options a {
+      font-size: 1.1rem;
+      color: #909090;
+      transition: .3s all ease;
+    }
+    #content #title .options a:hover {
+      color: #333333;
+    }
     iframe {
       margin: 0;
       width: 100%;
@@ -129,22 +193,6 @@
       overflow: auto;
     }
   </style>
-
-  <script>
-    function change(page) {
-      console && console.clear && console.clear()
-      document.getElementById('frame').src = 'source/'+page+'.html'
-
-      if (page === 'home') {
-        window.location.hash = '#'
-        document.getElementById('title-text').innerText = 'home.html'
-      } else {
-        window.location.hash = '#'+page
-        document.getElementById('title-text').innerText = page+'.html'
-      }
-    }
-    change(window.location.hash.substring(1) || 'home')
-  </script>
 
 </body>
 </html>

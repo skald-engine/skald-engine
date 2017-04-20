@@ -5,14 +5,15 @@
   <script type="text/javascript" src="/build/lib/skald.min.js"></script>
 </head>
 <body>
- 
+  
+  <p>Fon.</p>
+
   <script>
     let game = new sk.Game({
-      display: {
-        scaleMode: sk.SCALE_MODE.STRETCH
-      }
+      display: {width: 1, height: 1}
     })
 
+    sk.utils.profiling.report()
   </script>
 
 </body>
