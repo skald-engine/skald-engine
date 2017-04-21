@@ -226,7 +226,7 @@ export default class ResourcesManager extends Manager {
     // Shortcuts for the specific loaders
     let loaders = {
       texture     : (id, url, data) => this.addTexture(id, url, data),
-      audio       : (id, url, data) => this.addAudio(id, url, data),
+      audio       : (id, url, data) => this.addAudio(id, url, data.data),
       json        : (id, url, data) => this.addJson(id, url, data),
       spriteSheet : (id, url, data) => this.addSpriteSheet(id, url, data.data),
       audioSprite : (id, url, data) => this.addAudioSprite(url, data.data),

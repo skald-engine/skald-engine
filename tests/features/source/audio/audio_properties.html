@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <script type="text/javascript" src="/build/lib/skald.min.js"></script>
+</head>
+<body>
+  
+  <h1>Audio Properties test</h1>
+  
+  <div id="loading">Loading assets...</div>
+  <div id="test" style="display:none">
+    <p>Game is running a <span id="running"></span> audio system.</p>
+    
+    <button onclick="play('sound1')">Sound 1 (offset, duration) </button><br><br>
+    <button onclick="play('sound2')">Sound 2 (volume: 25%)</button><br><br>
+    <button onclick="play('sound3')">Sound 3 (multiple disallowed)</button><br><br>
+
+    <button onclick="play('sound4')">Sound 4 (loop)</button>
+    <button onclick="stop('sound4')">Off</button><br>
+  </div>
+  
+
+  <script>
+    // Configuration ----------------------------------------------------------
+    function play(id) {
+      let sound = game.sounds.get(id)
+      sound.play()
+    }
+    function stop(id) {
+      let sound = game.sounds.get(id)
+      sound.stop()
+    }
+
+    // Game initialization ----------------------------------------------------
+    const config = {
+      resources: {basePath: '../../assets/'},
+      display: {width: 1, height: 1},
+      logger: {level: 'trace'}
+    }
+    const manifest = [
+      {
+        id   : 'sound1',
+        type : 'audio',
+        url  : ['sfxs/sprite.ogg', 'sfxs/sprite.mp3'],
+        data : {offset: 2000, duration: 640}
+      },
+      {
+        id   : 'sound2',
+        type : 'audio',
+        url  : ['sfxs/coin_2.ogg', 'sfxs/coin_2.mp3'],
+        data : {volume: 0.25}
+      },
+      {
+        id   : 'sound3',
+        type : 'audio',
+        url  : ['sfxs/gun-reload-1.ogg', 'sfxs/gun-reload-1.mp3'],
+        data : {allowMultiple: false}
+      },
+      {
+        id   : 'sound4',
+        type : 'audio',
+        url  : ['sfxs/static.ogg', 'sfxs/static.mp3'],
+        data : {loop: true}
+      },
+    ]
+    let game = new sk.Game(config, manifest)
+
+    // Starting ---------------------------------------------------------------
+    game.addEventListener('resourcecomplete', () => {
+      document.getElementById('loading').style.display = 'none'
+      document.getElementById('test').style.display = 'block'
+      document.getElementById('running').innerHTML = game.sounds.system.type
+    })
+
+  </script>
+
+</body>
+</html>
