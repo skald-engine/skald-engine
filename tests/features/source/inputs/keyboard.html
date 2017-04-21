@@ -37,9 +37,31 @@
       },
 
       update: function(delta) {
+        let speed = 50
         this.hero.display.update(delta)
 
-        console.log(game.keyboard.isDown(sk.KEY.RIGHT))
+        if (game.keyboard.isDown(sk.KEY.RIGHT)) {
+          this.hero.display.x += speed*delta
+          this.hero.display.scale.x = Math.abs(this.hero.display.scale.x)
+        }
+        else if (game.keyboard.isDown(sk.KEY.LEFT)) {
+          this.hero.display.x -= speed*delta
+          this.hero.display.scale.x = -Math.abs(this.hero.display.scale.x)
+        }
+        if (game.keyboard.isDown(sk.KEY.UP)) {
+          this.hero.display.y -= speed*delta
+        }
+        else if (game.keyboard.isDown(sk.KEY.DOWN)) {
+          this.hero.display.y += speed*delta
+        }
+
+        if (game.keyboard.isPressed(sk.KEY.SPACE)) {
+          if (this.hero.display.tint === 0xFFFFFF) {
+            this.hero.display.tint = 0xFF0000
+          } else {
+            this.hero.display.tint = 0xFFFFFF
+          }
+        }
       }
     })
 

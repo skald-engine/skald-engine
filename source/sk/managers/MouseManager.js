@@ -224,6 +224,7 @@ export default class MouseManager extends Manager {
    */
   _onClick(event) {
     this._dispatchMouseEvent('mouseclick', event)
+    this.game.focus()
 
     if (this._preventDefaults) {
       event.preventDefault()
@@ -238,6 +239,7 @@ export default class MouseManager extends Manager {
    */
   _onDblClick(event) {
     this._dispatchMouseEvent('mousedoubleclick', event)
+    this.game.focus()
 
     if (this._preventDefaults) {
       event.preventDefault()
@@ -253,6 +255,7 @@ export default class MouseManager extends Manager {
   _onMouseDown(event) {
     this._state.push(event.button)
     this._dispatchMouseEvent('mousedown', event)
+    this.game.focus()
 
     if (this._preventDefaults) {
       event.preventDefault()

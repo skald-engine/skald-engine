@@ -264,6 +264,7 @@ export default class Game extends EventEmitter {
     // enable focus on the game (and remove pixi interation)
     this._renderer.plugins.interaction.destroy()
     this._renderer.view.setAttribute('tabindex', '1')
+    this.focus()
 
     // add the renderer to the html
     this._parent.appendChild(this._renderer.view)
@@ -471,5 +472,12 @@ export default class Game extends EventEmitter {
    */
   hasPlugin(pluginName) {
     return !!this._plugins[pluginName]
+  }
+
+  /**
+   * Apply focus to the game canvas.
+   */
+  focus() {
+    this._renderer.view.focus()
   }
 }
