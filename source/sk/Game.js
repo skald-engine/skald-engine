@@ -480,4 +480,11 @@ export default class Game extends EventEmitter {
   focus() {
     this._renderer.view.focus()
   }
+
+  /**
+   * Remove focus from the game canvas.
+   */
+  blur() {
+    this._renderer.view.blur()
+  }
 }
