@@ -22,7 +22,7 @@ export default class Scene extends EventEmitter {
     this._eventSheets = eventSheets
 
     this._mapSystemToEntities = {}
-    for (let i=0; i<this._$systems; i++) {
+    for (let i=0; i<this._$systems.length; i++) {
       this._mapSystemToEntities[this._$systems[i]] = []
     }
 
@@ -234,5 +234,14 @@ export default class Scene extends EventEmitter {
   removeStatic(displayObject) {
     let layer = this._layers[displayObject.$layer]
     layer.removeChild(displayObject)
+  }
+
+  /**
+   * Same as update, but for internal uses.
+   */
+  _update(delta) {
+    for (let k in this.systems) {
+      this.systems[k].update(delta, this._mapSystemToEntities[k])
+    }
   }
 }

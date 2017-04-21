@@ -58,6 +58,7 @@ export default class ScenesManager extends Manager {
       }
 
     } else if (this._current) {
+      this._current._update(delta)
       this._current.update(delta)
     }
   }

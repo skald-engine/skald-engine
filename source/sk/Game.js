@@ -364,7 +364,6 @@ export default class Game extends EventEmitter {
       this._plugins[name].update(delta)
     }
     
-    // this._updateEntities(delta)
     this.events.update(delta)
     this.scenes.update(delta)
     utils.profiling.end('update')

@@ -17,7 +17,7 @@ export default class System {
    * @param {Game} game - The game instance.
    * @param {Scene} scene - The scene instance.
    */
-  constructor(game, scene) {
+  constructor(game) {
     // Inserted by the `system()` declarator:
     // - _name
     // - _access
@@ -27,7 +27,7 @@ export default class System {
     // - _$attributes
 
     this._game = game
-    this._scene = scene
+    this._scene = null
 
     this.initialize()
   }

@@ -27,7 +27,7 @@ export default class EventSheet {
    * @param {Game} game - The game instance.
    * @param {Scene} scene - The scene instance.
    */
-  constructor(game, scene) {    
+  constructor(game) {    
     // Inserted by the `eventSheet()` declarator:
     // - _name
     // - _access
@@ -39,7 +39,7 @@ export default class EventSheet {
     // - _$eventNames
 
     this._game = game
-    this._scene = scene
+    this._scene = null
 
     this.initialize()
   }
