@@ -1,5 +1,21 @@
 {
 	"image": "samurai_idle.png",
+	"animations": {
+		"idle": [
+			"asset_spritesheet_idle00",
+			"asset_spritesheet_idle01",
+			"asset_spritesheet_idle02",
+			"asset_spritesheet_idle03",
+			"asset_spritesheet_idle04",
+			"asset_spritesheet_idle05",
+			"asset_spritesheet_idle06",
+			"asset_spritesheet_idle07",
+			"asset_spritesheet_idle08",
+			"asset_spritesheet_idle09",
+			"asset_spritesheet_idle10",
+			"asset_spritesheet_idle11"
+		]
+	},
 	"frames": [
 		{
 			"id": "asset_spritesheet_idle00",

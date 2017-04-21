@@ -10,6 +10,18 @@ export default class Text extends PIXI.Text {
     this.style = new FontStyle(style)
   }
 
+  get style() { return this._style }
+  set style(style) {
+    style = style || {}
+    if (style instanceof PIXI.TextStyle) {
+      this._style = style
+    } else {
+      this._style = new FontStyle(style)
+    }
+    this.localStyleID = -1;
+    this.dirty = true;
+  }
+
   /**
    * Helper method to set a batch a variables to this object. Notice that, this
    * methods uses `Object.assign` internally, thus it only shallow copy the
@@ -23,7 +35,14 @@ export default class Text extends PIXI.Text {
    * @return {Text} This object.
    */
   configure(config) {
-    Object.assign(this. config)
+    Object.assign(this, config)
     return this
   }
+
+  configureStyle(style) {
+    Object.assign(this._style, style)
+    this.localStyleID = -1;
+    this.dirty = true
+  }
+
 }

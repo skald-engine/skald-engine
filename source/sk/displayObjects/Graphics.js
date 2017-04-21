@@ -17,7 +17,7 @@ export default class Graphics extends PIXI.Graphics {
    * @return {Graphics} This object.
    */
   configure(config) {
-    Object.assign(this. config)
+    Object.assign(this, config)
     return this
   }
 }

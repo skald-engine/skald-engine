@@ -1,3 +1,4 @@
+import * as $ from 'sk/$'
 
 /**
  * A class that inherits from PIXI bitmap text.
@@ -17,7 +18,18 @@ export default class BitmapText extends PIXI.extras.BitmapText {
    * @return {BitmapText} This object.
    */
   configure(config) {
-    Object.assign(this. config)
+    Object.assign(this, config)
     return this
+  }
+
+  updateText() {
+    if (!this._font.name) return
+
+    if (!$.bitmapFonts[this._font.name]) {
+      throw new Error(`Trying to use a non registered bitmap font `+
+                      `"${this._font.name}."`)
+    }
+
+    super.updateText()
   }
 }

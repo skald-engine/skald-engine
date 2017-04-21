@@ -148,7 +148,7 @@ export default class Scene extends EventEmitter {
     layerName = layerName||DEFAULT_LAYER
 
     // Creates the entity
-    if (typeof entity === 'String') {
+    if (typeof entity === 'string') {
       entity = this.game.create.entity(entity)
     }
 
@@ -208,7 +208,7 @@ export default class Scene extends EventEmitter {
     layerName = layerName||DEFAULT_LAYER
 
     // Create the display object if needed
-    if (typeof displayObject === 'String') {
+    if (typeof displayObject === 'string') {
       displayObject = this.game.create.displayObject(displayObject)
     }
 

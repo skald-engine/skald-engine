@@ -17,7 +17,7 @@ export default class Sprite extends PIXI.Sprite {
    * @return {Sprite} This object.
    */
   configure(config) {
-    Object.assign(this. config)
+    Object.assign(this, config)
     return this
   }
 }

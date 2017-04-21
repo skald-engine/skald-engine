@@ -53,8 +53,7 @@ export default class EventsManager extends Manager {
     }
 
     if (!target) {
-      // TODO: let scene = this.game.director.currentScene
-      let scene = null
+      let scene = this.game.scenes.current
       target = scene || this.game
     }
 
@@ -70,23 +69,32 @@ export default class EventsManager extends Manager {
    * @param {Number} delta
    */
   update(delta) {
-    for (var i=0; i<this._eventPool.length; i++) {
-      let event = this._eventPool[i]
+    // We must freeze the number of events that will be digested because other
+    // events may be added during the digest phase, thus, with the risk of 
+    // happening an infinite list of events. For this reason, any event added
+    // during the digest phase, will only be digested in the next cycle.
+    let i = this._eventPool.length;
 
+    // We use WHILE instead of FOR, in order to use poll.shift() function. We 
+    // must remove the event from the pool because if there is any error in any
+    // listener, the event pool will be stuck forever. 
+    while (i > 0) {
+      let event = this._eventPool.shift()  
       let target = event.target
 
       target.emit(event)
       if (event.stopped) continue
 
-      // TODO:
-      // if (target.scene && target.scene.emit) {
-      //   target.scene.emit(event)
-      //   if (event.stopped) continue
-      // }
+      if (target.scene && target.scene.emit) {
+        target.scene.emit(event)
+        if (event.stopped) continue
+      }
 
-      // if (target.game && target.game.emit) {
-      //   target.game.emit(event)
-      // }
+      if (target.game && target.game.emit) {
+        target.game.emit(event)
+      }
+
+      i--
     }
 
     this._eventPool = []

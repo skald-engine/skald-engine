@@ -22,7 +22,7 @@ export default class AnimatedSprite extends Sprite {
     if (animation) {
       this.gotoAndPlay(animation.name)
     } else {
-      this._displayObject.texture = this._spriteSheet.getFirstFrame()
+      this.texture = this._spriteSheet.getFirstFrame()
     }
 
     let multiplier = 1/this._currentAnimation.speed
@@ -33,11 +33,30 @@ export default class AnimatedSprite extends Sprite {
   get complete() { return this._complete }
   get playing() { return this._playing }
 
+  /**
+   * Helper method to set a batch a variables to this object. Notice that, this
+   * methods uses `Object.assign` internally, thus it only shallow copy the
+   * input values. If you need a deep copy, check {@sk.utils.deepClone}.
+   *
+   * Example:
+   *
+   *     sprite.configure({x:4, y:5})
+   *
+   * @param {Object} config - The object containing the target variables.
+   * @return {Sprite} This object.
+   */
+  configure(config) {
+    Object.assign(this, config)
+    return this
+  }
+
   _updateTexture() {
-    if (this._currentAnimation) {
-      let animation = this._currentAnimation
+    let animation = this._currentAnimation
+    if (animation) {
+      let frames = Array.isArray(animation)? animation : animation.frames
+
       let i = this._currentAnimationIndex
-      if (i >= animation.frames.length) {
+      if (i >= frames.length) {
         this._currentAnimationIndex = i = 0
 
         if (animation.next) {
@@ -51,9 +70,9 @@ export default class AnimatedSprite extends Sprite {
         }
       }
 
-      let frame = animation.frames[i]
+      let frame = frames[i]
       let texture = this._spriteSheet.getFrame(frame)
-      this._displayObject.texture = texture
+      this.texture = texture
     }
   }
 

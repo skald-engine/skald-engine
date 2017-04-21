@@ -50,10 +50,12 @@ const FRAME_IRREGULAR = {
 
 const ANIMATION_SIMPLE = {
   type: 'array',
-  items: [
-    {type: 'integer', minimum: 0},
-    {type: 'string'}
-  ]
+  items: {
+    anyOf: [
+      {type: 'integer', minimum: 0},
+      {type: 'string'}
+    ]
+  }
 }
 
 const ANIMATION_COMPLETE = {
@@ -82,7 +84,6 @@ export default {
       type: 'object',
       additionalProperties: {
         anyOf: [ANIMATION_SIMPLE, ANIMATION_COMPLETE]
-
       }
     },
   }

@@ -9,5 +9,5 @@ export function registerBitmapFont(name, data) {
   }
 
   $.bitmapFonts[name] = data
-  PIXI.BitmapText.fonts[name] = data
+  PIXI.extras.BitmapText.fonts[data.font] = data;
 }
