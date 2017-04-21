@@ -6,22 +6,21 @@
 </head>
 <body>
   
-  <div>
-    <p>This test uses static display objects on a scene (using `addStatic` and `sk.displayObjects`. It should show in the order:</p>
-    <ul>
-      <li>A zombie (sprite)</li>
-      <li>A text (text)</li>
-      <li>Three circles (graphics)</li>
-      <li>Three hand symbols (bitmap font)</li>
-      <li>An animated sprite (animated sprite</li>
-    </ul>
-  </div>
+  <h1>Entities with Display</h1>
+
+  <p>This test uses static display objects on a scene (using `addStatic` and `sk.displayObjects`. It should show in the order:</p>
+  <ul>
+    <li>A zombie (sprite)</li>
+    <li>A text (text)</li>
+    <li>Three circles (graphics)</li>
+    <li>Three hand symbols (bitmap font)</li>
+    <li>An animated sprite (animated sprite</li>
+  </ul>
 
   <script>
     // Configuration ----------------------------------------------------------
     sk.scene({
       name: 'base',
-      // initialize: function() {
       initialize: function() {
         let half = game.display.halfWidth
         this.addStatic('sprite')
@@ -64,9 +63,6 @@
               anchor: {x:0.5, y:0.5},
               scale: {x:0.4, y:0.4}
             })
-
-        // Play
-        // - AnimatedSprite
       },
 
       update: function(delta) {

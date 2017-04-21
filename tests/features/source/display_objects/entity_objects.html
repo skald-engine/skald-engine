@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <script type="text/javascript" src="/build/lib/skald.min.js"></script>
+</head>
+<body>
+  
+  <h1>Entity Objects</h1>
+
+  <p>This test uses entities in scenes. It should show in the order:</p>
+  <ul>
+    <li>A zombie (sprite)</li>
+    <li>A text (text)</li>
+    <li>Three circles (graphics)</li>
+    <li>Three hand symbols (bitmap font)</li>
+    <li>An animated sprite (animated sprite</li>
+  </ul>
+
+  <script>
+    // Configuration ----------------------------------------------------------
+    sk.entity({
+      name: 'sprite',
+      display: 'sprite',
+      initialize: function() {
+        this.display.configure({
+          texture: game.resources.get('sprite'),
+          position: {x:game.display.halfWidth, y:100},
+          anchor: {x:0.5, y:0.5},
+          scale: {x:0.4, y:0.4}
+        })
+      }
+    })
+
+    sk.entity({
+      name: 'text',
+      display: 'text',
+      initialize: function() {
+        this.display.configure({
+          text: 'The little Zombie',
+          position: {x:game.display.halfWidth, y:170},
+          anchor: {x:0.5, y:0.5}
+        })
+      }
+    })
+
+    sk.entity({
+      name: 'graphics',
+      display: 'graphics',
+      initialize: function() {
+        this.display
+            .configure({
+              position: {x:game.display.halfWidth, y:210}
+            })
+            .beginFill(0xFFFFFF)
+            .drawCircle(0, 0, 10)
+            .drawCircle(-40, 0, 5)
+            .drawCircle(40, 0, 5)
+            .endFill()
+
+      }
+    })
+
+    sk.entity({
+      name: 'bitmapText',
+      display: 'bitmapText',
+      initialize: function() {
+        this.display.configure({
+          text: 'ABC', 
+          position: {x:game.display.halfWidth, y:260},
+          anchor: {x:0.5, y:0.5},
+          font: 'wing'
+        })
+      }
+    })
+    sk.entity({
+      name: 'animatedSprite',
+      display: 'animatedSprite',
+      initialize: function() {
+        this.display.configure({
+          spriteSheet: game.resources.get('samurai'),
+          position: {x:game.display.halfWidth, y:360},
+          anchor: {x:0.5, y:0.5},
+          scale: {x:0.4, y:0.4}
+        })
+      }
+    })
+
+
+    sk.scene({
+      name: 'base',
+      initialize: function() {
+        this.addEntity('sprite')
+        this.addEntity('text')
+        this.addEntity('graphics')
+        this.addEntity('bitmapText')
+        this.animated = this.addEntity('animatedSprite')
+      },
+
+      update: function(delta) {
+        this.animated.display.update(delta)
+      }
+    })
+
+    // Game initialization ----------------------------------------------------
+    const config = {
+      resources: {basePath: '../../assets/'},
+      display: {width: 300, height: 450},
+      logger: {level: 'trace'}
+    }
+    const manifest = [
+      {id: 'sprite', type: 'texture', url: 'textures/zombie.png'},
+      {id: 'wing', type: 'bitmapFont', url: 'bitmapfonts/wing.xml'},
+      {id: 'samurai', type: 'spriteSheet', url: 'spritesheets/samurai_idle.json'},
+    ]
+    let game = new sk.Game(config, manifest)
+
+    // Starting ---------------------------------------------------------------
+    game.addEventListener('resourcecomplete', () => {
+      game.scenes.play('base')
+    })
+
+  </script>
+
+</body>
+</html>
