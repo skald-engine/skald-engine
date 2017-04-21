@@ -25,8 +25,13 @@ gulp.task('_livereload', function() {
   }
 })
 
+gulp.task('_reload', function() {
+  return gulp.src('')
+             .pipe(connect.reload())
+})
+
 
 gulp.task('_watch', ['_livereload'], function() {
   gulp.watch('source/**/*', ['_build'])
-  gulp.watch('tests/features/**/*', ['_build'])
+  gulp.watch('tests/features/**/*', ['_reload'])
 })

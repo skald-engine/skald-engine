@@ -22,13 +22,14 @@ export default function spriteSheetMiddleware(game) {
     // Check for the flags filled by the loader
     if (!resource.data) {
       resource.error = `Invalid files for the sprite sheet loading with id `+
-                       `"${id}".`
+                       `"${resource.name}".`
       return next()
     }
 
     // Validate if sprite sheet is defined
     if (resource.xhrType !== 'json' && !resource.metadata.data) {
-      resource.error = `Spritesheet metadata not defined for id "${id}".`
+      resource.error = `Spritesheet metadata not defined for id `+
+                       `"${resource.name}".`
       return next()
     }
 
@@ -210,13 +211,12 @@ export default function spriteSheetMiddleware(game) {
     let count = 0
 
     let textures = {}
-    while (y+frames.height < baseTexture.height && !(frames.count && count >= frames.count)) {
+    while (y+frames.height <= baseTexture.height && !(frames.count && count > frames.count)) {
       
       x = frames.margin
-      while (x+frames.width < baseTexture.width) {
-
+      while (x+frames.width <= baseTexture.width) {
         count += 1
-        if (frames.count && count >= frames.count) {
+        if (frames.count && count > frames.count) {
           break
         }
 

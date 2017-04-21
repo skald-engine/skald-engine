@@ -144,6 +144,10 @@ export default class ResourcesManager extends Manager {
         `Could not load the resource "${resource.name}" from "${resource.url}".`
       )
     )
+
+    this.game.log.warn(
+      `Could not load the resource "${resource.name}" from "${resource.url}".`
+    )
   }
   
   /**
