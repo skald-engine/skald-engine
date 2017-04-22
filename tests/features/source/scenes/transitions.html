@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <script type="text/javascript" src="/build/lib/skald.min.js"></script>
+</head>
+<body>
+  
+  <h1>Transitions</h1>
+
+  <p>Use the keyboard keys to move the circle, and the space to change the color.</p>
+
+  <script>
+    // Configuration ----------------------------------------------------------
+    sk.scene({
+      name: 'base',
+      initialize: function() {
+        let displayObject = new sk.displayObjects.Graphics()
+        displayObject
+          .beginFill(Math.round(Math.random()*0xFFFFFF))
+          .drawRect(0, 0, 400, 400)
+          .endFill()
+        this.addStatic(displayObject)
+      },
+    })
+
+    // Game initialization ----------------------------------------------------
+    const config = {
+      resources: {basePath: '../../assets/'},
+      display: {width: 400, height: 400, backgroundColor: '#000000'},
+      logger: {level: 'trace'}
+    }
+    const manifest = [
+      // {id: 'zombie', type: 'spriteSheet', url: 'spritesheets/zombie_walking.json'},
+    ]
+    let game = new sk.Game(config, manifest)
+
+    // Starting ---------------------------------------------------------------
+    // game.addEventListener('resourcecomplete', () => {
+    // })
+    game.scenes.play('base')
+    game.addEventListener('update', () => {
+      if (game.mouse.isAnyPressed()) {
+        game.scenes.play('base', new sk.transitions.FadeInOut(1000, sk.utils.easing.cubicIn))
+      }
+    })
+
+  </script>
+
+</body>
+</html>
