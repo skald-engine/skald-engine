@@ -144,7 +144,7 @@ function _process(spec) {
 
 // Create the event sheet class
 function _create(spec, values) {
-  class Other extends Component {}
+  class Other extends EventSheet {}
   let p = Other.prototype
 
   // Insert the internal values which will be used by the factory function
@@ -173,7 +173,7 @@ function _create(spec, values) {
   }
 
   // Set the event callbacks as part of the event sheet
-  for (let key in value.$events) {
+  for (let key in values.$events) {
     p['_callback_'+key] = values.$events[key]
   }
 

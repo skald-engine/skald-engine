@@ -29,7 +29,18 @@ export default class Scene extends EventEmitter {
     this._layers[DEFAULT_LAYER] = new PIXI.Container()
     for (let k in this._layers) { this._world.addChild(this._layers[k]) }
     for (let k in this._systems) { this._systems[k]._scene = this }
-    for (let k in this._eventSheets) { this._eventSheets[k]._scene = this }
+    for (let k in this._eventSheets) {
+      let eventSheet = this._eventSheets[k]
+      eventSheet._scene = this
+
+      // TODO: MUST FIND A BETTER WAY TO DO THAT
+      for (let event in eventSheet.$events) {
+        this.addEventListener(event, (e)=>{
+          eventSheet['_callback_'+event](e)
+        })
+      }
+    }
+
 
     this.initialize()
   }

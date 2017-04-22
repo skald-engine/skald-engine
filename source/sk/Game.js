@@ -365,6 +365,8 @@ export default class Game extends EventEmitter {
     }
     
     this.events.update(delta)
+    this.events.dispatch('update')
+
     this.scenes.update(delta)
     utils.profiling.end('update')
 
