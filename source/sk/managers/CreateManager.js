@@ -131,7 +131,7 @@ export default class CreateManager extends Manager {
     // let scene = new Scene(this.game)
 
     let layers = {}
-    for (let i=0; i<Scene.$layers; i++) {
+    for (let i=0; i<Scene.$layers.length; i++) {
       let name = Scene.$layers[i]
       layers[name] = new PIXI.Container()
     }
