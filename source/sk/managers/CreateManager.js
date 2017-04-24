@@ -112,7 +112,7 @@ export default class CreateManager extends Manager {
       let name = EventSheet._$eventNames[i]
       let func = '_callback_'+name
 
-      scene.addEventListener(name, eventSheet[func])
+      scene.addEventListener(name, e => eventSheet[func](e))
     }
 
     return eventSheet
