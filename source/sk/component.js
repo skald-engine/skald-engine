@@ -41,6 +41,7 @@ import * as utils from 'sk/utils'
  * @param {String} spec.access - The name as component will be accessed in the
  *        entity
  * @param {Function} spec.initialize - The initialization function.
+ * @param {Function} spec.destroy - The destroy function.
  * @param {Object} spec.data - Pairs of <attributes:default value> which will
  *        be inserted into the component. They will be accessed as usual 
  *        attributes.

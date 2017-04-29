@@ -30,95 +30,147 @@ export function entity(spec) {
   _validate(spec)
 
   // Processing values
-  let values = _process(spec)
+  let {c, p} = _process(spec)
 
   // Create the component class
-  let Class = _create(spec, values)
+  let Class = utils.createClass(Entity, c, p)
 
   // Register
   $.entities[spec.name] = Class
 }
 
 
+// Shortcut for throwing an error
+function throws(message, error) {
+  error = error || Error
+  throw new error(message)
+}
 
 // Validates the spec
 function _validate(spec) {
+  const reservedData = [
+    'name', 'access', 'components', 'display', 'initialize', 'destroy', 
+    'toJson', 'fromJson', '$data', '$components', '$display', '$methods',
+    '$attributes'
+  ]
+  const reservedMethods = [
+    'name', 'access', 'components', 'display', 'toJson', 'fromJson', '$data', 
+    '$methods', '$attributes', '$components', '$display'
+  ]
+
   // Empty spec
-  if (!spec) {
-    throw new TypeError(`Empty entity specification. Please provide an `+
-                        `object with the entity declaration.`)
-  }
+  if (!spec)
+    throws(`Empty entity specification. Please provide an object with the `+
+           `entity declaration.`)
 
   // Spec with no name
-  if (!spec.name) {
-    throw new Error(`You must provide the entity name.`)
-  }
+  if (!spec.name)
+    throws(`You must provide the entity name.`)
 
   // Duplicated entity name
-  if ($.entities[spec.name]) {
-    throw new Error(`A entity "${spec.name}" has been already registered.`)
-  }
+  if ($.entities[spec.name])
+    throws(`A entity "${spec.name}" has been already registered.`)
 
   // Initialize is a function
-  if (spec.initialize && !utils.isFunction(spec.initialize)) {
-    throw new TypeError(`Initialize function for "${spec.name}" entity must `+
-                        `be a function.`)
-  }
+  if (spec.initialize && !utils.isFunction(spec.initialize))
+    throws(`Initialize function for "${spec.name}" entity must be a function.`)
+
+  // Destroy is a function
+  if (spec.destroy && !utils.isFunction(spec.destroy))
+    throws(`Destroy function for "${spec.name}" entity must be a function.`)
 
   // Display
-  if (!spec.display) {
-    throw new Error(`You must provide the display for entity "${spec.name}".`)
-  }
+  if (!spec.display)
+    throws(`You must provide the display for entity "${spec.name}".`)
 
-  if (!$.displayObjects[spec.display]) {
-    throw new Error(`Entity "${spec.name}" trying to use a non-existing `+
-                    `display object "${spec.display}".`)
-  }
-
+  if (!$.displayObjects[spec.display])
+    throws(`Entity "${spec.name}" trying to use a non-existing display `+
+           `object "${spec.display}".`)
+  
   // Components
   if (spec.components) {
     for (let i=0; i<spec.components.length; i++) {
       let name = spec.components[i]
 
-      if (!$.components[name]) {
-        throw new Error(`Entity "${spec.name}" trying to use a non-existing `+
-                        `component "${name}".`)
-      }
+      if (!$.components[name])
+        throws(`Entity "${spec.name}" trying to use a non-existing `+
+               `component "${name}".`)
+    }
+  }
+
+  // Data items
+  if (spec.data) {
+    if (typeof spec.data !== 'object')
+      throws(`Data for entity "${spec.name}" must be an object. You `+
+             `provided "${spec.data}" instead.`)
+
+    for (let key in spec.data) {
+      if (reservedData.indexOf(key) >= 0)
+        throws(`Attribute "${key}" for entity "${spec.name}" is using a `+
+               `reserved or duplicated name, please change the attribute `+
+               `name.`)
+
+      if (utils.isFunction(spec.data[key]))
+        throws(`Attribute "${key}" for entity "${spec.name}" can't be a `+
+               `function, use the *method* option if you want to include a `+
+               `method.`)
+    }
+  }
+
+  // Method items
+  if (spec.methods) {
+    if (typeof spec.data !== 'object')
+      throws(`Methods for entity "${spec.name}" must be an object. You `+
+             `provided "${spec.methods}" instead.`)
+
+    let data = spec.data || {}
+    for (let key in spec.methods) {
+      if (reservedMethods.indexOf(key) >= 0 || spec.data[key] !== undefined)
+        throws(`Method "${key}" for entity "${spec.name}" is using a `+
+               `reserved or duplicated name, please change the method name.`)
+
+      if (!utils.isFunction(spec.methods[key]))
+        throws(`Method "${key}" for entity "${spec.name}" must be a `+
+               `function.`)
     }
   }
 }
 
 // Process values
 function _process(spec) {
-  let $components = Object.freeze(spec.components || {})
-  let $display = spec.display
+  let c = {} // class namespace
+  let p = {} // prototype
 
-  let components = []
-  for (let i=0; i<$components.length; i++) {
-    let name = $components[i]
-    components.push($.components[name])
+  // Base properties
+  p._$name = spec.name
+  p._$type = c._$type = spec.display
+
+  // Display
+  p._$display = c._$display = $.displayObjects[spec.display]
+
+  // Components
+  let components = {}
+  for (let i=0; i<spec.components.length; i++) {
+    let name = spec.components[i]
+    components[name] = $.components[name]
   }
+  p._$components = c._$components = Object.freeze(components)
 
-  let display = $.displayObjects[$display]
+  // Static properties
+  let data = Object.freeze(spec.data || {})
+  let methods = Object.freeze(spec.methods || {})
+  let attributes = Object.freeze(Object.keys(data))
+  p._$data = c._$data = data
+  p._$methods = c._$methods = methods
+  p._$attributes = c._$attributes = attributes
 
-  return {$components, $display, components, display}
-}
+  // Data and method values
+  for (let k in data) p[k] = data[k]
+  for (let k in methods) p[k] = methods[k]
 
-// Create the entity class
-function _create(spec, values) {
-  class Other extends Entity {}
-  let p = Other.prototype
-
-  // Insert the internal values which will be used by the factory function
-  Other.$components = p._$components = values.$components
-  Other.display = values.display
-  Other.components = values.components
-
-  // Set base values
-  p._name = spec.name
-
-  // Sets the initialize function
+  // Shortcuts (override methods)
   if (spec.initialize) p.initialize = spec.initialize
+  if (spec.destroy) p.destroy = spec.destroy
 
-  return Other
+  return {c, p}
 }
