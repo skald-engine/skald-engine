@@ -88,10 +88,6 @@ function _validate(spec) {
   if (spec.destroy && !utils.isFunction(spec.destroy))
     throws(`Destroy function for "${spec.name}" system must be a function.`)
 
-  // Destroy is a function
-  if (spec.update && !utils.isFunction(spec.update))
-    throws(`Update function for "${spec.name}" system must be a function.`)
-
   // Update is a function
   if (spec.update && !utils.isFunction(spec.update))
     throws(`Update function for "${spec.name}" system must be a `+
@@ -119,17 +115,17 @@ function _validate(spec) {
   // Method items
   if (spec.methods) {
     if (typeof spec.methods !== 'object')
-      throws(`Methods for entity "${spec.name}" must be an object. You `+
+      throws(`Methods for system "${spec.name}" must be an object. You `+
              `provided "${spec.methods}" instead.`)
 
     let data = spec.data || {}
     for (let key in spec.methods) {
       if (reservedMethods.indexOf(key) >= 0 || data[key] !== undefined)
-        throws(`Method "${key}" for entity "${spec.name}" is using a `+
+        throws(`Method "${key}" for system "${spec.name}" is using a `+
                `reserved or duplicated name, please change the method name.`)
 
       if (!utils.isFunction(spec.methods[key]))
-        throws(`Method "${key}" for entity "${spec.name}" must be a `+
+        throws(`Method "${key}" for system "${spec.name}" must be a `+
                `function.`)
     }
   }

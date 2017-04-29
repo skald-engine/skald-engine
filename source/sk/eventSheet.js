@@ -39,143 +39,138 @@ export function eventSheet(spec) {
   _validate(spec)
 
   // Processing values
-  let values = _process(spec)
+  let {c, p} = _process(spec)
 
   // Create the event sheet class
-  let Class = _create(spec, values)
+  let Class = utils.createClass(EventSheet, c, p)
 
   // Register
   $.eventSheets[spec.name] = Class
 }
 
 
+// Shortcut for throwing an error
+function throws(message, error) {
+  error = error || Error
+  throw new error(message)
+}
 
 // Validates the spec
 function _validate(spec) {
-  const reserved = [
-    'name', 'access', 'initialize', 'toJson', 'fromJson', '$data', '$methods', 
-    '$attributes', '$events'
+  const reservedData = [
+    'name', 'access', 'initialize', 'destroy', 'toJson', 'fromJson', '$data',
+    '$methods', '$attributes'
+  ]
+  const reservedMethods = [
+    'name', 'access', 'toJson', 'fromJson', '$data', '$methods', '$attributes'
   ]
 
+
   // Empty spec
-  if (!spec) {
-    throw new TypeError(`Empty event sheet specification. Please provide an `+
-                        `object with the event sheet declaration.`)
-  }
+  if (!spec)
+    throws(`Empty event sheet specification. Please provide an object with `+
+           `the event sheet declaration.`)
 
   // Spec with no name
-  if (!spec.name) {
-    throw new Error(`You must provide the event sheet name.`)
-  }
+  if (!spec.name)
+    throws(`You must provide the event sheet name.`)
 
   // Duplicated event sheet name
-  if ($.eventSheets[spec.name]) {
-    throw new Error(`An event sheet "${spec.name}" has been already `+
-                    `registered.`)
-  }
+  if ($.eventSheets[spec.name])
+    throws(`An event sheet "${spec.name}" has been already registered.`)
 
   // Initialize is a function
-  if (spec.initialize && !utils.isFunction(spec.initialize)) {
-    throw new TypeError(`Initialize function for "${spec.name}" event sheet `+
-                        `must be a function.`)
-  }
+  if (spec.initialize && !utils.isFunction(spec.initialize))
+    throws(`Initialize function for "${spec.name}" event sheet must be a `+
+           `function.`)
+
+  // Destroy is a function
+  if (spec.destroy && !utils.isFunction(spec.destroy))
+    throws(`Destroy function for "${spec.name}" event sheet must be a `+
+           `function.`)
 
   // Data items
   if (spec.data) {
-    for (let key in spec.data) {
-      // Reserved names
-      if (reserved.indexOf(key) >= 0) {
-        throw new Error(`Attribute "${key}" for event sheet "${spec.name}" is `+
-                        `using a reserved name, please change the method `+
-                        `name.`)
-      }
+    if (typeof spec.data !== 'object')
+      throws(`Data for event sheet "${spec.name}" must be an object. You `+
+             `provided "${spec.data}" instead.`)
 
-      // Is a function
-      if (utils.isFunction(spec.data[key])) {
-        throw new Error(`Attribute "${key}" for event sheet "${spec.name}" `+
-                        `can't be a function, use the *method* option if `+
-                        `you want to include a method.`)
-      }
+    for (let key in spec.data) {
+      if (reservedData.indexOf(key) >= 0)
+        throws(`Attribute "${key}" for event sheet "${spec.name}" is using a `+
+               `reserved or duplicated name, please change the attribute `+
+               `name.`)
+
+      if (utils.isFunction(spec.data[key]))
+        throws(`Attribute "${key}" for event sheet "${spec.name}" can't be a `+
+               `function, use the *method* option if you want to include a `+
+               `method.`)
     }
   }
 
   // Method items
   if (spec.methods) {
-    for (let key in spec.methods) {
-      // Reserved names
-      if (reserved.indexOf(key) >= 0) {
-        throw new Error(`Method "${key}" for event sheet "${spec.name}" is `+
-                        `using a reserved name, please change the method `+
-                        `name.`)
-      }
+    if (typeof spec.methods !== 'object')
+      throws(`Methods for event sheet "${spec.name}" must be an object. You `+
+             `provided "${spec.methods}" instead.`)
 
-      // Not function
-      if (!utils.isFunction(spec.methods[key])) {
-        throw new Error(`Method "${key}" for event sheet "${spec.name}" must `+
-                        `be a function.`)
-      }
+    let data = spec.data || {}
+    for (let key in spec.methods) {
+      if (reservedMethods.indexOf(key) >= 0 || data[key] !== undefined)
+        throws(`Method "${key}" for event sheet "${spec.name}" is using a `+
+               `reserved or duplicated name, please change the method name.`)
+
+      if (!utils.isFunction(spec.methods[key]))
+        throws(`Method "${key}" for event sheet "${spec.name}" must be a `+
+               `function.`)
     }
   }
 
-  // Event items not function
+  // Event items
   if (spec.events) {
+    if (typeof spec.events !== 'object')
+      throws(`Events for event sheet "${spec.name}" must be an object. You `+
+             `provided "${spec.events}" instead.`)
+
+    let data = spec.data || {}
     for (let key in spec.events) {
-      if (!utils.isFunction(spec.events[key])) {
-        throw new Error(`Event callback "${key}" for the event sheet `+
-                        `"${spec.name}" must be a function.`)
-      }
+      if (!utils.isFunction(spec.events[key]))
+        throws(`Event "${key}" for event sheet "${spec.name}" must be a `+
+               `function.`)
     }
   }
 }
 
 // Process values
 function _process(spec) {
-  spec.access = spec.access || spec.name
+  let c = {} // class namespace
+  let p = {} // prototype
 
-  let $spec = Object.freeze(spec)
-  let $data = Object.freeze(spec.data || {})
-  let $methods = Object.freeze(spec.methods || {})
-  let $events = Object.freeze(spec.events || {})
-  let $eventNames = Object.freeze(Object.getOwnPropertyNames($events))
-  let $attributes = Object.freeze(Object.getOwnPropertyNames($data))
+  // Base properties
+  p._$name = spec.name
+  p._$access = spec.access || spec.name
 
-  return {$spec, $data, $methods, $attributes, $events, $eventNames}
-}
+  // Static properties
+  let data = Object.freeze(spec.data || {})
+  let methods = Object.freeze(spec.methods || {})
+  let events = Object.freeze(spec.events || {})
+  let attributes = Object.freeze(Object.keys(data))
+  let eventNames = Object.freeze(Object.keys(events))
+  p._$data = c._$data = data
+  p._$methods = c._$methods = methods
+  p._$events = c._$events = events
+  p._$attributes = c._$attributes = attributes
+  p._$eventNames = c._$eventNames = eventNames
 
-// Create the event sheet class
-function _create(spec, values) {
-  class Other extends EventSheet {}
-  let p = Other.prototype
+  // Data, method and events values
+  for (let k in data) p[k] = data[k]
+  for (let k in methods) p[k] = methods[k]    
+  for (let k in events) p['_callback_'+k] = events[k]
 
-  // Insert the internal values which will be used by the factory function
-  Other.$spec = p._$spec = values.$spec
-  Other.$data = p._$data = values.$data
-  Other.$methods = p._$methods = values.$methods
-  Other.$attributes = p._$attributes = values.$attributes
-  Other.$events = p._$events = values.$events
-  Other.$eventNames = p._$eventNames = values.$eventNames
 
-  // Set base values
-  p._name = spec.name
-  p._access = spec.access
-
-  // Sets the initialize function
+  // Shortcuts (override methods)
   if (spec.initialize) p.initialize = spec.initialize
+  if (spec.destroy) p.destroy = spec.destroy
 
-  // Set the attributes
-  for (let key in values.$data) {
-    p[key] = values.$data[key]
-  }
-
-  // Set the methods
-  for (let key in values.$methods) {
-    p[key] = values.$methods[key]
-  }
-
-  // Set the event callbacks as part of the event sheet
-  for (let key in values.$events) {
-    p['_callback_'+key] = values.$events[key]
-  }
-
-  return Other
+  return {c, p}
 }
