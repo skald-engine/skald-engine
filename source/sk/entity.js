@@ -51,11 +51,11 @@ function _validate(spec) {
   const reservedData = [
     'name', 'access', 'components', 'display', 'initialize', 'destroy', 
     'toJson', 'fromJson', '$data', '$components', '$display', '$methods',
-    '$attributes'
+    '$attributes', '$type'
   ]
   const reservedMethods = [
     'name', 'access', 'components', 'display', 'toJson', 'fromJson', '$data', 
-    '$methods', '$attributes', '$components', '$display'
+    '$methods', '$attributes', '$components', '$display', '$type'
   ]
 
   // Empty spec
@@ -119,13 +119,13 @@ function _validate(spec) {
 
   // Method items
   if (spec.methods) {
-    if (typeof spec.data !== 'object')
+    if (typeof spec.methods !== 'object')
       throws(`Methods for entity "${spec.name}" must be an object. You `+
              `provided "${spec.methods}" instead.`)
 
     let data = spec.data || {}
     for (let key in spec.methods) {
-      if (reservedMethods.indexOf(key) >= 0 || spec.data[key] !== undefined)
+      if (reservedMethods.indexOf(key) >= 0 || data[key] !== undefined)
         throws(`Method "${key}" for entity "${spec.name}" is using a `+
                `reserved or duplicated name, please change the method name.`)
 

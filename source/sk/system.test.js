@@ -1,6 +1,6 @@
 const _makeFixtures = () => {
   return {
-    Entity : class {},
+    System : class {},
     $      : {},
     utils  : {} 
   }
@@ -10,12 +10,12 @@ const _require = (fixtures) => {
   mock({
     'sk/$': fixtures.$,
     'sk/utils': fixtures.utils,
-    'sk/core/Entity': fixtures.Entity
+    'sk/core/System': fixtures.System
   })
-  return require('./entity.js').entity
+  return require('./system.js').system
 }
 
-describe('sk/entity.js', () => {
+describe('sk/system.js', () => {
   let fixtures = null
   let module = null
 
@@ -30,9 +30,7 @@ describe('sk/entity.js', () => {
   it('should reject declaration with invalid data', () => {
     // setup mock
     fixtures.fn = () => {} 
-    fixtures.$.displayObjects = {'sampleDisplay': sinon.spy()}
-    fixtures.$.entities = {'sampleEntity': sinon.spy()}
-    fixtures.$.components = {'sampleComponent': sinon.spy()}
+    fixtures.$.systems = {'sampleSystem': sinon.spy()}
     fixtures.utils.isFunction = f => f === fixtures.fn
     fixtures.utils.createClass = () => {}
     module = _require(fixtures)
@@ -46,32 +44,29 @@ describe('sk/entity.js', () => {
       // invalid name
       {},
 
-      // invalid display
-      {name: 'sampleEntity', display: 'nonExistent'},
+      // invalid check function
+      {name: 'a'},
 
       // duplicated name
-      {name: 'sampleEntity', display: 'sampleDisplay'},
-
-      // invalid component
-      {name: 'a', display: 'sampleDisplay', components: ['nonExistent']},
+      {name: 'sampleSystem', check: () => {}},
 
       // invalid shortcuts
-      {name: 'a', display: 'sampleDisplay', initialize: 'non function'},
-      {name: 'a', display: 'sampleDisplay', destroy: 'non function'},
+      {name: 'a', check: () => {}, initialize: 'non function'},
+      {name: 'a', check: () => {}, destroy: 'non function'},
+      {name: 'a', check: () => {}, update: 'non function'},
 
       // invalid data
-      {name: 'a', display: 'sampleDisplay', data: 'non object'},
-      {name: 'a', display: 'sampleDisplay', data: {invalidBecauseFunction: fixtures.fn}},
+      {name: 'a', check: () => {}, data: 'non object'},
+      {name: 'a', check: () => {}, data: {invalidBecauseFunction: fixtures.fn}},
 
       // invalid methods
-      {name: 'a', display: 'sampleDisplay', methods: 'non object'},
-      {name: 'a', display: 'sampleDisplay', methods: {invalid: 'non function'}},
+      {name: 'a', check: () => {}, methods: 'non object'},
+      {name: 'a', check: () => {}, methods: {invalid: 'non function'}},
 
       // using registered keywords or duplicated variable names
-      {name: 'a', display: 'sampleDisplay', data: {$type: ''}},
-      {name: 'a', display: 'sampleDisplay', data: {name: ''}},
-      {name: 'a', display: 'sampleDisplay', methods: {name: fixtures.fn}},
-      {name: 'a', display: 'sampleDisplay', data: {b: ''}, methods: {b: fixtures.fn}}
+      {name: 'a', check: () => {}, data: {name: ''}},
+      {name: 'a', check: () => {}, methods: {name: fixtures.fn}},
+      {name: 'a', check: () => {}, data: {b: ''}, methods: {b: fixtures.fn}}
     ]
 
     // test
@@ -90,6 +85,8 @@ describe('sk/entity.js', () => {
       createClass : sinon.stub(),
       initialize  : () => {},
       destroy     : () => {},
+      check       : () => {},
+      update      : () => {},
       data        : {first: 1, second: 'value'},
       methods     : {third: () => {}}
     }
@@ -97,9 +94,7 @@ describe('sk/entity.js', () => {
 
     // setup mock
     fixtures.fn = () => {} 
-    fixtures.$.displayObjects = {'sampleDisplay': sinon.spy()}
-    fixtures.$.entities = {}
-    fixtures.$.components = {'sampleComponent': sinon.spy()}
+    fixtures.$.systems = {'sampleSystem': sinon.spy()}
     fixtures.utils.isFunction = f => (f===1||f==='value'?false:true)
     fixtures.utils.createClass = fx.createClass
     module = _require(fixtures)
@@ -107,10 +102,11 @@ describe('sk/entity.js', () => {
     // setup test
     let spec = {
       name: 'sample',
-      display: 'sampleDisplay',
-      components: ['sampleComponent'],
+      access: 'super',
       initialize: fx.initialize,
       destroy: fx.destroy,
+      check: fx.check,
+      update: fx.update,
       data: {
         first: fx.data.first,
         second: fx.data.second,
@@ -122,31 +118,28 @@ describe('sk/entity.js', () => {
 
     // test
     module(spec)
-    let entity = fixtures.$.entities.sample
+    let system = fixtures.$.systems.sample
     let args = fx.createClass.getCall(0).args
 
-    assert.equal(entity, fx.class_)
+    assert.equal(system, fx.class_)
     assert.isTrue(fx.createClass.calledOnce)
 
-    assert.equal(args[0], fixtures.Entity)
+    assert.equal(args[0], fixtures.System)
     assert.deepEqual(args[1], {
       _$data       : spec.data,
       _$methods    : spec.methods,
       _$attributes : Object.keys(spec.data),
-      _$components : fixtures.$.components,
-      _$display    : fixtures.$.displayObjects.sampleDisplay,
-      _$type       : 'sampleDisplay'
     })
     assert.deepEqual(args[2], {
       _$name       : spec.name,
+      _$access     : spec.access,
       _$data       : spec.data,
       _$methods    : spec.methods,
-      _$components : fixtures.$.components,
-      _$display    : fixtures.$.displayObjects.sampleDisplay,
       _$attributes : Object.keys(spec.data),
-      _$type       : 'sampleDisplay',
       initialize   : spec.initialize,
       destroy      : spec.destroy,
+      check        : spec.check,
+      update       : spec.update,
       first        : spec.data.first,
       second       : spec.data.second,
       third        : spec.methods.third

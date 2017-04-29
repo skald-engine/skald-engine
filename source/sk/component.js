@@ -123,13 +123,13 @@ function _validate(spec) {
 
   // Method items
   if (spec.methods) {
-    if (typeof spec.data !== 'object')
+    if (typeof spec.methods !== 'object')
       throws(`Methods for component "${spec.name}" must be an object. You `+
              `provided "${spec.methods}" instead.`)
 
     let data = spec.data || {}
     for (let key in spec.methods) {
-      if (reservedMethods.indexOf(key) >= 0 || spec.data[key] !== undefined)
+      if (reservedMethods.indexOf(key) >= 0 || data[key] !== undefined)
         throws(`Method "${key}" for component "${spec.name}" is using a `+
                `reserved or duplicated name, please change the method name.`)
 

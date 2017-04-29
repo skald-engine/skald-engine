@@ -32,142 +32,135 @@ export function system(spec) {
   _validate(spec)
 
   // Processing values
-  let values = _process(spec)
+  let {c, p} = _process(spec)
 
   // Create the system class
-  let Class = _create(spec, values)
+  let Class = utils.createClass(System, c, p)
 
   // Register
   $.systems[spec.name] = Class
 }
 
 
+// Shortcut for throwing an error
+function throws(message, error) {
+  error = error || Error
+  throw new error(message)
+}
 
 // Validates the spec
 function _validate(spec) {
-  const reserved = [
-    'name', 'access', 'initialize', 'check', 'update', 'toJson', 'fromJson',
-    '$data', '$methods', '$attributes'
+  const reservedData = [
+    'name', 'access', 'initialize', 'check', 'update', 'destroy', 'toJson', 
+    'fromJson', '$data', '$methods', '$attributes'
+  ]
+  const reservedMethods = [
+    'name', 'access', 'toJson', 'fromJson', '$data', '$methods', '$attributes'
   ]
 
+
   // Empty spec
-  if (!spec) {
-    throw new TypeError(`Empty system specification. Please provide an `+
-                        `object with the system declaration.`)
-  }
+  if (!spec)
+    throws(`Empty system specification. Please provide an object with the `+
+           `system declaration.`)
 
   // Spec with no name
-  if (!spec.name) {
-    throw new Error(`You must provide the system name.`)
-  }
+  if (!spec.name)
+    throws(`You must provide the system name.`)
 
   // Duplicated system name
-  if ($.systems[spec.name]) {
-    throw new Error(`A system "${spec.name}" has been already registered.`)
-  }
+  if ($.systems[spec.name])
+    throws(`A system "${spec.name}" has been already registered.`)
 
   // Check function not provided
-  if (!spec.check) {
-    throw new Error(`The system "${spec.name}" must have a check function.`)
-  }
-
-  // Initialize is a function
-  if (spec.initialize && !utils.isFunction(spec.initialize)) {
-    throw new TypeError(`Initialize function for "${spec.name}" system `+
-                        `must be a function.`)
-  }
+  if (!spec.check)
+    throws(`The system "${spec.name}" must have a check function.`)
 
   // Check is a function
-  if (!utils.isFunction(spec.check)) {
-    throw new TypeError(`Check function for "${spec.name}" system must be a `+
-                        `function.`)
-  }
+  if (!utils.isFunction(spec.check))
+    throws(`Check function for "${spec.name}" system must be a function.`)
+  
+  // Initialize is a function
+  if (spec.initialize && !utils.isFunction(spec.initialize))
+    throws(`Initialize function for "${spec.name}" system must be a function.`)
+
+  // Destroy is a function
+  if (spec.destroy && !utils.isFunction(spec.destroy))
+    throws(`Destroy function for "${spec.name}" system must be a function.`)
+
+  // Destroy is a function
+  if (spec.update && !utils.isFunction(spec.update))
+    throws(`Update function for "${spec.name}" system must be a function.`)
 
   // Update is a function
-  if (spec.update && !utils.isFunction(spec.update)) {
-    throw new TypeError(`Update function for "${spec.name}" system must be a `+
+  if (spec.update && !utils.isFunction(spec.update))
+    throws(`Update function for "${spec.name}" system must be a `+
                         `function.`)
-  }
-
+  
   // Data items
   if (spec.data) {
-    for (let key in spec.data) {
-      // Reserved names
-      if (reserved.indexOf(key) >= 0) {
-        throw new Error(`Attribute "${key}" for system "${spec.name}" is `+
-                        `using a reserved name, please change the method `+
-                        `name.`)
-      }
+    if (typeof spec.data !== 'object')
+      throws(`Data for system "${spec.name}" must be an object. You `+
+             `provided "${spec.data}" instead.`)
 
-      // Is a function
-      if (utils.isFunction(spec.data[key])) {
-        throw new Error(`Attribute "${key}" for system "${spec.name}" `+
-                        `can't be a function, use the *method* option if `+
-                        `you want to include a method.`)
-      }
+    for (let key in spec.data) {
+      if (reservedData.indexOf(key) >= 0)
+        throws(`Attribute "${key}" for system "${spec.name}" is using a `+
+               `reserved or duplicated name, please change the attribute `+
+               `name.`)
+
+      if (utils.isFunction(spec.data[key]))
+        throws(`Attribute "${key}" for system "${spec.name}" can't be a `+
+               `function, use the *method* option if you want to include a `+
+               `method.`)
     }
   }
 
   // Method items
   if (spec.methods) {
-    for (let key in spec.methods) {
-      // Reserved names
-      if (reserved.indexOf(key) >= 0) {
-        throw new Error(`Method "${key}" for system "${spec.name}" is `+
-                        `using a reserved name, please change the method `+
-                        `name.`)
-      }
+    if (typeof spec.methods !== 'object')
+      throws(`Methods for entity "${spec.name}" must be an object. You `+
+             `provided "${spec.methods}" instead.`)
 
-      // Not function
-      if (!utils.isFunction(spec.methods[key])) {
-        throw new Error(`Method "${key}" for system "${spec.name}" must `+
-                        `be a function.`)
-      }
+    let data = spec.data || {}
+    for (let key in spec.methods) {
+      if (reservedMethods.indexOf(key) >= 0 || data[key] !== undefined)
+        throws(`Method "${key}" for entity "${spec.name}" is using a `+
+               `reserved or duplicated name, please change the method name.`)
+
+      if (!utils.isFunction(spec.methods[key]))
+        throws(`Method "${key}" for entity "${spec.name}" must be a `+
+               `function.`)
     }
   }
 }
 
 // Process values
 function _process(spec) {
-  spec.access = spec.access || spec.name
+  let c = {} // class namespace
+  let p = {} // prototype
 
-  let $spec = Object.freeze(spec)
-  let $data = Object.freeze(spec.data || {})
-  let $methods = Object.freeze(spec.methods || {})
-  let $attributes = Object.freeze(Object.getOwnPropertyNames($data))
+  // Base properties
+  p._$name = spec.name
+  p._$access = spec.access || spec.name
 
-  return {$spec, $data, $methods, $attributes}
-}
+  // Static properties
+  let data = Object.freeze(spec.data || {})
+  let methods = Object.freeze(spec.methods || {})
+  let attributes = Object.freeze(Object.keys(data))
+  p._$data = c._$data = data
+  p._$methods = c._$methods = methods
+  p._$attributes = c._$attributes = attributes
 
-// Create the system class
-function _create(spec, values) {
-  class Other extends System {}
-  let p = Other.prototype
+  // Data and method values
+  for (let k in data) p[k] = data[k]
+  for (let k in methods) p[k] = methods[k]
 
-  // Insert the internal values which will be used by the factory function
-  Other.$spec = p._$spec = values.$spec
-  Other.$data = p._$data = values.$data
-  Other.$methods = p._$methods = values.$methods
-  Other.$attributes = p._$attributes = values.$attributes
-
-  // Set base values
-  p._name = spec.name
-  p._access = spec.access
-
-  // Sets the functions
+  // Shortcuts (override methods)
   if (spec.initialize) p.initialize = spec.initialize
+  if (spec.destroy) p.destroy = spec.destroy
   if (spec.check) p.check = spec.check
   if (spec.update) p.update = spec.update
 
-  // Set the attributes
-  for (let key in values.$data) {
-    p[key] = values.$data[key]
-  }
-
-  // Set the methods
-  for (let key in values.$methods) {
-    p[key] = values.$methods[key]
-  }
-
-  return Other
+  return {c, p}
 }
