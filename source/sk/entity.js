@@ -150,9 +150,11 @@ function _process(spec) {
 
   // Components
   let components = {}
-  for (let i=0; i<spec.components.length; i++) {
-    let name = spec.components[i]
-    components[name] = $.components[name]
+  if (spec.components) {
+    for (let i=0; i<spec.components.length; i++) {
+      let name = spec.components[i]
+      components[name] = $.components[name]
+    }
   }
   p._$components = c._$components = Object.freeze(components)
 

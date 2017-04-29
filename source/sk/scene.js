@@ -10,62 +10,83 @@ export function scene(spec) {
   _validate(spec)
 
   // Processing values
-  let values = _process(spec)
+  let {c, p} = _process(spec)
 
   // Create the component class
-  let Class = _create(spec, values)
+  let Class = utils.createClass(Scene, c, p)
 
   // Register
   $.scenes[spec.name] = Class
 }
 
 
+// Shortcut for throwing an error
+function throws(message, error) {
+  error = error || Error
+  throw new error(message)
+}
 
 // Validates the spec
 function _validate(spec) {
+  const reservedData = [
+    'name', 'entities', 'layers', 'systems', 'eventSheets', 'initialize', 
+    'destroy', 'toJson', 'fromJson', '$data', '$components', '$display', 
+    '$methods', '$attributes'
+  ]
+  const reservedMethods = [
+    'name', 'entities', 'layers', 'systems', 'eventSheets', 'toJson',
+    'fromJson', '$data', '$methods', '$attributes', '$components', '$display',
+    '$type'
+  ]
+
   // Empty spec
-  if (!spec) {
-    throw new TypeError(`Empty scene specification. Please provide an `+
-                        `object with the scene declaration.`)
-  }
+  if (!spec)
+    throws(`Empty scene specification. Please provide an object with the `+
+           `scene declaration.`)
 
   // Spec with no name
-  if (!spec.name) {
-    throw new Error(`You must provide the scene name.`)
-  }
+  if (!spec.name)
+    throws(`You must provide the scene name.`)
 
   // Duplicated scene name
-  if ($.scenes[spec.name]) {
-    throw new Error(`A scene "${spec.name}" has been already registered.`)
-  }
+  if ($.scenes[spec.name])
+    throws(`A scene "${spec.name}" has been already registered.`)
 
-  // Functions
-  let validateFunction = (name) => {
-    let f = spec[name]
-    if (f && !utils.isFunction(f)) {
-
-    throw new TypeError(`Function "${name}" for "${spec.name}" entity must `+
-                        `be a function.`)
-    }
-  }
-  validateFunction('initialize')
-  validateFunction('enter')
-  validateFunction('start')
-  validateFunction('pause')
-  validateFunction('resume')
-  validateFunction('update')
-  validateFunction('stop')
-  validateFunction('leave')
-  validateFunction('destroy')
+  // Functions  
+  if (spec.initialize && !utils.isFunction(spec.initialize))
+    throws(`Initialize function for "${spec.name}" entity must be a function.`)
+  
+  if (spec.enter && !utils.isFunction(spec.enter))
+    throws(`Enter function for "${spec.name}" entity must be a function.`)
+  
+  if (spec.start && !utils.isFunction(spec.start))
+    throws(`Start function for "${spec.name}" entity must be a function.`)
+  
+  if (spec.pause && !utils.isFunction(spec.pause))
+    throws(`Pause function for "${spec.name}" entity must be a function.`)
+  
+  if (spec.resume && !utils.isFunction(spec.resume))
+    throws(`Resume function for "${spec.name}" entity must be a function.`)
+  
+  if (spec.update && !utils.isFunction(spec.update))
+    throws(`Update function for "${spec.name}" entity must be a function.`)
+  
+  if (spec.stop && !utils.isFunction(spec.stop))
+    throws(`Stop function for "${spec.name}" entity must be a function.`)
+  
+  if (spec.leave && !utils.isFunction(spec.leave))
+    throws(`Leave function for "${spec.name}" entity must be a function.`)
+  
+  if (spec.destroy && !utils.isFunction(spec.destroy))
+    throws(`Destroy function for "${spec.name}" entity must be a function.`)
 
   // Validate system
   if (spec.systems) {
     for (let i=0; i<spec.systems.length; i++) {
       let name = spec.systems[i]
-      if (!$.systems[name]) {
-        throw new Error(`Scene "${spec.name}" trying to use a non-existing `+
-                        `system "${name}."`)
-      }
+      if (!$.systems[name])
+        throws(`Scene "${spec.name}" trying to use a non-existing system `+
+               `"${name}."`)
     }
   }
 
@@ -73,51 +94,93 @@ function _validate(spec) {
   if (spec.eventSheets) {
     for (let i=0; i<spec.eventSheets.length; i++) {
       let name = spec.eventSheets[i]
-      if (!$.eventSheets[name]) {
-        throw new Error(`Scene "${spec.name}" trying to use a non-existing `+
-                        `event sheet "${name}."`)
-      }
+      if (!$.eventSheets[name])
+        throws(`Scene "${spec.name}" trying to use a non-existing event `+
+               `sheet "${name}."`)
+    }
+  }
+
+  // Data items
+  if (spec.data) {
+    if (typeof spec.data !== 'object')
+      throws(`Data for scene "${spec.name}" must be an object. You `+
+             `provided "${spec.data}" instead.`)
+
+    for (let key in spec.data) {
+      if (reservedData.indexOf(key) >= 0)
+        throws(`Attribute "${key}" for scene "${spec.name}" is using a `+
+               `reserved or duplicated name, please change the attribute `+
+               `name.`)
+
+      if (utils.isFunction(spec.data[key]))
+        throws(`Attribute "${key}" for scene "${spec.name}" can't be a `+
+               `function, use the *method* option if you want to include a `+
+               `method.`)
+    }
+  }
+
+  // Method items
+  if (spec.methods) {
+    if (typeof spec.methods !== 'object')
+      throws(`Methods for scene "${spec.name}" must be an object. You `+
+             `provided "${spec.methods}" instead.`)
+
+    let data = spec.data || {}
+    for (let key in spec.methods) {
+      if (reservedMethods.indexOf(key) >= 0 || data[key] !== undefined)
+        throws(`Method "${key}" for scene "${spec.name}" is using a `+
+               `reserved or duplicated name, please change the method name.`)
+
+      if (!utils.isFunction(spec.methods[key]))
+        throws(`Method "${key}" for scene "${spec.name}" must be a `+
+               `function.`)
     }
   }
 }
 
 // Process values
 function _process(spec) {
-  let $layers = Object.freeze(spec.layers || [])
-  let $systems = Object.freeze(spec.systems || [])
-  let $eventSheets = Object.freeze(spec.eventSheets || [])
+  let c = {} // class namespace
+  let p = {} // prototype
 
-  let systems = []
-  for (let i=0; i<$systems.length; i++) {
-    let name = $systems[i]
-    systems.push($.systems[name])
+  // Base properties
+  p._$name = spec.name
+
+  // Systems
+  let systems = {}
+  if (spec.systems) {
+    for (let i=0; i<spec.systems.length; i++) {
+      let name = spec.systems[i]
+      systems[name] = $.systems[name]
+    }
   }
+  p._$systems = c._$systems = Object.freeze(systems)
 
-  let eventSheets = []
-  for (let i=0; i<$eventSheets.length; i++) {
-    let name = $eventSheets[i]
-    eventSheets.push($.eventSheets[name])
+  // Events sheets
+  let eventSheets = {}
+  if (spec.eventSheets) {
+    for (let i=0; i<spec.eventSheets.length; i++) {
+      let name = spec.eventSheets[i]
+      eventSheets[name] = $.eventSheets[name]
+    }
   }
+  p._$eventSheets = c._$eventSheets = Object.freeze(eventSheets)
 
-  return {$layers, $systems, $eventSheets, systems, eventSheets}
-}
+  // Static properties
+  let data = Object.freeze(spec.data || {})
+  let methods = Object.freeze(spec.methods || {})
+  let layers = Object.freeze(spec.layers || [])
+  let attributes = Object.freeze(Object.keys(data))
+  p._$data = c._$data = data
+  p._$layers = c._$layers = layers
+  p._$methods = c._$methods = methods
+  p._$attributes = c._$attributes = attributes
 
-// Create the entity class
-function _create(spec, values) {
-  class Other extends Scene {}
-  let p = Other.prototype
+  // Data and method values
+  for (let k in data) p[k] = data[k]
+  for (let k in methods) p[k] = methods[k]
 
-  // Insert the internal values which will be used by the factory function
-  Other.$layers = p._$layers = values.$layers
-  Other.$systems = p._$systems = values.$systems
-  Other.$eventSheets = p._$eventSheets = values.$eventSheets
-  Other.systems = values.systems
-  Other.eventSheets = values.eventSheets
-
-  // Set base values
-  p._name = spec.name
-
-  // Sets the functions
+  // Shortcuts (override methods)
   if (spec.initialize) p.initialize = spec.initialize
   if (spec.enter) p.enter = spec.enter
   if (spec.start) p.start = spec.start
@@ -128,5 +191,5 @@ function _create(spec, values) {
   if (spec.leave) p.leave = spec.leave
   if (spec.destroy) p.destroy = spec.destroy
 
-  return Other
+  return {c, p}
 }
