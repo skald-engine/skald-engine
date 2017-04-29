@@ -2,6 +2,32 @@ import EventSheet from 'sk/core/EventSheet'
 import * as $ from 'sk/$'
 import * as utils from 'sk/utils'
 
+const reservedData = [
+  // base
+  'name', 'access', 'game', 'scene',
+
+  // shortcuts
+  'initialize', 'destroy',
+
+  // inherited methods
+  'toJson', 'fromJson',
+
+  // internal and accessors values
+  '_$data', '_$methods', '_$attributes', '_$name', '_$access', '_$events',
+  '_$eventNames'
+]
+const reservedMethods = [
+  // base
+  'name', 'access', 'game', 'scene',
+
+  // inherited methods
+  'toJson', 'fromJson',
+
+  // internal and accessors values
+  '_$data', '_$methods', '_$attributes', '_$name', '_$access', '_$events',
+  '_$eventNames'
+]
+
 /**
  * Creates an event sheet.
  *
@@ -57,15 +83,6 @@ function throws(message, error) {
 
 // Validates the spec
 function _validate(spec) {
-  const reservedData = [
-    'name', 'access', 'initialize', 'destroy', 'toJson', 'fromJson', '$data',
-    '$methods', '$attributes'
-  ]
-  const reservedMethods = [
-    'name', 'access', 'toJson', 'fromJson', '$data', '$methods', '$attributes'
-  ]
-
-
   // Empty spec
   if (!spec)
     throws(`Empty event sheet specification. Please provide an object with `+

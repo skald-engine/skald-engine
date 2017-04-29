@@ -2,6 +2,33 @@ import System from 'sk/core/System'
 import * as $ from 'sk/$'
 import * as utils from 'sk/utils'
 
+const reservedData = [
+  // base
+  'name', 'access', 'game', 'scene',
+
+  // shortcuts
+  'initialize', 'destroy', 'check', 'update',
+
+  // inherited methods
+  'toJson', 'fromJson',
+
+  // internal and accessors values
+  '_$data', '_$methods', '_$attributes', '_$name', '_$access'
+]
+const reservedMethods = [
+  // base
+  'name', 'access', 'game', 'scene',
+
+  // shortcuts
+  'check',
+
+  // inherited methods
+  'toJson', 'fromJson',
+
+  // internal and accessors values
+  '_$data', '_$methods', '_$attributes', '_$name', '_$access'
+]
+
 /**
  * Creates a new system.
  *
@@ -50,15 +77,6 @@ function throws(message, error) {
 
 // Validates the spec
 function _validate(spec) {
-  const reservedData = [
-    'name', 'access', 'initialize', 'check', 'update', 'destroy', 'toJson', 
-    'fromJson', '$data', '$methods', '$attributes'
-  ]
-  const reservedMethods = [
-    'name', 'access', 'toJson', 'fromJson', '$data', '$methods', '$attributes'
-  ]
-
-
   // Empty spec
   if (!spec)
     throws(`Empty system specification. Please provide an object with the `+

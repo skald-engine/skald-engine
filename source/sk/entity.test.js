@@ -68,7 +68,7 @@ describe('sk/entity.js', () => {
       {name: 'a', display: 'sampleDisplay', methods: {invalid: 'non function'}},
 
       // using registered keywords or duplicated variable names
-      {name: 'a', display: 'sampleDisplay', data: {$type: ''}},
+      {name: 'a', display: 'sampleDisplay', data: {_$type: ''}},
       {name: 'a', display: 'sampleDisplay', data: {name: ''}},
       {name: 'a', display: 'sampleDisplay', methods: {name: fixtures.fn}},
       {name: 'a', display: 'sampleDisplay', data: {b: ''}, methods: {b: fixtures.fn}}

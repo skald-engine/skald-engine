@@ -2,6 +2,37 @@ import Entity from 'sk/core/Entity'
 import * as $ from 'sk/$'
 import * as utils from 'sk/utils'
 
+const reservedData = [
+  // base
+  'name', 'display', 'components', 'c', 'game', 'type',
+
+  // shortcuts
+  'initialize', 'destroy',
+
+  // inherited methods
+  'toJson', 'fromJson', 'addEventListener', 'getEventNames', 'emit',
+  'removeEventListener', 'removeAllEventListeners', '_imediateEmit',
+  'hasComponent', 'has', 
+
+  // internal and accessors values
+  '_$data', '_$methods', '_$attributes', '_$name', '_$components', '_$display',
+  '_$type'
+]
+
+const reservedMethods = [
+  // base
+  'name', 'display', 'components', 'c', 'game', 'type',
+
+  // inherited methods
+  'toJson', 'fromJson', 'addEventListener', 'getEventNames', 'emit',
+  'removeEventListener', 'removeAllEventListeners', '_imediateEmit',
+  'hasComponent', 'has', 
+
+  // internal and accessors values
+  '_$data', '_$methods', '_$attributes', '_$name', '_$components', '_$display',
+  '_$type'
+]
+
 /**
  * Creates a new entity.
  *
@@ -48,16 +79,6 @@ function throws(message, error) {
 
 // Validates the spec
 function _validate(spec) {
-  const reservedData = [
-    'name', 'access', 'components', 'display', 'initialize', 'destroy', 
-    'toJson', 'fromJson', '$data', '$components', '$display', '$methods',
-    '$attributes', '$type'
-  ]
-  const reservedMethods = [
-    'name', 'access', 'components', 'display', 'toJson', 'fromJson', '$data', 
-    '$methods', '$attributes', '$components', '$display', '$type'
-  ]
-
   // Empty spec
   if (!spec)
     throws(`Empty entity specification. Please provide an object with the `+

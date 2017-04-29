@@ -2,6 +2,38 @@ import Scene from 'sk/core/Scene'
 import * as $ from 'sk/$'
 import * as utils from 'sk/utils'
 
+const reservedData = [
+  // base
+  'name', 'game', 'world', 'layers', 'systems', 'eventSheets',
+
+  // shortcuts
+  'initialize', 'enter', 'start', 'pause', 'resume', 'update', 'stop', 'leave',
+  'destroy',
+
+  // inherited methods
+  'toJson', 'fromJson', 'addEventListener', 'getEventNames', 'emit',
+  'removeEventListener', 'removeAllEventListeners', '_imediateEmit',
+  'addEntity', 'removeEntity', 'addStatic', 'removeStatic', '_update',
+
+  // internal and accessors values
+  '_$data', '_$methods', '_$attributes', '_$name', '_$layers', '_$systems',
+  '_$eventSheets'
+]
+
+const reservedMethods = [
+  // base
+  'name', 'game', 'world', 'layers', 'systems', 'eventSheets',
+
+  // inherited methods
+  'toJson', 'fromJson', 'addEventListener', 'getEventNames', 'emit',
+  'removeEventListener', 'removeAllEventListeners', '_imediateEmit',
+  'addEntity', 'removeEntity', 'addStatic', 'removeStatic', '_update',
+
+  // internal and accessors values
+  '_$data', '_$methods', '_$attributes', '_$name', '_$layers', '_$systems',
+  '_$eventSheets'
+]
+
 /**
  * 
  */
@@ -28,17 +60,6 @@ function throws(message, error) {
 
 // Validates the spec
 function _validate(spec) {
-  const reservedData = [
-    'name', 'entities', 'layers', 'systems', 'eventSheets', 'initialize', 
-    'destroy', 'toJson', 'fromJson', '$data', '$components', '$display', 
-    '$methods', '$attributes'
-  ]
-  const reservedMethods = [
-    'name', 'entities', 'layers', 'systems', 'eventSheets', 'toJson',
-    'fromJson', '$data', '$methods', '$attributes', '$components', '$display',
-    '$type'
-  ]
-
   // Empty spec
   if (!spec)
     throws(`Empty scene specification. Please provide an object with the `+

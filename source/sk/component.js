@@ -2,6 +2,31 @@ import Component from 'sk/core/Component'
 import * as $ from 'sk/$'
 import * as utils from 'sk/utils'
 
+const reservedData = [
+  // base
+  'name', 'access',
+
+  // shortcuts
+  'initialize', 'destroy',
+
+  // inherited methods
+  'toJson', 'fromJson', 
+
+  // internal and accessors values
+  '_$data', '_$methods', '_$attributes', '_$name', '_$access',
+]
+
+const reservedMethods = [
+  // base
+  'name', 'access',
+
+  // inherited methods
+  'toJson', 'fromJson', 
+
+  // internal and accessors values
+  '_$data', '_$methods', '_$attributes', '_$name', '_$access',
+]
+
 /**
  * Creates a new component.
  * 
@@ -72,14 +97,6 @@ function throws(message, error) {
 
 // Validates the spec
 function _validate(spec) {
-  const reservedData = [
-    'name', 'access', 'initialize', 'destroy', 'toJson', 'fromJson', 
-    '$data', '$methods', '$attributes'
-  ]
-  const reservedMethods = [
-    'name', 'access', 'toJson', 'fromJson', '$data', '$methods', '$attributes'
-  ]
-
   // Empty spec
   if (!spec)
     throws(`Empty component specification. Please provide an object with the
