@@ -53,123 +53,116 @@ export function component(spec) {
   _validate(spec)
 
   // Processing values
-  let values = _process(spec)
+  let {c, p} = _process(spec)
 
   // Create the component class
-  let Class = _create(spec, values)
+  let Class = utils.createClass(Component, c, p)
 
   // Register
   $.components[spec.name] = Class
 }
 
 
+// Shortcut for throwing an error
+function throws(message, error) {
+  error = error || Error
+  throw new error(message)
+}
 
 // Validates the spec
 function _validate(spec) {
-  const reserved = [
-    'name', 'access', 'initialize', 'toJson', 'fromJson', '$data', '$methods', 
-    '$attributes'
+  const reservedData = [
+    'name', 'access', 'initialize', 'destroy', 'toJson', 'fromJson', 
+    '$data', '$methods', '$attributes'
+  ]
+  const reservedMethods = [
+    'name', 'access', 'toJson', 'fromJson', '$data', '$methods', '$attributes'
   ]
 
   // Empty spec
-  if (!spec) {
-    throw new TypeError(`Empty component specification. Please provide an `+
-                        `object with the component declaration.`)
-  }
+  if (!spec)
+    throws(`Empty component specification. Please provide an object with the
+            component declaration.`)
 
   // Spec with no name
-  if (!spec.name) {
-    throw new Error(`You must provide the component name.`)
-  }
+  if (!spec.name)
+    throws(`You must provide the component name.`)
 
   // Duplicated component name
-  if ($.components[spec.name]) {
-    throw new Error(`A component "${spec.name}" has been already registered.`)
-  }
+  if ($.components[spec.name])
+    throws(`A component "${spec.name}" has been already registered.`)
 
-  // Initialize is a function
-  if (spec.initialize && !utils.isFunction(spec.initialize)) {
-    throw new TypeError(`Initialize function for "${spec.name}" component `+
-                        `must be a function.`)
-  }
+  // Initialize must be a function
+  if (spec.initialize && !utils.isFunction(spec.initialize))
+    throws(`Initialize function for "${spec.name}" component must be a `+
+           `function.`)
+
+  // Destroy must be a function
+  if (spec.destroy && !utils.isFunction(spec.destroy))
+    throws(`Destroy function for "${spec.name}" component must be a function.`)
 
   // Data items
   if (spec.data) {
-    for (let key in spec.data) {
-      // Reserved names
-      if (reserved.indexOf(key) >= 0) {
-        throw new Error(`Attribute "${key}" for component "${spec.name}" is `+
-                        `using a reserved name, please change the method `+
-                        `name.`)
-      }
+    if (typeof spec.data !== 'object')
+      throws(`Data for component "${spec.name}" must be an object. You `+
+             `provided "${spec.data}" instead.`)
 
-      // Is a function
-      if (utils.isFunction(spec.data[key])) {
-        throw new Error(`Attribute "${key}" for component "${spec.name}" `+
-                        `can't be a function, use the *method* option if `+
-                        `you want to include a method.`)
-      }
+    for (let key in spec.data) {
+      if (reservedData.indexOf(key) >= 0)
+        throws(`Attribute "${key}" for component "${spec.name}" is using a `+
+               `reserved or duplicated name, please change the attribute `+
+               `name.`)
+
+      if (utils.isFunction(spec.data[key]))
+        throws(`Attribute "${key}" for component "${spec.name}" can't be a `+
+               `function, use the *method* option if you want to include a `+
+               `method.`)
     }
   }
 
   // Method items
   if (spec.methods) {
-    for (let key in spec.methods) {
-      // Reserved names
-      if (reserved.indexOf(key) >= 0) {
-        throw new Error(`Method "${key}" for component "${spec.name}" is `+
-                        `using a reserved name, please change the method `+
-                        `name.`)
-      }
+    if (typeof spec.data !== 'object')
+      throws(`Methods for component "${spec.name}" must be an object. You `+
+             `provided "${spec.methods}" instead.`)
 
-      // Not function
-      if (!utils.isFunction(spec.methods[key])) {
-        throw new Error(`Method "${key}" for component "${spec.name}" must `+
-                        `be a function.`)
-      }
+    let data = spec.data || {}
+    for (let key in spec.methods) {
+      if (reservedMethods.indexOf(key) >= 0 || spec.data[key] !== undefined)
+        throws(`Method "${key}" for component "${spec.name}" is using a `+
+               `reserved or duplicated name, please change the method name.`)
+
+      if (!utils.isFunction(spec.methods[key]))
+        throws(`Method "${key}" for component "${spec.name}" must be a `+
+               `function.`)
     }
   }
 }
 
 // Process values
 function _process(spec) {
-  spec.access = spec.access || spec.name
+  let c = {} // class namespace
+  let p = {} // prototype
 
-  let $spec = Object.freeze(spec)
-  let $data = Object.freeze(spec.data || {})
-  let $methods = Object.freeze(spec.methods || {})
-  let $attributes = Object.freeze(Object.getOwnPropertyNames($data))
+  // Base properties
+  p._$name = spec.name
+  p._$access = spec.access || spec.name
 
-  return {$spec, $data, $methods, $attributes}
-}
+  // Static properties
+  let data = Object.freeze(spec.data || {})
+  let methods = Object.freeze(spec.methods || {})
+  let attributes = Object.freeze(Object.keys(data))
+  p._$data = c._$data = data
+  p._$methods = c._$methods = methods
+  p._$attributes = c._$attributes = attributes
 
-// Create the component class
-function _create(spec, values) {
-  class Other extends Component {}
-  let p = Other.prototype
+  // Data and method values
+  for (let k in data) p[k] = data[k]
+  for (let k in methods) p[k] = methods[k]
 
-  // Insert the internal values which will be used by the factory function
-  Other.$spec = p._$spec = values.$spec
-  Other.$data = p._$data = values.$data
-  Other.$methods = p._$methods = values.$methods
-  Other.$attributes = p._$attributes = values.$attributes
-
-  // Set base values
-  p._name = spec.name
-  p._access = spec.access
-
-  // Sets the initialize function
+  // Shortcuts (override methods)
   if (spec.initialize) p.initialize = spec.initialize
+  if (spec.destroy) p.destroy = spec.destroy
 
-  // Set the attributes
-  for (let key in values.$data) {
-    p[key] = values.$data[key]
-  }
-
-  // Set the methods
-  for (let key in values.$methods) {
-    p[key] = values.$methods[key]
-  }
-
-  return Other
+  return {c, p}
 }

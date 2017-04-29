@@ -3,14 +3,13 @@ describe('sk/registerDisplayObjects.js', () => {
   let module = null
 
   beforeEach(() => {
-    startMockery()
     displayObjects = []
-    mockery.registerMock('sk/$', {displayObjects})
+    mock({'sk/$': {displayObjects}})
     module = require('./registerDisplayObject.js')
   })
 
   afterEach(() => {
-    stopMockery()
+    unmock()
     displayObjects = null
     module = null
   })

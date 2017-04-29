@@ -9,5 +9,6 @@ describe('sk/utils/functions/isFunction.js', () => {
     assert.isTrue(isFunction(f2))
     assert.isFalse(isFunction(3))
     assert.isFalse(isFunction('=)'))
+    assert.isFalse(isFunction(1))
   })
 })

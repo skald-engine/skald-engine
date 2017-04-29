@@ -1,24 +1,23 @@
 describe('sk/utils/functions/validateJson.js', () => {
   let deepMerge, validateJson
 
-  beforeEach(() => {
-    startMockery()
-  })
-
   afterEach(() => {
-    stopMockery()
+    unmock()
     resetGlobals()
   })
 
   it('should copy default values', () => {
+    // Setup mocking
     deepMerge = sinon.stub()
-    mockery.registerMock('utils/functions/deepMerge', deepMerge)
+    mock({'sk/utils/functions/deepMerge': deepMerge})
     validateJson = require('./validateJson').default
 
+    // Setup test
     let json = {sample:'value'}
     let defaults = {sample:'replaced', other:'value'}
     let expected = {sample:'value', other:'value'}
 
+    // Test
     deepMerge.onFirstCall().returns(expected)
     let result = validateJson(json, defaults)
 
@@ -26,18 +25,20 @@ describe('sk/utils/functions/validateJson.js', () => {
   })
 
   it('should validate schema', () => {
+    // Setup mocking
     deepMerge = sinon.stub()
     global.jsen = sinon.stub()
-    let validate = sinon.stub()
-
-    mockery.registerMock('utils/functions/deepMerge', deepMerge)
+    mock({'sk/utils/functions/deepMerge': deepMerge})
     validateJson = require('./validateJson').default
 
+    // Setup test
+    let validate = sinon.stub()
     let json = {sample:'value'}
     let defaults = {sample:'replaced', other:'value'}
     let schema = {type: 'object'}
     let expected = {sample:'value', other:'value'}
 
+    // Test
     deepMerge.onFirstCall().returns(expected)
     jsen.onFirstCall().returns(validate)
     validate.onFirstCall().returns(true)
@@ -47,18 +48,20 @@ describe('sk/utils/functions/validateJson.js', () => {
   })
 
   it('should return error on validation schema', () => {
+    // Setup mocking
     deepMerge = sinon.stub()
     global.jsen = sinon.stub()
-    let validate = sinon.stub()
-
-    mockery.registerMock('utils/functions/deepMerge', deepMerge)
+    mock({'sk/utils/functions/deepMerge': deepMerge})
     validateJson = require('./validateJson').default
 
+    // Setup test
+    let validate = sinon.stub()
     let json = {sample:'value'}
     let defaults = {sample:'replaced', other:'value'}
     let schema = {type: 'object'}
     let expected = {sample:'value', other:'value'}
 
+    // Test
     deepMerge.onFirstCall().returns(expected)
     jsen.onFirstCall().returns(validate)
     validate.onFirstCall().returns(false)

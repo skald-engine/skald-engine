@@ -3,14 +3,13 @@ describe('sk/registerLoggerFormatter.js', () => {
   let module = null
 
   beforeEach(() => {
-    startMockery()
     loggerFormatters = []
-    mockery.registerMock('sk/$', {loggerFormatters})
+    mock({'sk/$': {loggerFormatters}})
     module = require('./registerLoggerFormatter.js')
   })
 
   afterEach(() => {
-    stopMockery()
+    unmock()
     loggerFormatters = null
     module = null
   })

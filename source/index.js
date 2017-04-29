@@ -2,7 +2,7 @@
 export * from 'sk'
 
 // Initialize the library
-import {} from './bootstrap.js'
+import './bootstrap.js'
 
 // Sets global for default es5 access
 global.sk = exports
