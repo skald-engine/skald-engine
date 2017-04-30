@@ -3,6 +3,20 @@ import Game from 'sk/Game'
 
 const DEFAULT_LAYER = '~default'
 
+/**
+ * Scenes are the base containers for your games, and represent the independent
+ * parts of the game, like a menu, score screen, or the level itself.
+ *
+ * Every scene uses stacked layers to help you organize the entities in the 
+ * screen. The layers are containers and can be declared in the {@link scene}
+ * function. The use of layers is totally optional and may be completely 
+ * ignored if you want.
+ *
+ * Systems are used to process the scene entities and update the game logic, 
+ * while event sheets helps you to organize the game logic by providing a 
+ * direct interface to the scene events. You may add multiple event sheets in 
+ * the scene and also share the same sheet with other scenes.
+ */
 export default class Scene extends EventEmitter {
 
   constructor(game, layers, systems, eventSheets) {

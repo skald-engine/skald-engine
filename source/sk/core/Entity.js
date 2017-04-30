@@ -15,8 +15,8 @@ import EventEmitter from 'sk/core/EventEmitter'
  *
  *     game.events.dispatch(event, the_entity)
  *
- * You should not use this class directly, instead, prefer to create new 
- * entities using the {@link entity} function.
+ * You should not use this class directly, instead, create new entities using 
+ * the {@link entity} function.
  */
 export default class Entity extends EventEmitter {
 

@@ -6,13 +6,8 @@
  * access any external resources. If you need such a function, try to implement
  * it on a {@link System} or an {@link EventSheet}.
  *
- * You should not use this class directly, instead, you may inherit it or 
- * create components using the {@link component} function. However, we hardly 
- * recommend that you keep the usage limited to the `sk.component` function.
- *
- * If you want to inherit this class manually for any reason, you must set the
- * `_name` variable, at least. Notice that, by creating components like this 
- * you won't be able to use it on entities in the default declaration. 
+ * You should not use this class directly, instead, you can create components 
+ * using the {@link component} function.
  */
 export default class Component {
 
