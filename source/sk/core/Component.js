@@ -21,9 +21,8 @@ export default class Component {
    */
   constructor() {
     // Inserted by the `component()` declarator:
-    // - _name
-    // - _access
-    // - _$spec
+    // - _$name
+    // - _$access
     // - _$data
     // - _$methods
     // - _$attributes
@@ -35,37 +34,14 @@ export default class Component {
    * The component name, used to link it to an entity. Readonly.
    * @type {String}
    */
-  get name() { return this._name }
+  get name() { return this._$name }
 
   /**
    * The component access name, used when accessing the component inside an
    * entity. Readonly.
    * @type {String}
    */
-  get access() { return this._access }
-
-  /**
-   * The user declared specification of the component. Readonly.
-   * @type {Object}
-   */
-  get $spec() { return this._$spec }
-
-  /**
-   * The user declared data of the component. Readonly.
-   * @type {Object}
-   */
-  get $data() { return this._$data }
-
-  /**
-   * The user declared methods of the component. Readonly.
-   * @type {Object}
-   */
-  get $methods() { return this._$methods }
-
-  /**
-   * The user declared attributes inside the data. Readonly.
-   */
-  get $attributes() { return this._$attributes }
+  get access() { return this._$access }
 
   /**
    * Initialize function, called in the constructor. Override this to put 

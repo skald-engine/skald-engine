@@ -32,9 +32,12 @@ export default class Entity extends EventEmitter {
     super()
 
     // Inserted by the `component()` declarator:
-    // - _name
+    // - _$name
     // - _$display
     // - _$components
+    // - _$data
+    // - _$methods
+    // - _$attributes
     
     this._game = game
     this._display = display
@@ -48,7 +51,7 @@ export default class Entity extends EventEmitter {
    * The entity name. Readonly.
    * @type {String}
    */
-  get name() { return this._name }
+  get name() { return this._$name }
 
   /**
    * Game instance. Readonly.
@@ -75,22 +78,14 @@ export default class Entity extends EventEmitter {
   get c() { return this._components }
 
   /**
-   * The user defined list of components. Readonly.
-   * @type {Array<string>}
-   */
-  get $components() { return this._$components }
-
-  /**
-   * The user defined display string. Readonly.
-   * @type {String}
-   */
-  get $display() { return this._$display }
-
-
-  /**
    * Initialize function, called in constructor.
    */
   initialize() {}
+  
+  /**
+   * Destroy function.
+   */
+  destroy() {}
   
 
   /**
@@ -100,6 +95,8 @@ export default class Entity extends EventEmitter {
    * @return {Boolean}
    */
   hasComponent(name) {
+    // TODO: This is checking for the access of the component, how to verify
+    //       by name?
     return !!this._components[name]
   }
 

@@ -27,7 +27,7 @@ export default class EventSheet {
    * @param {Game} game - The game instance.
    * @param {Scene} scene - The scene instance.
    */
-  constructor(game) {    
+  constructor(game, scene) {    
     // Inserted by the `eventSheet()` declarator:
     // - _name
     // - _access
@@ -39,7 +39,12 @@ export default class EventSheet {
     // - _$eventNames
 
     this._game = game
-    this._scene = null
+    this._scene = scene
+
+    for (let k in this._$events) {
+      let name = '_callback_'+k
+      scene.addEventListener(k, e => this[name](e))
+    }
 
     this.initialize()
   }
@@ -49,7 +54,7 @@ export default class EventSheet {
    * The system name, used to link it to an scene. Readonly.
    * @type {String}
    */
-  get name() { return this._name }
+  get name() { return this._$name }
 
   /**
    * The game isntance. Readonly.
@@ -68,40 +73,7 @@ export default class EventSheet {
    * scene. Readonly.
    * @type {String}
    */
-  get access() { return this._access }
-
-  /**
-   * The user declared specification of the system. Readonly.
-   * @type {Object}
-   */
-  get $spec() { return this._$spec }
-
-  /**
-   * The user declared data of the system. Readonly.
-   * @type {Object}
-   */
-  get $data() { return this._$data }
-
-  /**
-   * The user declared methods of the system. Readonly.
-   * @type {Object}
-   */
-  get $methods() { return this._$methods }
-
-  /**
-   * The user declared attributes inside the data. Readonly.
-   */
-  get $attributes() { return this._$attributes }
-
-  /**
-   * The user declared events. Readonly.
-   */
-  get $events() { return this._$events }
-
-  /**
-   * List of the user declared event names. Readonly.
-   */
-  get $eventNames() { return this._$eventNames }
+  get access() { return this._$access }
 
   /**
    * Initialize function, called in the constructor. Override this to put 

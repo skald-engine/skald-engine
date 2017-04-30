@@ -17,7 +17,7 @@ export default class System {
    * @param {Game} game - The game instance.
    * @param {Scene} scene - The scene instance.
    */
-  constructor(game) {
+  constructor(game, scene) {
     // Inserted by the `system()` declarator:
     // - _name
     // - _access
@@ -27,7 +27,7 @@ export default class System {
     // - _$attributes
 
     this._game = game
-    this._scene = null
+    this._scene = scene
 
     this.initialize()
   }
@@ -36,7 +36,7 @@ export default class System {
    * The system name, used to link it to an scene. Readonly.
    * @type {String}
    */
-  get name() { return this._name }
+  get name() { return this._$name }
 
   /**
    * The game isntance. Readonly.
@@ -55,30 +55,7 @@ export default class System {
    * scene. Readonly.
    * @type {String}
    */
-  get access() { return this._access }
-
-  /**
-   * The user declared specification of the system. Readonly.
-   * @type {Object}
-   */
-  get $spec() { return this._$spec }
-
-  /**
-   * The user declared data of the system. Readonly.
-   * @type {Object}
-   */
-  get $data() { return this._$data }
-
-  /**
-   * The user declared methods of the system. Readonly.
-   * @type {Object}
-   */
-  get $methods() { return this._$methods }
-
-  /**
-   * The user declared attributes inside the data. Readonly.
-   */
-  get $attributes() { return this._$attributes }
+  get access() { return this._$access }
 
   /**
    * Initialize function, called in the constructor. Override this to put 

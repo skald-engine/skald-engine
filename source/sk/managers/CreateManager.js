@@ -70,14 +70,14 @@ export default class CreateManager extends Manager {
       throw new Error(`Trying to create a non-existing entity "${name}".`)
     }
 
-    let display = new Entity.display()
+    let display = new Entity._$display()
     let components = {}
-    for (let i=0; i<Entity.components.length; i++) {
-      let c = new Entity.components[i]()
+    for (let k in Entity.components) {
+      let c = new Entity.components[k]()
       components[c.access] = c
     }
 
-    return new Entity(name, display, components)
+    return new Entity(this, display, Object.freeze(components))
   }
 
   /**
@@ -85,7 +85,11 @@ export default class CreateManager extends Manager {
    *
    * @param {String} name - The system name.
    */
-  system(name) {
+  system(name, scene) {
+    if (!scene) {
+      throw new Error(`Trying to create the system "${name} without a scene".`)
+    }
+
     let System = $.systems[name]
 
     if (!System) {
@@ -100,20 +104,18 @@ export default class CreateManager extends Manager {
    *
    * @param {String} name - The event sheet name.
    */
-  eventSheet(name) {
+  eventSheet(name, scene) {
+    if (!scene) {
+      throw new Error(`Trying to create the system "${name} without a scene".`)
+    }
+
     let EventSheet = $.eventSheets[name]
 
     if (!EventSheet) {
       throw new Error(`Trying to create a non-existing event sheet "${name}".`)
     }
 
-    let eventSheet = new EventSheet(this.game)
-    for (let i=0; i<EventSheet._$eventNames.length; i++) {
-      let name = EventSheet._$eventNames[i]
-      let func = '_callback_'+name
-
-      scene.addEventListener(name, e => eventSheet[func](e))
-    }
+    let eventSheet = new EventSheet(this.game, scene)
 
     return eventSheet
   }
@@ -128,26 +130,24 @@ export default class CreateManager extends Manager {
       throw new Error(`Trying to create a non-existing scene "${name}".`)
     }
 
-    // let scene = new Scene(this.game)
-
-    let layers = {}
-    for (let i=0; i<Scene.$layers.length; i++) {
-      let name = Scene.$layers[i]
-      layers[name] = new PIXI.Container()
-    }
+    let scene = new Scene(this.game)
 
     let systems = {}
-    for (let i=0; i<Scene.systems.length; i++) {
-      let system = new Scene.systems[i](this.game)
+    for (let i=0; i<Scene._$systems.length; i++) {
+      let system = new Scene._$systems[i](this.game, scene)
       systems[system.access] = system
     }
 
     let eventSheets = {}
-    for (let i=0; i<Scene.eventSheets.length; i++) {
-      let eventSheet = new Scene.eventSheets[i](this.game)
+    for (let i=0; i<Scene._$eventSheets.length; i++) {
+      let eventSheet = new Scene._$eventSheets[i](this.game. scene)
       eventSheets[eventSheet.access] = eventSheet
     }
 
-    return new Scene(this.game, layers, systems, eventSheets)
+    scene._systems = Object.freeze(systems)
+    scene._eventSheets = Object.freeze(eventSheets)
+    scene.initialize()
+
+    return scene
   }
 }

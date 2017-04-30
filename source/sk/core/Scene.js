@@ -9,40 +9,41 @@ export default class Scene extends EventEmitter {
     super()
 
     // Inserted by the `sk.scene` function:
-    // - _name
+    // - _$name
     // - _$layers
     // - _$systems
     // - _$eventSheets
+    // - _$data
+    // - _$methods
+    // - _$attributes
 
     this._game = game
     this._world = new PIXI.Container()
     this._entities = []
-    this._layers = layers
+    this._layers = {}
     this._systems = systems
     this._eventSheets = eventSheets
 
+    // Create the list of entities for each system
     this._mapSystemToEntities = {}
     for (let i=0; i<this._$systems.length; i++) {
       this._mapSystemToEntities[this._$systems[i]] = []
     }
 
+    // Create the layers
     this._layers[DEFAULT_LAYER] = new PIXI.Container()
-    for (let k in this._layers) { this._world.addChild(this._layers[k]) }
-    for (let k in this._systems) { this._systems[k]._scene = this }
-    for (let k in this._eventSheets) {
-      let eventSheet = this._eventSheets[k]
-      eventSheet._scene = this
-
-      // TODO: MUST FIND A BETTER WAY TO DO THAT
-      for (let event in eventSheet.$events) {
-        this.addEventListener(event, (e)=>{
-          eventSheet['_callback_'+event](e)
-        })
-      }
+    this._world.addChild(this._layers[DEFAULT_LAYER])
+    for (let k in this._$layers) { 
+      this._layers[k] = new PIXI.Container()
+      this._world.addChild(this._layers[k])
     }
+    this._layers = Object.freeze(this._layers)
 
 
-    this.initialize()
+    // This is the only exception in the engine of calling `initialize` on the
+    // constructor. We don't call it here due to circular reference to the 
+    // systems and event sheets. The create manager will call the initialize 
+    // during the creation of the object.
   }
 
   /**
@@ -80,24 +81,6 @@ export default class Scene extends EventEmitter {
    * @type {Object}
    */
   get eventSheets() { return this._eventSheets }
-
-  /**
-   * The list of user defined layers. Readonly.
-   * @type {Array<String>}
-   */
-  get $layers() { return this._$layers }
-
-  /**
-   * The list of user defined systems. Readonly.
-   * @type {Array<String>}
-   */
-  get $systems() { return this._$systems }
-
-  /**
-   * The list of user defined eventSheets. Readonly.
-   * @type {Array<String>}
-   */
-  get $eventSheets() { return this._$eventSheets }
 
   /**
    * Initialize function.
@@ -177,7 +160,7 @@ export default class Scene extends EventEmitter {
     }
 
     // Add layer info to the entity
-    entity.$layer = layerName
+    entity._$layer = layerName
 
     // Add entity to the layer
     layer.addChild(entity.display)
@@ -195,7 +178,7 @@ export default class Scene extends EventEmitter {
    * @param {Entity} entity - The entity object.
    */
   removeEntity(entity) {
-    let layer = this._layers[entity.$layer]
+    let layer = this._layers[entity._$layer]
     layer.removeChild(entity.display)
     this._entities.splice(this._entities.indexOf(entity))
 
@@ -229,8 +212,9 @@ export default class Scene extends EventEmitter {
       throw new Error(`Invalid layer "${layerName}".`)
     }
 
+    console.log(displayObject, layer)
     // Add layer info to the entity
-    displayObject.$layer = layerName
+    displayObject._$layer = layerName
 
     // Add entity to the layer
     layer.addChild(displayObject)
@@ -243,7 +227,7 @@ export default class Scene extends EventEmitter {
    * Removes a static texture
    */
   removeStatic(displayObject) {
-    let layer = this._layers[displayObject.$layer]
+    let layer = this._layers[displayObject._$layer]
     layer.removeChild(displayObject)
   }
 
