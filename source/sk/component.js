@@ -2,6 +2,7 @@ import Component from 'sk/core/Component'
 import * as $ from 'sk/$'
 import * as utils from 'sk/utils'
 
+// Reserved names for the data input
 const reservedData = [
   // base
   'name', 'access',
@@ -16,6 +17,7 @@ const reservedData = [
   '_$data', '_$methods', '_$attributes', '_$name', '_$access',
 ]
 
+// Reserved names for the methods input
 const reservedMethods = [
   // base
   'name', 'access',
@@ -23,40 +25,68 @@ const reservedMethods = [
   // inherited methods
   'toJson', 'fromJson', 
 
-  // internal and accessors values
+  // internal and access values
   '_$data', '_$methods', '_$attributes', '_$name', '_$access',
 ]
 
 /**
  * Creates a new component.
+ *
+ * This function receives an object with the component specification, and 
+ * register a new component into the engine if the specification is valid.
+ *
+ * You must provide a name for the component, which will be used to link the
+ * component on the entities. Check the user guide for a suggestion of how to
+ * name the component. Additionally to the name, you should provide an access
+ * name. The access will be used to access the component after it is created. 
+ * See the examples below to have an idea of how this will work. Notice that,
+ * if you don't provide an access name, the access will be by its name.
+ *
+ * It is important to also notice that names cannot be duplicated in the engine
+ * scope (you can't have two components with the same name), however, you may
+ * have multiple components with the same access name. In this case, when 
+ * adding components with duplicated access to the entity, only the last 
+ * component will be added.
+ * 
+ * A component accepts a map with custom `data` values. All content of the data
+ * map can be accessed just like an attribute in the component, and it will be
+ * used to serialize and deserialize the object, so keep it limited to 
+ * JSON-compatible data.
+ *
+ * Similarly to the data map, the component also accepts a map of `methods`,
+ * which can be accessed directly as common methods. If you are using es6, 
+ * remember that you **cannot** use arrow functions here, due to how it treats
+ * the `this` value (if you use the arrow function, this will be the current
+ * scope, e.g., the window). Check below for usage examples.
+ * 
  * 
  * Usage example:
  *
  *     sk.component({
- *       name: 'SquareCollider',
+ *       name: 'sample.square_collider',
  *       access: 'collider',
  *       data: {
  *         radius: 10,
  *         mass: 0.5
  *       },
  *       methods: {
- *         testCollision: function(other) {
- *           ...
- *         }
+ *         testCollision: function(other) { ... }
  *       }
  *     })
  *
- * In the entity declarion you will use the component `name`:
+ * In the entity declaration you will use the component `name`:
  *
  *     sk.entity({
  *       ...
  *       components: [
- *         'SquareCollider'
+ *         // reference by the component name
+ *         'sample.square_collider'
  *       ]
  *     })
  *
  * Finally, you can use the component in the entity object like this:
  *
+ *     // reference by the component access name
  *     heroEntity.components.collider.radius = 3
  *     heroEntity.components.collider.testCollision(otherEntity)
  * 
@@ -65,7 +95,8 @@ const reservedMethods = [
  * @param {String} spec.name - The ID of the component.
  * @param {String} spec.access - The name as component will be accessed in the
  *        entity
- * @param {Function} spec.initialize - The initialization function.
+ * @param {Function} spec.initialize - The initialization function, called when
+ *        the component is created (probably together with the entity).
  * @param {Function} spec.destroy - The destroy function.
  * @param {Object} spec.data - Pairs of <attributes:default value> which will
  *        be inserted into the component. They will be accessed as usual 
