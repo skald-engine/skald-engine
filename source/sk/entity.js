@@ -2,6 +2,7 @@ import Entity from 'sk/core/Entity'
 import * as $ from 'sk/$'
 import * as utils from 'sk/utils'
 
+// Reserved names for the data input
 const reservedData = [
   // base
   'name', 'display', 'components', 'c', 'game', 'type',
@@ -19,6 +20,7 @@ const reservedData = [
   '_$type'
 ]
 
+// Reserved names for the methods input
 const reservedMethods = [
   // base
   'name', 'display', 'components', 'c', 'game', 'type',
@@ -36,12 +38,43 @@ const reservedMethods = [
 /**
  * Creates a new entity.
  *
+ * This function receives an object with the entity specification, and 
+ * register a new entity into the engine if the specification is valid.
+ *
+ * You must provide a name for the entity, which will be used to add it on the
+ * scenes. Check the user guide for a suggestion of how to name the entities. 
+ * Notice that names cannot be duplicated in the engine, so you can't have two
+ * entities with the same name.
+ *
+ * You also must provide a display object type of the entity, for example 
+ * `sprite` or `text`. The display object will be created during the 
+ * construction of the entity and can be accessed via `entity.display`.
+ * 
+ * An entity accepts a map with custom `data` values. All content of the data
+ * map can be accessed just like an attribute in the entity, and it will be
+ * used to serialize and deserialize the object, so keep it limited to 
+ * JSON-compatible data.
+ *
+ * Similarly to the data map, the entity also accepts a map of `methods`,
+ * which can be accessed directly as common methods. If you are using es6, 
+ * remember that you **cannot** use arrow functions here, due to how it treats
+ * the `this` value (if you use the arrow function, this will be the current
+ * scope, e.g., the window). Check below for usage examples.
+ *
+ * The data and methods input were added to provide flexibility and freedom of
+ * how to use the entities, however, we suggest that you keep the entity empty,
+ * adding data on components and logic on systems.
+ * 
  * Usage example:
  *
  *     sk.entity({
  *       name: 'Hero',
  *       display: 'sprite',
- *       components: ['HeroCollider', 'Gravity', 'SimpleInventory'],
+ *       components: [
+ *         'sample.hero_collider',
+ *         'sample.gravity',
+ *         'sample.simple_inventory'
+ *       ],
  *       initialize: function() {
  *          this.display.image = this.game.resources.get('hero_image')
  *       }
@@ -55,6 +88,12 @@ const reservedMethods = [
  * @param {Array<String>} spec.components - The component list. You must 
  *        provide the component name in this (not the component access).
  * @param {Function} spec.initialize - The initialization function.
+ * @param {Object} spec.data - Pairs of <attributes:default value> which will
+ *        be inserted into the component. They will be accessed as usual 
+ *        attributes and will be used to serialize and deserialize the entity.
+ * @param {Object} spec.methods Pairs of <method:function> which will be
+ *        inserted into the component. The methods will be accessed as common
+ *        methods.
  */
 export function entity(spec) {
   // Spec validation

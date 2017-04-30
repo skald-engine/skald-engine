@@ -43,10 +43,10 @@ const reservedMethods = [
  * if you don't provide an access name, the access will be by its name.
  *
  * It is important to also notice that names cannot be duplicated in the engine
- * scope (you can't have two components with the same name), however, you may
- * have multiple components with the same access name. In this case, when 
- * adding components with duplicated access to the entity, only the last 
- * component will be added.
+ * (you can't have two components with the same name), however, you may have
+ * multiple components with the same access name. In this case, when adding
+ * components with duplicated access to the entity, only the last component 
+ * will be added.
  * 
  * A component accepts a map with custom `data` values. All content of the data
  * map can be accessed just like an attribute in the component, and it will be
@@ -58,7 +58,11 @@ const reservedMethods = [
  * remember that you **cannot** use arrow functions here, due to how it treats
  * the `this` value (if you use the arrow function, this will be the current
  * scope, e.g., the window). Check below for usage examples.
- * 
+ *
+ * It is strongly recommended that the component methods be used only to change
+ * or return the component state, without access to any external resource 
+ * (including the entity itself). This is important in order to create 
+ * independent and reusable components.
  * 
  * Usage example:
  *
@@ -100,10 +104,11 @@ const reservedMethods = [
  * @param {Function} spec.destroy - The destroy function.
  * @param {Object} spec.data - Pairs of <attributes:default value> which will
  *        be inserted into the component. They will be accessed as usual 
- *        attributes.
+ *        attributes and will be used to serialize and deserialize the 
+ *        component.
  * @param {Object} spec.methods Pairs of <method:function> which will be
  *        inserted into the component. The methods will be accessed as common
- *        object methods.
+ *        methods.
  */
 export function component(spec) {
   // Spec validation
