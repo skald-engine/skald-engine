@@ -51,11 +51,9 @@ export default class ScenesManager extends Manager {
 
   update(delta) {
     if (this._transition) {
-      // console.log('transition update')
       this._transition.update(delta)
 
       if (this._transition.isFinished()) {
-        console.log('transition finished')
         this._stopTransition()
       }
 
@@ -77,14 +75,11 @@ export default class ScenesManager extends Manager {
 
     // Only apply transition if there is a current scene AND a transition
     if (this._current && this._transition) {
-      console.log('here')
       // Setup transition
       this._transition.setup(this.game, this._current, this._next)
-      console.log('transition setup')
 
       // Swap scenes if needed
       if (this._transition.swapScenes) {
-        console.log('transition swap')
         this.game.stage.swapChildren(
           this._current.world,
           this._next.world
@@ -93,11 +88,9 @@ export default class ScenesManager extends Manager {
 
       // Start transition
       this._transition.start()
-      console.log('transition start')
 
     // Stop transition if there is no current scene OR a transition
     } else {
-      console.log('no transition')
       this._stopTransition()
     }
   }
