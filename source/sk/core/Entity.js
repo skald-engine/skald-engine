@@ -89,15 +89,15 @@ export default class Entity extends EventEmitter {
   
 
   /**
-   * Checks if this entity has a component.
+   * Checks if this entity has a component. This methods serches first if the
+   * entity has a component by its access name, than if looks for the 
+   * component by its name.
    *
    * @param {String} name - The component name for checkup.
    * @return {Boolean}
    */
   hasComponent(name) {
-    // TODO: This is checking for the access of the component, how to verify
-    //       by name?
-    return !!this._components[name]
+    return !!this._components[name] || !!this._$components[name]
   }
 
   /**
@@ -107,7 +107,7 @@ export default class Entity extends EventEmitter {
    * @return {Boolean}
    */
   has(name) {
-    return !!this._components[name]
+    return !!this._components[name] || !!this._$components[name]
   }
 
   /**
