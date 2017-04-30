@@ -2,6 +2,7 @@ import System from 'sk/core/System'
 import * as $ from 'sk/$'
 import * as utils from 'sk/utils'
 
+// Reserved names for the data input
 const reservedData = [
   // base
   'name', 'access', 'game', 'scene',
@@ -15,6 +16,8 @@ const reservedData = [
   // internal and accessors values
   '_$data', '_$methods', '_$attributes', '_$name', '_$access'
 ]
+
+// Reserved names for the methods input
 const reservedMethods = [
   // base
   'name', 'access', 'game', 'scene',
@@ -31,6 +34,46 @@ const reservedMethods = [
 
 /**
  * Creates a new system.
+ * 
+ * This function receives an object with the system specification, and 
+ * register a new system into the engine if the specification is valid.
+ *
+ * You must provide a name for the system, which will be used to link the
+ * system on the scenes. Check the user guide for a suggestion of how to name
+ * the system. Additionally to the name, you should provide an access name. 
+ * The access will be used to access the system after it is created. See the 
+ * examples below to have an idea of how this will work. Notice that, if you 
+ * don't provide an access name, the access will be by its name.
+ *
+ * It is important to also notice that names cannot be duplicated in the engine
+ * (you can't have two systems with the same name), however, you may have
+ * multiple systems with the same access name. In this case, when adding
+ * systems with duplicated access to the entity, only the last system will be 
+ * added.
+ *
+ * You also must provide a `check` function. Everytime an entity is added to
+ * scene, the scene will call this check function passing the entity as 
+ * argument. The check function will tell the scene if the system is interested
+ * into that entity (i.e., if the entity can be processed by the system). With
+ * this, the scene will create a cached list of the entities specifically for
+ * the system.
+ * 
+ * A system accepts a map with custom `data` values. All content of the data
+ * map can be accessed just like an attribute in the system, and it will be
+ * used to serialize and deserialize the object, so keep it limited to 
+ * JSON-compatible data.
+ *
+ * Similarly to the data map, the system also accepts a map of `methods`,
+ * which can be accessed directly as common methods. If you are using es6, 
+ * remember that you **cannot** use arrow functions here, due to how it treats
+ * the `this` value (if you use the arrow function, this will be the current
+ * scope, e.g., the window). Check below for usage examples.
+ *
+ * It is strongly recommended that the system methods be used only to change
+ * or return the system state, without access to any external resource 
+ * (including the entity itself). This is important in order to create 
+ * independent and reusable systems.
+ * 
  *
  * Usage example:
  *
@@ -39,6 +82,9 @@ const reservedMethods = [
  *       access: 'collision',
  *       check: function(entity) {
  *         return entity.has('Collider')
+ *       },
+ *       update: function(entities) {
+ *         ... process the entitites ...
  *       }
  *     })
  * 
