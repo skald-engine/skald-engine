@@ -64,6 +64,7 @@ const reservedMethods = [
  * The data and methods input were added to provide flexibility and freedom of
  * how to use the entities, however, we suggest that you keep the entity empty,
  * adding data on components and logic on systems.
+ *
  * 
  * Usage example:
  *

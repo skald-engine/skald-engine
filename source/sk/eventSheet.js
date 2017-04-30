@@ -2,6 +2,7 @@ import EventSheet from 'sk/core/EventSheet'
 import * as $ from 'sk/$'
 import * as utils from 'sk/utils'
 
+// Reserved names for the data input
 const reservedData = [
   // base
   'name', 'access', 'game', 'scene',
@@ -16,6 +17,8 @@ const reservedData = [
   '_$data', '_$methods', '_$attributes', '_$name', '_$access', '_$events',
   '_$eventNames'
 ]
+
+// Reserved names for the methods input
 const reservedMethods = [
   // base
   'name', 'access', 'game', 'scene',
@@ -31,20 +34,49 @@ const reservedMethods = [
 /**
  * Creates an event sheet.
  *
+ * This function receives an object with the event sheet specification, and 
+ * register a new event sheet into the engine if the specification is valid.
+ *
+ * You must provide a name for the event sheet, which will be used to link the
+ * event sheet on the scenes. Check the user guide for a suggestion of how to
+ * name the event sheets. Additionally to the name, you should provide an 
+ * access name. The access will be used to access the event sheet after it is 
+ * created. See the examples below to have an idea of how this will work. 
+ * Notice that, if you don't provide an access name, the access will be by its 
+ * name.
+ *
+ * It is important to also notice that names cannot be duplicated in the 
+ * engine (you can't have two event sheets with the same name), however, you 
+ * may have multiple event sheets with the same access name. In this case, 
+ * when adding event sheets with duplicated access to the entity, only the 
+ * last event sheet will be added.
+ * 
+ * A event sheet accepts a map with custom `data` values. All content of the 
+ * data map can be accessed just like an attribute in the event sheet, and it 
+ * will be used to serialize and deserialize the object, so keep it limited to 
+ * JSON-compatible data.
+ *
+ * Similarly to the data map, the event sheet also accepts a map of `methods`,
+ * which can be accessed directly as common methods. If you are using es6, 
+ * remember that you **cannot** use arrow functions here, due to how it treats
+ * the `this` value (if you use the arrow function, this will be the current
+ * scope, e.g., the window). Check below for usage examples.
+ *
+ * 
  * Usage example:
  *
  *     sk.eventSheet({
- *       name: 'LevelBigRules',
+ *       name: 'skald.level_big_rules',
  *       data: {
  *         progression: 0,
  *       },
  *       events: {
- *         update: (event) => { ... },
- *         resize: (event) => { ... },
- *         customEvent: (event) => { ... }
+ *         update: function(event) { ... },
+ *         resize: function(event) { ... },
+ *         customEvent: function(event) { ... }
  *       },
  *       methods: {
- *         advanceProgress: () => { ... }
+ *         advanceProgress: function() { ... }
  *       }
  *     })
  *

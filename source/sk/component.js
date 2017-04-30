@@ -63,6 +63,7 @@ const reservedMethods = [
  * or return the component state, without access to any external resource 
  * (including the entity itself). This is important in order to create 
  * independent and reusable components.
+ *
  * 
  * Usage example:
  *
