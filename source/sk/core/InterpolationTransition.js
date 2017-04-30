@@ -196,7 +196,7 @@ export default class InterpolationTransition extends Transition {
    *
    * @return {Boolean} `true` if the transition has been finished.
    */
-  isFinished() {
+  hasFinished() {
     return this._currentTime <= 0
   }
 }

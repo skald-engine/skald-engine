@@ -78,7 +78,7 @@ export default class Transition {
    * 
    * @return {Boolean}
    */
-  isFinished() {}
+  hasFinished() {}
 
   /**
    * Update logic of the transition.

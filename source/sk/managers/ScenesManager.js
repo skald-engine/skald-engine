@@ -53,7 +53,7 @@ export default class ScenesManager extends Manager {
     if (this._transition) {
       this._transition.update(delta)
 
-      if (this._transition.isFinished()) {
+      if (this._transition.hasFinished()) {
         this._stopTransition()
       }
 
