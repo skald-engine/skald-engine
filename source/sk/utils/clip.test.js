@@ -1,4 +1,4 @@
-describe('sk/utils/functions/clip.js', () => {
+describe('sk/utils/clip.js', () => {
   let clip = require('./clip.js').default
 
   it('should clip the value', () => {

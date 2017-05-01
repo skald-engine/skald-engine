@@ -1,4 +1,4 @@
-describe('sk/utils/functions/isFunction.js', () => {
+describe('sk/utils/isFunction.js', () => {
   let isFunction = require('./isFunction.js').default
 
   it('verify correctly functions', () => {

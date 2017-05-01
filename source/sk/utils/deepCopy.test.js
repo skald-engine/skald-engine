@@ -1,4 +1,4 @@
-describe('sk/utils/functions/deepCopy.js', () => {
+describe('sk/utils/deepCopy.js', () => {
   let deepCopy = require('./deepCopy.js').default
 
   it('should copy', () => {

@@ -1,5 +1,5 @@
 import {LOGGER_LEVEL} from 'sk/constants'
-import isFunction from 'sk/utils/functions/isFunction'
+import isFunction from 'sk/utils/isFunction'
 import * as $ from 'sk/$'
 
 /**

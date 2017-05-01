@@ -1,4 +1,4 @@
-describe('sk/utils/functions/lerp.js', () => {
+describe('sk/utils/lerp.js', () => {
   let lerp = require('./lerp.js').default
 
   it('verify correctly functions', () => {

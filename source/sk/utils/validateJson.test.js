@@ -1,4 +1,4 @@
-describe('sk/utils/functions/validateJson.js', () => {
+describe('sk/utils/validateJson.js', () => {
   let deepMerge, validateJson
 
   afterEach(() => {
@@ -9,7 +9,7 @@ describe('sk/utils/functions/validateJson.js', () => {
   it('should copy default values', () => {
     // Setup mocking
     deepMerge = sinon.stub()
-    mock({'sk/utils/functions/deepMerge': deepMerge})
+    mock({'sk/utils/deepMerge': deepMerge})
     validateJson = require('./validateJson').default
 
     // Setup test
@@ -28,7 +28,7 @@ describe('sk/utils/functions/validateJson.js', () => {
     // Setup mocking
     deepMerge = sinon.stub()
     global.jsen = sinon.stub()
-    mock({'sk/utils/functions/deepMerge': deepMerge})
+    mock({'sk/utils/deepMerge': deepMerge})
     validateJson = require('./validateJson').default
 
     // Setup test
@@ -51,7 +51,7 @@ describe('sk/utils/functions/validateJson.js', () => {
     // Setup mocking
     deepMerge = sinon.stub()
     global.jsen = sinon.stub()
-    mock({'sk/utils/functions/deepMerge': deepMerge})
+    mock({'sk/utils/deepMerge': deepMerge})
     validateJson = require('./validateJson').default
 
     // Setup test

@@ -1,4 +1,4 @@
-describe('sk/utils/functions/deepMerge.js', () => {
+describe('sk/utils/deepMerge.js', () => {
   let deepMerge = require('./deepMerge.js').default
 
   it('should copy', () => {

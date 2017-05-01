@@ -1,4 +1,4 @@
-import deepMerge from 'sk/utils/functions/deepMerge'
+import deepMerge from 'sk/utils/deepMerge'
 
 /**
  * Set defaults and validate a json object. This functions uses JSEN library to

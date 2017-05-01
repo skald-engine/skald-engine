@@ -1,4 +1,4 @@
-describe('sk/utils/functions/enumeration.js', () => {
+describe('sk/utils/enumeration.js', () => {
   let enumeration = require('./enumeration.js').default
 
   it('should create correctly', () => {

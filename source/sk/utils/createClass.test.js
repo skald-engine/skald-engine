@@ -1,4 +1,4 @@
-describe('sk/utils/functions/createClass.js', () => {
+describe('sk/utils/createClass.js', () => {
   let createClass = require('./createClass.js').default
 
   it('should create a class correctly', () => {
