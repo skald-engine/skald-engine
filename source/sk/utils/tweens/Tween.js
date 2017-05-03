@@ -101,6 +101,8 @@ export default class Tween {
    *        the last one.
    */
   update(delta) {
+    if (this._isFinished) return
+
     // convert seconds to milliseconds
     this._currentTime += delta*1000
 
@@ -112,6 +114,7 @@ export default class Tween {
     if (v > this._duration) {
 
       if (this._loop) {
+        this.reset()
         this._currentTime = v - this.duration
         return this.update(delta)
       } else {
@@ -140,6 +143,18 @@ export default class Tween {
 
     for (let k in this._properties) {
       this._target[k] = this._properties[k][1]
+    }
+  }
+
+  /**
+   * Resets the tween, starting it again from zero.
+   */
+  reset() {
+    this._isFinished = false
+    this._currentTime = 0
+
+    for (let k in this._properties) {
+      this._target[k] = this._properties[k][0]
     }
   }
 
