@@ -13,16 +13,19 @@
     sk.scene({
       name: 'base',
       initialize: function() {
-        let displayObject = new sk.displayObjects.Graphics()
-        displayObject
-          .beginFill(Math.round(Math.random()*0xFFFFFF))
+        let d1 = new sk.displayObjects.Graphics()
+        d1.beginFill(0xE79393)
           .drawCircle(0, 0, 35)
           .endFill()
-        displayObject.x = 50
-        displayObject.y = 50
+        d1.x = 50
+        d1.y = 50
+
+        let d2 = d1.clone()
+        d2.x = 50
+        d2.y = 135
 
         this.tweenClass = new sk.utils.tweens.Tween(
-          displayObject,
+          d1,
           1500,
           {
             x: [50, game.display.width-50]
@@ -31,17 +34,27 @@
           true,
           sk.utils.easing.circInOut
         )
+        this.tweenFunction = new sk.utils.tween({
+          target: d2,
+          duration: 1500,
+          delay: 500,
+          to: {x: game.display.width-50},
+          loop: true,
+          ease: sk.utils.easing.backInOut
+        })
 
-        this.addStatic(displayObject)
+        this.addStatic(d1)
+        this.addStatic(d2)
       },
       update: function(d) {
         this.tweenClass.update(d)
+        this.tweenFunction.update(d)
       }
     })
 
     // Game initialization ----------------------------------------------------
     const config = {
-      display: {width: 400, height: 400, backgroundColor: '#000000'}
+      display: {width: 500, height: 190, backgroundColor: '#000000'}
     }
     let game = new sk.Game(config)
 
