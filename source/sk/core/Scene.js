@@ -126,7 +126,7 @@ export default class Scene extends EventEmitter {
   /**
    * Called every tick the scene is running.
    */
-  update() {}
+  update(delta) {}
 
   /**
    * Stop function, called when the scene starts a transition to leave the 
