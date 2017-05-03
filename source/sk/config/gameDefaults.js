@@ -24,7 +24,7 @@ export default {
     fullscreenScaleMode : 'noscale',
     backgroundColor     : '#1D97F9',
     resolution          : 1,
-    antialias           : false,
+    antialias           : true,
     transparent         : false, 
     forceFXAA           : false,
     roundPixels         : false,
