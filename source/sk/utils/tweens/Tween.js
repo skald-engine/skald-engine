@@ -50,6 +50,9 @@ export default class Tween {
 
     this._isFinished = false
     this._currentTime = 0
+
+    this._updateFn = null
+    this._stopFn = null
   }
 
   /**
@@ -132,6 +135,10 @@ export default class Tween {
 
       target[k] = lerp(p[0], p[1], ease(t))
     }
+
+    if (this._updateFn) {
+      this._updateFn(t)
+    }
   }
 
   /**
@@ -145,6 +152,10 @@ export default class Tween {
 
     for (let k in this._properties) {
       this._target[k] = this._properties[k][1]
+    }
+
+    if (this._updateFn) {
+      this._updateFn()
     }
   }
 

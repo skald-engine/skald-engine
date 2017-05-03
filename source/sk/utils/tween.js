@@ -30,6 +30,11 @@ import * as utils from 'sk/utils'
  *        is manually stop. Notice that, the tween will pause for the delay 
  *        time every iteration.
  * @param {Function} spec.ease - The easing function. Defaults to linear.
+ * @param {Function} spec.update - The update callback, called every tick if 
+ *        the tween is updating the target values (i.e., it is not called 
+ *        while on delay).
+ * @param {Function} spec.stop - The stop callback, called when the tween is
+ *        finished.
  */
 export default function tween(spec) {
   // Spec validation
@@ -82,6 +87,14 @@ function _validate(spec) {
   if (spec.ease && !utils.isFunction(spec.ease))
     throws(`Tween ease must be an easing function.`)
 
+  // Update callback is not a function
+  if (spec.update && !utils.isFunction(spec.update))
+    throws(`Tween update callback must be a function.`)
+
+  // Stop callback is not a function
+  if (spec.stop && !utils.isFunction(spec.stop))
+    throws(`Tween stop callback must be a function.`)
+
   // Validate each property value (must be a number)
   for (let k in spec.to) {
     if (typeof spec.to[k] !== 'number')
@@ -104,6 +117,8 @@ function _create(spec) {
     spec.loop,
     spec.ease
   )
+  tween._updateFn = spec.update
+  tween._stopFn = spec.stop
 
   return tween
 }
