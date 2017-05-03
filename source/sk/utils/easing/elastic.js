@@ -53,7 +53,7 @@ export function getElasticInOut(amplitude, period) {
  * @param {Number} x
  * @return {Number} The converted value.
  */
-export let elasticIn = getElasticOut(1, 0.3)
+export let elasticIn = getElasticIn(1, 0.3)
 
 /**
  * Elastic out easing.

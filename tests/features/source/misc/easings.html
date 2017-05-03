@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <script type="text/javascript" src="/build/lib/skald.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/2.6.1/svg.min.js"></script>
+  <style>
+    .item {
+      position: relative;
+      display: inline-block;
+    }
+
+    .item p {
+      margin: 0;
+      position: absolute;
+      background-color: rgba(255, 255, 255, 0.8);
+    }
+
+  </style>
+</head>
+<body>
+  
+  <h1>Easings</h1>
+
+  <div id="container"></div>
+  
+  <script>
+    // const e = sk.utils.easings
+    let easings = [
+      ['linear'],
+      ['sineIn', 'sineOut', 'sineInOut'],
+      ['quadIn', 'quadOut', 'quadInOut'],
+      ['cubicIn', 'cubicOut', 'cubicInOut'],
+      ['quartIn', 'quartOut', 'quartInOut'],
+      ['quintIn', 'quintOut', 'quintInOut'],
+      ['expoIn', 'expoOut', 'expoInOut'],
+      ['circIn', 'circOut', 'circInOut'],
+      ['backIn', 'backOut', 'backInOut'],
+      ['elasticIn', 'elasticOut', 'elasticInOut'],
+      ['bounceIn', 'bounceOut', 'bounceInOut'],
+    ]
+
+    function create(id, name) {
+      const W = 125
+      const H = 110
+      const PW = 5 // padding
+      const PH = 25 // padding
+      const w = W-PW
+      const h = H-PH
+      const areaW = w-PW
+      const areaH = h-PH
+      const POINTS = 100
+
+      const BORDER_STROKE = {color:'#333333', width:.2}
+      const PATH_STROKE = {color:'#333333', width:2}
+      const f = sk.utils.easing[name]
+
+      var draw = SVG(id)
+      draw.attr('width', W)
+      draw.attr('height', H)
+      draw.attr('viewbox', '0 0 ' + W + ' ' + H)
+
+
+      let path = `M${PW} ${h}`
+
+      for (let i=0; i<POINTS; i++) {
+        let p = i/POINTS
+
+        let x = PW + (p===0?0:areaW*p)
+        let y = h - areaH*f(p)
+
+        path += ` L${x} ${y}`
+      }
+
+      draw
+        .path(path)
+        .fill('none')
+        .stroke(PATH_STROKE)
+
+      draw
+        .line(PW, PH, w, PH)
+        .stroke(BORDER_STROKE)
+        
+      draw
+        .line(PW, h, w, h)
+        .stroke(BORDER_STROKE)
+    }
+
+    let parent = document.getElementById('container')
+    for (let i=0; i<easings.length; i++) {
+      let row = document.createElement('div')
+      parent.appendChild(row)
+
+      for (let j=0; j<easings[i].length; j++) {
+        let name = easings[i][j]
+        let div = document.createElement('div')
+        div.setAttribute('id', 'item_'+name)
+        div.setAttribute('class', 'item')
+        div.innerHTML = '<p>'+easings[i][j]+'</p>'
+        row.appendChild(div)
+
+        create('item_'+name, easings[i][j])
+      }
+    }
+
+  </script>
+
+</body>
+</html>
