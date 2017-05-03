@@ -53,6 +53,10 @@ export default class Scene extends EventEmitter {
     }
     this._layers = Object.freeze(this._layers)
 
+    // Other internal values
+    this._tweens = []
+    this._jobs = []
+
 
     // This is the only exception in the engine of calling `initialize` on the
     // constructor. We don't call it here due to circular reference to the 
@@ -246,11 +250,81 @@ export default class Scene extends EventEmitter {
   }
 
   /**
+   * Adds a tween to the scene.
+   * 
+   * The scene will control the update and completition of the tweens.
+   *
+   * @param {Tween} tween - The tween object.
+   * @param {Boolean} override - If true, it will remove all tween registered 
+   *        on the same object. Defaults to false.
+   */
+  addTween(tween, override=false) {
+    if (!tween) throw new Error(`Trying to add an invalid tween.`)
+
+    // Reset the tween
+    tween.reset()
+
+    // Shortcut for the target
+    let target = tween.target
+
+    // Creates the tween ist at the target
+    if (!target._$tweens) {
+      target._$tweens = []
+    }
+
+    // Remove the tweens from the target if override is true
+    if (override) {
+      for (let i=0; i<target._$tweens.length; i++) {
+        let t = target._$tweens[i]
+        t.stop()
+        this._tweens.splice(this._tweens.indexOf(t), 1)
+      }
+      target._$tweens = []
+    }
+
+    // Add the tween to the scene and target
+    this._tweens.push(tween)
+    tween.target._$tweens.push(tween)
+  }
+
+  /**
+   * Removes a tween from this scene (and the object).
+   * 
+   * @param {Tween} tween - The tween object.
+   */
+  removeTween(tween) {
+    if (!tween) throw new Error(`Trying to remove an invalid tween.`)
+
+    // Stops the tween
+    tween.stop()
+
+    // Shortcut for the target
+    let target = tween.target
+
+    // Removes the tween from the target
+    if (target._$tweens) {
+      target._$tweens.splice(target._$tweens.indexOf(tween), 1)
+    }
+
+    // Removes the tween from the scene
+    this._tweens.splice(this._tweens.indexOf(tween), 1)
+  }
+
+  /**
    * Same as update, but for internal uses.
    */
   _update(delta) {
     for (let k in this.systems) {
       this.systems[k].update(delta, this._mapSystemToEntities[k])
+    }
+
+    for (let i=this._tweens.length-1; i>=0; i--) {
+      let t = this._tweens[i]
+      t.update(delta)
+
+      if (t.hasFinished()) {
+        this._tweens.splice(i, 0)
+      }
     }
   }
 }

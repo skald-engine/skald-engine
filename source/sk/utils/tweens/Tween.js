@@ -139,6 +139,8 @@ export default class Tween {
    * finishes its execution.
    */
   stop() {
+    if (this._isFinished) return
+      
     this._isFinished = true
 
     for (let k in this._properties) {

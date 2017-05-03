@@ -8,6 +8,14 @@
   
   <h1>Tweens</h1>
 
+  <p>From top to bottom:</p>
+
+  <ul>
+    <li>Using the Tween class and updating manually</li>
+    <li>Using the tween function and updating manually</li>
+    <li>Using the tween function and updating via scene</li>
+  </ul>
+
   <script>
     // Configuration ----------------------------------------------------------
     sk.scene({
@@ -23,6 +31,10 @@
         let d2 = d1.clone()
         d2.x = 50
         d2.y = 135
+
+        let d3 = d1.clone()
+        d3.x = 50
+        d3.y = 225
 
         this.tweenClass = new sk.utils.tweens.Tween(
           d1,
@@ -43,8 +55,18 @@
           ease: sk.utils.easing.backInOut
         })
 
+        this.addTween(new sk.utils.tween({
+          target: d3,
+          duration: 1500,
+          delay: 500,
+          to: {x: game.display.width-50},
+          loop: true,
+          ease: sk.utils.easing.bounceOut
+        }))
+
         this.addStatic(d1)
         this.addStatic(d2)
+        this.addStatic(d3)
       },
       update: function(d) {
         this.tweenClass.update(d)
@@ -54,7 +76,7 @@
 
     // Game initialization ----------------------------------------------------
     const config = {
-      display: {width: 500, height: 190, backgroundColor: '#000000'}
+      display: {width: 500, height: 275, backgroundColor: '#000000'}
     }
     let game = new sk.Game(config)
 
