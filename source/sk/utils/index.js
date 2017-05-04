@@ -2,7 +2,8 @@ import * as logging from 'sk/utils/logging'
 import * as easing from 'sk/utils/easing'
 import * as profiling from 'sk/utils/profiling'
 import * as tweens from 'sk/utils/tweens'
-export {logging, easing, profiling, tweens}
+import * as colors from 'sk/utils/colors'
+export {logging, easing, profiling, tweens, colors}
 
 export {default as enumeration} from 'sk/utils/enumeration.js'
 export {default as validateJson} from 'sk/utils/validateJson.js'

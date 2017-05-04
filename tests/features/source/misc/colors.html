@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <script type="text/javascript" src="/build/lib/skald.min.js"></script>
+
+  <style>
+    .row {
+      position: relative;
+      margin-bottom: 20px;
+    }
+    .row p {
+      margin: 0;
+      font-weight: bold;
+    }
+    .row div {
+      position: relative;
+      display: inline-block;
+      height: 30px;
+      width: 100px;
+      font-size: 12px;
+      text-transform: uppercase;
+      margin-right: 30px;
+    }
+    .row > span {
+      position: absolute;
+      margin-top: 4px;
+      margin-left: -20px;
+      z-index: 1;
+    }
+    .row div span {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  </style>
+</head>
+<body>
+  
+  <h1>Color functions</h1>
+  
+  <div id="single-tests"></div>
+
+  <script>
+    let C = sk.utils.colors
+
+    function single(label, color1, color2, color3) {
+      let tests = document.getElementById('single-tests')
+      let div = document.createElement('div')
+      div.setAttribute('class', 'row')
+      
+      let _label = document.createElement('p')
+      _label.innerHTML = label
+
+      let _color1 = document.createElement('div')
+      _color1.innerHTML = `<span>${C.colorToHex(color1)}</span>`
+      _color1.style.backgroundColor = C.colorToHex(color1)
+
+      let divider = document.createElement('span')
+      divider.innerHTML = `➜`
+      if (color3) {
+        divider.innerHTML = `+`
+      }
+
+      let _color2 = document.createElement('div')
+      _color2.innerHTML = `<span>${C.colorToHex(color2)}</span>`
+      _color2.style.backgroundColor = C.colorToHex(color2)
+
+      tests.appendChild(div)
+      div.appendChild(_label)
+      div.appendChild(_color1)
+      div.appendChild(divider)
+      div.appendChild(_color2)
+
+      if (color3) {
+
+        divider = document.createElement('span')
+        divider.innerHTML = `➜`
+
+        let _color3 = document.createElement('div')
+        _color3.innerHTML = `<span>${C.colorToHex(color3)}</span>`
+        _color3.style.backgroundColor = C.colorToHex(color3)
+        div.appendChild(divider)
+        div.appendChild(_color3)
+      }
+    }
+
+    single('saturate(20%)', 0x80e619, C.saturate(0x80e619, 0.2))
+    single('desaturate(20%)', 0x80e619, C.desaturate(0x80e619, 0.2))
+    single('lighten(20%)', 0x80e619, C.lighten(0x80e619, 0.2))
+    single('darken(20%)', 0x80e619, C.darken(0x80e619, 0.2))
+    single('spin(30)', 0xf2330d, C.spin(0xf2330d, 30))
+    single('spin(-30)', 0xf2330d, C.spin(0xf2330d, -30))
+    single('tint(20%)', 0xff00ff, C.tint(0xff00ff, 0.5))
+    single('shade(20%)', 0xff00ff, C.tint(0xff00ff, 0.5))
+    single('blend(40%)', 0xff00ff, 0xf2330d, C.blend(0xff00ff, 0xf2330d, 0.4))
+    single('blend(80%)', 0xff00ff, 0xf2330d, C.blend(0xff00ff, 0xf2330d, 0.8))
+
+
+  </script>
+
+</body>
+</html>
