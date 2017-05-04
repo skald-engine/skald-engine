@@ -34,4 +34,5 @@ gulp.task('_reload', function() {
 gulp.task('_watch', ['_livereload'], function() {
   gulp.watch('source/**/*', ['_build'])
   gulp.watch('tests/features/**/*', ['_reload'])
+  gulp.watch('tests/sandbox/**/*', ['_reload'])
 })
