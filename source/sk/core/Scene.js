@@ -230,7 +230,6 @@ export default class Scene extends EventEmitter {
       throw new Error(`Invalid layer "${layerName}".`)
     }
 
-    console.log(displayObject, layer)
     // Add layer info to the entity
     displayObject._$layer = layerName
 
