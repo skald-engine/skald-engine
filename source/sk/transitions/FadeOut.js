@@ -1,23 +1,26 @@
-import InterpolationTransition from 'sk/core/InterpolationTransition'
+import TweenTransition from 'sk/core/TweenTransition'
 
 /**
  * A transition effect to fade-out the current scene.
  */
-export default class FadeOut extends InterpolationTransition {
-  constructor(time, ease) {
-    super(time, ease)
+export default class FadeOut extends TweenTransition {
+  constructor(duration, ease) {
+    super(duration, ease)
     
     this._swapScenes = true
-    
-    this._currentSceneTransition = {
-      properties: {
-        alpha: [1, 0]
-      }
-    }
-    this._nextSceneTransition = {
-      properties: {
-        alpha: [1, 1]
-      }
+  }
+
+  start() {
+    if (this.currentWorld) {
+      this.currentWorld.alpha = 1
+      this.addTween({
+        target: this.currentWorld,
+        duration: this.duration,
+        ease: this.ease,
+        to: {
+          alpha: 0
+        }
+      })
     }
   }
 }

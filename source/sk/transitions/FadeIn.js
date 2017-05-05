@@ -1,13 +1,17 @@
-import InterpolationTransition from 'sk/core/InterpolationTransition'
+import TweenTransition from 'sk/core/TweenTransition'
 
-export default class FadeIn extends InterpolationTransition {
-  constructor(time, ease) {
-    super(time, ease)
-    
-    this._nextSceneTransition = {
-      properties: {
-        alpha: [0, 1]
-      }
+export default class FadeIn extends TweenTransition {
+  start() {
+    if (this.nextWorld) {
+      this.nextWorld.alpha = 0
+      this.addTween({
+        target: this.nextWorld,
+        duration: this.duration,
+        ease: this.ease,
+        to: {
+          alpha: 1
+        }
+      })
     }
   }
 }

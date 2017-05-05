@@ -8,9 +8,25 @@
   
   <h1>Transitions</h1>
 
-  <p>Use the keyboard keys to move the circle, and the space to change the color.</p>
+  <p>
+    <button onclick="play(new T.FadeIn(R_DURATION(), R_EASE()))">FadeIn</button>
+    <button onclick="play(new T.FadeOut(R_DURATION(), R_EASE()))">FadeOut</button>
+    <button onclick="play(new T.FadeInOut(R_DURATION(), R_EASE()))">FadeInOut</button>
+    <button onclick="play(new T.ZoomIn(R_DURATION(), R_EASE()))">ZoomIn</button>
+    <button onclick="play(new T.ZoomOut(R_DURATION(), R_EASE()))">ZoomOut</button>
+    <button onclick="play(new T.ZoomInOut(R_DURATION(), R_EASE()))">ZoomInOut</button>
+  </p>
 
   <script>
+    // Setup generators and buttons -------------------------------------------
+    const E = sk.utils.easing
+    const T = sk.transitions
+    const R_INT = n => Math.floor(Math.random()*n)
+    const R_DURATION = () => R_INT(1500)+300
+    const R_EASE = () => [E.backIn, E.backOut, E.backInOut, E.bounceIn, E.bounceOut, E.bounceInOut, E.circIn, E.circOut, E.circInOut, E.elasticIn, E.elasticOut, E.elasticInOut, E.quardIn, E.quardOut, E.quardInOut, E.sineIn, E.sineOut, E.sineInOut, E.linear][R_INT(19)]
+    const play = t => game.scenes.play('base', t)
+
+
     // Configuration ----------------------------------------------------------
     sk.scene({
       name: 'base',
@@ -26,24 +42,12 @@
 
     // Game initialization ----------------------------------------------------
     const config = {
-      resources: {basePath: '../../assets/'},
-      display: {width: 400, height: 400, backgroundColor: '#000000'},
-      logger: {level: 'trace'}
+      display: {width: 400, height: 400, backgroundColor: '#000000'}
     }
-    const manifest = [
-      // {id: 'zombie', type: 'spriteSheet', url: 'spritesheets/zombie_walking.json'},
-    ]
-    let game = new sk.Game(config, manifest)
+    let game = new sk.Game(config)
 
     // Starting ---------------------------------------------------------------
-    // game.addEventListener('resourcecomplete', () => {
-    // })
     game.scenes.play('base')
-    game.addEventListener('update', () => {
-      if (game.mouse.isAnyPressed()) {
-        game.scenes.play('base', new sk.transitions.FadeInOut(1000, sk.utils.easing.cubicIn))
-      }
-    })
 
   </script>
 

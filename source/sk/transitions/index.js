@@ -1,3 +1,6 @@
 export {default as FadeIn} from 'sk/transitions/FadeIn.js'
 export {default as FadeOut} from 'sk/transitions/FadeOut.js'
 export {default as FadeInOut} from 'sk/transitions/FadeInOut.js'
+export {default as ZoomIn} from 'sk/transitions/ZoomIn.js'
+export {default as ZoomOut} from 'sk/transitions/ZoomOut.js'
+export {default as ZoomInOut} from 'sk/transitions/ZoomInOut.js'

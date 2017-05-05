@@ -1,8 +1,16 @@
 /**
  * This class represents a transition between two scenes.
+ * 
+ * To create a new transition you inherit this class and implement its methods:
  *
- * You may inherit from this class to create your own transition or one in the
- * `sk.transitions` package.
+ * - initialize()
+ * - start()
+ * - update()
+ * - stop()
+ * - hasFinished()
+ *
+ * You may inherit from this class to create your own transition or use one in
+ * the `sk.transitions` package.
  */
 export default class Transition {
   /**
@@ -11,8 +19,8 @@ export default class Transition {
   constructor() {
     this._game = null
     this._swapScenes = false
-    this._currentScene = null
-    this._nextScene = null
+    this._currentWorld = null
+    this._nextWorld = null
   }
 
   /**
@@ -22,16 +30,16 @@ export default class Transition {
   get game() { return this._game }
 
   /**
-   * The current scene (the scene leaving the screen).
-   * @type {Scene}
+   * The current scene world (from the scene leaving the screen).
+   * @type {PIXI.DisplayObject}
    */
-  get currentScene() { return this._currentScene }
+  get currentWorld() { return this._currentWorld }
 
   /**
-   * The next scene (the scene entering the screen).
-   * @type {Scene}
+   * The next scene world (from the scene entering the screen).
+   * @type {PIXI.DisplayObject}
    */
-  get nextScene() { return this._nextScene }
+  get nextWorld() { return this._nextWorld }
 
   /**
    * Flag if the current and next scene order should be inverted. I.e., if 
@@ -48,13 +56,14 @@ export default class Transition {
    * call it manually.
    *
    * @param {Game} game - The game instance.
-   * @param {Scene} currentScene - The current (outgoing) scene.
-   * @param {Scene} nextScene - The next (incoming) scene.
+   * @param {PIXI.DisplayObject} currentWorld - The current (outgoing) scene 
+   *        world.
+   * @param {PIXI.DisplayObject} nextWorld - The next (incoming) scene world.
    */
-  setup(game, currentScene, nextScene) {
+  setup(game, currentWorld, nextWorld) {
     this._game = game
-    this._currentScene = currentScene
-    this._nextScene = nextScene
+    this._currentWorld = currentWorld
+    this._nextWorld = nextWorld
   }
 
   /**
@@ -68,6 +77,14 @@ export default class Transition {
   start() {}
 
   /**
+   * Update logic of the transition.
+   *
+   * @param {Number} delta - The time elapsed bettwen the last frames, in 
+   *        seconds.
+   */
+  update(delta) {}
+
+  /**
    * Stop function, called when the transition is finished (or it is 
    * interrupted).
    */
@@ -79,12 +96,4 @@ export default class Transition {
    * @return {Boolean}
    */
   hasFinished() {}
-
-  /**
-   * Update logic of the transition.
-   *
-   * @param {Number} delta - The time elapsed bettwen the last frames, in 
-   *        seconds.
-   */
-  update(delta) {}
 }

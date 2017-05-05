@@ -39,6 +39,11 @@ export default class ScenesManager extends Manager {
                       `transition object, it must be a Transition instance.`)
     }
 
+    // Stop current transition, if any
+    if (this._transition) {
+      this._stopTransition()
+    }
+
     // Start transition
     this._next = sceneOrId
     this._transition = transition
@@ -76,7 +81,9 @@ export default class ScenesManager extends Manager {
     // Only apply transition if there is a current scene AND a transition
     if (this._current && this._transition) {
       // Setup transition
-      this._transition.setup(this.game, this._current, this._next)
+      let currentWorld = this._current ? this._current.world : null
+      let nextWorld = this._next ? this._next.world : null
+      this._transition.setup(this.game, currentWorld, nextWorld)
 
       // Swap scenes if needed
       if (this._transition.swapScenes) {
