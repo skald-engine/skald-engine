@@ -141,12 +141,11 @@ export default class WebAudioSystem extends AudioSystem {
   _initializeTouchLock() {    
     this._scratchBuffer = this._audioContext.createBuffer(1, 1, 22050)
 
-    let self = this
-    function unlock() {
+    const unlock = () => {
       // Create an empty buffer.
-      var source = self._audioContext.createBufferSource()
-      source.buffer = self._scratchBuffer
-      source.connect(self._audioContext.destination)
+      var source = this._audioContext.createBufferSource()
+      source.buffer = this._scratchBuffer
+      source.connect(this._audioContext.destination)
 
       // Play the empty buffer.
       if (typeof source.start === 'undefined') {
@@ -156,12 +155,12 @@ export default class WebAudioSystem extends AudioSystem {
       }
 
       // Setup a timeout to check that we are unlocked on the next event loop.
-      source.onended = function() {
+      source.onended = () => {
         source.disconnect(0)
-        this.game.view.removeEventListener('touchend', unlock, true)
+        this.game.renderer.view.removeEventListener('touchend', unlock, true)
       }
     }
-    this.game.view.addEventListener('touchend', unlock, true)
+    this.game.renderer.view.addEventListener('touchend', unlock, true)
 
   }
 
