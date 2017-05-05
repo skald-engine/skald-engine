@@ -15,6 +15,9 @@
     <button onclick="play(new T.ZoomIn(R_DURATION(), R_EASE()))">ZoomIn</button>
     <button onclick="play(new T.ZoomOut(R_DURATION(), R_EASE()))">ZoomOut</button>
     <button onclick="play(new T.ZoomInOut(R_DURATION(), R_EASE()))">ZoomInOut</button>
+    <button onclick="play(new T.Scroll(R_DIR(), R_DURATION(), R_EASE()))">Scroll</button>
+    <button onclick="play(new T.MoveIn(R_DIR(), R_DURATION(), R_EASE()))">MoveIn</button>
+    <button onclick="play(new T.MoveOut(R_DIR(), R_DURATION(), R_EASE()))">MoveOut</button>
   </p>
 
   <script>
@@ -23,6 +26,7 @@
     const T = sk.transitions
     const R_INT = n => Math.floor(Math.random()*n)
     const R_DURATION = () => R_INT(1500)+300
+    const R_DIR = () => sk.DIRECTION.values()[R_INT(8)]
     const R_EASE = () => [E.backIn, E.backOut, E.backInOut, E.bounceIn, E.bounceOut, E.bounceInOut, E.circIn, E.circOut, E.circInOut, E.elasticIn, E.elasticOut, E.elasticInOut, E.quardIn, E.quardOut, E.quardInOut, E.sineIn, E.sineOut, E.sineInOut, E.linear][R_INT(19)]
     const play = t => game.scenes.play('base', t)
 
@@ -36,6 +40,10 @@
           .beginFill(Math.round(Math.random()*0xFFFFFF))
           .drawRect(0, 0, 400, 400)
           .endFill()
+          .beginFill(Math.round(Math.random()*0xFFFFFF))
+          .drawCircle(game.display.width/2, game.display.height/2, 100)
+          .endFill()
+
         this.addStatic(displayObject)
       },
     })
