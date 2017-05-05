@@ -19,10 +19,12 @@ export default class EventsManager extends Manager {
     super(game)
 
     this._eventPool = []
+    this._showLog = false
   }
 
   setup() {
     utils.profiling.begin('events')
+    this._showLog = !!this.game.config.events.logEvents
     utils.profiling.end('events')
   }
   
@@ -81,6 +83,10 @@ export default class EventsManager extends Manager {
     while (i > 0) {
       let event = this._eventPool.shift()  
       let target = event.target
+
+      if (this._showLog) {
+        this.game.log.trace(`(events) Dispatching event "${event.type}".`)
+      }
 
       target.emit(event)
       if (event.stopped) continue

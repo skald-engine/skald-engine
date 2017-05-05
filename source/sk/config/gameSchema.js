@@ -80,6 +80,16 @@ export default {
       }
     },
 
+    events: {
+      type: 'object',
+      required: [
+        'logEvents'
+      ],
+      properties: {
+        logEvents: {type: 'boolean'}
+      }
+    },
+
     resources: {
       type: 'object',
       required: [

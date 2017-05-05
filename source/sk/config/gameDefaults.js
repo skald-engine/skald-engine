@@ -30,6 +30,10 @@ export default {
     roundPixels         : false,
   },
 
+  events: {
+    logEvents: false,
+  },
+
   resources: {
     basePath       : '',
     maxConcurrency : 10,
