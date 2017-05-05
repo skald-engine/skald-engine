@@ -79,6 +79,33 @@ export default class InputsManager extends Manager {
 
     utils.profiling.end('inputs')
   }
+
+  /**
+   * Get the x of the first touch or mouse.
+   */
+  get x() {
+    let touch = this.game.touches.getFirstTouch()
+    if (touch) return touch.x
+    return this.game.mouse.x
+  }
+
+  /**
+   * Get the y of the first touch or mouse.
+   */
+  get y() {
+    let touch = this.game.touches.getFirstTouch()
+    if (touch) return touch.y
+    return this.game.mouse.y
+  }
+
+  /**
+   * Get the position of the first touch or mouse.
+   */
+  get position() {
+    let touch = this.game.touches.getFirstTouch()
+    if (touch) return touch.position
+    return this.game.mouse.position
+  }
   
   /**
    * Returns an Action object for the provided name. Notice that this method
