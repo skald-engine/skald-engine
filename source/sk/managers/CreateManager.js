@@ -133,14 +133,14 @@ export default class CreateManager extends Manager {
     let scene = new Scene(this.game)
 
     let systems = {}
-    for (let i=0; i<Scene._$systems.length; i++) {
-      let system = new Scene._$systems[i](this.game, scene)
+    for (let k in Scene._$systems) {
+      let system = new Scene._$systems[k](this.game, scene)
       systems[system.access] = system
     }
 
     let eventSheets = {}
-    for (let i=0; i<Scene._$eventSheets.length; i++) {
-      let eventSheet = new Scene._$eventSheets[i](this.game. scene)
+    for (let k in Scene._$eventSheets) {
+      let eventSheet = new Scene._$eventSheets[k](this.game, scene)
       eventSheets[eventSheet.access] = eventSheet
     }
 
