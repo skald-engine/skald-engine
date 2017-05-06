@@ -69,7 +69,7 @@
     const config = {
       resources: {basePath: '../../assets/'},
       display: {width: 400, height: 400},
-      logger: {level: 'trace'}
+      logger: {level: 'trace'},
     }
     const manifest = [
       {id: 'zombie', type: 'spriteSheet', url: 'spritesheets/zombie_walking.json'},
@@ -77,7 +77,7 @@
     let game = new sk.Game(config, manifest)
 
     // Starting ---------------------------------------------------------------
-    game.addEventListener('resourcecomplete', () => {
+    game.addEventListener('resources.complete', () => {
       game.scenes.play('base')
     })
 

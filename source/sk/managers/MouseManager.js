@@ -223,7 +223,7 @@ export default class MouseManager extends Manager {
    * @param {Event} event - The browser event.
    */
   _onClick(event) {
-    this._dispatchMouseEvent('mouseclick', event)
+    this._dispatchMouseEvent('mouse.click', event)
     this.game.focus()
 
     if (this._preventDefaults) {
@@ -238,7 +238,7 @@ export default class MouseManager extends Manager {
    * @param {Event} event - The browser event.
    */
   _onDblClick(event) {
-    this._dispatchMouseEvent('mousedoubleclick', event)
+    this._dispatchMouseEvent('mouse.doubleclick', event)
     this.game.focus()
 
     if (this._preventDefaults) {
@@ -254,7 +254,7 @@ export default class MouseManager extends Manager {
    */
   _onMouseDown(event) {
     this._state.push(event.button)
-    this._dispatchMouseEvent('mousedown', event)
+    this._dispatchMouseEvent('mouse.down', event)
     this.game.focus()
 
     if (this._preventDefaults) {
@@ -270,7 +270,7 @@ export default class MouseManager extends Manager {
    */
   _onMouseUp(event) {
     this._state.splice(this._state.indexOf(event.button), 1);
-    this._dispatchMouseEvent('mouseup', event)
+    this._dispatchMouseEvent('mouse.up', event)
 
     if (this._preventDefaults) {
       event.preventDefault()
@@ -285,7 +285,7 @@ export default class MouseManager extends Manager {
    */
   _onMouseMove(event) {
     this._updateMouse(event)
-    this._dispatchMouseEvent('mousemove', event)
+    this._dispatchMouseEvent('mouse.move', event)
 
     if (this._preventDefaults) {
       event.preventDefault()
@@ -299,7 +299,7 @@ export default class MouseManager extends Manager {
    * @param {Event} event - The browser event.
    */
   _onMouseOut(event) {
-    this._dispatchMouseEvent('mouseleave', event)
+    this._dispatchMouseEvent('mouse.leave', event)
 
     if (this._preventDefaults) {
       event.preventDefault()
@@ -313,7 +313,7 @@ export default class MouseManager extends Manager {
    * @param {Event} event - The browser event.
    */
   _onMouseOver(event) {
-    this._dispatchMouseEvent('mouseenter', event)
+    this._dispatchMouseEvent('mouse.enter', event)
 
     if (this._preventDefaults) {
       event.preventDefault()
@@ -330,7 +330,7 @@ export default class MouseManager extends Manager {
     this._deltaX += event.deltaX||0
     this._deltaY += event.deltaY||0
     this._deltaZ += event.deltaZ||0
-    this._dispatchWheelEvent('mousewheel', event)
+    this._dispatchWheelEvent('mouse.wheel', event)
 
     if (this._preventDefaults) {
       event.preventDefault()

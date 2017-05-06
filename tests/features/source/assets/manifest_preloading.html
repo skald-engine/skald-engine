@@ -46,7 +46,7 @@
     game.addEventListener('resourceerror', function(event) {
       log(`<span style="color:#BA1616;">ERROR "${event.message}"</span>`)
     })
-    game.addEventListener('resourcecomplete', function(event) {
+    game.addEventListener('resources.complete', function(event) {
       log(`Completed!`)
       let div = document.getElementById('assets')
       div.innerHTML = '<h3>Assets loaded:</h3>'

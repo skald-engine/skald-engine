@@ -116,7 +116,7 @@
     let game = new sk.Game(config, manifest)
 
     // Starting ---------------------------------------------------------------
-    game.addEventListener('resourcecomplete', () => {
+    game.addEventListener('resources.complete', () => {
       game.scenes.play('base')
     })
 

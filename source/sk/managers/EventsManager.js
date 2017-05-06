@@ -84,7 +84,7 @@ export default class EventsManager extends Manager {
       let event = this._eventPool.shift()  
       let target = event.target
 
-      if (this._showLog) {
+      if (this._showLog && event.type !== 'update') {
         this.game.log.trace(`(events) Dispatching event "${event.type}".`)
       }
 

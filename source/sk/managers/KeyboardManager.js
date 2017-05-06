@@ -138,11 +138,11 @@ export default class KeyboardManager extends Manager {
     // Pressing key the first time
     if (!event.repeat) {
       this._state.push(event.keyCode||event.which)
-      this._dispatchEvent('keydown', event)
+      this._dispatchEvent('keyboard.down', event)
 
     // Holding key
     } else {
-      this._dispatchEvent('keyhold', event)
+      this._dispatchEvent('keyboard.hold', event)
     }
 
     if (this._preventDefaults) {
@@ -170,7 +170,7 @@ export default class KeyboardManager extends Manager {
    */
   _onKeyUp(event) {
     this._state.splice(this._state.indexOf(event.keyCode||event.which), 1)
-    this._dispatchEvent('keyup', event)
+    this._dispatchEvent('keyboard.up', event)
 
     if (this._preventDefaults) {
       event.preventDefault()

@@ -130,7 +130,7 @@ export default class ResourcesManager extends Manager {
     let loaded = parseInt(this._stackSize*loader.progress/100)
     
     this.game.events.dispatch(
-      new ProgressEvent('resourceprogress', loaded, total)
+      new ProgressEvent('resources.progress', loaded, total)
     )
   }
   
@@ -140,7 +140,7 @@ export default class ResourcesManager extends Manager {
   _onError(error, loader, resource) {
     this.game.events.dispatch(
       new ErrorEvent(
-        'resourceerror',
+        'resources.error',
         `Could not load the resource "${resource.name}" from "${resource.url}".`
       )
     )
@@ -157,7 +157,7 @@ export default class ResourcesManager extends Manager {
     let r = this._resources[resource.name] || {}
     this.game.events.dispatch(
       new ResourceEvent(
-        'resourceload',
+        'resources.load',
         resource.name,
         resource.url,
         r.resource,
@@ -170,7 +170,7 @@ export default class ResourcesManager extends Manager {
    * Handle complete event.
    */
   _onComplete(event) {
-    this.game.events.dispatch('resourcecomplete')
+    this.game.events.dispatch('resources.complete')
     this._stackSize = 0
     this._loader.reset()
   }

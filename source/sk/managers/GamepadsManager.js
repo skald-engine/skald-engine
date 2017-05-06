@@ -161,7 +161,7 @@ export default class GamepadsManager extends Manager {
     if (!skaldGamepad.connected) {
       this._numConnecteds++
       skaldGamepad.bind(browserGamepad)
-      this._dispatchEvent('gamepadconnected', skaldGamepad)
+      this._dispatchEvent('gamepads.connected', skaldGamepad)
       return
     }
   }
@@ -175,7 +175,7 @@ export default class GamepadsManager extends Manager {
     let gamepad = this._gamepads[id]
     this._numConnecteds--
     gamepad.unbind()
-    this._dispatchEvent('gamepaddisconnected', gamepad)
+    this._dispatchEvent('gamepads.disconnected', gamepad)
   }
 
   /**

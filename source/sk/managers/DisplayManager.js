@@ -359,7 +359,7 @@ export default class DisplayManager extends Manager {
     this.game._renderer.view.style.width = this._canvasWidth+'px'
     this.game._renderer.view.style.height = this._canvasHeight+'px'
 
-    this.game.events.dispatch(new Event('resize'))
+    this.game.events.dispatch(new Event('display.resize'))
   }
 
   /**
@@ -374,9 +374,13 @@ export default class DisplayManager extends Manager {
     // Wrong orientation
     let inWrongOrientation = this._forceOrientation && this.orientation !== this._forceOrientation
     if (!this._inWrongOrientation && inWrongOrientation) {
-      this.game.events.dispatch(new OrientationEvent('wrongorientationenter', o, a, b, g))
+      this.game.events.dispatch(
+        new OrientationEvent('display.wrongorientation.enter', o, a, b, g)
+      )
     } else if (this._inWrongOrientation && !inWrongOrientation) {
-      this.game.events.dispatch(new OrientationEvent('wrongorientationleave', o, a, b, g))
+      this.game.events.dispatch(
+        new OrientationEvent('display.wrongorientation.leave', o, a, b, g)
+      )
     }
 
     this._inWrongOrientation = inWrongOrientation
@@ -386,12 +390,12 @@ export default class DisplayManager extends Manager {
    * Callback for browser fullscreen event.
    */
   _onFullscreenChange(browserEvent) {
-    this.game.events.dispatch(new Event('fullscreenchange'))
+    this.game.events.dispatch(new Event('display.fullscreen.change'))
 
     if (this.fullscreen) {
-      this.game.events.dispatch(new Event('fullscreenenter'))
+      this.game.events.dispatch(new Event('display.fullscreen.enter'))
     } else {
-      this.game.events.dispatch(new Event('fullscreenleave'))
+      this.game.events.dispatch(new Event('display.fullscreen.leave'))
     }
   }
 
@@ -415,7 +419,7 @@ export default class DisplayManager extends Manager {
 
     // Orientation change
     this.game.events.dispatch(
-      new OrientationEvent('orientationchange', o, a, b, g)
+      new OrientationEvent('display.orientation.change', o, a, b, g)
     )
 
     this._checkOrientation(a, b, g)

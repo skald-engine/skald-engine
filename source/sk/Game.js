@@ -399,21 +399,6 @@ export default class Game extends EventEmitter {
     utils.profiling.end('update')
   }
 
-  /**
-   * Temporary wordkaround to update the entities of the game. This is not 
-   * called on the scenes because it must run before the event digest and the
-   * scene update, however, it also part of the update phaser.
-   */
-  // _updateEntities(delta) {
-  //   let scene = this.scenes.currentScene
-
-  //   if (scene && !this.scenes.inTransition()) {
-  //     for (let entity of scene._entities) {
-  //       if (entity.updatable) entity.update(delta)
-  //     }
-  //   }
-  // }
-
   step(delta=0.166666) {
     if (this._autoUpdate) return
       
