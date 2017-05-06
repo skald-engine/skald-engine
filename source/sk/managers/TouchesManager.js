@@ -1,5 +1,6 @@
 import Manager from 'sk/core/Manager' 
 import Touch from 'sk/core/Touch'
+import TouchEvent from 'sk/events/TouchEvent'
 import * as utils from 'sk/utils'
 
 /**
@@ -117,6 +118,18 @@ export default class TouchesManager extends Manager {
         if (!skaldTouch.down || skaldTouch.id === id) {
           skaldTouch.bind(browserTouch)
           this._numTouches++
+
+          // Dispatch event to game
+          this.game.events.dispatch(
+            new TouchEvent(
+              'touches.down',
+              j,
+              skaldTouch.x,
+              skaldTouch.y,
+              event
+            )
+          )
+
           break
         }
       }
@@ -143,6 +156,18 @@ export default class TouchesManager extends Manager {
 
         if (skaldTouch.id === id) {
           skaldTouch.notify(browserTouch)
+
+          // Dispatch event to game
+          this.game.events.dispatch(
+            new TouchEvent(
+              'touches.move',
+              j,
+              skaldTouch.x,
+              skaldTouch.y,
+              event
+            )
+          )
+
           break
         }
       }
@@ -170,6 +195,18 @@ export default class TouchesManager extends Manager {
         if (skaldTouch.id === id) {
           skaldTouch.unbind(browserTouch)
           this._numTouches--
+
+          // Dispatch event to game
+          this.game.events.dispatch(
+            new TouchEvent(
+              'touches.up',
+              j,
+              skaldTouch.x,
+              skaldTouch.y,
+              event
+            )
+          )
+
           break
         }
       }
@@ -191,6 +228,17 @@ export default class TouchesManager extends Manager {
 
     for (let i=0; i<this._touches.length; i++) {
       this._touches[i].unbind()
+
+      // Dispatch event to game
+      this.game.events.dispatch(
+        new TouchEvent(
+          'touches.up',
+          i,
+          skaldTouch.x,
+          skaldTouch.y,
+          event
+        )
+      )
     }
 
     if (this._preventDefaults) {
