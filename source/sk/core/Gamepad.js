@@ -1,3 +1,5 @@
+import GamepadEvent from 'sk/events/GamepadEvent'
+
 /**
  * The gamepad object stores the controller state for one of the 4 supported 
  * gamepads. The gamepad objects are created by the gamepads manager and can
@@ -156,6 +158,7 @@ export default class Gamepad {
     let ry = this._rawRightStickY = gamepad.axes[3]
 
     let results;
+
     // treat values for deadzone
     results = this._computeDeadzone(lx, ly, this._leftStickDeadzone)
     this._leftStickX = results[0]
@@ -167,13 +170,65 @@ export default class Gamepad {
     this._rightStickY = results[1]
     this._rightStickForce = results[2]
 
+    // send event for sticks
+    if (this._leftStickForce > 0 || this._rightStickForce > 0) {
+      this.game.events.dispatch(
+        new GamepadEvent(
+          'gamepads.move',
+          this._leftStickX,
+          this._leftStickY,
+          this._rightStickX,
+          this._rightStickY
+        )
+      )
+    }
+
     // get button values
     this._leftTrigger = gamepad.buttons[6].value
     this._rightTrigger = gamepad.buttons[7].value
     this._state = []
-    for (var i=0; i<gamepad.buttons.length; i++) {
+    for (let i=0; i<gamepad.buttons.length; i++) {
       if (gamepad.buttons[i].pressed) {
         this._state.push(i)
+      }
+    }
+    
+    // button down events
+    for (let i=0; i<this._state.length; i++) {
+      let button = this._state[i]
+      let type = 'hold'
+      if (this._lastState.indexOf(button) < 0) {
+        type = 'down'
+      }
+
+      this.game.events.dispatch(
+        new GamepadEvent(
+          'gamepads.'+type,
+          this._id,
+          this._leftStickX,
+          this._leftStickY,
+          this._rightStickX,
+          this._rightStickY,
+          button
+        )
+      )
+    }
+
+    // button up events
+    for (let i=0; i<this._lastState.length; i++) {
+      let button = this._lastState[i]
+      if (this._state.indexOf(button) < 0) {
+        this.game.events.dispatch(
+          new GamepadEvent(
+            'gamepads.up',
+            this._id,
+            this._leftStickX,
+            this._leftStickY,
+            this._rightStickX,
+            this._rightStickY,
+            button
+          )
+        )
       }
     }
   }
