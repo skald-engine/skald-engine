@@ -72,11 +72,13 @@ export default class ScenesManager extends Manager {
     // Stop current
     if (this._current) {
       this._current.stop()
+      this.game.events.dispatch('scenes.stop', this._current)
     }
 
     // Add next scene to stage and enter it
     this.game.stage.addChild(this._next.world)
     this._next.enter()
+    this.game.events.dispatch('scenes.enter', this._next)
 
     // Only apply transition if there is a current scene AND a transition
     if (this._current && this._transition) {
@@ -112,11 +114,13 @@ export default class ScenesManager extends Manager {
     if (this._current) {
       this.game.stage.removeChild(this._current.world)
       this._current.leave()
+      this.game.events.dispatch('scenes.leave', this._current)
     }
 
     // Promote next scene to current and start
     this._current = this._next
     this._current.start()
+    this.game.events.dispatch('scenes.start', this._current)
 
     // Clear next and transition
     this._next = null
