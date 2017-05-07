@@ -1,4 +1,4 @@
-import {INPUT_DEVICES, GAMEPAD_AXIS, KEY, BUTTON, GAMEPAD} from 'sk/constants'
+import {INPUT_DEVICE, GAMEPAD_AXIS, KEY, BUTTON, GAMEPAD} from 'sk/constants'
 
 
 /**
@@ -17,10 +17,10 @@ export default class InputAction {
     this._game = game
 
     this._deviceMap = {
-      [INPUT_DEVICES.KEYBOARD] : this.game.keyboard,
-      [INPUT_DEVICES.MOUSE]    : this.game.mouse,
-      [INPUT_DEVICES.GAMEPAD]  : this.game.gamepads,
-      [INPUT_DEVICES.TOUCH]    : this.game.touches,
+      [INPUT_DEVICE.KEYBOARD] : this.game.keyboard,
+      [INPUT_DEVICE.MOUSE]    : this.game.mouse,
+      [INPUT_DEVICE.GAMEPAD]  : this.game.gamepads,
+      [INPUT_DEVICE.TOUCH]    : this.game.touches,
     }
 
     this._commands = []
@@ -41,7 +41,7 @@ export default class InputAction {
   /**
    * Adds a new command to this action. 
    *
-   * A command is composed by a `device` (from {@link skald.INPUT_DEVICES}
+   * A command is composed by a `device` (from {@link skald.INPUT_DEVICE}
    * constants), a `button` (from {@link skald.KEY}, {@link skald.BUTTON},
    * {@link skald.GAMEPAD}, or {@link skald.GAMEPAD_AXIS}), and a multiplier
    * (numeric value).
@@ -52,19 +52,19 @@ export default class InputAction {
    * 
    * Notice that it does not verifies for duplicated entries.
    *
-   * @param {INPUT_DEVICES} device - The device.
+   * @param {INPUT_DEVICE} device - The device.
    * @param {KEY|BUTTON|GAMEPAD|GAMEPAD_AXIS} button - The command button or key.
    * @param {Number} [multiplier=1] - The numeric multiplier.
    * @return {Action} This own object.
    */
   add(device, button, multiplier=1) {
-    if (!INPUT_DEVICES(device)) {
+    if (!INPUT_DEVICE(device)) {
       throw new TypeError(`Invalid input device "${device}".`)
     }
 
-    if (device === INPUT_DEVICES.KEYBOARD && !KEY(button) ||
-        device === INPUT_DEVICES.MOUSE && !BUTTON(button) ||
-        device === INPUT_DEVICES.GAMEPAD && !(GAMEPAD(button) || GAMEPAD_AXIS(button))) {
+    if (device === INPUT_DEVICE.KEYBOARD && !KEY(button) ||
+        device === INPUT_DEVICE.MOUSE && !BUTTON(button) ||
+        device === INPUT_DEVICE.GAMEPAD && !(GAMEPAD(button) || GAMEPAD_AXIS(button))) {
       throw new TypeError(`Invalid input button "${button}."`)
     }
 

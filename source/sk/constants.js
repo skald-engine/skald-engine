@@ -397,7 +397,7 @@ export const GAMEPAD_AXIS = enumeration({
  * - GAMEPAD
  * 
  */
-export const INPUT_DEVICES = enumeration({
+export const INPUT_DEVICE = enumeration({
   KEYBOARD : 'keyboard',
   MOUSE    : 'mouse',
   TOUCH    : 'touch',
@@ -408,7 +408,7 @@ export const INPUT_DEVICES = enumeration({
 /**
  * Blend modes.
  */
-export const BLEND_MODES = enumeration({
+export const BLEND_MODE = enumeration({
   NORMAL      : 0,
   ADD         : 1,
   MULTIPLY    : 2,
@@ -431,7 +431,7 @@ export const BLEND_MODES = enumeration({
 /**
  * Draw modes.
  */
-export const DRAW_MODES = enumeration({
+export const DRAW_MODE = enumeration({
   POINTS         : 0,
   LINES          : 1,
   LINE_LOOP      : 2,
@@ -444,7 +444,7 @@ export const DRAW_MODES = enumeration({
 /**
  * Scale modes.
  */
-export const SCALE_MODES = enumeration({
+export const PIXI_SCALE_MODE = enumeration({
   LINEAR  : 0,
   NEAREST : 1,
 })
@@ -452,7 +452,7 @@ export const SCALE_MODES = enumeration({
 /**
  * Wrap modes.
  */
-export const WRAP_MODES = enumeration({
+export const WRAP_MODE = enumeration({
   CLAMP           : 0,
   REPEAT          : 1,
   MIRRORED_REPEAT : 2,

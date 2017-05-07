@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <script type="text/javascript" src="/build/lib/skald.min.js"></script>
+</head>
+<body>
+  
+  <h1>Particle Emitter</h1>
+
+
+  <script>
+    // Configuration ----------------------------------------------------------
+    sk.scene({
+      name: 'base',
+      initialize: function() {
+        this.emitter = this.addStatic('emitter')
+            .configure({
+              textures     : [
+                game.resources.get('red'),
+                // game.resources.get('green'),
+                // game.resources.get('base')
+              ],
+              angle: 0,
+              startAlpha: 0.1,
+              emitXVar: 0,
+              angleVar: Math.PI*2,
+              // speed: 10,
+              // gravityY: -5 ,
+              // radialAcceleration: 0,
+              // tangentialAcceleration: 1,
+              maxParticles: 200,
+              emissionRate: 1000/200,
+              life: 1000,
+              blendMode: sk.BLEND_MODE.ADD
+            })
+
+        // this.s = new PIXI.Sprite()
+        // this.s.anchor = {x:.5, y:.5}
+        // this.s.visible = false
+        // this.s.y = -150
+        // this.emitter.addChild(this.s)
+        // this.s.visible = true
+
+        this.addStatic(this.emitter)
+
+        this.emitter.start()
+      },
+
+      update: function(delta) {
+        // this.s.texture = game.resources.get('particle')
+        this.emitter.emitX = game.mouse.x
+        this.emitter.emitY = game.mouse.y
+        this.emitter.update(delta)
+      }
+    })
+
+    // Game initialization ----------------------------------------------------
+    const config = {
+      resources: {basePath: '../../assets/spritesheets/'},
+      display: {width: 1024, height: 768, backgroundColor:'#000000'},
+      logger: {level: 'trace'}
+    }
+    const manifest = [
+      {id:'particles', type:'spriteSheet', url: 'particles.json'},
+    ]
+    let game = new sk.Game(config, manifest)
+
+    // Starting ---------------------------------------------------------------
+    game.addEventListener('resources.complete', () => {
+      game.scenes.play('base')
+    })
+
+  </script>
+
+</body>
+</html>

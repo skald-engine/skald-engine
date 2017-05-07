@@ -22,6 +22,8 @@ import * as sk from 'sk'
   sk.registerDisplayObject('bitmapText', m.BitmapText)
   sk.registerDisplayObject('text', m.Text)
   sk.registerDisplayObject('graphics', m.Graphics)
+  sk.registerDisplayObject('particleContrainer', m.ParticleContrainer)
+  sk.registerDisplayObject('emitter', m.Emitter)
 }
 
 // Configure audio systems

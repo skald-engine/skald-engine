@@ -1,0 +1,29 @@
+{
+  "image": "particles.png",
+  "frames": [
+    {
+      "id": "base",
+      "rect": {"x":0,"y":0,"width":128,"height":128},
+      "rotated": false,
+      "anchor": {"x":0.5,"y":0.5}
+    },
+    {
+      "id": "red",
+      "rect": {"x":0,"y":128,"width":128,"height":128},
+      "rotated": false,
+      "anchor": {"x":0.5,"y":0.5}
+    },
+    {
+      "id": "blue",
+      "rect": {"x":0,"y":256,"width":128,"height":128},
+      "rotated": false,
+      "anchor": {"x":0.5,"y":0.5}
+    },
+    {
+      "id": "green",
+      "rect": {"x":0,"y":382,"width":128,"height":128},
+      "rotated": false,
+      "anchor": {"x":0.5,"y":0.5}
+    }
+  ]
+}

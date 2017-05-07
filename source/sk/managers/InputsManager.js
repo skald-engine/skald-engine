@@ -1,6 +1,6 @@
 import Manager from 'sk/core/Manager' 
 import InputAction from 'sk/core/InputAction' 
-import {INPUT_DEVICES, GAMEPAD_AXIS, KEY, BUTTON, GAMEPAD} from 'sk/constants'
+import {INPUT_DEVICE, GAMEPAD_AXIS, KEY, BUTTON, GAMEPAD} from 'sk/constants'
 import * as utils from 'sk/utils'
 
 /**
@@ -22,8 +22,8 @@ import * as utils from 'sk/utils'
  * Examples:
  *
  *     game.inputs.action('reload')
- *                .add(sk.INPUT_DEVICES.KEYBOARD, sk.KEY.R)
- *                .add(sk.INPUT_DEVICES.GAMEPAD, sk.GAMEPAD.X)
+ *                .add(sk.INPUT_DEVICE.KEYBOARD, sk.KEY.R)
+ *                .add(sk.INPUT_DEVICE.GAMEPAD, sk.GAMEPAD.X)
  *
  *    game.inputs.get('reload') // returns 1 if `<keyboard R>` or `<gamepad x`>
  *                              // are pressed
@@ -56,26 +56,26 @@ export default class InputsManager extends Manager {
     this._actions = {}
 
     this.action('horizontal')
-        .add(INPUT_DEVICES.KEYBOARD, KEY.A, -1)
-        .add(INPUT_DEVICES.KEYBOARD, KEY.D, 1)
-        .add(INPUT_DEVICES.KEYBOARD, KEY.LEFT, -1)
-        .add(INPUT_DEVICES.KEYBOARD, KEY.RIGHT, 1)
-        .add(INPUT_DEVICES.GAMEPAD,  GAMEPAD_AXIS.LEFT_STICK_X, 1, -1)
+        .add(INPUT_DEVICE.KEYBOARD, KEY.A, -1)
+        .add(INPUT_DEVICE.KEYBOARD, KEY.D, 1)
+        .add(INPUT_DEVICE.KEYBOARD, KEY.LEFT, -1)
+        .add(INPUT_DEVICE.KEYBOARD, KEY.RIGHT, 1)
+        .add(INPUT_DEVICE.GAMEPAD,  GAMEPAD_AXIS.LEFT_STICK_X, 1, -1)
 
     this.action('vertical')
-        .add(INPUT_DEVICES.KEYBOARD, KEY.W, -1)
-        .add(INPUT_DEVICES.KEYBOARD, KEY.S, 1)
-        .add(INPUT_DEVICES.KEYBOARD, KEY.UP, -1)
-        .add(INPUT_DEVICES.KEYBOARD, KEY.DOWN, 1)
-        .add(INPUT_DEVICES.GAMEPAD,  GAMEPAD_AXIS.LEFT_STICK_Y, 1)
+        .add(INPUT_DEVICE.KEYBOARD, KEY.W, -1)
+        .add(INPUT_DEVICE.KEYBOARD, KEY.S, 1)
+        .add(INPUT_DEVICE.KEYBOARD, KEY.UP, -1)
+        .add(INPUT_DEVICE.KEYBOARD, KEY.DOWN, 1)
+        .add(INPUT_DEVICE.GAMEPAD,  GAMEPAD_AXIS.LEFT_STICK_Y, 1)
         
     this.action('shoot')
-        .add(INPUT_DEVICES.MOUSE,   BUTTON.LEFT, 1)
-        .add(INPUT_DEVICES.GAMEPAD, GAMEPAD.RIGHT_TRIGGER, 1)
+        .add(INPUT_DEVICE.MOUSE,   BUTTON.LEFT, 1)
+        .add(INPUT_DEVICE.GAMEPAD, GAMEPAD.RIGHT_TRIGGER, 1)
 
     this.action('jump')
-        .add(INPUT_DEVICES.KEYBOARD, KEY.SPACE)
-        .add(INPUT_DEVICES.GAMEPAD,  GAMEPAD.A)
+        .add(INPUT_DEVICE.KEYBOARD, KEY.SPACE)
+        .add(INPUT_DEVICE.GAMEPAD,  GAMEPAD.A)
 
     utils.profiling.end('inputs')
   }
@@ -126,7 +126,7 @@ export default class InputsManager extends Manager {
    * Adds a new command reference to an action.
    *
    * @param {String} actionName - The action name.
-   * @param {INPUT_DEVICES} device - Input device that will trigger the action.
+   * @param {INPUT_DEVICE} device - Input device that will trigger the action.
    * @param {KEY|BUTTON|GAMEPAD|GAMEPAD_AXIS} button - The button or key.
    * @param {Number} [multiplier=1] - A numeric multiplier that will be applied
    *        to the result of the command.
