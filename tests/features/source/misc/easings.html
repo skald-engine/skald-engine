@@ -33,6 +33,7 @@
       ['quintIn', 'quintOut', 'quintInOut', 'expoIn', 'expoOut', 'expoInOut'],
       ['circIn', 'circOut', 'circInOut', 'backIn', 'backOut', 'backInOut'],
       ['elasticIn', 'elasticOut', 'elasticInOut', 'bounceIn', 'bounceOut', 'bounceInOut'],
+      ['bellGaussian', 'bellThin', 'bellFat', 'gaussian'],
     ]
 
     function create(id, name) {
@@ -44,7 +45,7 @@
       const h = H-PH
       const areaW = w-PW
       const areaH = h-PH
-      const POINTS = 100
+      const POINTS = 1000
 
       const BORDER_STROKE = {color:'#333333', width:.2}
       const PATH_STROKE = {color:'#333333', width:2}
