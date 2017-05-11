@@ -1,7 +1,7 @@
 import Emissor from 'sk/particles/Emissor'
 import * as utils from 'sk/utils'
 
-export default class SquareEmissor extends Emissor {
+export default class RectEmissor extends Emissor {
   constructor(width=100, height=100) {
     super()
 

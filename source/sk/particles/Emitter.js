@@ -1,5 +1,5 @@
 import * as utils from 'sk/utils'
-import SquareEmissor from 'sk/particles/emissors/SquareEmissor'
+import RectEmissor from 'sk/particles/emissors/RectEmissor'
 import Particle from 'sk/particles/Particle'
 
 export default class Emitter {
@@ -20,7 +20,7 @@ export default class Emitter {
     this._maxParticles = 1000
     this._life = 1000
     this._lifeVar =  0
-    this._emissor = new SquareEmissor()
+    this._emissor = new RectEmissor()
 
     // emission
     this._emissionRate = 100
