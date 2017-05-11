@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.0-alpha.3
+
+- Adding color utility functions
+- Adding random utility functions
+- Adding particle system
+
+
 ## 1.0.0-alpha.2
 
 Lot of things fixed and adjusted to follow a better pattern.
