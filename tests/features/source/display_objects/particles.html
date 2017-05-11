@@ -6,7 +6,7 @@
 </head>
 <body>
   
-  <h1>Particle Emitter</h1>
+  <h1>Particle Emitter <small>(FPS: <span id="fps">60</span>)</small></h1>
 
 
   <script>
@@ -14,26 +14,76 @@
     sk.scene({
       name: 'base',
       initialize: function() {
-        this.emitter = this.addStatic('emitter')
-            .configure({
-              textures     : [
-                game.resources.get('red'),
-                // game.resources.get('green'),
-                // game.resources.get('base')
-              ],
-              angle: 0,
-              startAlpha: 0.1,
-              emitXVar: 0,
-              angleVar: Math.PI*2,
-              // speed: 10,
-              // gravityY: -5 ,
-              // radialAcceleration: 0,
-              // tangentialAcceleration: 1,
-              maxParticles: 200,
-              emissionRate: 1000/200,
-              life: 1000,
-              blendMode: sk.BLEND_MODE.ADD
-            })
+        // let container = new PIXI.ParticleContainer(1500, {
+        //   scale    : true,
+        //   position : true,
+        //   rotation : true,
+        //   alpha    : true
+        // })
+        // container.blendMode = sk.BLEND_MODE.ADD
+        
+        let container = new PIXI.Container()
+
+        this.emitter = new sk.particles.Emitter(container, [], {
+          textures: [
+            game.resources.get('base'),
+          ],
+          emissor: new sk.particles.emissors.SquareEmissor(300, 0),
+
+          alphaEase: sk.utils.easing.quadInOut,
+          scaleEase: sk.utils.easing.expoIn,
+          // emissionAngleFromCenter: true,
+          emissionAngle: -Math.PI/2,
+          emissionAngleVar: Math.PI/10,
+          duration: 1000,
+          life: 1000,
+          emissionRate: 500,
+          startSpeed: 500,
+          endSpeed: 10,
+          startScale: 0.5,
+          endScale: 0,
+          startColor: [255, 150, 0],
+          endColor: [200, 0, 0],
+          colorEase: sk.utils.easing.quadOut,
+
+          // tangentialAcceleration: 5,
+          // radialAcceleration: -10,
+
+          
+          // // SUN
+          // textures: [
+          //   game.resources.get('red'),
+          // ],
+          // emissor: new sk.particles.emissors.CircleEmissor(10),
+          // emissionAngle: 0,
+          // emissionAngleVar: Math.PI,
+          // speed: 40,
+          // speedVar: 10,
+          // life: 1000,
+          // lifeVar: 500,
+          // emissionRate: 250,
+          // startScale: .5,
+          // startScaleVar: .05,
+          // endScale: .0
+          
+          // // FIRE
+          // textures: [
+          //   game.resources.get('red'),
+          // ],
+          // emissor: new sk.particles.emissors.CircleEmissor(10),
+          // emissionAngle: -Math.PI/2,
+          // emissionAngleVar: Math.PI/10,
+          // alphaEase: sk.utils.easing.expoOut,
+          // scaleEase: sk.utils.easing.expoIn,
+          // speed: 200,
+          // speedVar: 20,
+          // life: 2000,
+          // lifeVar: 500,
+          // emissionRate: 150,
+          // startScale: .7,
+          // endScale: .2
+        })
+        this.addStatic(container)
 
         // this.s = new PIXI.Sprite()
         // this.s.anchor = {x:.5, y:.5}
@@ -42,16 +92,16 @@
         // this.emitter.addChild(this.s)
         // this.s.visible = true
 
-        this.addStatic(this.emitter)
-
         this.emitter.start()
       },
 
       update: function(delta) {
         // this.s.texture = game.resources.get('particle')
-        this.emitter.emitX = game.mouse.x
-        this.emitter.emitY = game.mouse.y
+        this.emitter.emissionX = game.mouse.x
+        this.emitter.emissionY = game.mouse.y
         this.emitter.update(delta)
+
+        document.getElementById('fps').innerHTML = game.time.fps
       }
     })
 

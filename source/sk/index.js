@@ -9,8 +9,9 @@ import * as middlewares from 'sk/middlewares'
 import * as displayObjects from 'sk/displayObjects'
 import * as audio from 'sk/audio'
 import * as transitions from 'sk/transitions'
+import * as particles from 'sk/particles'
 export {$, utils, config, audio, events, core, managers, middlewares, 
-        displayObjects, transitions}
+        displayObjects, transitions, particles}
 
 // Global namespace elements
 export * from 'sk/constants'
