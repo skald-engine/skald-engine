@@ -6,7 +6,11 @@
 </head>
 <body>
   
-  <h1>Particle Emitter <small>(FPS: <span id="fps">60</span>)</small></h1>
+  <h1>
+    Particle Emitter
+    <small>(FPS: <span id="fps">60</span>)</small>
+    <small>(Particles: <span id="counter">0</span>)</small>
+  </h1>
 
 
   <script>
@@ -14,19 +18,19 @@
     sk.scene({
       name: 'base',
       initialize: function() {
-        // let container = new PIXI.ParticleContainer(1500, {
-        //   scale    : true,
-        //   position : true,
-        //   rotation : true,
-        //   alpha    : true
-        // })
-        // container.blendMode = sk.BLEND_MODE.ADD
+        let container = new PIXI.ParticleContainer(15000, {
+          scale    : true,
+          position : true,
+          rotation : false,
+          alpha    : true
+        })
+        container.blendMode = sk.BLEND_MODE.ADD
         
-        let container = new PIXI.Container()
+        // let container = new PIXI.Container()
 
         this.emitter = new sk.particles.Emitter(container, [], {
           textures: [
-            game.resources.get('base'),
+            game.resources.get('red'),
           ],
           emissor: new sk.particles.emissors.SquareEmissor(300, 0),
 
@@ -35,16 +39,17 @@
           // emissionAngleFromCenter: true,
           emissionAngle: -Math.PI/2,
           emissionAngleVar: Math.PI/10,
-          duration: 1000,
-          life: 1000,
-          emissionRate: 500,
+          // duration: 1000,
+          life: 3000,
+          maxParticles: 15000,
+          emissionRate: 5000,
           startSpeed: 500,
           endSpeed: 10,
           startScale: 0.5,
           endScale: 0,
-          startColor: [255, 150, 0],
-          endColor: [200, 0, 0],
-          colorEase: sk.utils.easing.quadOut,
+          // startColor: [255, 150, 0],
+          // endColor: [200, 0, 0],
+          // colorEase: sk.utils.easing.quadOut,
 
           // tangentialAcceleration: 5,
           // radialAcceleration: -10,
@@ -85,13 +90,6 @@
         })
         this.addStatic(container)
 
-        // this.s = new PIXI.Sprite()
-        // this.s.anchor = {x:.5, y:.5}
-        // this.s.visible = false
-        // this.s.y = -150
-        // this.emitter.addChild(this.s)
-        // this.s.visible = true
-
         this.emitter.start()
       },
 
@@ -102,6 +100,7 @@
         this.emitter.update(delta)
 
         document.getElementById('fps').innerHTML = game.time.fps
+        document.getElementById('counter').innerHTML = this.emitter.counter
       }
     })
 

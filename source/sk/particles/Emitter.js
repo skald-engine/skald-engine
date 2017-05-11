@@ -140,7 +140,10 @@ export default class Emitter {
    * @type {Integer}
    */
   get maxParticles() { return this._maxParticles }
-  set maxParticles(v) { this._maxParticles = v }
+  set maxParticles(v) {
+    this._maxParticles = v
+    this._setupParticles()
+  }
   
   /**
    * Base life span of each particle, in milliseconds. Defaults to 1000 (1 
