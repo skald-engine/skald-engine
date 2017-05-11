@@ -260,7 +260,7 @@ export function desaturate(color, amount) {
  * @param {Number} color - The int color.
  * @return {Number}
  */
-export function greyscale(color,) {
+export function greyscale(color, amount) {
   _assertColor(color, `greyscale`)
   _assertFloat(amount, `amount`, `greyscale`, -1, 1)
   

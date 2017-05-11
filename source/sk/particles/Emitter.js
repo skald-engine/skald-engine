@@ -6,9 +6,47 @@ import Particle from 'sk/particles/Particle'
 /**
  * The base for the skald particle system.
  *
+ * When creating a new particle system, you must provide the container for the
+ * particles, which can be either `PIXI.Container` or `PIXI.ParticleContainer`.
+ * In consequence, the emitter won't draw anything automatically on the canvas,
+ * you should add the provided container manually on an scene. If you need a 
+ * significant number of particles (e.g., more than 1000), prefer using 
+ * ParticleContainers.
+ *
+ * You also must provide the textures for the particles. If you provide more 
+ * than one texture, the particle will select a random texture in the moment
+ * they are created.
+ *
+ * Emitter uses *emissors* to setup the initial position of new particles. By
+ * default, the emitter uses a RectEmissor. You may use any emissor from 
+ * `sk.particles.emissors` package.
+ *
+ * Notice that, if you are using this class directly, you must call the 
+ * `emitter.update` method manually too.
+ * 
+ * Usage example:
+ *
+ *     let container = new PIXI.Container()
+ *     let emitter = new sk.particles.Emitter(container)
+ *     emitter.configure({
+ *       textures: [game.resources.get('myparticle')],
+ *       emissor: new sk.particles.emissors.RingEmissor(300, 10),
+ *       maxParticles: 1500,
+ *       emissionRate: 300
+ *     })
  * 
  */
 export default class Emitter {
+  /**
+   * Constructor.
+   *
+   * @param {PIXI.Container} container - The particle container.
+   * @param {Array<PIXI.Texture>|PIXI.Texture} textures - The particle 
+   *        textures. You may provide a PIXI.Texture or an array of 
+   *        PIXI.Texture objects.
+   * @param {Object} data - The data to configure the emitter, shortcut for
+   *        `new Emitter(container, textures).configure(data)`.
+   */
   constructor(container, textures, data) {
     // internal
     this._emissionTime = 0
@@ -702,7 +740,7 @@ export default class Emitter {
   }
 
   /**
-   * Activates the particle system and reseting the emission time.
+   * Activates the particle system, reseting the emission time.
    */
   start() {
     this._active = true

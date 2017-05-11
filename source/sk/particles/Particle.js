@@ -1,5 +1,11 @@
 import * as utils from 'sk/utils'
 
+/**
+ * Representation of a single particle in the particle system.
+ *
+ * This class inherit from pixi sprite and adds new variables in oder to 
+ * control the particle.
+ */
 export default class Particle extends PIXI.Sprite {
   constructor(emitter) {
     super()
@@ -33,10 +39,23 @@ export default class Particle extends PIXI.Sprite {
     this.anchor.y = .5
   }
 
+  /**
+   * Set the texture of the particle, called everytime the particle is added or
+   * when the emitter textures changes.
+   *
+   * @param {Array<PIXI.Texture>} textures
+   */
   setTexture(textures) {
     this._texture = utils.random.choose(textures)
   }
 
+  /**
+   * Resets the particle. Called right before the particle is added in the 
+   * system.
+   *
+   * @param {Number} x - The X position of the particle.
+   * @param {Number} y - The Y position of the particle.
+   */
   reset(x, y) {
     let e = this.emitter
     let r = utils.random.polar
@@ -46,14 +65,27 @@ export default class Particle extends PIXI.Sprite {
     this.initialLife = e.life + r(e.lifeVar)
     this.initialX = x
     this.initialY = y
+
     this.initialAlpha = e.startAlpha + r(e.startAlphaVar)
-    this.finalAlpha = e.endAlpha + r(e.endAlphaVar)
+    this.finalAlpha   = e.endAlpha + r(e.endAlphaVar)
+    this.alphaEnabled = this.initialAlpha !== this.finalAlpha
+    this.alphaEase    = e.alphaEase
+
     this.initialRotation = e.startRotation + r(e.startRotationVar)
-    this.finalRotation = e.endRotation + r(e.endRotationVar)
+    this.finalRotation   = e.endRotation + r(e.endRotationVar)
+    this.rotationEnabled = this.initialRotation !== this.finalRotation
+    this.rotationEase    = e.rotationEase
+
     this.initialScale = e.startScale + r(e.startScaleVar)
-    this.finalScale = e.endScale + r(e.endScaleVar)
+    this.finalScale   = e.endScale + r(e.endScaleVar)
+    this.scaleEnabled = this.initialScale !== this.finalScale
+    this.scaleEase    = e.scaleEase
+
     this.initialSpeed = e.startSpeed + r(e.startSpeedVar)
-    this.finalSpeed = e.endSpeed + r(e.endSpeedVar)
+    this.finalSpeed   = e.endSpeed + r(e.endSpeedVar)
+    this.speedEnabled = this.initialSpeed !== this.finalSpeed
+    this.speedEase    = e.speedEase
+
     this.initialColor = [
       utils.clip(e.startColor[0] + r(e.startColorVar[0]), 0, 255),
       utils.clip(e.startColor[1] + r(e.startColorVar[1]), 0, 255),
@@ -68,17 +100,14 @@ export default class Particle extends PIXI.Sprite {
       this.initialColor[0] !== this.finalColor[0] ||
       this.initialColor[1] !== this.finalColor[1] ||
       this.initialColor[2] !== this.finalColor[2]
+    this.colorEase = e.colorEase
 
     this.gravityX = e.gravityX
     this.gravityY = e.gravityY
     this.radialAcceleration = e.radialAcceleration + r(e.radialAccelerationVar)
     this.tangentialAcceleration = e.tangentialAcceleration + 
                                     r(e.tangentialAccelerationVar)
-    this.speedEase = e.speedEase
-    this.rotationEase = e.rotationEase
-    this.scaleEase = e.scaleEase
-    this.alphaEase = e.alphaEase
-    this.colorEase = e.colorEase
+    
 
     // set working values
     if (e.emissionAngleFromCenter) {
@@ -105,11 +134,18 @@ export default class Particle extends PIXI.Sprite {
     this.speed = this.initialSpeed
   }
 
+  /**
+   * Kills a particle.
+   */
   kill() {
     this.visible = false
     this.alpha = 0
   }
 
+  /**
+   * Update the particle, called by the emitter every update. Notice that, this
+   * method is only called if the particle is alive.
+   */
   update(delta) {
     let milliseconds = delta*1000
 
@@ -140,27 +176,38 @@ export default class Particle extends PIXI.Sprite {
     this.dirY += (radY + tanY + this.gravityY)*delta
 
     // interpolate the simple values
-    this.alpha = utils.lerp(
-      this.initialAlpha,
-      this.finalAlpha,
-      this.alphaEase(t)
-    )
-    this.scale.x = utils.lerp(
-      this.initialScale,
-      this.finalScale,
-      this.scaleEase(t)
-    )
-    this.scale.y = this.scale.x
-    this.rotation = utils.lerp(
-      this.initialRotation,
-      this.finalRotation,
-      this.rotationEase(t)
-    )
-    this.speed = utils.lerp(
-      this.initialSpeed,
-      this.finalSpeed,
-      this.speedEase(t)
-    )
+    if (this.alphaEnabled) {
+      this.alpha = utils.lerp(
+        this.initialAlpha,
+        this.finalAlpha,
+        this.alphaEase(t)
+      )
+    }
+
+    if (this.scaleEnabled) {
+      this.scale.x = utils.lerp(
+        this.initialScale,
+        this.finalScale,
+        this.scaleEase(t)
+      )
+      this.scale.y = this.scale.x
+    }
+
+    if (this.rotationEnabled) {
+      this.rotation = utils.lerp(
+        this.initialRotation,
+        this.finalRotation,
+        this.rotationEase(t)
+      )
+    }
+
+    if (this.speedEnabled) {
+      this.speed = utils.lerp(
+        this.initialSpeed,
+        this.finalSpeed,
+        this.speedEase(t)
+      )
+    }
 
     if (this.colorEnabled) {
       let red = utils.lerp(
