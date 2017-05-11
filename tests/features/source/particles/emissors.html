@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <script type="text/javascript" src="/build/lib/skald.min.js"></script>
+</head>
+<body>
+  
+  <h1>
+    Emissors
+    <small>(FPS: <span id="fps">60</span>)</small>
+  </h1>
+
+  <script>
+    // Configuration ----------------------------------------------------------
+    sk.scene({
+      name: 'base',
+      initialize: function() {
+        let container1 = new PIXI.Container(); this.addStatic(container1)
+        let container2 = new PIXI.Container(); this.addStatic(container2)
+        let container3 = new PIXI.Container(); this.addStatic(container3)
+
+        this.emitter1 = new sk.particles.Emitter(container1)
+        this.emitter2 = new sk.particles.Emitter(container2)
+        this.emitter3 = new sk.particles.Emitter(container3)
+
+        this.emitter1.configure({
+          textures     : game.resources.get('red'),
+          emissor      : new sk.particles.emissors.RectEmissor(50, 100),
+          emissionX    : 100,
+          emissionY    : 100,
+          maxParticles : 1000,
+          emissionRate : 200,
+          speed        : 0,
+          scale        : .3,
+          blendMode    : sk.BLEND_MODE.SCREEN,
+        })
+        this.emitter2.configure({
+          textures     : game.resources.get('blue'),
+          emissor      : new sk.particles.emissors.CircleEmissor(100),
+          emissionX    : 300,
+          emissionY    : 100,
+          maxParticles : 2000,
+          emissionRate : 500,
+          speed        : 0,
+          scale        : .3,
+          blendMode    : sk.BLEND_MODE.SCREEN,
+        })
+        this.emitter3.configure({
+          textures     : game.resources.get('green'),
+          emissor      : new sk.particles.emissors.RingEmissor(100, 0),
+          emissionX    : 500,
+          emissionY    : 100,
+          maxParticles : 1000,
+          emissionRate : 200,
+          speed        : 0,
+          scale        : .3,
+          blendMode    : sk.BLEND_MODE.SCREEN,
+        })
+
+        this.emitter1.start()
+        this.emitter2.start()
+        this.emitter3.start()
+      },
+
+      update: function(delta) {
+        this.emitter1.update(delta)
+        this.emitter2.update(delta)
+        this.emitter3.update(delta)
+        document.getElementById('fps').innerHTML = game.time.fps
+      }
+    })
+
+    // Game initialization ----------------------------------------------------
+    const config = {
+      display: {
+        width: 600,
+        height: 200,
+        backgroundColor: '#000000'
+      },
+    }
+    const manifest = [
+      {
+        id   : 'particles',
+        type : 'spriteSheet',
+        url  : '../../assets/spritesheets/particles.json'
+      },
+    ]
+    let game = new sk.Game(config, manifest)
+
+    // Starting ---------------------------------------------------------------
+    game.addEventListener('resources.complete', () => {
+      game.scenes.play('base')
+    })
+
+  </script>
+
+</body>
+</html>
