@@ -13,3 +13,6 @@ export * from 'sk/utils/easing/linear'
 export * from 'sk/utils/easing/sine'
 export * from 'sk/utils/easing/bell'
 export * from 'sk/utils/easing/gaussian'
+
+import * as modifiers from 'sk/utils/easing/modifiers'
+export {modifiers}

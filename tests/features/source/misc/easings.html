@@ -22,7 +22,10 @@
   
   <h1>Easings</h1>
 
-  <div id="container"></div>
+  <div id="container_easing"></div>
+
+  <h2>Modifiers</h2>
+  <div id="container_modifiers"></div>
   
   <script>
     // const e = sk.utils.easings
@@ -35,8 +38,24 @@
       ['elasticIn', 'elasticOut', 'elasticInOut', 'bounceIn', 'bounceOut', 'bounceInOut'],
       ['bellGaussian', 'bellThin', 'bellFat', 'gaussian'],
     ]
+    let modifiers = [
+      [
+        {name:'mirror(sineIn)', f:sk.utils.easing.modifiers.mirror(sk.utils.easing.sineIn)},
+        {name:'mirror(sineInOut)', f:sk.utils.easing.modifiers.mirror(sk.utils.easing.sineInOut)},
+        {name:'mirror(elasticInOut)', f:sk.utils.easing.modifiers.mirror(sk.utils.easing.elasticInOut)},
+        {name:'mirror(bellFat)', f:sk.utils.easing.modifiers.mirror(sk.utils.easing.bellFat)},
+        {name:'mirror(gaussian)', f:sk.utils.easing.modifiers.mirror(sk.utils.easing.gaussian)}
+      ],
+      [
+        {name:'repeat(circIn, 2)', f:sk.utils.easing.modifiers.repeat(sk.utils.easing.circIn, 2)},
+        {name:'repeat(quadInOut, 3)', f:sk.utils.easing.modifiers.repeat(sk.utils.easing.quadInOut, 3)},
+        {name:'repeat(bounceInOut, 4)', f:sk.utils.easing.modifiers.repeat(sk.utils.easing.bounceInOut, 4)},
+        {name:'repeat(elasticIn, 5)', f:sk.utils.easing.modifiers.repeat(sk.utils.easing.elasticIn, 5)},
+        {name:'repeat(gaussian, 6)', f:sk.utils.easing.modifiers.repeat(sk.utils.easing.gaussian, 6)}
+      ]
+    ]
 
-    function create(id, name) {
+    function create(id, f) {
       const W = 125
       const H = 110
       const PW = 5 // padding
@@ -49,7 +68,6 @@
 
       const BORDER_STROKE = {color:'#333333', width:.2}
       const PATH_STROKE = {color:'#333333', width:2}
-      const f = sk.utils.easing[name]
 
       var draw = SVG(id)
       draw.attr('width', W)
@@ -82,7 +100,7 @@
         .stroke(BORDER_STROKE)
     }
 
-    let parent = document.getElementById('container')
+    let parent = document.getElementById('container_easing')
     for (let i=0; i<easings.length; i++) {
       let row = document.createElement('div')
       parent.appendChild(row)
@@ -92,10 +110,28 @@
         let div = document.createElement('div')
         div.setAttribute('id', 'item_'+name)
         div.setAttribute('class', 'item')
-        div.innerHTML = '<p>'+easings[i][j]+'</p>'
+        div.innerHTML = '<p>'+name+'</p>'
         row.appendChild(div)
 
-        create('item_'+name, easings[i][j])
+        const f = sk.utils.easing[name]
+        create('item_'+name, f)
+      }
+    }
+
+    parent = document.getElementById('container_modifiers')
+    for (let i=0; i<modifiers.length; i++) {
+      let row = document.createElement('div')
+      parent.appendChild(row)
+
+      for (let j=0; j<modifiers[i].length; j++) {
+        let o = modifiers[i][j]
+        let div = document.createElement('div')
+        div.setAttribute('id', 'item_'+o.name)
+        div.setAttribute('class', 'item')
+        div.innerHTML = '<p>'+o.name+'</p>'
+        row.appendChild(div)
+
+        create('item_'+o.name, o.f)
       }
     }
 
