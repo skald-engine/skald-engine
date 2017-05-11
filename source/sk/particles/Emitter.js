@@ -7,6 +7,7 @@ export default class Emitter {
 
     // internal
     this._emissionTime = 0
+    this._burstTime = 0
     this._elapsed = 0
     this._counter = 0
     this._container = container
@@ -689,6 +690,7 @@ export default class Emitter {
     this._active = true
     this._elapsed = 0
     this._emissionTime = 0
+    this._burstTime = 0
   }
 
   /**
@@ -710,7 +712,16 @@ export default class Emitter {
    * @param {Integer} min - The minimum amount of particles.
    * @param {Integer} max - The maximum amount of particles.
    */
-  burst(min, max) {}
+  burst(min, max) {
+    if (typeof min === 'undefined') min = this._burstMin
+    if (typeof max === 'undefined') max = this._burstMax
+
+    let n = utils.random.int(min, max)
+    while (n > 0 && this._counter < this._maxParticles) {
+      this._addParticle()
+      n--
+    }
+  }
 
   /**
    * Update the particle system.
@@ -718,18 +729,31 @@ export default class Emitter {
   update(delta) {
     let milliseconds = delta*1000
 
-    // Add particles if active
-    if (this._active && this._emissionRate) {
+    if (this._active) {
       this._elapsed += milliseconds
-      this._emissionTime += delta
-      let rate = 1./this._emissionRate
-      
-      // Create the particles
-      while (this._emissionTime > rate && 
-             this._counter < this._maxParticles) {
 
-        this._addParticle()
-        this._emissionTime -= rate
+      // Continuous emission
+      if (this._emissionRate) {
+        this._emissionTime += delta
+        let rate = 1./this._emissionRate
+        
+        // Create the particles
+        while (this._emissionTime > rate && 
+               this._counter < this._maxParticles) {
+
+          this._addParticle()
+          this._emissionTime -= rate
+        }
+      }
+
+      // Burst emission
+      if (this._burstInterval) {
+        this._burstTime += milliseconds
+
+        while (this._burstTime > this._burstInterval) {
+          this.burst()
+          this._burstTime -= this._burstInterval
+        }
       }
 
       // Deactivate the emitter if duration has been reached
@@ -737,7 +761,7 @@ export default class Emitter {
         this._active = false
       }
     }
-
+    
     // Update alive particles
     let i = 0
     let N = this._counter

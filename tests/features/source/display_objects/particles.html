@@ -39,54 +39,15 @@
           // emissionAngleFromCenter: true,
           emissionAngle: -Math.PI/2,
           emissionAngleVar: Math.PI/10,
+          burstInterval: 500,
           // duration: 1000,
           life: 3000,
           maxParticles: 1000,
-          emissionRate: 0,
+          emissionRate: 10,
           startSpeed: 500,
           endSpeed: 10,
           startScale: 0.5,
           endScale: 0,
-          // startColor: [255, 150, 0],
-          // endColor: [200, 0, 0],
-          // colorEase: sk.utils.easing.quadOut,
-
-          // tangentialAcceleration: 5,
-          // radialAcceleration: -10,
-
-          
-          // // SUN
-          // textures: [
-          //   game.resources.get('red'),
-          // ],
-          // emissor: new sk.particles.emissors.CircleEmissor(10),
-          // emissionAngle: 0,
-          // emissionAngleVar: Math.PI,
-          // speed: 40,
-          // speedVar: 10,
-          // life: 1000,
-          // lifeVar: 500,
-          // emissionRate: 250,
-          // startScale: .5,
-          // startScaleVar: .05,
-          // endScale: .0
-          
-          // // FIRE
-          // textures: [
-          //   game.resources.get('red'),
-          // ],
-          // emissor: new sk.particles.emissors.CircleEmissor(10),
-          // emissionAngle: -Math.PI/2,
-          // emissionAngleVar: Math.PI/10,
-          // alphaEase: sk.utils.easing.expoOut,
-          // scaleEase: sk.utils.easing.expoIn,
-          // speed: 200,
-          // speedVar: 20,
-          // life: 2000,
-          // lifeVar: 500,
-          // emissionRate: 150,
-          // startScale: .7,
-          // endScale: .2
         })
         this.addStatic(container)
 
@@ -98,6 +59,10 @@
         this.emitter.emissionX = game.mouse.x
         this.emitter.emissionY = game.mouse.y
         this.emitter.update(delta)
+
+        if (game.mouse.isPressed(sk.BUTTON.LEFT)) {
+          this.emitter.burst()
+        }
 
         document.getElementById('fps').innerHTML = game.time.fps
         document.getElementById('counter').innerHTML = this.emitter.counter
