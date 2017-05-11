@@ -183,7 +183,7 @@ export default class Emitter {
    */
   get emissionRate() { return this._emissionRate }
   set emissionRate(v) {
-    this._emissionRate = (v <= 0)? 1 : v
+    this._emissionRate = (v < 0)? 0 : v
   }
 
   /**
@@ -719,7 +719,7 @@ export default class Emitter {
     let milliseconds = delta*1000
 
     // Add particles if active
-    if (this._active) {
+    if (this._active && this._emissionRate) {
       this._elapsed += milliseconds
       this._emissionTime += delta
       let rate = 1./this._emissionRate

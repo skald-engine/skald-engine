@@ -32,7 +32,7 @@
           textures: [
             game.resources.get('red'),
           ],
-          emissor: new sk.particles.emissors.SquareEmissor(300, 0),
+          emissor: new sk.particles.emissors.SquareEmissor(100, 0),
 
           alphaEase: sk.utils.easing.quadInOut,
           scaleEase: sk.utils.easing.expoIn,
@@ -41,8 +41,8 @@
           emissionAngleVar: Math.PI/10,
           // duration: 1000,
           life: 3000,
-          maxParticles: 15000,
-          emissionRate: 5000,
+          maxParticles: 1000,
+          emissionRate: 0,
           startSpeed: 500,
           endSpeed: 10,
           startScale: 0.5,
