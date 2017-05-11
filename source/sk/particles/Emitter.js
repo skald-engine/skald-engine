@@ -1,10 +1,15 @@
+import {BLEND_MODE} from 'sk/constants'
 import * as utils from 'sk/utils'
 import RectEmissor from 'sk/particles/emissors/RectEmissor'
 import Particle from 'sk/particles/Particle'
 
+/**
+ * The base for the skald particle system.
+ *
+ * 
+ */
 export default class Emitter {
   constructor(container, textures, data) {
-
     // internal
     this._emissionTime = 0
     this._burstTime = 0
@@ -13,6 +18,7 @@ export default class Emitter {
     this._container = container
     this._particles = []
     this._textures = textures || []
+    this._blendMode = BLEND_MODE.NORMAL
 
     // general
     this._active = false
@@ -118,6 +124,18 @@ export default class Emitter {
     this._setupTextures()
   }
 
+  /**
+   * Particles blend mode. Notice that, if you are using ParticleContainer, 
+   * the particle blend mode will be ignored. Set the blend mode of the 
+   * particle contained instead.
+   *
+   * You also should notice that webgl only supports normal, add, multiply and
+   * screen.
+   *
+   * Defaults to NORMAL.
+   */
+  get blendMode() { return this._blendMode }
+  set blendMode(v) { this._blendMode = v}
 
   /**
    * Whether this emitter is active (creating new particles) or not. Defaults

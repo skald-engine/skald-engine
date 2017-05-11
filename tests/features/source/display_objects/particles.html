@@ -26,28 +26,29 @@
         })
         container.blendMode = sk.BLEND_MODE.ADD
         
-        // let container = new PIXI.Container()
+        container = new PIXI.Container()
 
         this.emitter = new sk.particles.Emitter(container, [], {
           textures: [
             game.resources.get('red'),
           ],
-          emissor: new sk.particles.emissors.RingEmissor(50, 0),
+          emissor: new sk.particles.emissors.CircleEmissor(50, 0),
 
           alphaEase: sk.utils.easing.quadInOut,
           scaleEase: sk.utils.easing.expoIn,
-          emissionAngleFromCenter: true,
+          // emissionAngleFromCenter: true,
           emissionAngle: -Math.PI/2,
           emissionAngleVar: Math.PI/10,
-          burstInterval: 500,
+          // burstInterval: 500,
           // duration: 1000,
           life: 1000,
-          maxParticles: 1000,
-          emissionRate: 10,
+          maxParticles: 5000,
+          emissionRate: 500,
           startSpeed: 200,
-          endSpeed: 10,
+          endSpeed: 100,
           startScale: 0.5,
           endScale: 0,
+          blendMode: sk.BLEND_MODE.SCREEN,
         })
         this.addStatic(container)
 

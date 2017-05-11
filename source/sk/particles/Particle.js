@@ -42,6 +42,7 @@ export default class Particle extends PIXI.Sprite {
     let r = utils.random.polar
 
     // stored values
+    this.blendMode = e.blendMode
     this.initialLife = e.life + r(e.lifeVar)
     this.initialX = x
     this.initialY = y
