@@ -72,6 +72,7 @@
 
     // Game initialization ----------------------------------------------------
     let game = new sk.Game({
+      startScene: 'base',
       resources: {basePath: '../../assets/'},
       display: {width: 300, height: 450},
       logger: {level: 'trace'},
@@ -80,11 +81,6 @@
         {id: 'wing', type: 'bitmapFont', url: 'bitmapfonts/wing.xml'},
         {id: 'samurai', type: 'spriteSheet', url: 'spritesheets/samurai_idle.json'},
       ]
-    })
-
-    // Starting ---------------------------------------------------------------
-    game.addEventListener('resources.complete', () => {
-      game.scenes.play('base')
     })
 
   </script>

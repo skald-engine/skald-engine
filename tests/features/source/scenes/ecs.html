@@ -118,6 +118,7 @@
 
     // Game initialization ----------------------------------------------------
     let game = new sk.Game({
+      startScene: 'base',
       resources: {basePath: '../../assets/'},
       display: {width: 400, height: 400},
       logger: {level: 'trace'},
@@ -125,12 +126,6 @@
         {id: 'zombie', type: 'spriteSheet', url: 'spritesheets/zombie_walking.json'},
       ]
     })
-
-    // Starting ---------------------------------------------------------------
-    game.addEventListener('resources.complete', () => {
-      game.scenes.play('base')
-    })
-
   </script>
 
 </body>

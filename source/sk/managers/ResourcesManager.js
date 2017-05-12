@@ -338,9 +338,15 @@ export default class ResourcesManager extends Manager {
     this._loader.add(randomId, url, {metadata: {type: 'audioSprite', data: data}})
   }
 
-  load() {
+  /**
+   * Start the loading.
+   *
+   * @param {Function} [callback] - Optional callback to be called after the
+   *        current stack has finished.
+   */
+  load(callback) {
     this._stackSize = this._loader._queue._tasks.length
-    this._loader.load()
+    this._loader.load(callback)
   }
 
 

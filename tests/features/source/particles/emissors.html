@@ -73,6 +73,7 @@
 
     // Game initialization ----------------------------------------------------
     let game = new sk.Game({
+      startScene: 'base',
       display: {
         width: 600,
         height: 200,
@@ -86,12 +87,6 @@
         },
       ]
     })
-
-    // Starting ---------------------------------------------------------------
-    game.addEventListener('resources.complete', () => {
-      game.scenes.play('base')
-    })
-
   </script>
 
 </body>

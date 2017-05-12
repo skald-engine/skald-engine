@@ -317,11 +317,26 @@ export default class Game extends EventEmitter {
    */
   _initializeLoader() {
     utils.profiling.begin('loader')
+
+    // Only if manifest have item
     if (this.config.manifest.length) {
       this.resources.addManifest(this.config.manifest)
 
+      // Only load manifest is auto preload is on
       if (this.config.autoPreload) {
-        this.resources.load()
+
+        // If there is a preload scene, play it before start the preload
+        if (this.config.preloadScene) {
+          this.scenes.play(this.config.preloadScene)
+        }
+
+        // Start the loading
+        this.resources.load(() => {
+          // when loader finishes
+          if (this.config.autoStart) {
+            this.start()
+          }
+        })
       }
     }
     utils.profiling.end('loader')
@@ -332,7 +347,17 @@ export default class Game extends EventEmitter {
    */
   _initializeGame() {
     utils.profiling.begin('game')
-    this._updateGame()
+    if (this.config.autoUpdate) {
+      this._updateGame()
+    }
+
+    if (!this.config.manifest.length && this.config.autoStart) {
+      // Must run on a timeout in order finish executing the initialization
+      // logic
+      setTimeout(() => {
+        this.start()
+      }, 1)
+    }
     utils.profiling.end('game')
   }
 
@@ -397,6 +422,14 @@ export default class Game extends EventEmitter {
     utils.profiling.end('draw')
 
     utils.profiling.end('update')
+  }
+
+  start() {
+    this.events.dispatch('start')
+
+    if (this.config.startScene) {
+      this.scenes.play(this.config.startScene)
+    }
   }
 
   step(delta=0.166666) {
