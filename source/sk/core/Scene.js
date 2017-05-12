@@ -40,8 +40,8 @@ export default class Scene extends EventEmitter {
 
     // Create the list of entities for each system
     this._mapSystemToEntities = {}
-    for (let i=0; i<this._$systems.length; i++) {
-      this._mapSystemToEntities[this._$systems[i]] = []
+    for (let k in this._$systems) {
+      this._mapSystemToEntities[k] = []
     }
 
     // Create the layers

@@ -72,8 +72,8 @@ export default class CreateManager extends Manager {
 
     let display = new Entity._$display()
     let components = {}
-    for (let k in Entity.components) {
-      let c = new Entity.components[k]()
+    for (let k in Entity._$components) {
+      let c = new Entity._$components[k]()
       components[c.access] = c
     }
 
