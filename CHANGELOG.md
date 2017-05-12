@@ -8,6 +8,7 @@
 - Adding gaussian and bell curve easings.
 - Adding particle system.
 - Adding startScene and preloadScene on config.
+- Adding a default preload scene.
 - Removing manifest parameter from game (using inside of config now).
 
 
