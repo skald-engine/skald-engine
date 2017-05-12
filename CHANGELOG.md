@@ -2,9 +2,13 @@
 
 ## 1.0.0-alpha.3
 
-- Adding color utility functions
-- Adding random utility functions
-- Adding particle system
+- Adding color utility functions.
+- Adding random utility functions.
+- Adding easing modifiers.
+- Adding gaussian and bell curve easings.
+- Adding particle system.
+- Adding startScene and preloadScene on config.
+- Removing manifest parameter from game (using inside of config now).
 
 
 ## 1.0.0-alpha.2
