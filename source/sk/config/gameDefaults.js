@@ -1,9 +1,13 @@
 export default {
-  project     : 'skald_game',
-  version     : '1.0.0',
-  parent      : null,
-  autoUpdate  : true,
-  autoPreload : true,
+  project      : 'skald_game',
+  version      : '1.0.0',
+  parent       : null,
+  autoStart    : true,
+  autoUpdate   : true,
+  autoPreload  : true,
+  startScene   : null,
+  preloadScene : null,
+  manifest     : [],
 
   logger: {
     level     : 'warn',
@@ -55,9 +59,9 @@ export default {
 
   gamepads: {
     leftStickDeadzone  : 0.25,
-    rightStickDeadzone : 0.25,
     allowEvents        : true,
     preventDefaults    : true,
+    rightStickDeadzone : 0.25,
   },
 
   sounds: {

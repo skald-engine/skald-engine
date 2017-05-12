@@ -49,11 +49,10 @@
     })
 
     // Game initialization ----------------------------------------------------
-    const config = {
+    let game = new sk.Game({
       display: {width: 400, height: 400, backgroundColor: '#000000'},
       logger: {level: 'trace'},
-    }
-    let game = new sk.Game(config)
+    })
 
     // Starting ---------------------------------------------------------------
     game.scenes.play('base')

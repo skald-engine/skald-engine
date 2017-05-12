@@ -33,25 +33,24 @@
     }
 
     // Game initialization ----------------------------------------------------
-    const config = {
+    let game = new sk.Game({
       resources: {basePath: '../../assets/'},
       display: {width: 1, height: 1},
-      logger: {level: 'trace'}
-    }
-    const manifest = [
-      {
-        type : 'audioSprite',
-        url  : ['sfxs/sprite.ogg', 'sfxs/sprite.mp3'],
-        data : [
-          {id:'sound1', offset:0, duration:640},
-          {id:'sound2', offset:1000, duration:800},
-          {id:'sound3', offset:2000, duration:640},
-          {id:'sound4', offset:3500, duration:2000, loop:true}
-        ]
-      },
-    ]
-    let game = new sk.Game(config, manifest)
-
+      logger: {level: 'trace'},
+      manifest: [
+        {
+          type : 'audioSprite',
+          url  : ['sfxs/sprite.ogg', 'sfxs/sprite.mp3'],
+          data : [
+            {id:'sound1', offset:0, duration:640},
+            {id:'sound2', offset:1000, duration:800},
+            {id:'sound3', offset:2000, duration:640},
+            {id:'sound4', offset:3500, duration:2000, loop:true}
+          ]
+        },
+      ]
+    })
+    
     // Starting ---------------------------------------------------------------
     game.addEventListener('resources.complete', () => {
       document.getElementById('loading').style.display = 'none'

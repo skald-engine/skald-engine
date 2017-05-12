@@ -75,10 +75,9 @@
     })
 
     // Game initialization ----------------------------------------------------
-    const config = {
+    let game = new sk.Game({
       display: {width: 500, height: 275, backgroundColor: '#000000'}
-    }
-    let game = new sk.Game(config)
+    })
 
     // Starting ---------------------------------------------------------------
     game.scenes.play('base')

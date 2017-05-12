@@ -8,6 +8,10 @@ export default {
     'parent',
     'autoUpdate',
     'autoPreload',
+    'autoStart',
+    'startScene',
+    'preloadScene',
+    'manifest',
     'logger',
     'managers',
     'display',
@@ -15,16 +19,20 @@ export default {
     'storage',
     'mouse',
     'keyboard',
-    'gamepadsa',
+    'gamepads',
     'sounds'
   ],
   properties: {
     // Base
-    project     : { type: 'string' },
-    version     : { type: 'string' },
-    parent      : { type: ['string', 'null'] },
-    autoUpdate  : { type: 'boolean' },
-    autoPreload : { type: 'boolean' },
+    project      : { type: 'string' },
+    version      : { type: 'string' },
+    parent       : { type: ['string', 'null'] },
+    autoUpdate   : { type: 'boolean' },
+    autoPreload  : { type: 'boolean' },
+    autoStart    : { type: 'boolean' },
+    startScene   : { type: ['string', 'null'] },
+    preloadScene : { type: ['string', 'null'] },
+    manifest     : { type: 'array' },
     
     // Logger
     logger: {

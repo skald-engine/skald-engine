@@ -72,21 +72,20 @@
     })
 
     // Game initialization ----------------------------------------------------
-    const config = {
+    let game = new sk.Game({
       display: {
         width: 600,
         height: 200,
         backgroundColor: '#000000'
       },
-    }
-    const manifest = [
-      {
-        id   : 'particles',
-        type : 'spriteSheet',
-        url  : '../../assets/spritesheets/particles.json'
-      },
-    ]
-    let game = new sk.Game(config, manifest)
+      manifest: [
+        {
+          id   : 'particles',
+          type : 'spriteSheet',
+          url  : '../../assets/spritesheets/particles.json'
+        },
+      ]
+    })
 
     // Starting ---------------------------------------------------------------
     game.addEventListener('resources.complete', () => {

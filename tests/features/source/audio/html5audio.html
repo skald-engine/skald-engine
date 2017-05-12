@@ -27,19 +27,18 @@
     }
 
     // Game initialization ----------------------------------------------------
-    const config = {
+    let game = new sk.Game({
       resources: {basePath: '../../assets/'},
       display: {width: 1, height: 1},
-      logger: {level: 'trace'}
-    }
-    const manifest = [
-      {
-        id   : 'coin',
-        type : 'audio',
-        url  : ['sfxs/coin_2.ogg', 'sfxs/coin_2.mp3'],
-      },
-    ]
-    let game = new sk.Game(config, manifest)
+      logger: {level: 'trace'},
+      manifest: [
+        {
+          id   : 'coin',
+          type : 'audio',
+          url  : ['sfxs/coin_2.ogg', 'sfxs/coin_2.mp3'],
+        },
+      ]
+    })
 
     // Starting ---------------------------------------------------------------
     game.addEventListener('resources.complete', () => {

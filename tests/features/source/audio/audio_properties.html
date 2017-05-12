@@ -33,38 +33,37 @@
     }
 
     // Game initialization ----------------------------------------------------
-    const config = {
+    let game = new sk.Game({
       resources: {basePath: '../../assets/'},
       display: {width: 1, height: 1},
-      logger: {level: 'trace'}
-    }
-    const manifest = [
-      {
-        id   : 'sound1',
-        type : 'audio',
-        url  : ['sfxs/sprite.ogg', 'sfxs/sprite.mp3'],
-        data : {offset: 2000, duration: 640}
-      },
-      {
-        id   : 'sound2',
-        type : 'audio',
-        url  : ['sfxs/coin_2.ogg', 'sfxs/coin_2.mp3'],
-        data : {volume: 0.25}
-      },
-      {
-        id   : 'sound3',
-        type : 'audio',
-        url  : ['sfxs/gun-reload-1.ogg', 'sfxs/gun-reload-1.mp3'],
-        data : {allowMultiple: false}
-      },
-      {
-        id   : 'sound4',
-        type : 'audio',
-        url  : ['sfxs/static.ogg', 'sfxs/static.mp3'],
-        data : {loop: true}
-      },
-    ]
-    let game = new sk.Game(config, manifest)
+      logger: {level: 'trace'},
+      manifest: [
+        {
+          id   : 'sound1',
+          type : 'audio',
+          url  : ['sfxs/sprite.ogg', 'sfxs/sprite.mp3'],
+          data : {offset: 2000, duration: 640}
+        },
+        {
+          id   : 'sound2',
+          type : 'audio',
+          url  : ['sfxs/coin_2.ogg', 'sfxs/coin_2.mp3'],
+          data : {volume: 0.25}
+        },
+        {
+          id   : 'sound3',
+          type : 'audio',
+          url  : ['sfxs/gun-reload-1.ogg', 'sfxs/gun-reload-1.mp3'],
+          data : {allowMultiple: false}
+        },
+        {
+          id   : 'sound4',
+          type : 'audio',
+          url  : ['sfxs/static.ogg', 'sfxs/static.mp3'],
+          data : {loop: true}
+        },
+      ]
+    })
 
     // Starting ---------------------------------------------------------------
     game.addEventListener('resources.complete', () => {
