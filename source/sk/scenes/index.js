@@ -1,0 +1,1 @@
+import 'sk/scenes/preloadDefaultScene'

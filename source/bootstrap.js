@@ -34,3 +34,7 @@ import * as sk from 'sk'
   ])
 }
 
+
+
+// Load scenes
+import 'sk/scenes'
