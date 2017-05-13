@@ -9,6 +9,7 @@
 - Adding particle system.
 - Adding startScene and preloadScene on config.
 - Adding a default preload scene.
+- Adding a scene stack in the scenes manager.
 - Removing manifest parameter from game (using inside of config now).
 
 
