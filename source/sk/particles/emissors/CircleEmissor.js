@@ -6,18 +6,18 @@ import Emissor from 'sk/particles/Emissor'
  * This emissor will generate points a circle area, in which:
  *
  * - CENTER AT: [emitter.emissionX, emitter.emissionY]
- * - DIAMETER: emissor.diameter
+ * - RADIUS: emissor.radius
  */
 export default class CircleEmissor extends Emissor {
   /**
    * Constructor.
    *
-   * @param {Number} [diameter=100] - The circle diameter.
+   * @param {Number} [radius=50] - The circle radius.
    */
-  constructor(diameter=100) {
+  constructor(radius=50) {
     super()
 
-    this._diameter = diameter
+    this._radius = radius
     this._uniform = false
   }
 
@@ -25,8 +25,8 @@ export default class CircleEmissor extends Emissor {
    * Diameter of the circular area.
    * @type {Number}
    */
-  get diameter() { return this._diameter }
-  set diameter(v) { this._diameter = v }
+  get radius() { return this._radius }
+  set radius(v) { this._radius = v }
 
   /**
    * If true, the emissor will generate the points uniformly on the center, 
@@ -46,12 +46,11 @@ export default class CircleEmissor extends Emissor {
   next() {
     let angle = Math.random()*Math.PI*2
 
-
     let range = Math.random()
     if (this._uniform) { // convert to uniform
       range = Math.sqrt(range)
     }
-    range = range*this._diameter/2
+    range = range*this._radius
 
     return {
       x: this._emitter.emissionX + Math.sin(angle)*range,
