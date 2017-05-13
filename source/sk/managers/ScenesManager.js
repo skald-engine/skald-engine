@@ -238,6 +238,7 @@ export default class ScenesManager extends Manager {
 
     // Clear next and transition
     this._next = null
+    this._stack = []
   }
 
   /**
