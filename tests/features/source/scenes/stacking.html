@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <script type="text/javascript" src="/build/lib/skald.min.js"></script>
+</head>
+<body>
+  
+  <h1>Scene stacking</h1>
+
+  <p>
+    <button onclick="play()">play</button>
+    <button id="push" onclick="push()">push</button>
+    <button id="pop" onclick="pop()">pop</button>
+  </p>
+
+  <script>
+    // Setup generators and buttons -------------------------------------------
+    function play() {
+      game.scenes.play('base', new sk.transitions.FadeInOut(1000))
+    }
+    function push() {
+      game.scenes.push('sub', new sk.transitions.FadeIn(500))
+    }
+    function pop() {
+      game.scenes.pop(new sk.transitions.FadeOut(500))
+    }
+
+    // Configuration ----------------------------------------------------------
+    sk.scene({
+      name: 'base',
+      initialize: function() {
+        let displayObject = new sk.displayObjects.Graphics()
+        displayObject
+          .beginFill(Math.round(Math.random()*0xFFFFFF))
+          .drawRect(0, 0, 400, 400)
+          .endFill()
+          .beginFill(Math.round(Math.random()*0xFFFFFF))
+          .drawCircle(game.display.width/2, game.display.height/2, 100)
+          .endFill()
+
+        this.addStatic(displayObject)
+      },
+    })
+    sk.scene({
+      name: 'sub',
+      initialize: function() {
+        let displayObject = new sk.displayObjects.Graphics()
+        displayObject
+          .beginFill(Math.round(Math.random()*0xFFFFFF))
+          .drawRect(
+            Math.random()*300,
+            Math.random()*300,
+            10+Math.random()*100,
+            10+Math.random()*100
+          )
+          .endFill()
+
+        this.addStatic(displayObject)
+      },
+    })
+
+    // Game initialization ----------------------------------------------------
+    let game = new sk.Game({
+      startScene: 'base',
+      display: {width: 400, height: 400, backgroundColor: '#000000'},
+      logger: {level: 'trace'},
+    })
+    game.addEventListener('update', () => {
+      document.getElementById('push').disabled = game.scenes.inTransition()
+      document.getElementById('pop').disabled = game.scenes.inTransition()
+    })
+  </script>
+
+</body>
+</html>
