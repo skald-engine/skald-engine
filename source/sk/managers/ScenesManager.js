@@ -4,7 +4,17 @@ import Transition from 'sk/core/Transition'
 import * as utils from 'sk/utils'
 
 /**
- * 
+ * The scenes manager is the class that controls all the game scenes. It is
+ * created by the game and is accessed using `game.scenes`.
+ *
+ * The scenes manager stores the current scene that is running, receives the
+ * next scene which will replace the current one, and apply a transition
+ * effect between these two.
+ *
+ * You can use the `scenes.play` method to set the base scene. This will 
+ * replace all scenes by the new one. By using `scenes.push`, you can stack new
+ * scenes over the base scene. You can remove the scene at the top of the stack
+ * by using the `scenes.pop` method.
  */
 export default class ScenesManager extends Manager {
   /**
@@ -228,14 +238,6 @@ export default class ScenesManager extends Manager {
 
     // Clear next and transition
     this._next = null
-
-    // Reswap scenes if necessary
-    if (transition && transition.swapScenes) {
-      this._game.stage.swapChildren(
-        this._currentStage,
-        this._nextStage
-      )
-    }
   }
 
   /**
