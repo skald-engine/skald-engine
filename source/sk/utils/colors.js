@@ -260,9 +260,8 @@ export function desaturate(color, amount) {
  * @param {Number} color - The int color.
  * @return {Number}
  */
-export function greyscale(color, amount) {
+export function greyscale(color) {
   _assertColor(color, `greyscale`)
-  _assertFloat(amount, `amount`, `greyscale`, -1, 1)
   
   let hsl = colorToHsl(color)
   return hslToColor(hsl.hue, 0, hsl.lightness)
