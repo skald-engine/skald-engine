@@ -359,7 +359,7 @@ export default class DisplayManager extends Manager {
     this.game._renderer.view.style.width = this._canvasWidth+'px'
     this.game._renderer.view.style.height = this._canvasHeight+'px'
 
-    this.game.events.dispatch(new Event('display.resize'))
+    this.game.events.dispatch('display.resize')
   }
 
   /**
@@ -372,15 +372,26 @@ export default class DisplayManager extends Manager {
     let o = this.orientation
 
     // Wrong orientation
-    let inWrongOrientation = this._forceOrientation && this.orientation !== this._forceOrientation
+    let inWrongOrientation = this._forceOrientation && 
+                             this.orientation !== this._forceOrientation
+
     if (!this._inWrongOrientation && inWrongOrientation) {
-      this.game.events.dispatch(
-        new OrientationEvent('display.wrongorientation.enter', o, a, b, g)
-      )
+      let event = this.game.pool.create(OrientationEvent)
+      event._type = 'display.wrongorientation.enter'
+      event._orientation = o
+      event._alpha = a
+      event._beta = b
+      event._gamma = g
+      this.game.events.dispatch(event)
+
     } else if (this._inWrongOrientation && !inWrongOrientation) {
-      this.game.events.dispatch(
-        new OrientationEvent('display.wrongorientation.leave', o, a, b, g)
-      )
+      let event = this.game.pool.create(OrientationEvent)
+      event._type = 'display.wrongorientation.leave'
+      event._orientation = o
+      event._alpha = a
+      event._beta = b
+      event._gamma = g
+      this.game.events.dispatch(event)
     }
 
     this._inWrongOrientation = inWrongOrientation
@@ -390,12 +401,12 @@ export default class DisplayManager extends Manager {
    * Callback for browser fullscreen event.
    */
   _onFullscreenChange(browserEvent) {
-    this.game.events.dispatch(new Event('display.fullscreen.change'))
+    this.game.events.dispatch('display.fullscreen.change')
 
     if (this.fullscreen) {
-      this.game.events.dispatch(new Event('display.fullscreen.enter'))
+      this.game.events.dispatch('display.fullscreen.enter')
     } else {
-      this.game.events.dispatch(new Event('display.fullscreen.leave'))
+      this.game.events.dispatch('display.fullscreen.leave')
     }
   }
 
@@ -418,9 +429,13 @@ export default class DisplayManager extends Manager {
     let o = this.orientation
 
     // Orientation change
-    this.game.events.dispatch(
-      new OrientationEvent('display.orientation.change', o, a, b, g)
-    )
+    let event = this.game.pool.create(OrientationEvent)
+    event._type = 'display.orientation.change'
+    event._orientation = o
+    event._alpha = a
+    event._beta = b
+    event._gamma = g
+    this.game.events.dispatch(event)
 
     this._checkOrientation(a, b, g)
   }
