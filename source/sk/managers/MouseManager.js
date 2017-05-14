@@ -147,57 +147,39 @@ export default class MouseManager extends Manager {
   }
 
   /**
-   * Dispatch a browser mouse event to the game.
-   *
-   * @param {String} eventType - The type of the event.
-   * @param {Event} event - The browser event.
-   */
-  _dispatchMouseEvent(eventType, event) {
-    if (!this._allowEvents) return
-
-    this.game.events.dispatch(new MouseEvent(
-      eventType,
-      event.button,
-      event.x,
-      event.y,
-      event
-    ))
-  }
-
-  /**
    * Dispatch a browser wheel event to the game.
    *
    * @param {String} eventType - The type of the event.
-   * @param {Event} event - The browser event.
+   * @param {Event} nativeEvent - The browser event.
    */
-  _dispatchWheelEvent(eventType, event) {
+  _dispatchWheelEvent(eventType, nativeEvent) {
     if (!this._allowEvents) return
 
-    this.game.events.dispatch(new WheelEvent(
-      eventType,
-      event.deltaX,
-      event.deltaY,
-      event.deltaZ,
-      event
-    ))
+    let event = this.game.pool.create(WheelEvent)
+    event._type = eventType
+    event._deltaX = nativeEvent.deltaX
+    event._deltaY = nativeEvent.deltaY
+    event._deltaZ = nativeEvent.deltaZ
+    event._nativeEvent = nativeEvent
+    this.game.events.dispatch(event)
   }
 
   /**
    * Dispatch a browser mouse event to the game.
    *
    * @param {String} eventType - The type of the event.
-   * @param {Event} event - The browser event.
+   * @param {Event} nativeEvent - The browser event.
    */
-  _dispatchMouseEvent(eventType, event) {
+  _dispatchMouseEvent(eventType, nativeEvent) {
     if (!this._allowEvents) return
 
-    this.game.events.dispatch(new MouseEvent(
-      eventType,
-      event.button,
-      this._x,
-      this._y,
-      event
-    ))
+    let event = this.game.pool.create(MouseEvent)
+    event._type = eventType
+    event._button = nativeEvent.button
+    event._x = this._x
+    event._y = this._y
+    event._nativeEvent = nativeEvent
+    this.game.events.dispatch(event)
   }
 
   /**
