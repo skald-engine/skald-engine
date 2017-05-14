@@ -129,21 +129,22 @@ export default class ResourcesManager extends Manager {
     let total = this._stackSize
     let loaded = parseInt(this._stackSize*loader.progress/100)
     
-    this.game.events.dispatch(
-      new ProgressEvent('resources.progress', loaded, total)
-    )
+    let event = this.game.pool.create(ProgressEvent)
+    event._type = 'resources.progress'
+    event._loaded = loaded
+    event._total = total
+    this.game.events.dispatch(event)
   }
   
   /**
    * Handle error event.
    */
   _onError(error, loader, resource) {
-    this.game.events.dispatch(
-      new ErrorEvent(
-        'resources.error',
-        `Could not load the resource "${resource.name}" from "${resource.url}".`
-      )
-    )
+    let event = this.game.pool.create(ErrorEvent)
+    event._type = 'resources.error'
+    event._message = `Could not load the resource "${resource.name}" from `+
+                     `"${resource.url}".`
+    this.game.events.dispatch(event)
 
     this.game.log.warn(
       `Could not load the resource "${resource.name}" from "${resource.url}".`
@@ -155,15 +156,14 @@ export default class ResourcesManager extends Manager {
    */
   _onLoad(loader, resource) {
     let r = this._resources[resource.name] || {}
-    this.game.events.dispatch(
-      new ResourceEvent(
-        'resources.load',
-        resource.name,
-        resource.url,
-        r.resource,
-        r.metadata
-      )
-    )
+    
+    let event = this.game.pool.create(ResourceEvent)
+    event._type = 'resources.load'
+    event._id = resource.name
+    event._url = resource.url
+    event._resource = r.resource
+    event._metadata = r.metadata
+    this.game.events.dispatch(event)
   }
   
   /**
