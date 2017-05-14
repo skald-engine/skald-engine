@@ -105,11 +105,11 @@ export default class TouchesManager extends Manager {
   /**
    * Handles touch start event.
    *
-   * @param {Event} event - The browser event.
+   * @param {Event} nativeEvent - The browser event.
    */
-  _onTouchStart(event) {
-    for (let i=0; i<event.changedTouches.length; i++) {
-      let browserTouch = event.changedTouches[i]
+  _onTouchStart(nativeEvent) {
+    for (let i=0; i<nativeEvent.changedTouches.length; i++) {
+      let browserTouch = nativeEvent.changedTouches[i]
       let id = browserTouch.identifier
 
       for (let j=0; j<this._touches.length; j++) {
@@ -120,15 +120,13 @@ export default class TouchesManager extends Manager {
           this._numTouches++
 
           // Dispatch event to game
-          this.game.events.dispatch(
-            new TouchEvent(
-              'touches.down',
-              j,
-              skaldTouch.x,
-              skaldTouch.y,
-              event
-            )
-          )
+          let event = this.game.pool.create(TouchEvent)
+          event._type = 'touches.down'
+          event._index = j
+          event._x = skaldTouch.x
+          event._y = skaldTouch.y
+          event._nativeEvent = nativeEvent
+          this.game.events.dispatch(event)
 
           break
         }
@@ -144,11 +142,11 @@ export default class TouchesManager extends Manager {
   /**
    * Handles touch move event.
    *
-   * @param {Event} event - The browser event.
+   * @param {Event} nativeEvent - The browser event.
    */
-  _onTouchMove(event) {
-    for (let i=0; i<event.changedTouches.length; i++) {
-      let browserTouch = event.changedTouches[i]
+  _onTouchMove(nativeEvent) {
+    for (let i=0; i<nativeEvent.changedTouches.length; i++) {
+      let browserTouch = nativeEvent.changedTouches[i]
       let id = browserTouch.identifier
 
       for (let j=0; j<this._touches.length; j++) {
@@ -158,15 +156,13 @@ export default class TouchesManager extends Manager {
           skaldTouch.notify(browserTouch)
 
           // Dispatch event to game
-          this.game.events.dispatch(
-            new TouchEvent(
-              'touches.move',
-              j,
-              skaldTouch.x,
-              skaldTouch.y,
-              event
-            )
-          )
+          let event = this.game.pool.create(TouchEvent)
+          event._type = 'touches.move'
+          event._index = j
+          event._x = skaldTouch.x
+          event._y = skaldTouch.y
+          event._nativeEvent = nativeEvent
+          this.game.events.dispatch(event)
 
           break
         }
@@ -182,11 +178,11 @@ export default class TouchesManager extends Manager {
   /**
    * Handles touch end event.
    *
-   * @param {Event} event - The browser event.
+   * @param {Event} nativeEvent - The browser event.
    */
-  _onTouchEnd(event) {
-    for (let i=0; i<event.changedTouches.length; i++) {
-      let browserTouch = event.changedTouches[i]
+  _onTouchEnd(nativeEvent) {
+    for (let i=0; i<nativeEvent.changedTouches.length; i++) {
+      let browserTouch = nativeEvent.changedTouches[i]
       let id = browserTouch.identifier
 
       for (let j=0; j<this._touches.length; j++) {
@@ -197,15 +193,13 @@ export default class TouchesManager extends Manager {
           this._numTouches--
 
           // Dispatch event to game
-          this.game.events.dispatch(
-            new TouchEvent(
-              'touches.up',
-              j,
-              skaldTouch.x,
-              skaldTouch.y,
-              event
-            )
-          )
+          let event = this.game.pool.create(TouchEvent)
+          event._type = 'touches.up'
+          event._index = j
+          event._x = skaldTouch.x
+          event._y = skaldTouch.y
+          event._nativeEvent = nativeEvent
+          this.game.events.dispatch(event)
 
           break
         }
@@ -221,24 +215,22 @@ export default class TouchesManager extends Manager {
   /**
    * Handles touch cancel event.
    *
-   * @param {Event} event - The browser event.
+   * @param {Event} nativeEvent - The browser event.
    */
-  _onTouchCancel(event) {
+  _onTouchCancel(nativeEvent) {
     this._numTouches = 0
 
     for (let i=0; i<this._touches.length; i++) {
       this._touches[i].unbind()
 
       // Dispatch event to game
-      this.game.events.dispatch(
-        new TouchEvent(
-          'touches.up',
-          i,
-          skaldTouch.x,
-          skaldTouch.y,
-          event
-        )
-      )
+      let event = this.game.pool.create(TouchEvent)
+      event._type = 'touches.up'
+      event._index = j
+      event._x = skaldTouch.x
+      event._y = skaldTouch.y
+      event._nativeEvent = nativeEvent
+      this.game.events.dispatch(event)
     }
 
     if (this._preventDefaults) {
