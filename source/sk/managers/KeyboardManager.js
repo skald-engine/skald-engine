@@ -96,20 +96,20 @@ export default class KeyboardManager extends Manager {
    * Dispatch a browser keyboard event to the game.
    *
    * @param {String} eventType - The type of the event.
-   * @param {Event} event - The browser event.
+   * @param {Event} nativeEvent - The browser event.
    */
-  _dispatchEvent(eventType, event) {
+  _dispatchEvent(eventType, nativeEvent) {
     if (!this._allowEvents) return
 
-    this.game.events.dispatch(new KeyboardEvent(
-      eventType,
-      event.keyCode||event.which,
-      event.shiftKey,
-      event.ctrlKey,
-      event.metaKey,
-      event.altKey,
-      event
-    ))
+    let event = this.game.pool.create(KeyboardEvent)
+    event._type = eventType
+    event._code = event.keyCode||event.which,
+    event._shift = event.shiftKey,
+    event._ctrl = event.ctrlKey,
+    event._meta = event.metaKey,
+    event._alt = event.altKey,
+    event._nativeEvent = nativeEvent
+    this.game.events.dispatch(event)
   }
 
   /**
