@@ -18,6 +18,7 @@ export default class PoolManager extends Manager {
     super(game)
 
     this._pool = {}
+    this._classMap = {}
     this._maxSize = null
   }
 
@@ -58,12 +59,13 @@ export default class PoolManager extends Manager {
     }
 
     // Verify if class have a pool id
-    if (typeof class_._$poolId === 'undefined') {
-      class_._$poolId = globalPoolId++
+    let id = this._getId(class_)
+    if (id === null) {
+      this._setId(class_)
     }
 
     // Get the pool for the object
-    let pool = this._pool[class_._$poolId]
+    let pool = this._pool[id]
 
     // If there is no pool or the pool is empty, create a new object
     if (!pool || !pool.length) {
@@ -94,16 +96,11 @@ export default class PoolManager extends Manager {
     }
 
     // Get the pool id, try to get it from the object or the constructor
-    let id = (instance.constructor && instance.constructor._$poolId) ||
-             instance._$poolId
+    let id = this._getId(instance)
 
     // If there is no id, create the pool id on the object class
-    if (!id) {
-      if (instance.constructor) {
-        id = instance.constructor._$poolId = globalPoolId++
-      } else {
-        id = instance._$poolId = globalPoolId++
-      }
+    if (id === null) {
+      id = this._setId(instance.constructor||instance)
     }
 
     // Get the pool list
@@ -115,7 +112,7 @@ export default class PoolManager extends Manager {
     }
 
     // Limit the pool to the max size
-    if (pool.length > this._maxSize) {
+    if (pool.length >= this._maxSize) {
       pool.shift()
     }
 
@@ -129,11 +126,32 @@ export default class PoolManager extends Manager {
    * @param {Object|Function} obj - The class or instance.
    */
   clean(obj) {
-    let id = class_._$poolId ||
-             (instance.constructor && instance.constructor._$poolId)
+    let id = this.getId(obj)
 
-    if (typeof id !== 'undefined') {
+    if (id !== null) {
       this._pool[id] = []
     }
+  }
+
+  /**
+   * Get the class ID.
+   */
+  _getId(obj) {
+    let id = obj._$poolId || (obj.constructor && obj.constructor._$poolId)
+    let class_ = this._classMap[id]
+
+    if (obj === class_ || obj.constructor === class_) {
+      return id
+    }
+
+    return null
+  }
+
+  _setId(class_) {
+    let id = globalPoolId++
+    class_._$poolId = id
+    this._classMap[id] = class_
+
+    return id
   }
 }
