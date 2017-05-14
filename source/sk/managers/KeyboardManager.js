@@ -103,11 +103,11 @@ export default class KeyboardManager extends Manager {
 
     let event = this.game.pool.create(KeyboardEvent)
     event._type = eventType
-    event._code = event.keyCode||event.which,
-    event._shift = event.shiftKey,
-    event._ctrl = event.ctrlKey,
-    event._meta = event.metaKey,
-    event._alt = event.altKey,
+    event._code = nativeEvent.keyCode||nativeEvent.which
+    event._shift = nativeEvent.shiftKey
+    event._ctrl = nativeEvent.ctrlKey
+    event._meta = nativeEvent.metaKey
+    event._alt = nativeEvent.altKey
     event._nativeEvent = nativeEvent
     this.game.events.dispatch(event)
   }
