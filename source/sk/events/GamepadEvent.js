@@ -19,4 +19,14 @@ export default class GamepadEvent extends InputEvent {
   get rightStickX() { return this._rightStickX }
   get rightStickY() { return this._rightStickY }
   get button() { return this._button }
+
+  reset() {
+    super.reset()
+    this._gamepadId = null
+    this._leftStickX = null
+    this._leftStickY = null
+    this._rightStickX = null
+    this._rightStickY = null
+    this._button = null
+  }
 }

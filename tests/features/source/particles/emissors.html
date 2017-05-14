@@ -11,7 +11,17 @@
     <small>(FPS: <span id="fps">60</span>)</small>
   </h1>
 
+  <p>
+    <button onclick="toggleUniform()">toggle uniform</button>
+  </p>
+
   <script>
+    function toggleUniform() {
+      let s = game.scenes.current
+      s.emitter2.emissor.uniform = !s.emitter2.emissor.uniform
+      s.emitter3.emissor.uniform = !s.emitter3.emissor.uniform
+    }
+
     // Configuration ----------------------------------------------------------
     sk.scene({
       name: 'base',
@@ -37,7 +47,7 @@
         })
         this.emitter2.configure({
           textures     : game.resources.get('blue'),
-          emissor      : new sk.particles.emissors.CircleEmissor(100),
+          emissor      : new sk.particles.emissors.CircleEmissor(50),
           emissionX    : 300,
           emissionY    : 100,
           maxParticles : 2000,
@@ -48,7 +58,7 @@
         })
         this.emitter3.configure({
           textures     : game.resources.get('green'),
-          emissor      : new sk.particles.emissors.RingEmissor(100, 0),
+          emissor      : new sk.particles.emissors.RingEmissor(50, 30),
           emissionX    : 500,
           emissionY    : 100,
           maxParticles : 1000,

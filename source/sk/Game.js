@@ -37,6 +37,7 @@ export default class Game extends EventEmitter {
     this._device = null
     this._display = null
     this._scenes = null
+    this._pool = null
     this._create = null
     this._sounds = null
     this._inputs = null
@@ -132,6 +133,12 @@ export default class Game extends EventEmitter {
    * @type {DirectorManager}
    */
   get scenes() { return this._scenes }
+
+  /**
+   * Pool manager. Readonly.
+   * @type {PoolManager}
+   */
+  get pool() { return this._pool }
 
   /**
    * Sounds manager. Readonly.
@@ -289,6 +296,7 @@ export default class Game extends EventEmitter {
     this._create = new managers.CreateManager(this)
     this._resources = new managers.ResourcesManager(this)
     this._keyboard = new managers.KeyboardManager(this)
+    this._pool = new managers.PoolManager(this)
     this._mouse = new managers.MouseManager(this)
     this._gamepads = new managers.GamepadsManager(this)
     this._touches = new managers.TouchesManager(this)
@@ -303,6 +311,7 @@ export default class Game extends EventEmitter {
     this._create.setup()
     this._resources.setup()
     this._scenes.setup()
+    this._pool.setup()
     this._keyboard.setup()
     this._mouse.setup()
     this._gamepads.setup()
@@ -371,7 +380,7 @@ export default class Game extends EventEmitter {
       requestAnimationFrame(()=>this._updateGame())
     }
     
-    utils.profiling.begin('preupdate')    
+    utils.profiling.begin('preupdate')
     this.time.preUpdate()
     let delta = overriddenDelta || this.time.delta
 

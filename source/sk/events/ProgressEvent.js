@@ -6,10 +6,19 @@ export default class ProgressEvent extends Event {
 
     this._loaded = loaded
     this._total = total
-    this._progress = (total>0&&loaded>0)? loaded/total : -1
   }
 
   get loaded() { return this._loaded }
   get total() { return this._total }
-  get progress() { return this._progress }
+  get progress() {
+    return (this._total>0&&this._loaded>0)? 
+            this._loaded/this._total :
+            -1 
+  }
+
+  reset() {
+    super.reset()
+    this._loaded = null
+    this._total = null
+  }
 }

@@ -15,4 +15,12 @@ export default class MouseEvent extends InputEvent {
   get y() { return this._y }
   get position() { return new PIXI.Point(this._x, this._y) }
   get nativeEvent() { return this._nativeEvent }
+
+  reset() {
+    super.reset()
+    this._button = null
+    this._x = null
+    this._y = null
+    this._nativeEvent = null
+  }
 }

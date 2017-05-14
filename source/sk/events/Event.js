@@ -11,7 +11,7 @@ export default class Event {
    * @param {Boolean} [cancelable=true] - Whether if this event may be canceled
    *        from bubbling or not.
    */
-  constructor(type, cancelable=true) {
+  constructor(type=null, cancelable=true) {
     this._target = null
     this._type = type
     this._cancelable = cancelable
@@ -61,13 +61,24 @@ export default class Event {
    */
   get immediateStopped() { return this._immediateStopped }
 
-
   /**
    * Initializes the event. Called internally by the engine, thus, do not call
    * this method manually.
    */
   setup(target) {
     this._target = target
+  }
+
+  /**
+   * Clean up the event object in order to reuse it later, using the object
+   * recycling.
+   */
+  reset() {
+    this._target = null
+    this._type = null
+    this._cancelable = true
+    this._stopped = false
+    this._immediateStopped = false
   }
 
   /**

@@ -15,6 +15,8 @@ export default {
     'logger',
     'managers',
     'display',
+    'events',
+    'pool',
     'resources',
     'storage',
     'mouse',
@@ -94,7 +96,18 @@ export default {
         'logEvents'
       ],
       properties: {
-        logEvents: {type: 'boolean'}
+        logEvents: {type: 'boolean'},
+        userPool: {type: 'boolean'}
+      }
+    },
+
+    pool: {
+      type: 'object',
+      required: [
+        'maxSize'
+      ],
+      properties: {
+        maxSize: {type: 'integer', minimum: 0}
       }
     },
 

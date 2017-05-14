@@ -56,4 +56,12 @@ export default class OrientationEvent extends Event {
    * @type {Number}
    */
   get gamma() { return this._gamma }
+
+  reset() {
+    super.reset()
+    this._orientation = null
+    this._alpha = null
+    this._beta = null
+    this._gamma = null
+  }
 }

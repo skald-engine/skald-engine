@@ -14,4 +14,12 @@ export default class Mouse0Event extends InputEvent {
   get deltaY() { return this._deltaY }
   get deltaZ() { return this._deltaZ }
   get nativeEvent() { return this._nativeEvent }
+
+  reset() {
+    super.reset()
+    this._deltaX = null
+    this._deltaY = null
+    this._deltaZ = null
+    this._nativeEvent = null
+  }
 }

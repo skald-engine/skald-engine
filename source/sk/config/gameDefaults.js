@@ -36,6 +36,11 @@ export default {
 
   events: {
     logEvents: false,
+    usePool: true,
+  },
+
+  pool: {
+    maxSize: 10,
   },
 
   resources: {

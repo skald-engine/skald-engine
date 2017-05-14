@@ -18,4 +18,14 @@ export default class KeyboardEvent extends InputEvent {
   get meta() { return this._meta }
   get alt() { return this._alt }
   get nativeEvent() { return this._nativeEvent }
+
+  reset() {
+    super.reset()
+    this._code = null
+    this._shift = null
+    this._ctrl = null
+    this._meta = null
+    this._alt = null
+    this._nativeEvent = null
+  }
 }

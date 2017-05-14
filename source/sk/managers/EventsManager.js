@@ -4,11 +4,11 @@ import Event from 'sk/events/Event'
 import * as utils from 'sk/utils'
 
 /**
- * This manager handles the game event pool.
+ * This manager handles the game event queue.
  *
  * When you add an event (via `dispatch`), the event will stay at the event 
- * pool until the next update phase. The events will be dispatched and digested
- * after entities and behaviors update, and before the scene update.
+ * queue until the next update phase. The events will be dispatched and 
+ * digested after entities and behaviors update, and before the scene update.
  */
 export default class EventsManager extends Manager {
   
@@ -18,13 +18,36 @@ export default class EventsManager extends Manager {
   constructor(game) {
     super(game)
 
-    this._eventPool = []
-    this._showLog = false
+    this._eventQueue = []
+    this._logEvents = null
+    this._usePool = null
   }
 
+  /**
+   * Whether the event manager should log the events or not. Default to false.
+   * Enable it only for debugging.
+   *
+   * @type {Boolean}
+   */
+  get logEvents() { return this._logEvents }
+  set logEvents(v) { this._logEvents = !!v }
+
+  /**
+   * Whether the event manager should recycle the events or not. It will use 
+   * the pool manager for it. Default to true.
+   *
+   * @type {Boolean}
+   */
+  get usePool() { return this._usePool }
+  set usePool(v) { this._usePool = !!v }
+
+  /**
+   * Setup the manager. Called by the engine in the initialization.
+   */
   setup() {
     utils.profiling.begin('events')
-    this._showLog = !!this.game.config.events.logEvents
+    this._logEvents = !!this.game.config.events.logEvents
+    this._usePool = !!this.game.config.events.usePool
     utils.profiling.end('events')
   }
   
@@ -51,7 +74,13 @@ export default class EventsManager extends Manager {
     }
 
     if (typeof event === 'string') {
-      event = new Event(event)
+      if (this._usePool) {
+        let type = event
+        event = this.game.pool.create(Event)
+        event._type = type
+      } else {
+        event = new Event(event)
+      }
     }
 
     if (!target) {
@@ -60,8 +89,7 @@ export default class EventsManager extends Manager {
     }
 
     event.setup(target)
-
-    this._eventPool.push(event)
+    this._eventQueue.push(event)
   }
 
   /**
@@ -75,34 +103,43 @@ export default class EventsManager extends Manager {
     // events may be added during the digest phase, thus, with the risk of 
     // happening an infinite list of events. For this reason, any event added
     // during the digest phase, will only be digested in the next cycle.
-    let i = this._eventPool.length;
+    let i = this._eventQueue.length;
 
     // We use WHILE instead of FOR, in order to use poll.shift() function. We 
     // must remove the event from the pool because if there is any error in any
     // listener, the event pool will be stuck forever. 
     while (i > 0) {
-      let event = this._eventPool.shift()  
+      let event = this._eventQueue.shift()  
       let target = event.target
 
-      if (this._showLog && event.type !== 'update') {
+      if (this._logEvents && event.type !== 'update') {
         this.game.log.trace(`(events) Dispatching event "${event.type}".`)
       }
 
+      // Emit on target
       target.emit(event)
       if (event.stopped) continue
 
+      // Emit on scene
       if (target.scene && target.scene.emit) {
         target.scene.emit(event)
         if (event.stopped) continue
       }
 
+      // Emit on game
       if (target.game && target.game.emit) {
         target.game.emit(event)
+      }
+
+      // Store the event on the pool, is enabled
+      if (this._usePool) {
+        event.reset()
+        this.game.pool.store(event)
       }
 
       i--
     }
 
-    this._eventPool = []
+    this._eventQueue = []
   }
 }

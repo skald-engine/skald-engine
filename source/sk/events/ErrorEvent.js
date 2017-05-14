@@ -10,4 +10,10 @@ export default class ErrorEvent extends Event {
 
   get message() { return this._message }
   get details() { return this._details }
+
+  reset() {
+    super.reset()
+    this._message = null
+    this._details = null
+  }
 }
