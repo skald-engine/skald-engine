@@ -148,7 +148,10 @@ export default class GamepadsManager extends Manager {
   _dispatchEvent(eventType, gamepad) {
     if (!this._allowEvents) return
 
-    this.game.events.dispatch(new GamepadEvent(eventType, gamepad))
+    let event = this.game.pool.create(GamepadEvent)
+    event._type = eventType
+    event._gamepadId = gamepad
+    this.game.events.dispatch(event)
   }
 
   /**

@@ -172,15 +172,14 @@ export default class Gamepad {
 
     // send event for sticks
     if (this._leftStickForce > 0 || this._rightStickForce > 0) {
-      this.game.events.dispatch(
-        new GamepadEvent(
-          'gamepads.move',
-          this._leftStickX,
-          this._leftStickY,
-          this._rightStickX,
-          this._rightStickY
-        )
-      )
+      let event = this.game.pool.create(GamepadEvent)
+      event._type = 'gamepads.move'
+      event._gamepadId = this._id
+      event._leftStickX = this._leftStickX
+      event._leftStickY = this._leftStickY
+      event._rightStickX = this._rightStickX
+      event._rightStickY = this._rightStickY
+      this.game.events.dispatch(event)
     }
 
     // get button values
@@ -201,34 +200,30 @@ export default class Gamepad {
         type = 'down'
       }
 
-      this.game.events.dispatch(
-        new GamepadEvent(
-          'gamepads.'+type,
-          this._id,
-          this._leftStickX,
-          this._leftStickY,
-          this._rightStickX,
-          this._rightStickY,
-          button
-        )
-      )
+      let event = this.game.pool.create(GamepadEvent)
+      event._type = 'gamepads.'+type
+      event._gamepadId = this._id
+      event._leftStickX = this._leftStickX
+      event._leftStickY = this._leftStickY
+      event._rightStickX = this._rightStickX
+      event._rightStickY = this._rightStickY
+      event._button = this._button
+      this.game.events.dispatch(event)
     }
 
     // button up events
     for (let i=0; i<this._lastState.length; i++) {
       let button = this._lastState[i]
       if (this._state.indexOf(button) < 0) {
-        this.game.events.dispatch(
-          new GamepadEvent(
-            'gamepads.up',
-            this._id,
-            this._leftStickX,
-            this._leftStickY,
-            this._rightStickX,
-            this._rightStickY,
-            button
-          )
-        )
+        let event = this.game.pool.create(GamepadEvent)
+        event._type = 'gamepads.up'
+        event._gamepadId = this._id
+        event._leftStickX = this._leftStickX
+        event._leftStickY = this._leftStickY
+        event._rightStickX = this._rightStickX
+        event._rightStickY = this._rightStickY
+        event._button = this._button
+        this.game.events.dispatch(event)
       }
     }
   }
