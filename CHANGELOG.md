@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.0-alpha.4
+
+- Adding a pool manager on game.
+- Changing all events in engine to use event pool.
+
+
 ## 1.0.0-alpha.3
 
 - Adding color utility functions.
