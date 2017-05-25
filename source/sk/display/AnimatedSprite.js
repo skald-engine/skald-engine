@@ -1,4 +1,4 @@
-import Sprite from 'sk/displayObjects/Sprite'
+import Sprite from 'sk/display/Sprite'
 
 export default class AnimatedSprite extends Sprite {
   constructor(game, scene, suppressInitialize=false) {

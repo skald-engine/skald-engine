@@ -6,12 +6,12 @@ import * as core from 'sk/core'
 import * as events from 'sk/events'
 import * as managers from 'sk/managers'
 import * as middlewares from 'sk/middlewares'
-import * as displayObjects from 'sk/displayObjects'
+import * as display from 'sk/display'
 import * as audio from 'sk/audio'
 import * as transitions from 'sk/transitions'
 import * as particles from 'sk/particles'
 export {$, utils, config, audio, events, core, managers, middlewares, 
-        displayObjects, transitions, particles}
+        display, transitions, particles}
 
 // Global namespace elements
 export * from 'sk/constants'

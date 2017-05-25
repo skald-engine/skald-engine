@@ -5,7 +5,7 @@ scene({
   name: 'skald.scenes.preloadDefault',
 
   initialize: function() {
-    let ball = new sk.displayObjects.Graphics()
+    let ball = new sk.display.Graphics()
     ball.beginFill(0xEFEFEF)
         .drawCircle(0, 0, 5)
         .endFill()
@@ -25,7 +25,7 @@ scene({
     this.ball3.x = x+20
     this.ball3.y = y
 
-    this.powered = new sk.displayObjects.Text(
+    this.powered = new sk.display.Text(
       'powered by\nSkald Engine',
       {
         fontSize : 15,

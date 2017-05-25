@@ -15,7 +15,7 @@ import * as sk from 'sk'
 
 // Configure pixi display objects
 {
-  let m = sk.displayObjects
+  let m = sk.display
   sk.registerDisplayObject('container', m.Container)
   sk.registerDisplayObject('sprite', m.Sprite)
   sk.registerDisplayObject('animatedSprite', m.AnimatedSprite)
