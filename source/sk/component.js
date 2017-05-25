@@ -2,33 +2,6 @@ import Component from 'sk/core/Component'
 import * as $ from 'sk/$'
 import * as utils from 'sk/utils'
 
-// Reserved names for the data input
-const reservedData = [
-  // base
-  'name', 'access',
-
-  // shortcuts
-  'initialize', 'destroy',
-
-  // inherited methods
-  'toJson', 'fromJson', 
-
-  // internal and accessors values
-  '_$data', '_$methods', '_$attributes', '_$name', '_$access',
-]
-
-// Reserved names for the methods input
-const reservedMethods = [
-  // base
-  'name', 'access',
-
-  // inherited methods
-  'toJson', 'fromJson', 
-
-  // internal and access values
-  '_$data', '_$methods', '_$attributes', '_$name', '_$access',
-]
-
 /**
  * Creates a new component.
  *
@@ -121,8 +94,8 @@ export function component(spec) {
   // Create the component class
   let Class = utils.createClass(Component, c, p)
 
-  // Register
-  $.components[spec.name] = Class
+  // Return
+  return Class
 }
 
 
@@ -139,12 +112,8 @@ function _validate(spec) {
     throws(`Empty component specification. Please provide an object with the
             component declaration.`)
 
-  // Spec with no name
-  if (!spec.name)
-    throws(`You must provide the component name.`)
-
-  // Duplicated component name
-  if ($.components[spec.name])
+  // Spec type
+  if (typeof spec !== 'object')
     throws(`A component "${spec.name}" has been already registered.`)
 
   // Initialize must be a function
@@ -163,11 +132,6 @@ function _validate(spec) {
              `provided "${spec.data}" instead.`)
 
     for (let key in spec.data) {
-      if (reservedData.indexOf(key) >= 0)
-        throws(`Attribute "${key}" for component "${spec.name}" is using a `+
-               `reserved or duplicated name, please change the attribute `+
-               `name.`)
-
       if (utils.isFunction(spec.data[key]))
         throws(`Attribute "${key}" for component "${spec.name}" can't be a `+
                `function, use the *method* option if you want to include a `+
@@ -183,9 +147,9 @@ function _validate(spec) {
 
     let data = spec.data || {}
     for (let key in spec.methods) {
-      if (reservedMethods.indexOf(key) >= 0 || data[key] !== undefined)
+      if (data[key] !== undefined)
         throws(`Method "${key}" for component "${spec.name}" is using a `+
-               `reserved or duplicated name, please change the method name.`)
+               `duplicated name, please change the method name.`)
 
       if (!utils.isFunction(spec.methods[key]))
         throws(`Method "${key}" for component "${spec.name}" must be a `+
@@ -198,10 +162,6 @@ function _validate(spec) {
 function _process(spec) {
   let c = {} // class namespace
   let p = {} // prototype
-
-  // Base properties
-  p._$name = spec.name
-  p._$access = spec.access || spec.name
 
   // Static properties
   let data = Object.freeze(spec.data || {})

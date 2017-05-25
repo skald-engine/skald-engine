@@ -1,7 +1,7 @@
 const _makeFixtures = () => {
   return {
     Component  : class {},
-    $          : {},
+    $          : {setClassId: sinon.stub()},
     utils      : {} 
   }
 }
@@ -41,28 +41,20 @@ describe('sk/component.js', () => {
       null,
       '=)',
 
-      // invalid name
-      {},
-
-      // duplicated name
-      {name: 'sampleComponent'},
-
       // invalid shortcuts
-      {name: 'a', initialize: 'non function'},
-      {name: 'a', destroy: 'non function'},
+      {initialize: 'non function'},
+      {destroy: 'non function'},
 
       // invalid data
-      {name: 'a', data: 'non object'},
-      {name: 'a', data: {invalidBecauseFunction: fixtures.fn}},
+      {data: 'non object'},
+      {data: {invalidBecauseFunction: fixtures.fn}},
 
       // invalid methods
-      {name: 'a', methods: 'non object'},
-      {name: 'a', methods: {invalid: 'non function'}},
+      {methods: 'non object'},
+      {methods: {invalid: 'non function'}},
 
       // using registered keywords or duplicated variable names
-      {name: 'a', data: {name: ''}},
-      {name: 'a', methods: {name: fixtures.fn}},
-      {name: 'a', data: {b: ''}, methods: {b: fixtures.fn}}
+      {data: {b: ''}, methods: {b: fixtures.fn}}
     ]
 
     // test
@@ -93,8 +85,6 @@ describe('sk/component.js', () => {
 
     // setup test
     let spec = {
-      name: 'sample',
-      access: 'super',
       initialize: fx.initialize,
       data: {
         first: fx.data.first,
@@ -106,8 +96,7 @@ describe('sk/component.js', () => {
     }
 
     // test
-    module(spec)
-    let component = fixtures.$.components.sample
+    let component = module(spec)
     let args = fx.createClass.getCall(0).args
 
     assert.equal(component, fx.class_)
@@ -120,8 +109,6 @@ describe('sk/component.js', () => {
       _$attributes : Object.keys(spec.data),
     })
     assert.deepEqual(args[2], {
-      _$name       : spec.name,
-      _$access     : spec.access,
       _$data       : spec.data,
       _$methods    : spec.methods,
       _$attributes : Object.keys(spec.data),
@@ -130,5 +117,6 @@ describe('sk/component.js', () => {
       second       : spec.data.second,
       third        : spec.methods.third
     })
+
   })
 })
