@@ -15,9 +15,8 @@ export default class Component {
    * Constructor.
    */
   constructor() {
-    // Inserted by the `component()` declarator:
-    // - _$name
-    // - _$access
+    // Inserted internally:
+    // - _$entity
     // - _$data
     // - _$methods
     // - _$attributes
@@ -26,53 +25,15 @@ export default class Component {
   }
 
   /**
-   * The component name, used to link it to an entity. Readonly.
-   * @type {String}
-   */
-  get name() { return this._$name }
-
-  /**
-   * The component access name, used when accessing the component inside an
-   * entity. Readonly.
-   * @type {String}
-   */
-  get access() { return this._$access }
-
-  /**
    * Initialize function, called in the constructor. Override this to put 
    * initialization logic.
    */
   initialize() {}
 
   /**
-   * Exports the component data.
-   *
-   * @return {Object}
+   * Destroy function, called in the constructor. Override this to put 
+   * destroy logic.
    */
-  toJson() {
-    let result = {
-      name: this.name,
-      data: {}
-    }
-    for (let i=0; i<this._$attributes; i++) {
-      let name = this._$attributes[i]
-      result.data[name] = this[name]
-    }
+  destroy() {}
 
-    return result
-  }
-
-  /**
-   * Imports the component data.
-   *
-   * @param {Object} data - The component data to be loaded.
-   */
-  fromJson(data) {
-    data = data || {}
-    data.data = data.data || {}
-
-    for (let name in data.data) {
-      this[name] = data.data[name]
-    }
-  }
 }
