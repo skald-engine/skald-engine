@@ -101,6 +101,7 @@ describe('sk/component.js', () => {
 
     assert.equal(component, fx.class_)
     assert.isTrue(fx.createClass.calledOnce)
+    assert.isTrue(fixtures.$.setClassId.calledOnce)
 
     assert.equal(args[0], fixtures.Component)
     assert.deepEqual(args[1], {

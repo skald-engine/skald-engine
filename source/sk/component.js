@@ -94,6 +94,9 @@ export function component(spec) {
   // Create the component class
   let Class = utils.createClass(Component, c, p)
 
+  // Set id
+  $.setClassId(Class)
+
   // Return
   return Class
 }
