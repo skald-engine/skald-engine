@@ -16,6 +16,7 @@ export default class Component {
    */
   constructor() {
     // Inserted internally:
+    // - _$classId
     // - _$entity
     // - _$data
     // - _$methods

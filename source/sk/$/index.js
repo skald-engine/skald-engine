@@ -1,17 +1,7 @@
 /**
- * Map of registered display objects.
- */
-export let displayObjects = {}
-
-/**
  * list of audio systems.
  */
 export let audioSystems = []
-
-/**
- * Map of registered entities.
- */
-export let entities = {}
 
 /**
  * Map of registered systems.
@@ -55,7 +45,9 @@ export let classes = {}
 let classId = 1
 export function setClassId(Class) {
   if (!Class._$classId) {
-    Class._$classId = classId++
+    classId++
+    Class._$classId = classId
+    Class.prototype._$classId = classId
     classes[Class._$classId] = Class
   }
 }

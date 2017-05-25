@@ -28,20 +28,20 @@ export default class Entity extends EventEmitter {
    *        entity.
    * @param {Object} components - The map of component instances.
    */
-  constructor(game, display, components) {
+  constructor() {
     super()
 
-    // Inserted by the `component()` declarator:
-    // - _$name
-    // - _$display
-    // - _$components
+    // Internal
+    // - _$classId
+    // - _$game
+    // - _$scene
     // - _$data
     // - _$methods
     // - _$attributes
     
-    this._game = game
-    this._display = display
-    this._components = components
+    this._display = null
+    this._tags = new Set()
+    this._components = {}
 
     // User initialize function
     this.initialize()
@@ -66,16 +66,16 @@ export default class Entity extends EventEmitter {
   get display() { return this._display }
 
   /**
+   * Entity tags.
+   * @type {Array}
+   */
+  get tags() { return Array.from(this._tags) }
+
+  /**
    * The component list. Readonly.
    * @type {Object}
    */
-  get components() { return this._components }
-
-  /**
-   * Alias for the component list. Readonly.
-   * @type {Object}
-   */
-  get c() { return this._components }
+  get components() { return Object.values(this._components) }
 
   /**
    * Initialize function, called in constructor.
@@ -87,58 +87,34 @@ export default class Entity extends EventEmitter {
    */
   destroy() {}
   
-
-  /**
-   * Checks if this entity has a component. This methods serches first if the
-   * entity has a component by its access name, than if looks for the 
-   * component by its name.
-   *
-   * @param {String} name - The component name for checkup.
-   * @return {Boolean}
-   */
-  hasComponent(name) {
-    return !!this._components[name] || !!this._$components[name]
+  addTag(...tags) {
+    for (let i=0; i<tags.length; i++) {
+      this._tags.add(tags[i])
+    }
   }
 
-  /**
-   * Alias for `hasComponent`.
-   *
-   * @param {String} name - The component name for checkup.
-   * @return {Boolean}
-   */
-  has(name) {
-    return !!this._components[name] || !!this._$components[name]
+  hasTag(tag) {
+    return this._tags.has(tag)
   }
 
-  /**
-   * Exports the component data.
-   *
-   * @return {Object}
-   */
-  toJson() {
-    let result = {
-      name       : this._name,
-      components : {}
+  addComponent(component) {
+    let id = component._$classId
+    if (this._components[id]) {
+      throw new Error(`Trying to add a duplicated component.`)
     }
 
-    for (let key in this._components) {
-      let c = this._components[key]
-      result.components[key] = c.toJson()
-    }
-
-    return result
+    this._components[id] = component
   }
 
-  /**
-   * Imports the component data.
-   *
-   * @param {Object} data - The component data to be loaded.
-   */
-  fromJson(data) {
-    for (let key in data.components) {
-      let params = data.components[key]
-
-      this._components[key].fromJson(params)
+  getComponent(classOrId) {
+    if (classOrId && classOrId._$classId) {
+      classOrId = classOrId._$classId
     }
+
+    return this._components[classOrId]
+  }
+
+  hasComponent(classOrId) {
+    return !!this.getComponent(classOrId)
   }
 }

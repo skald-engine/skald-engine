@@ -13,19 +13,6 @@ import * as sk from 'sk'
   sk.registerLoggerHandler('file', handlers.fileHandler)
 }
 
-// Configure pixi display objects
-{
-  let m = sk.display
-  sk.registerDisplayObject('container', m.Container)
-  sk.registerDisplayObject('sprite', m.Sprite)
-  sk.registerDisplayObject('animatedSprite', m.AnimatedSprite)
-  sk.registerDisplayObject('bitmapText', m.BitmapText)
-  sk.registerDisplayObject('text', m.Text)
-  sk.registerDisplayObject('graphics', m.Graphics)
-  sk.registerDisplayObject('particleContrainer', m.ParticleContrainer)
-  sk.registerDisplayObject('emitter', m.Emitter)
-}
-
 // Configure audio systems
 {
   sk.setAudioSystems([

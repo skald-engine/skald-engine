@@ -2,39 +2,6 @@ import Entity from 'sk/core/Entity'
 import * as $ from 'sk/$'
 import * as utils from 'sk/utils'
 
-// Reserved names for the data input
-const reservedData = [
-  // base
-  'name', 'display', 'components', 'c', 'game', 'type',
-
-  // shortcuts
-  'initialize', 'destroy',
-
-  // inherited methods
-  'toJson', 'fromJson', 'addEventListener', 'getEventNames', 'emit',
-  'removeEventListener', 'removeAllEventListeners', '_imediateEmit',
-  'hasComponent', 'has', 
-
-  // internal and accessors values
-  '_$data', '_$methods', '_$attributes', '_$name', '_$components', '_$display',
-  '_$type'
-]
-
-// Reserved names for the methods input
-const reservedMethods = [
-  // base
-  'name', 'display', 'components', 'c', 'game', 'type',
-
-  // inherited methods
-  'toJson', 'fromJson', 'addEventListener', 'getEventNames', 'emit',
-  'removeEventListener', 'removeAllEventListeners', '_imediateEmit',
-  'hasComponent', 'has', 
-
-  // internal and accessors values
-  '_$data', '_$methods', '_$attributes', '_$name', '_$components', '_$display',
-  '_$type'
-]
-
 /**
  * Creates a new entity.
  *
@@ -106,8 +73,11 @@ export function entity(spec) {
   // Create the component class
   let Class = utils.createClass(Entity, c, p)
 
+  // Set id
+  $.setClassId(Class)
+
   // Register
-  $.entities[spec.name] = Class
+  return Class
 }
 
 
@@ -124,13 +94,9 @@ function _validate(spec) {
     throws(`Empty entity specification. Please provide an object with the `+
            `entity declaration.`)
 
-  // Spec with no name
-  if (!spec.name)
-    throws(`You must provide the entity name.`)
-
-  // Duplicated entity name
-  if ($.entities[spec.name])
-    throws(`A entity "${spec.name}" has been already registered.`)
+  // Spec type
+  if (typeof spec !== 'object')
+    throws(`A component "${spec.name}" has been already registered.`)
 
   // Initialize is a function
   if (spec.initialize && !utils.isFunction(spec.initialize))
@@ -139,26 +105,7 @@ function _validate(spec) {
   // Destroy is a function
   if (spec.destroy && !utils.isFunction(spec.destroy))
     throws(`Destroy function for "${spec.name}" entity must be a function.`)
-
-  // Display
-  if (!spec.display)
-    throws(`You must provide the display for entity "${spec.name}".`)
-
-  if (!$.displayObjects[spec.display])
-    throws(`Entity "${spec.name}" trying to use a non-existing display `+
-           `object "${spec.display}".`)
   
-  // Components
-  if (spec.components) {
-    for (let i=0; i<spec.components.length; i++) {
-      let name = spec.components[i]
-
-      if (!$.components[name])
-        throws(`Entity "${spec.name}" trying to use a non-existing `+
-               `component "${name}".`)
-    }
-  }
-
   // Data items
   if (spec.data) {
     if (typeof spec.data !== 'object')
@@ -166,11 +113,6 @@ function _validate(spec) {
              `provided "${spec.data}" instead.`)
 
     for (let key in spec.data) {
-      if (reservedData.indexOf(key) >= 0)
-        throws(`Attribute "${key}" for entity "${spec.name}" is using a `+
-               `reserved or duplicated name, please change the attribute `+
-               `name.`)
-
       if (utils.isFunction(spec.data[key]))
         throws(`Attribute "${key}" for entity "${spec.name}" can't be a `+
                `function, use the *method* option if you want to include a `+
@@ -186,9 +128,9 @@ function _validate(spec) {
 
     let data = spec.data || {}
     for (let key in spec.methods) {
-      if (reservedMethods.indexOf(key) >= 0 || data[key] !== undefined)
+      if (data[key] !== undefined)
         throws(`Method "${key}" for entity "${spec.name}" is using a `+
-               `reserved or duplicated name, please change the method name.`)
+               `duplicated name, please change the method name.`)
 
       if (!utils.isFunction(spec.methods[key]))
         throws(`Method "${key}" for entity "${spec.name}" must be a `+
@@ -201,23 +143,6 @@ function _validate(spec) {
 function _process(spec) {
   let c = {} // class namespace
   let p = {} // prototype
-
-  // Base properties
-  p._$name = spec.name
-  p._$type = c._$type = spec.display
-
-  // Display
-  p._$display = c._$display = $.displayObjects[spec.display]
-
-  // Components
-  let components = {}
-  if (spec.components) {
-    for (let i=0; i<spec.components.length; i++) {
-      let name = spec.components[i]
-      components[name] = $.components[name]
-    }
-  }
-  p._$components = c._$components = Object.freeze(components)
 
   // Static properties
   let data = Object.freeze(spec.data || {})
