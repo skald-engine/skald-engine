@@ -38,7 +38,6 @@ export default class Game extends EventEmitter {
     this._display = null
     this._scenes = null
     this._pool = null
-    this._create = null
     this._sounds = null
     this._inputs = null
     this._keyboard = null
@@ -115,12 +114,6 @@ export default class Game extends EventEmitter {
    * @type {DeviceManager}
    */
   get device() { return this._device }
-
-  /**
-   * Factory manager. Readonly.
-   * @type {CreateManager}
-   */
-  get create() { return this._create }
 
   /**
    * Display manager. Readonly.
@@ -293,7 +286,6 @@ export default class Game extends EventEmitter {
     this._device = new managers.DeviceManager(this)
     this._display = new managers.DisplayManager(this)
     this._scenes = new managers.ScenesManager(this)
-    this._create = new managers.CreateManager(this)
     this._resources = new managers.ResourcesManager(this)
     this._keyboard = new managers.KeyboardManager(this)
     this._pool = new managers.PoolManager(this)
@@ -308,7 +300,6 @@ export default class Game extends EventEmitter {
     this._events.setup()
     this._device.setup()
     this._display.setup()
-    this._create.setup()
     this._resources.setup()
     this._scenes.setup()
     this._pool.setup()
