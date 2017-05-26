@@ -1,7 +1,7 @@
 const _makeFixtures = () => {
   return {
     EventSheet : class {},
-    $      : {},
+    $      : {setClassId: sinon.stub()},
     utils  : {} 
   }
 }
@@ -30,7 +30,6 @@ describe('sk/eventSheet.js', () => {
   it('should reject declaration with invalid data', () => {
     // setup mock
     fixtures.fn = () => {} 
-    fixtures.$.eventSheets = {'sampleEventSheet': sinon.spy()}
     fixtures.utils.isFunction = f => f === fixtures.fn
     fixtures.utils.createClass = () => {}
     module = _require(fixtures)
@@ -41,28 +40,20 @@ describe('sk/eventSheet.js', () => {
       null,
       '=)',
 
-      // invalid name
-      {},
-
-      // duplicated name
-      {name: 'sampleEventSheet'},
-
       // invalid shortcuts
-      {name: 'a', initialize: 'non function'},
-      {name: 'a', destroy: 'non function'},
+      {initialize: 'non function'},
+      {destroy: 'non function'},
 
       // invalid data
-      {name: 'a', data: 'non object'},
-      {name: 'a', data: {invalidBecauseFunction: fixtures.fn}},
+      {data: 'non object'},
+      {data: {invalidBecauseFunction: fixtures.fn}},
 
       // invalid methods
-      {name: 'a', methods: 'non object'},
-      {name: 'a', methods: {invalid: 'non function'}},
+      {methods: 'non object'},
+      {methods: {invalid: 'non function'}},
 
       // using registered keywords or duplicated variable names
-      {name: 'a', data: {name: ''}},
-      {name: 'a', methods: {name: fixtures.fn}},
-      {name: 'a', data: {b: ''}, methods: {b: fixtures.fn}}
+      {data: {b: ''}, methods: {b: fixtures.fn}}
     ]
 
     // test
@@ -89,16 +80,13 @@ describe('sk/eventSheet.js', () => {
     fx.createClass.returns(fx.class_)
 
     // setup mock
-    fixtures.fn = () => {} 
-    fixtures.$.eventSheets = {'sampleEventSheet': sinon.spy()}
+    fixtures.fn = () => {}
     fixtures.utils.isFunction = f => (f===1||f==='value'?false:true)
     fixtures.utils.createClass = fx.createClass
     module = _require(fixtures)
 
     // setup test
     let spec = {
-      name: 'sample',
-      access: 'super',
       initialize: fx.initialize,
       destroy: fx.destroy,
       events: {
@@ -115,8 +103,7 @@ describe('sk/eventSheet.js', () => {
     }
 
     // test
-    module(spec)
-    let eventSheet = fixtures.$.eventSheets.sample
+    let eventSheet = module(spec)
     let args = fx.createClass.getCall(0).args
 
     assert.equal(eventSheet, fx.class_)
@@ -131,8 +118,6 @@ describe('sk/eventSheet.js', () => {
       _$eventNames : Object.keys(spec.events)
     })
     assert.deepEqual(args[2], {
-      _$name                   : spec.name,
-      _$access                 : spec.access,
       _$data                   : spec.data,
       _$methods                : spec.methods,
       _$attributes             : Object.keys(spec.data),

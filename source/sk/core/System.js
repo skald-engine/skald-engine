@@ -53,6 +53,8 @@ export default class System {
    */
   initialize() {}
 
+  destroy() {}
+
   /**
    * Check if the system has insterest for the given entity, i.e., if the 
    * system will operate (and, thus, receiving) the entity in the update.

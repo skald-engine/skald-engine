@@ -2,35 +2,6 @@ import EventSheet from 'sk/core/EventSheet'
 import * as $ from 'sk/$'
 import * as utils from 'sk/utils'
 
-// Reserved names for the data input
-const reservedData = [
-  // base
-  'name', 'access', 'game', 'scene',
-
-  // shortcuts
-  'initialize', 'destroy',
-
-  // inherited methods
-  'toJson', 'fromJson',
-
-  // internal and accessors values
-  '_$data', '_$methods', '_$attributes', '_$name', '_$access', '_$events',
-  '_$eventNames'
-]
-
-// Reserved names for the methods input
-const reservedMethods = [
-  // base
-  'name', 'access', 'game', 'scene',
-
-  // inherited methods
-  'toJson', 'fromJson',
-
-  // internal and accessors values
-  '_$data', '_$methods', '_$attributes', '_$name', '_$access', '_$events',
-  '_$eventNames'
-]
-
 /**
  * Creates an event sheet.
  *
@@ -102,8 +73,11 @@ export function eventSheet(spec) {
   // Create the event sheet class
   let Class = utils.createClass(EventSheet, c, p)
 
+  // Set id
+  $.setClassId(Class)
+
   // Register
-  $.eventSheets[spec.name] = Class
+  return Class
 }
 
 
@@ -120,13 +94,9 @@ function _validate(spec) {
     throws(`Empty event sheet specification. Please provide an object with `+
            `the event sheet declaration.`)
 
-  // Spec with no name
-  if (!spec.name)
-    throws(`You must provide the event sheet name.`)
-
-  // Duplicated event sheet name
-  if ($.eventSheets[spec.name])
-    throws(`An event sheet "${spec.name}" has been already registered.`)
+  // Spec type
+  if (typeof spec !== 'object')
+    throws(`The event sheet specification must be an object.`)
 
   // Initialize is a function
   if (spec.initialize && !utils.isFunction(spec.initialize))
@@ -145,11 +115,6 @@ function _validate(spec) {
              `provided "${spec.data}" instead.`)
 
     for (let key in spec.data) {
-      if (reservedData.indexOf(key) >= 0)
-        throws(`Attribute "${key}" for event sheet "${spec.name}" is using a `+
-               `reserved or duplicated name, please change the attribute `+
-               `name.`)
-
       if (utils.isFunction(spec.data[key]))
         throws(`Attribute "${key}" for event sheet "${spec.name}" can't be a `+
                `function, use the *method* option if you want to include a `+
@@ -165,9 +130,9 @@ function _validate(spec) {
 
     let data = spec.data || {}
     for (let key in spec.methods) {
-      if (reservedMethods.indexOf(key) >= 0 || data[key] !== undefined)
+      if (data[key] !== undefined)
         throws(`Method "${key}" for event sheet "${spec.name}" is using a `+
-               `reserved or duplicated name, please change the method name.`)
+               `duplicated name, please change the method name.`)
 
       if (!utils.isFunction(spec.methods[key]))
         throws(`Method "${key}" for event sheet "${spec.name}" must be a `+
@@ -195,10 +160,6 @@ function _process(spec) {
   let c = {} // class namespace
   let p = {} // prototype
 
-  // Base properties
-  p._$name = spec.name
-  p._$access = spec.access || spec.name
-
   // Static properties
   let data = Object.freeze(spec.data || {})
   let methods = Object.freeze(spec.methods || {})
@@ -215,7 +176,6 @@ function _process(spec) {
   for (let k in data) p[k] = data[k]
   for (let k in methods) p[k] = methods[k]    
   for (let k in events) p['_callback_'+k] = events[k]
-
 
   // Shortcuts (override methods)
   if (spec.initialize) p.initialize = spec.initialize

@@ -27,34 +27,20 @@ export default class EventSheet {
    * @param {Game} game - The game instance.
    * @param {Scene} scene - The scene instance.
    */
-  constructor(game, scene) {    
-    // Inserted by the `eventSheet()` declarator:
-    // - _name
-    // - _access
-    // - _$spec
+  constructor() {    
+    // Internal
     // - _$data
     // - _$methods
     // - _$attributes
     // - _$events
     // - _$eventNames
 
-    this._game = game
-    this._scene = scene
-
-    for (let k in this._$events) {
-      let name = '_callback_'+k
-      scene.addEventListener(k, e => this[name](e))
-    }
+    this._game = null
+    this._scene = null
 
     this.initialize()
   }
 
-
-  /**
-   * The system name, used to link it to an scene. Readonly.
-   * @type {String}
-   */
-  get name() { return this._$name }
 
   /**
    * The game isntance. Readonly.
@@ -69,47 +55,20 @@ export default class EventSheet {
   get scene() { return this._scene }
 
   /**
-   * The system access name, used when accessing the system inside an
-   * scene. Readonly.
-   * @type {String}
-   */
-  get access() { return this._$access }
-
-  /**
    * Initialize function, called in the constructor. Override this to put 
    * initialization logic.
    */
   initialize() {}
 
-  /**
-   * Exports the event sheet data.
-   *
-   * @return {Object}
-   */
-  toJson() {
-    let result = {
-      name: this.name,
-      data: {}
-    }
-    for (let i=0; i<this._$attributes; i++) {
-      let name = this._$attributes[i]
-      result.data[name] = this[name]
-    }
+  destroy() {}
 
-    return result
-  }
-
-  /**
-   * Imports the event sheet data.
-   *
-   * @param {Object} data - The event sheet data to be loaded.
-   */
-  fromJson(data) {
-    data = data || {}
-    data.data = data.data || {}
-
-    for (let name in data.data) {
-      this[name] = data.data[name]
+  setup(game, scene) {
+    this._game = game
+    this._scene = scene
+    
+    for (let k in this._$events) {
+      let name = '_callback_'+k
+      scene.addEventListener(k, e => this[name](e))
     }
   }
 }

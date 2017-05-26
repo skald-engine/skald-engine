@@ -33,23 +33,20 @@
       }
     })
 
-    const ButtonSystem = sk.system({
-      check: function(entity) {
-        return entity.hasComponent(ButtonComponent)
-      },
-
-      // update: function(delta, entities) {
-      //   console.log('button system processing '+entities.length+' entities')
-      // }
-    })
-
     const UpdateSystem = sk.system({
       check: function(entity) {
         return entity.hasTag('updatable')
       },
+    })
 
-      update: function(delta, entities) {
-        console.log('update system processing '+entities.length+' entities')
+    const EventSheet = sk.eventSheet({
+      events: {
+        'scenes.start': function(e) {
+          console.log('start function')
+        },
+        'update': function(e) {
+          console.log('update function')
+        }
       }
     })
 
@@ -61,6 +58,8 @@
 
         this.entity = this.addEntity(new ButtonEntity())
 
+        let e = new EventSheet()
+        e.setup(this.game, this)
       },
     })
 
