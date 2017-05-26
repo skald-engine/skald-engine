@@ -1,7 +1,7 @@
 const _makeFixtures = () => {
   return {
     Scene : class {},
-    $      : {},
+    $      : {setClassId: sinon.stub()},
     utils  : {} 
   }
 }
@@ -30,9 +30,6 @@ describe('sk/scene.js', () => {
   it('should reject declaration with invalid data', () => {
     // setup mock
     fixtures.fn = () => {} 
-    fixtures.$.scenes = {'sampleScene': sinon.spy()}
-    fixtures.$.systems = {'sampleSystem': sinon.spy()}
-    fixtures.$.eventSheets = {'sampleEventSheet': sinon.spy()}
     fixtures.utils.isFunction = f => f === fixtures.fn
     fixtures.utils.createClass = () => {}
     module = _require(fixtures)
@@ -43,39 +40,27 @@ describe('sk/scene.js', () => {
       null,
       '=)',
 
-      // invalid name
-      {},
-
-      // duplicated name
-      {name: 'sampleScene'},
-
       // invalid shortcuts
-      {name: 'a', initialize: 'non function'},
-      {name: 'a', enter: 'non function'},
-      {name: 'a', start: 'non function'},
-      {name: 'a', pause: 'non function'},
-      {name: 'a', resume: 'non function'},
-      {name: 'a', update: 'non function'},
-      {name: 'a', stop: 'non function'},
-      {name: 'a', leave: 'non function'},
-      {name: 'a', destroy: 'non function'},
-
-      // invalid references
-      {name: 'a', eventSheets: ['non existent']},
-      {name: 'a', systems: ['non existent']},
+      {initialize: 'non function'},
+      {enter: 'non function'},
+      {start: 'non function'},
+      {pause: 'non function'},
+      {resume: 'non function'},
+      {update: 'non function'},
+      {stop: 'non function'},
+      {leave: 'non function'},
+      {destroy: 'non function'},
 
       // invalid data
-      {name: 'a', data: 'non object'},
-      {name: 'a', data: {invalidBecauseFunction: fixtures.fn}},
+      {data: 'non object'},
+      {data: {invalidBecauseFunction: fixtures.fn}},
 
       // invalid methods
-      {name: 'a', methods: 'non object'},
-      {name: 'a', methods: {invalid: 'non function'}},
+      {methods: 'non object'},
+      {methods: {invalid: 'non function'}},
 
       // using registered keywords or duplicated variable names
-      {name: 'a', data: {name: ''}},
-      {name: 'a', methods: {name: fixtures.fn}},
-      {name: 'a', data: {b: ''}, methods: {b: fixtures.fn}}
+      {data: {b: ''}, methods: {b: fixtures.fn}}
     ]
 
     // test
@@ -108,9 +93,6 @@ describe('sk/scene.js', () => {
 
     // setup mock
     fixtures.fn = () => {} 
-    fixtures.$.scenes = {'sampleScene': sinon.spy()}
-    fixtures.$.systems = {'sampleSystem': sinon.spy()}
-    fixtures.$.eventSheets = {'sampleEventSheet': sinon.spy()}
     fixtures.utils.isFunction = f => (f===1||f==='value'?false:true)
     fixtures.utils.createClass = fx.createClass
     module = _require(fixtures)
@@ -118,9 +100,6 @@ describe('sk/scene.js', () => {
     // setup test
     let spec = {
       name        : 'sample',
-      systems     : ['sampleSystem'],
-      eventSheets : ['sampleEventSheet'],
-      layers      : ['background', 'foreground'],
       initialize  : fx.initialize,
       enter       : fx.enter,
       start       : fx.start,
@@ -140,8 +119,7 @@ describe('sk/scene.js', () => {
     }
 
     // test
-    module(spec)
-    let scene = fixtures.$.scenes.sample
+    let scene = module(spec)
     let args = fx.createClass.getCall(0).args
 
     assert.equal(scene, fx.class_)
@@ -152,18 +130,11 @@ describe('sk/scene.js', () => {
       _$data        : spec.data,
       _$methods     : spec.methods,
       _$attributes  : Object.keys(spec.data),
-      _$systems     : fixtures.$.systems,
-      _$eventSheets : fixtures.$.eventSheets,
-      _$layers      : spec.layers
     })
     assert.deepEqual(args[2], {
-      _$name        : spec.name,
       _$data        : spec.data,
       _$methods     : spec.methods,
       _$attributes  : Object.keys(spec.data),
-      _$systems     : fixtures.$.systems,
-      _$eventSheets : fixtures.$.eventSheets,
-      _$layers      : spec.layers,
       initialize    : spec.initialize,
       enter         : spec.enter,
       start         : spec.start,

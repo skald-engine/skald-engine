@@ -1,1 +1,1 @@
-import 'sk/scenes/preloadDefaultScene'
+import 'sk/scenes/PreloadDefault'

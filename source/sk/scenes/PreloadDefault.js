@@ -1,9 +1,7 @@
 import {scene} from 'sk/scene'
 import * as utils from 'sk/utils'
 
-scene({
-  name: 'skald.scenes.preloadDefault',
-
+export default PreloadDefault = scene({
   initialize: function() {
     let ball = new sk.display.Graphics()
     ball.beginFill(0xEFEFEF)

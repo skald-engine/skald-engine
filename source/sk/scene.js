@@ -93,6 +93,10 @@ function _validate(spec) {
     throws(`Empty scene specification. Please provide an object with the `+
            `scene declaration.`)
 
+  // Spec type
+  if (typeof spec !== 'object')
+    throws(`The scene specification must be an object.`)
+
   // Functions  
   if (spec.initialize && !utils.isFunction(spec.initialize))
     throws(`Initialize function for "${spec.name}" entity must be a function.`)
