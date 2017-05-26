@@ -63,9 +63,9 @@ function _validate(spec) {
     throws(`Empty tween target. Please provide an object.`)
 
   // Empty to
-  if (!spec.to)
-    throws(`Empty tween to specification. Please provide an object with the 
-            tween properties.`)
+  if (!spec.to && !spec.properties)
+    throws(`Empty tween to or properties specification. Please provide an 
+            object with the tween properties.`)
 
   // Duration is not a number
   if (typeof spec.duration !== 'undefined' && typeof spec.duration !== 'number')
@@ -100,25 +100,30 @@ function _validate(spec) {
     if (typeof spec.to[k] !== 'number')
       throws(`Value for the target property "${k}" must be a number.`)
   }
+  for (let k in spec.properties) {
+    let p = spec.properties
+    if (typeof p[k][0] !== 'number' || typeof p[k][1] !== 'number') 
+      throws(`Value for the target property "${k}" must be a number.`)
+  }
 }
 
 // Process values
 function _create(spec) {
-  let properties = {}
+  let properties = spec.properties || {}
   for (let k in spec.to) {
     properties[k] = [spec.target[k], spec.to[k]]
   }
 
   let tween = new Tween(
     spec.target,
-    spec.duration,
     properties,
+    spec.duration,
     spec.delay,
     spec.loop,
-    spec.ease
+    spec.ease,
+    spec.update,
+    spec.stop
   )
-  tween._updateFn = spec.update
-  tween._stopFn = spec.stop
 
   return tween
 }
