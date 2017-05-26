@@ -109,6 +109,7 @@ export default class EventsManager extends Manager {
     // must remove the event from the pool because if there is any error in any
     // listener, the event pool will be stuck forever. 
     while (i > 0) {
+      i--
       let event = this._eventQueue.shift()  
       let target = event.target
 
@@ -136,10 +137,6 @@ export default class EventsManager extends Manager {
         event.reset()
         this.game.pool.store(event)
       }
-
-      i--
     }
-
-    this._eventQueue = []
   }
 }
