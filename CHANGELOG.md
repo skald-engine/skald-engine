@@ -4,6 +4,9 @@
 
 - Adding a pool manager on game.
 - Changing all events in engine to use event pool.
+- Rewriting all ECS/EventSheet/Scene objects for simplification.
+- Adding Task object (and rewriting tween to be a subclass).
+- Scene now have tasks and timeout functions.
 
 
 ## 1.0.0-alpha.3
