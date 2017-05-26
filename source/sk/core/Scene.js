@@ -171,11 +171,24 @@ export default class Scene extends EventEmitter {
     }
     this._entities.splice(this._entities.indexOf(entity), 1)
   }
-  getEntityBySystem(system) {}
-  getEntityByComponent(system) {}
-  getEntityByClass(system) {}
-  getEntityByTag(system) {}
-  getEntityByLayer(system) {}
+  getEntitiesBySystem(system) {
+    let id = system._$classId? system._$classId : system
+    return (this._mapSystemToEntities[id] || []).slice()
+  }
+  getEntitiesByComponent(component) {
+    let id = component._$classId? component._$classId : component
+    return (this._mapComponentToEntities[id] || []).slice()
+  }
+  getEntitiesByClass(class_) {
+    let id = class_._$classId? class_._$classId : class_
+    return (this._mapClassToEntities[id] || []).slice()
+  }
+  getEntitiesByTag(tag) {
+    return (this._mapTagToEntities[tag] || []).slice()
+  }
+  getEntitiesByLayer(layerName) {
+    return (this._mapLayerToEntities[layerName] || []).slice()
+  }
 
   addStatic(displayObject, layerName=DEFAULT_LAYER) {
     let layer = this._layers[layerName]
