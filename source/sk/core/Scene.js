@@ -1,5 +1,6 @@
-import * as $ from 'sk/$'
 import EventEmitter from 'sk/core/EventEmitter'
+import * as $ from 'sk/$'
+import * as utils from 'sk/utils'
 
 const DEFAULT_LAYER = '~DEFAULT~'
 
@@ -27,6 +28,10 @@ export default class Scene extends EventEmitter {
     this._mapTagToEntities = {}
     this._mapClassToEntities = {}
     this._mapComponentToEntities = {}
+
+    // Scheduled functions and tasks
+    this._timeouts = {}
+    this._tasks = {}
 
     this.addLayer(DEFAULT_LAYER)
 
@@ -273,10 +278,50 @@ export default class Scene extends EventEmitter {
     return eventSheet
   }
 
+  addTimeout(fn, delay=0) {
+    let id = utils.random.uuid()
+    this._timeouts[id] = {
+      fn: fn,
+      time: delay
+    }
+    return id
+  }
+  removeTimeout(functionId) {
+    delete this._timeouts[functionId]
+  }
+
+  addTask(task) {
+    let id = utils.random.uuid()
+    this._tasks[id] = task
+    return id
+  }
+  removeTask(taskId) {
+    delete this._tasks[functionId]
+  }
+
   _update(delta) {
     // Update systems
     for (let k in this._systems) {
       this._systems[k].update(this._mapSystemToEntities[k], delta)
+    }
+
+    // Timeout update
+    for (let k in this._timeouts) {
+      let timeout = this._timeouts[k]
+      timeout.time -= delta*1000
+      if (timeout.time < 0) {
+        timeout.fn()
+        delete this._timeouts[k]
+      }
+    }
+
+    // Task update
+    for (let k in this._tasks) {
+      let task = this._tasks[k]
+      task.update(delta)
+      if (task.hasFinished()) {
+        delete this._tasks[k]
+      }
     }
   }
 
