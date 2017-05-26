@@ -43,6 +43,7 @@ export default class Scene extends EventEmitter {
     for (let k in this._$systems) {
       this._mapSystemToEntities[k] = []
     }
+    this._mapSystemToEntities[0] = []
 
     // Create the layers
     this._layers[DEFAULT_LAYER] = new PIXI.Container()

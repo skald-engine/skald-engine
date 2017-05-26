@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <script type="text/javascript" src="/build/lib/skald.min.js"></script>
+</head>
+<body>
+  
+  <h1>ECS</h1>
+
+  <script>
+    // Configuration ----------------------------------------------------------
+    const ButtonComponent = sk.component({
+      data: {
+        hover: false,
+        down: false,
+      },
+      methods: {
+        sample: function() {
+          console.log('sample')
+        }
+      }
+    })
+
+    const ButtonEntity = sk.entity({
+      initialize: function() {
+        this.display = new sk.display.Sprite()
+        this.display.texture = game.resources.get('bug')
+
+        this.addTag('button', 'updatable')
+
+        this.button = this.addComponent(new ButtonComponent())
+      }
+    })
+
+    const ButtonSystem = sk.system({
+      check: function(entity) {
+        return entity.hasComponent(ButtonComponent)
+      },
+
+      // update: function(delta, entities) {
+      //   console.log('button system processing '+entities.length+' entities')
+      // }
+    })
+
+    const UpdateSystem = sk.system({
+      check: function(entity) {
+        return entity.hasTag('updatable')
+      },
+
+      update: function(delta, entities) {
+        console.log('update system processing '+entities.length+' entities')
+      }
+    })
+
+    sk.scene({
+      name: 'base',
+      initialize: function() {
+        this._systems = {0:new UpdateSystem()}
+        this._systems[0].setup(this.game, this)
+
+        this.entity = this.addEntity(new ButtonEntity())
+
+      },
+    })
+
+    // Game initialization ----------------------------------------------------
+    const config = {
+      display: {width: 300, height: 400},
+    }
+    let game = new sk.Game(config)
+
+    // Starting ---------------------------------------------------------------
+    game.resources.addTexture('bug', '../features/assets/textures/ladybug.png')
+    game.resources.load()
+    game.addEventListener('start', () => {
+      game.scenes.play('base')
+    })
+
+  </script>
+
+</body>
+</html>

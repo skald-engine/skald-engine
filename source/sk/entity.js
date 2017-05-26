@@ -96,7 +96,7 @@ function _validate(spec) {
 
   // Spec type
   if (typeof spec !== 'object')
-    throws(`A component "${spec.name}" has been already registered.`)
+    throws(`The entity specification must be an object.`)
 
   // Initialize is a function
   if (spec.initialize && !utils.isFunction(spec.initialize))

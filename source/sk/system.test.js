@@ -1,7 +1,7 @@
 const _makeFixtures = () => {
   return {
     System : class {},
-    $      : {},
+    $      : {setClassId: sinon.stub()},
     utils  : {} 
   }
 }
@@ -30,7 +30,6 @@ describe('sk/system.js', () => {
   it('should reject declaration with invalid data', () => {
     // setup mock
     fixtures.fn = () => {} 
-    fixtures.$.systems = {'sampleSystem': sinon.spy()}
     fixtures.utils.isFunction = f => f === fixtures.fn
     fixtures.utils.createClass = () => {}
     module = _require(fixtures)
@@ -41,32 +40,21 @@ describe('sk/system.js', () => {
       null,
       '=)',
 
-      // invalid name
-      {},
-
-      // invalid check function
-      {name: 'a'},
-
-      // duplicated name
-      {name: 'sampleSystem', check: () => {}},
-
       // invalid shortcuts
-      {name: 'a', check: () => {}, initialize: 'non function'},
-      {name: 'a', check: () => {}, destroy: 'non function'},
-      {name: 'a', check: () => {}, update: 'non function'},
+      {check: () => {}, initialize: 'non function'},
+      {check: () => {}, destroy: 'non function'},
+      {check: () => {}, update: 'non function'},
 
       // invalid data
-      {name: 'a', check: () => {}, data: 'non object'},
-      {name: 'a', check: () => {}, data: {invalidBecauseFunction: fixtures.fn}},
+      {check: () => {}, data: 'non object'},
+      {check: () => {}, data: {invalidBecauseFunction: fixtures.fn}},
 
       // invalid methods
-      {name: 'a', check: () => {}, methods: 'non object'},
-      {name: 'a', check: () => {}, methods: {invalid: 'non function'}},
+      {check: () => {}, methods: 'non object'},
+      {check: () => {}, methods: {invalid: 'non function'}},
 
       // using registered keywords or duplicated variable names
-      {name: 'a', check: () => {}, data: {name: ''}},
-      {name: 'a', check: () => {}, methods: {name: fixtures.fn}},
-      {name: 'a', check: () => {}, data: {b: ''}, methods: {b: fixtures.fn}}
+      {check: () => {}, data: {b: ''}, methods: {b: fixtures.fn}}
     ]
 
     // test
@@ -93,16 +81,13 @@ describe('sk/system.js', () => {
     fx.createClass.returns(fx.class_)
 
     // setup mock
-    fixtures.fn = () => {} 
-    fixtures.$.systems = {'sampleSystem': sinon.spy()}
+    fixtures.fn = () => {}
     fixtures.utils.isFunction = f => (f===1||f==='value'?false:true)
     fixtures.utils.createClass = fx.createClass
     module = _require(fixtures)
 
     // setup test
     let spec = {
-      name: 'sample',
-      access: 'super',
       initialize: fx.initialize,
       destroy: fx.destroy,
       check: fx.check,
@@ -117,8 +102,7 @@ describe('sk/system.js', () => {
     }
 
     // test
-    module(spec)
-    let system = fixtures.$.systems.sample
+    let system = module(spec)
     let args = fx.createClass.getCall(0).args
 
     assert.equal(system, fx.class_)
@@ -131,8 +115,6 @@ describe('sk/system.js', () => {
       _$attributes : Object.keys(spec.data),
     })
     assert.deepEqual(args[2], {
-      _$name       : spec.name,
-      _$access     : spec.access,
       _$data       : spec.data,
       _$methods    : spec.methods,
       _$attributes : Object.keys(spec.data),

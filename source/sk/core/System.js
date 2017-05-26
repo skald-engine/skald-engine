@@ -17,26 +17,18 @@ export default class System {
    * @param {Game} game - The game instance.
    * @param {Scene} scene - The scene instance.
    */
-  constructor(game, scene) {
-    // Inserted by the `system()` declarator:
-    // - _name
-    // - _access
-    // - _$spec
+  constructor() {
+    // Internal
     // - _$data
     // - _$methods
     // - _$attributes
 
-    this._game = game
-    this._scene = scene
+    this._game = null
+    this._scene = null
 
     this.initialize()
   }
 
-  /**
-   * The system name, used to link it to an scene. Readonly.
-   * @type {String}
-   */
-  get name() { return this._$name }
 
   /**
    * The game isntance. Readonly.
@@ -50,12 +42,10 @@ export default class System {
    */
   get scene() { return this._scene }
 
-  /**
-   * The system access name, used when accessing the system inside an
-   * scene. Readonly.
-   * @type {String}
-   */
-  get access() { return this._$access }
+  setup(game, scene) {
+    this._game = game
+    this._scene = scene
+  }
 
   /**
    * Initialize function, called in the constructor. Override this to put 
@@ -73,36 +63,4 @@ export default class System {
    * Update.
    */
   update(delta, entities) {}
-
-  /**
-   * Exports the component data.
-   *
-   * @return {Object}
-   */
-  toJson() {
-    let result = {
-      name: this.name,
-      data: {}
-    }
-    for (let i=0; i<this._$attributes; i++) {
-      let name = this._$attributes[i]
-      result.data[name] = this[name]
-    }
-
-    return result
-  }
-
-  /**
-   * Imports the component data.
-   *
-   * @param {Object} data - The component data to be loaded.
-   */
-  fromJson(data) {
-    data = data || {}
-    data.data = data.data || {}
-
-    for (let name in data.data) {
-      this[name] = data.data[name]
-    }
-  }
 }

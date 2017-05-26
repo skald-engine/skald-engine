@@ -30,9 +30,6 @@ describe('sk/entity.js', () => {
   it('should reject declaration with invalid data', () => {
     // setup mock
     fixtures.fn = () => {} 
-    fixtures.$.displayObjects = {'sampleDisplay': sinon.spy()}
-    fixtures.$.entities = {'sampleEntity': sinon.spy()}
-    fixtures.$.components = {'sampleComponent': sinon.spy()}
     fixtures.utils.isFunction = f => f === fixtures.fn
     fixtures.utils.createClass = () => {}
     module = _require(fixtures)
@@ -82,9 +79,6 @@ describe('sk/entity.js', () => {
 
     // setup mock
     fixtures.fn = () => {} 
-    fixtures.$.displayObjects = {'sampleDisplay': sinon.spy()}
-    fixtures.$.entities = {}
-    fixtures.$.components = {'sampleComponent': sinon.spy()}
     fixtures.utils.isFunction = f => (f===1||f==='value'?false:true)
     fixtures.utils.createClass = fx.createClass
     module = _require(fixtures)

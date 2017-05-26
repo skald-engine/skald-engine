@@ -64,6 +64,7 @@ export default class Entity extends EventEmitter {
    * @type {PIXI.DisplayObject}
    */
   get display() { return this._display }
+  set display(v) { if (!this._display) this._display = v }
 
   /**
    * Entity tags.
@@ -104,6 +105,7 @@ export default class Entity extends EventEmitter {
     }
 
     this._components[id] = component
+    return component
   }
 
   getComponent(classOrId) {

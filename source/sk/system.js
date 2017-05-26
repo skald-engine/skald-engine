@@ -2,36 +2,6 @@ import System from 'sk/core/System'
 import * as $ from 'sk/$'
 import * as utils from 'sk/utils'
 
-// Reserved names for the data input
-const reservedData = [
-  // base
-  'name', 'access', 'game', 'scene',
-
-  // shortcuts
-  'initialize', 'destroy', 'check', 'update',
-
-  // inherited methods
-  'toJson', 'fromJson',
-
-  // internal and accessors values
-  '_$data', '_$methods', '_$attributes', '_$name', '_$access'
-]
-
-// Reserved names for the methods input
-const reservedMethods = [
-  // base
-  'name', 'access', 'game', 'scene',
-
-  // shortcuts
-  'check',
-
-  // inherited methods
-  'toJson', 'fromJson',
-
-  // internal and accessors values
-  '_$data', '_$methods', '_$attributes', '_$name', '_$access'
-]
-
 /**
  * Creates a new system.
  * 
@@ -110,8 +80,11 @@ export function system(spec) {
   // Create the system class
   let Class = utils.createClass(System, c, p)
 
+  // Set id
+  $.setClassId(Class)
+
   // Register
-  $.systems[spec.name] = Class
+  return Class
 }
 
 
@@ -128,13 +101,9 @@ function _validate(spec) {
     throws(`Empty system specification. Please provide an object with the `+
            `system declaration.`)
 
-  // Spec with no name
-  if (!spec.name)
-    throws(`You must provide the system name.`)
-
-  // Duplicated system name
-  if ($.systems[spec.name])
-    throws(`A system "${spec.name}" has been already registered.`)
+  // Spec type
+  if (typeof spec !== 'object')
+    throws(`The system specification must be an object.`)
 
   // Check function not provided
   if (!spec.check)
@@ -164,11 +133,6 @@ function _validate(spec) {
              `provided "${spec.data}" instead.`)
 
     for (let key in spec.data) {
-      if (reservedData.indexOf(key) >= 0)
-        throws(`Attribute "${key}" for system "${spec.name}" is using a `+
-               `reserved or duplicated name, please change the attribute `+
-               `name.`)
-
       if (utils.isFunction(spec.data[key]))
         throws(`Attribute "${key}" for system "${spec.name}" can't be a `+
                `function, use the *method* option if you want to include a `+
@@ -184,9 +148,9 @@ function _validate(spec) {
 
     let data = spec.data || {}
     for (let key in spec.methods) {
-      if (reservedMethods.indexOf(key) >= 0 || data[key] !== undefined)
+      if (data[key] !== undefined)
         throws(`Method "${key}" for system "${spec.name}" is using a `+
-               `reserved or duplicated name, please change the method name.`)
+               `duplicated name, please change the method name.`)
 
       if (!utils.isFunction(spec.methods[key]))
         throws(`Method "${key}" for system "${spec.name}" must be a `+
@@ -199,10 +163,6 @@ function _validate(spec) {
 function _process(spec) {
   let c = {} // class namespace
   let p = {} // prototype
-
-  // Base properties
-  p._$name = spec.name
-  p._$access = spec.access || spec.name
 
   // Static properties
   let data = Object.freeze(spec.data || {})
