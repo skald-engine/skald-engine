@@ -76,8 +76,24 @@
         s.position = {x:100, y:100}
         s.rotation = Math.PI
         this.addStatic(s, 'ui')
-
         this.removeStatic(s)
+
+        this.addTask(new sk.utils.tasks.Tween(
+          entity.display,
+          {x:[0, 100]},
+          1000,
+          0,
+          true,
+          sk.utils.easing.gaussian
+        ))
+        this.addTask(new sk.utils.tasks.Tween(
+          entity.display,
+          {y:[0, 200]},
+          1500,
+          0,
+          true,
+          sk.utils.easing.gaussian
+        ))
       },
       methods: {
         emit: function(e) {
