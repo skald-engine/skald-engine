@@ -2,40 +2,6 @@ import Scene from 'sk/core/Scene'
 import * as $ from 'sk/$'
 import * as utils from 'sk/utils'
 
-// Reserved names for the data input
-const reservedData = [
-  // base
-  'name', 'game', 'world', 'layers', 'systems', 'eventSheets',
-
-  // shortcuts
-  'initialize', 'enter', 'start', 'pause', 'resume', 'update', 'stop', 'leave',
-  'destroy',
-
-  // inherited methods
-  'toJson', 'fromJson', 'addEventListener', 'getEventNames', 'emit',
-  'removeEventListener', 'removeAllEventListeners', '_imediateEmit',
-  'addEntity', 'removeEntity', 'addStatic', 'removeStatic', '_update',
-
-  // internal and accessors values
-  '_$data', '_$methods', '_$attributes', '_$name', '_$layers', '_$systems',
-  '_$eventSheets'
-]
-
-// Reserved names for the methods input
-const reservedMethods = [
-  // base
-  'name', 'game', 'world', 'layers', 'systems', 'eventSheets',
-
-  // inherited methods
-  'toJson', 'fromJson', 'addEventListener', 'getEventNames', 'emit',
-  'removeEventListener', 'removeAllEventListeners', '_imediateEmit',
-  'addEntity', 'removeEntity', 'addStatic', 'removeStatic', '_update',
-
-  // internal and accessors values
-  '_$data', '_$methods', '_$attributes', '_$name', '_$layers', '_$systems',
-  '_$eventSheets'
-]
-
 /**
  * Creates a new scene.
  *
@@ -106,8 +72,11 @@ export function scene(spec) {
   // Create the component class
   let Class = utils.createClass(Scene, c, p)
 
+  // Set id
+  $.setClassId(Class)
+
   // Register
-  $.scenes[spec.name] = Class
+  return Class
 }
 
 
@@ -123,14 +92,6 @@ function _validate(spec) {
   if (!spec)
     throws(`Empty scene specification. Please provide an object with the `+
            `scene declaration.`)
-
-  // Spec with no name
-  if (!spec.name)
-    throws(`You must provide the scene name.`)
-
-  // Duplicated scene name
-  if ($.scenes[spec.name])
-    throws(`A scene "${spec.name}" has been already registered.`)
 
   // Functions  
   if (spec.initialize && !utils.isFunction(spec.initialize))
@@ -187,11 +148,6 @@ function _validate(spec) {
              `provided "${spec.data}" instead.`)
 
     for (let key in spec.data) {
-      if (reservedData.indexOf(key) >= 0)
-        throws(`Attribute "${key}" for scene "${spec.name}" is using a `+
-               `reserved or duplicated name, please change the attribute `+
-               `name.`)
-
       if (utils.isFunction(spec.data[key]))
         throws(`Attribute "${key}" for scene "${spec.name}" can't be a `+
                `function, use the *method* option if you want to include a `+
@@ -207,9 +163,9 @@ function _validate(spec) {
 
     let data = spec.data || {}
     for (let key in spec.methods) {
-      if (reservedMethods.indexOf(key) >= 0 || data[key] !== undefined)
+      if (data[key] !== undefined)
         throws(`Method "${key}" for scene "${spec.name}" is using a `+
-               `reserved or duplicated name, please change the method name.`)
+               `duplicated name, please change the method name.`)
 
       if (!utils.isFunction(spec.methods[key]))
         throws(`Method "${key}" for scene "${spec.name}" must be a `+
@@ -223,36 +179,11 @@ function _process(spec) {
   let c = {} // class namespace
   let p = {} // prototype
 
-  // Base properties
-  p._$name = spec.name
-
-  // Systems
-  let systems = {}
-  if (spec.systems) {
-    for (let i=0; i<spec.systems.length; i++) {
-      let name = spec.systems[i]
-      systems[name] = $.systems[name]
-    }
-  }
-  p._$systems = c._$systems = Object.freeze(systems)
-
-  // Events sheets
-  let eventSheets = {}
-  if (spec.eventSheets) {
-    for (let i=0; i<spec.eventSheets.length; i++) {
-      let name = spec.eventSheets[i]
-      eventSheets[name] = $.eventSheets[name]
-    }
-  }
-  p._$eventSheets = c._$eventSheets = Object.freeze(eventSheets)
-
   // Static properties
   let data = Object.freeze(spec.data || {})
   let methods = Object.freeze(spec.methods || {})
-  let layers = Object.freeze(spec.layers || [])
   let attributes = Object.freeze(Object.keys(data))
   p._$data = c._$data = data
-  p._$layers = c._$layers = layers
   p._$methods = c._$methods = methods
   p._$attributes = c._$attributes = attributes
 

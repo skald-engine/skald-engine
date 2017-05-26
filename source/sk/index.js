@@ -1,3 +1,7 @@
+// Game
+import Game from 'sk/Game'
+export {Game}
+
 // Sub namespace elements
 import * as $ from 'sk/$'
 import * as utils from 'sk/utils'
@@ -25,6 +29,4 @@ export * from 'sk/registerLoggerHandler'
 export * from 'sk/registerBitmapFont'
 export * from 'sk/setAudioSystems'
 
-import Game from 'sk/Game'
-export {Game}
 

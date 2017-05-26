@@ -1,205 +1,91 @@
+import * as $ from 'sk/$'
 import EventEmitter from 'sk/core/EventEmitter'
-import Game from 'sk/Game'
 
-const DEFAULT_LAYER = '~default'
+const DEFAULT_LAYER = '~DEFAULT~'
 
-/**
- * Scenes are the base containers for your games, and represent the independent
- * parts of the game, like a menu, score screen, or the level itself.
- *
- * Every scene uses stacked layers to help you organize the entities in the 
- * screen. The layers are containers and can be declared in the {@link scene}
- * function. The use of layers is totally optional and may be completely 
- * ignored if you want.
- *
- * Systems are used to process the scene entities and update the game logic, 
- * while event sheets helps you to organize the game logic by providing a 
- * direct interface to the scene events. You may add multiple event sheets in 
- * the scene and also share the same sheet with other scenes.
- */
 export default class Scene extends EventEmitter {
 
-  constructor(game, layers, systems, eventSheets) {
+  constructor(game) {
     super()
 
-    // Inserted by the `sk.scene` function:
-    // - _$name
-    // - _$layers
-    // - _$systems
-    // - _$eventSheets
-    // - _$data
-    // - _$methods
-    // - _$attributes
+    if (!game) {
+      throw new Error(`Scene must receive a game instance during the `+
+                      `instantiation.`)
+    }
 
     this._game = game
     this._world = new PIXI.Container()
     this._entities = []
+    this._statics = []
     this._layers = {}
-    this._systems = systems
-    this._eventSheets = eventSheets
+    this._eventSheets = {}
+    this._systems = {}
 
-    // Create the list of entities for each system
+    // Auxiliary list to avoid repeated lookups.
     this._mapSystemToEntities = {}
-    for (let k in this._$systems) {
-      this._mapSystemToEntities[k] = []
-    }
-    this._mapSystemToEntities[0] = []
+    this._mapLayerToEntities = {}
+    this._mapTagToEntities = {}
+    this._mapClassToEntities = {}
+    this._mapComponentToEntities = {}
 
-    // Create the layers
-    this._layers[DEFAULT_LAYER] = new PIXI.Container()
-    this._world.addChild(this._layers[DEFAULT_LAYER])
-    for (let k in this._$layers) { 
-      this._layers[k] = new PIXI.Container()
-      this._world.addChild(this._layers[k])
-    }
-    this._layers = Object.freeze(this._layers)
+    this.addLayer(DEFAULT_LAYER)
 
-    // Other internal values
-    this._tweens = []
-    this._jobs = []
-
-
-    // This is the only exception in the engine of calling `initialize` on the
-    // constructor. We don't call it here due to circular reference to the 
-    // systems and event sheets. The create manager will call the initialize 
-    // during the creation of the object.
+    this.initialize()
   }
 
-  /**
-   * The scene name. Readonly.
-   * @type {String}
-   */
-  get name() { return this._name }
 
-  /**
-   * The game instance. Readonly.
-   * @type {Game}
-   */
   get game() { return this._game }
-
-  /**
-   * The scene general container. Readonly.
-   * @type {PIXI.Container}
-   */
   get world() { return this._world }
+  get layers() { return Object.values(this._layers) }
+  get systems() { return Object.values(this._systems) }
+  get eventSheets() { return Object.values(this._eventSheets) }
 
-  /**
-   * The scene layer objects. Readonly.
-   * @type {Object}
-   */
-  get layers() { return this._layers }
-
-  /**
-   * The scene system objects. Readonly.
-   * @type {Object}
-   */
-  get systems() { return this._systems }
-
-  /**
-   * The scene event sheets objects. Readonly.
-   * @type {Object}
-   */
-  get eventSheets() { return this._eventSheets }
-
-  /**
-   * Initialize function.
-   */
   initialize() {}
-
-  /**
-   * Enter function, called when the scene enters the canvas.
-   */
   enter() {}
-
-  /**
-   * Start function, called when the transition ends and the scene starts
-   * working.
-   */
   start() {}
-
-  /**
-   * Pause function, called when the engine is paused (e.g, when the game loses
-   * focus or when its paused manually).
-   */
   pause() {}
-
-  /**
-   * Resume function, called when the engine resumes after a pause.
-   */
   resume() {}
-
-  /**
-   * Called every tick the scene is running.
-   */
   update(delta) {}
-
-  /**
-   * Stop function, called when the scene starts a transition to leave the 
-   * canvas.
-   */
   stop() {}
-
-  /**
-   * Called when the scene leaves the canvas.
-   */
   leave() {}
-
-  /**
-   * Called when the scene is destroyed.
-   */
   destroy() {}
 
-
-  /**
-   * Adds an entity to the scene.
-   *
-   * @param {String} entityName - The entity ID.
-   * @param {String} layerName - The layer name.
-   */
-  addEntity(entity, layerName) {
-    // Uses default layer if layer is not provided
-    layerName = layerName||DEFAULT_LAYER
-
-    // Creates the entity
-    if (typeof entity === 'string') {
-      entity = this.game.create.entity(entity)
+  _addToMap(map, key, obj) {
+    if (!map[key]) {
+      map[key] = []
     }
+    map[key].push(obj)
+  }
+  _addToMaps(entity) {
+    // Class to Entity map
+    let classId = entity._$classId
+    this._addToMap(this._mapClassToEntities, classId, entity)
 
-    // Validate layer name 
-    let layer = this._layers[layerName]
-    if (!layer) {
-      throw new Error(`Invalid layer "${layerName}".`)
-    }
+    // Layer to Entity map
+    let layer = entity._$layer
+    this._addToMap(this._mapLayerToEntities, layer, entity)
 
-    // Add entity to the system-entity map
+    // System to Entity map
     for (let key in this._systems) {
       if (this._systems[key].check(entity)) {
-        this._mapSystemToEntities[key].push(entity)
+        this._addToMap(this._mapSystemToEntities, key, entity)
       }
     }
+    
+    // Tag to Entity map
+    let tags = entity.tags
+    for (let i=0; i<tags.length; i++) {
+      this._addToMap(this._mapTagToEntities, tags[i], entity)
+    }
 
-    // Add layer info to the entity
-    entity._$layer = layerName
-
-    // Add entity to the layer
-    layer.addChild(entity.display)
-
-    // Add entity to the general list
-    this._entities.push(entity)
-
-    // Return the entity
-    return entity
+    // Component to Entity map
+    let components = entity.components
+    for (let i=0; i<components.length; i++) {
+      let id = components[i]._$classId
+      this._addToMap(this._mapComponentToEntities, id, entity)
+    }
   }
-
-  /**
-   * Removes an entity from the scene.
-   *
-   * @param {Entity} entity - The entity object.
-   */
-  removeEntity(entity) {
-    let layer = this._layers[entity._$layer]
-    layer.removeChild(entity.display)
-    this._entities.splice(this._entities.indexOf(entity))
+  _removeFromMaps(entity) {
 
     for (let key in this._systems) {
       if (this._systems[key].check(entity)) {
@@ -207,124 +93,173 @@ export default class Scene extends EventEmitter {
         list.splice(list.indexOf(entity))
       }
     }
+
+    let map
+
+    // Class to Entity map
+    let classId = entity._$classId
+    map = this._mapClassToEntities[classId]
+    if (map) {
+      map.splice(map.indexOf(entity), 1)
+    }
+
+    // Layer to Entity map
+    let layer = entity._$layer
+    map = this._mapLayerToEntities[layer]
+    if (map) {
+      map.splice(map.indexOf(entity), 1)
+    }
+
+    // System to Entity map
+    for (let key in this._systems) {
+      map = this._mapSystemToEntities[key]
+      if (map) {
+        map.splice(map.indexOf(entity), 1)
+      }
+    }
+    
+    // Tag to Entity map
+    let tags = entity.tags
+    for (let i=0; i<tags.length; i++) {
+      map = this._mapTagToEntities[tags[i]]
+      if (map) {
+        map.splice(map.indexOf(entity), 1)
+      }
+    }
+
+    // Component to Entity map
+    let components = entity.components
+    for (let i=0; i<components.length; i++) {
+      map = this._mapComponentToEntities[components[i]._$classId]
+      if (map) {
+        map.splice(map.indexOf(entity), 1)
+      }
+    }
   }
 
-  /**
-   * Adds a static display object to the scene.
-   *
-   * @param {PIXI.DisplayObject} displayObject - The display object.
-   * @param {String} [layerName] - The layer.
-   * @return {PIXI.DisplayObject} The input display object.
-   */
-  addStatic(displayObject, layerName) {
-    // Uses default layer if layer is not provided
-    layerName = layerName||DEFAULT_LAYER
-
-    // Create the display object if needed
-    if (typeof displayObject === 'string') {
-      displayObject = this.game.create.displayObject(displayObject)
-    }
-
-    // Validate layer name 
+  addEntity(entity, layerName=DEFAULT_LAYER) {
     let layer = this._layers[layerName]
+
+    // Error if invalid layer
     if (!layer) {
-      throw new Error(`Invalid layer "${layerName}".`)
+      throw new Error(`Layer "${layerName}" could not be found.`)
     }
 
-    // Add layer info to the entity
-    displayObject._$layer = layerName
+    // Verify if object is already added
+    if (entity._$layer) {
+      this.removeEntity(entity)
+    }
 
-    // Add entity to the layer
+    // Register
+    entity._$layer = layerName
+    entity._$game = this.game
+    entity._$scene = this
+    this._entities.push(entity)
+    layer.addChild(entity.display)
+
+    // Add to maps
+    this._addToMaps(entity)
+
+    return entity
+  }
+  removeEntity(entity) {
+    this._removeFromMaps(entity)
+
+    if (entity._$layer) {
+      let layer = this._layers[entity._$layer]
+      layer.removeChild(entity.display)
+    }
+    this._entities.splice(this._entities.indexOf(entity), 1)
+  }
+  getEntityBySystem(system) {}
+  getEntityByComponent(system) {}
+  getEntityByClass(system) {}
+  getEntityByTag(system) {}
+  getEntityByLayer(system) {}
+
+  addStatic(displayObject, layerName=DEFAULT_LAYER) {
+    let layer = this._layers[layerName]
+
+    // Error if invalid layer
+    if (!layer) {
+      throw new Error(`Layer "${layerName}" could not be found.`)
+    }
+
+    // Verify if object is already added
+    if (displayObject._$layer) {
+      this.removeStatic(displayObject)
+    }
+
+    // Register
+    displayObject._$layer = layerName
+    this._statics.push(displayObject)
     layer.addChild(displayObject)
 
-    // Return the entity
     return displayObject
   }
-
-  /**
-   * Removes a static texture
-   */
   removeStatic(displayObject) {
-    let layer = this._layers[displayObject._$layer]
-    layer.removeChild(displayObject)
+    if (displayObject._$layer) {
+      let layer = this._layers[displayObject._$layer]
+      layer.removeChild(displayObject)
+    }
+
+    this._statics.splice(this._statics.indexOf(displayObject), 1)
   }
 
-  /**
-   * Adds a tween to the scene.
-   * 
-   * The scene will control the update and completition of the tweens.
-   *
-   * @param {Tween} tween - The tween object.
-   * @param {Boolean} override - If true, it will remove all tween registered 
-   *        on the same object. Defaults to false.
-   */
-  addTween(tween, override=false) {
-    if (!tween) throw new Error(`Trying to add an invalid tween.`)
-
-    // Reset the tween
-    tween.reset()
-
-    // Shortcut for the target
-    let target = tween.target
-
-    // Creates the tween ist at the target
-    if (!target._$tweens) {
-      target._$tweens = []
+  addLayer(name, layer) {
+    // Error if duplicated layer
+    if (this._layers[name]) {
+      throw new Error(`Duplicated layer name "${name}".`)
     }
 
-    // Remove the tweens from the target if override is true
-    if (override) {
-      for (let i=0; i<target._$tweens.length; i++) {
-        let t = target._$tweens[i]
-        t.stop()
-        this._tweens.splice(this._tweens.indexOf(t), 1)
-      }
-      target._$tweens = []
+    // Create default container if there is no layer
+    if (!layer) {
+      layer = new PIXI.Container()
     }
 
-    // Add the tween to the scene and target
-    this._tweens.push(tween)
-    tween.target._$tweens.push(tween)
+    // Register layer
+    this._layers[name] = layer
+    this._world.addChild(layer)
+
+    return layer
+  }
+  getLayer(name) {
+    return this._layers[name]
   }
 
-  /**
-   * Removes a tween from this scene (and the object).
-   * 
-   * @param {Tween} tween - The tween object.
-   */
-  removeTween(tween) {
-    if (!tween) throw new Error(`Trying to remove an invalid tween.`)
+  addSystem(system) {
+    let id = $.getClassId(system)
 
-    // Stops the tween
-    tween.stop()
-
-    // Shortcut for the target
-    let target = tween.target
-
-    // Removes the tween from the target
-    if (target._$tweens) {
-      target._$tweens.splice(target._$tweens.indexOf(tween), 1)
+    // Error if duplicated system
+    if (this._systems[id]) {
+      throw new Error(`Trying to add a duplicated system!`)
     }
 
-    // Removes the tween from the scene
-    this._tweens.splice(this._tweens.indexOf(tween), 1)
+    // Setup system
+    system.setup(this.game, this)
+
+    // Register
+    this._systems[id] = system
+
+    return system
+  }
+  addEventSheet(eventSheet) {
+    let id = $.getClassId(eventSheet)
+
+    // Error if duplicated eventSheet
+    if (this._eventSheets[id]) {
+      throw new Error(`Trying to add a duplicated event sheet!`)
+    }
+
+    // Setup eventSheet
+    eventSheet.setup(this.game, this)
+
+    // Register
+    this._eventSheets[id] = eventSheet
+
+    return eventSheet
   }
 
-  /**
-   * Same as update, but for internal uses.
-   */
-  _update(delta) {
-    for (let k in this.systems) {
-      this.systems[k].update(delta, this._mapSystemToEntities[k])
-    }
+  _update(delta) {}
 
-    for (let i=this._tweens.length-1; i>=0; i--) {
-      let t = this._tweens[i]
-      t.update(delta)
-
-      if (t.hasFinished()) {
-        this._tweens.splice(i, 0)
-      }
-    }
-  }
 }

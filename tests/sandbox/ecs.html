@@ -45,21 +45,37 @@
           console.log('start function')
         },
         'update': function(e) {
-          console.log('update function')
+          // console.log('update function')
         }
       }
     })
 
-    sk.scene({
-      name: 'base',
+    const BaseScene = sk.scene({
       initialize: function() {
-        this._systems = {0:new UpdateSystem()}
-        this._systems[0].setup(this.game, this)
+        this.addLayer('background')
+        this.addLayer('objects')
+        this.addLayer('foreground')
+        this.addLayer('ui')
 
-        this.entity = this.addEntity(new ButtonEntity())
+        this.addSystem(new UpdateSystem())
+        this.addEventSheet(new EventSheet())
 
-        let e = new EventSheet()
-        e.setup(this.game, this)
+        let entity = this.addEntity(new ButtonEntity())
+        this.removeEntity(entity)
+
+        let s = new sk.display.Sprite()
+        s.texture = game.resources.get('bug')
+        s.position = {x:200, y:200}
+        this.addStatic(s)
+
+        s = new sk.display.Sprite()
+        s.texture = game.resources.get('bug')
+        s.anchor = {x:.5, y:.5}
+        s.position = {x:100, y:100}
+        s.rotation = Math.PI
+        this.addStatic(s, 'ui')
+
+        this.removeStatic(s)
       },
     })
 
@@ -68,12 +84,15 @@
       display: {width: 300, height: 400},
     }
     let game = new sk.Game(config)
+    let scene
 
     // Starting ---------------------------------------------------------------
     game.resources.addTexture('bug', '../features/assets/textures/ladybug.png')
     game.resources.load()
     game.addEventListener('start', () => {
-      game.scenes.play('base')
+      scene = new BaseScene(game)
+      game.scenes.play(scene)
+
     })
 
   </script>
