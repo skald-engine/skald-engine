@@ -273,6 +273,11 @@ export default class Scene extends EventEmitter {
     return eventSheet
   }
 
-  _update(delta) {}
+  _update(delta) {
+    // Update systems
+    for (let k in this._systems) {
+      this._systems[k].update(this._mapSystemToEntities[k], delta)
+    }
+  }
 
 }

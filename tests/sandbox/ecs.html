@@ -37,6 +37,9 @@
       check: function(entity) {
         return entity.hasTag('updatable')
       },
+      update: function(entities, delta) {
+        // console.log('Updating system with '+entities.length+' entities.')
+      }
     })
 
     const EventSheet = sk.eventSheet({
@@ -76,11 +79,18 @@
 
         this.removeStatic(s)
       },
+      methods: {
+        emit: function(e) {
+          // console.log('emitting:', e)
+          sk.core.Scene.prototype.emit.call(this, e)
+        }
+      }
     })
 
     // Game initialization ----------------------------------------------------
     const config = {
       display: {width: 300, height: 400},
+      logger: {level: 'trace'}
     }
     let game = new sk.Game(config)
     let scene
