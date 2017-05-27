@@ -12,10 +12,9 @@
 
   <script>
     // Configuration ----------------------------------------------------------
-    sk.entity({
-      name: 'hero',
-      display: 'animatedSprite',
+    const Hero = sk.entity({
       initialize: function() {
+        this.display = new sk.display.AnimatedSprite()
         this.display.configure({
           spriteSheet: game.resources.get('zombie'),
           position: {
@@ -29,11 +28,9 @@
       }
     })
 
-
-    sk.scene({
-      name: 'base',
+    const BaseScene = sk.scene({
       initialize: function() {
-        this.hero = this.addEntity('hero')
+        this.hero = this.addEntity(new Hero())
       },
 
       update: function(delta) {
@@ -67,14 +64,13 @@
 
     // Game initialization ----------------------------------------------------
     let game = new sk.Game({
-      startScene: 'base',
       resources: {basePath: '../../assets/'},
       display: {width: 400, height: 400},
       logger: {level: 'trace'},
       manifest: [
         {id: 'zombie', type: 'spriteSheet', url: 'spritesheets/zombie_walking.json'},
       ]
-    })
+    }, BaseScene)
   </script>
 
 </body>

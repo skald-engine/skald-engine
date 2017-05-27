@@ -19,11 +19,10 @@
 
   <script>
     // Configuration ----------------------------------------------------------
-    sk.scene({
-      name: 'base',
+    const BaseScene = sk.scene({
       initialize: function() {
         let half = game.display.halfWidth
-        this.addStatic('sprite')
+        this.addStatic(new sk.display.Sprite())
             .configure({
               texture: game.resources.get('sprite'),
               position: {x:half, y:100},
@@ -31,14 +30,14 @@
               scale: {x:0.4, y:0.4}
             })
 
-        this.addStatic('text')
+        this.addStatic(new sk.display.Text())
             .configure({
               text: 'The little Zombie',
               position: {x:half, y:170},
               anchor: {x:0.5, y:0.5}
             })
 
-        this.addStatic('graphics')
+        this.addStatic(new sk.display.Graphics())
             .configure({
               position: {x:half, y:210}
             })
@@ -48,7 +47,7 @@
             .drawCircle(40, 0, 5)
             .endFill()
 
-        this.addStatic('bitmapText')
+        this.addStatic(new sk.display.BitmapText())
             .configure({
               text: 'ABC', 
               position: {x:half, y:260},
@@ -56,7 +55,7 @@
               font: 'wing'
             })
 
-        this.animated = this.addStatic('animatedSprite')
+        this.animated = this.addStatic(new sk.display.AnimatedSprite())
             .configure({
               spriteSheet: game.resources.get('samurai'),
               position: {x:half, y:360},
@@ -72,7 +71,6 @@
 
     // Game initialization ----------------------------------------------------
     let game = new sk.Game({
-      startScene: 'base',
       resources: {basePath: '../../assets/'},
       display: {width: 300, height: 450},
       logger: {level: 'trace'},
@@ -81,7 +79,7 @@
         {id: 'wing', type: 'bitmapFont', url: 'bitmapfonts/wing.xml'},
         {id: 'samurai', type: 'spriteSheet', url: 'spritesheets/samurai_idle.json'},
       ]
-    })
+    }, BaseScene)
 
   </script>
 

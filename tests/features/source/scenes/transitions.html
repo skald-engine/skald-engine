@@ -28,11 +28,11 @@
     const R_DURATION = () => R_INT(1500)+300
     const R_DIR = () => sk.DIRECTION.values()[R_INT(8)]
     const R_EASE = () => [E.backIn, E.backOut, E.backInOut, E.bounceIn, E.bounceOut, E.bounceInOut, E.circIn, E.circOut, E.circInOut, E.elasticIn, E.elasticOut, E.elasticInOut, E.quardIn, E.quardOut, E.quardInOut, E.sineIn, E.sineOut, E.sineInOut, E.linear][R_INT(19)]
-    const play = t => game.scenes.play('base', t)
+    const play = t => game.scenes.play(new BaseScene(game), t)
 
 
     // Configuration ----------------------------------------------------------
-    sk.scene({
+    const BaseScene = sk.scene({
       name: 'base',
       initialize: function() {
         let displayObject = new sk.display.Graphics()
@@ -43,17 +43,15 @@
           .beginFill(Math.round(Math.random()*0xFFFFFF))
           .drawCircle(game.display.width/2, game.display.height/2, 100)
           .endFill()
-
         this.addStatic(displayObject)
       },
     })
 
     // Game initialization ----------------------------------------------------
     let game = new sk.Game({
-      startScene: 'base',
       display: {width: 400, height: 400, backgroundColor: '#000000'},
       logger: {level: 'trace'},
-    })
+    }, BaseScene)
   </script>
 
 </body>

@@ -12,8 +12,7 @@
 
   <script>
     // Configuration ----------------------------------------------------------
-    sk.component({
-      name: 'vel',
+    const VelocityComponent = sk.component({
       data: {
         speed: 50,
         directionX: Math.random()*2 - 1,
@@ -29,15 +28,14 @@
       }
     })
 
-    sk.system({
-      name: 'bounce',
+    const BounceSystem = sk.system({
       check: function(entity) {
-        return entity.has('vel')
+        return entity.hasComponent(VelocityComponent)
       },
-      update: function(delta, entities) {
+      update: function(entities, delta) {
         for (let i=0; i<entities.length; i++) {
           let entity = entities[i]
-          let vel = entity.c.vel
+          let vel = entity.getComponent(VelocityComponent)
 
           let width = entity.display.width*entity.display.scale.x
           let height = entity.display.height*entity.display.scale.y
@@ -66,15 +64,14 @@
       }
     })
 
-    sk.system({
-      name: 'colorize',
+    const ColorizeSystem = sk.system({
       check: function(entity) {
-        return entity.has('vel')
+        return entity.hasComponent(VelocityComponent)
       },
-      update: function(delta, entities) {
+      update: function(entities, delta) {
         for (let i=0; i<entities.length; i++) {
           let entity = entities[i]
-          let vel = entity.c.vel
+          let vel = entity.getComponent(VelocityComponent)
 
           if (this.game.mouse.isPressed(sk.BUTTON.LEFT)) {
             entity.display.tint = Math.round(Math.random()*16777215)
@@ -86,11 +83,9 @@
       }
     })
 
-    sk.entity({
-      name: 'hero',
-      display: 'animatedSprite',
-      components: ['vel'],
+    const Hero = sk.entity({
       initialize: function() {
+        this.display = new sk.display.AnimatedSprite()
         this.display.configure({
           spriteSheet: game.resources.get('zombie'),
           position: {
@@ -100,15 +95,18 @@
           anchor: {x:0.5, y:0.5},
           scale: {x:0.4, y:0.4}
         })
+
+        this.addComponent(new VelocityComponent())
       }
     })
 
 
-    sk.scene({
-      name: 'base',
-      systems: ['bounce', 'colorize'],
+    const BaseScene = sk.scene({
       initialize: function() {
-        this.hero = this.addEntity('hero')
+        this.addSystem(new BounceSystem())
+        this.addSystem(new ColorizeSystem())
+
+        this.hero = this.addEntity(new Hero())
       },
 
       update: function(delta) {
@@ -118,14 +116,13 @@
 
     // Game initialization ----------------------------------------------------
     let game = new sk.Game({
-      startScene: 'base',
       resources: {basePath: '../../assets/'},
       display: {width: 400, height: 400},
       logger: {level: 'trace'},
       manifest: [
         {id: 'zombie', type: 'spriteSheet', url: 'spritesheets/zombie_walking.json'},
       ]
-    })
+    }, BaseScene)
   </script>
 
 </body>

@@ -1,3 +1,2 @@
-import PreloadDefault from 'sk/scenes/PreloadDefault'
+export {default as PreloadDefault} from 'sk/scenes/PreloadDefault'
 
-export {PreloadDefault}

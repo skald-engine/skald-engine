@@ -9,7 +9,7 @@
 // }
 
 
-import Tween from 'sk/utils/tweens/Tween'
+import Tween from 'sk/utils/tasks/Tween'
 import * as utils from 'sk/utils'
 
 /**

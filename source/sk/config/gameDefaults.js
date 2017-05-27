@@ -5,8 +5,6 @@ export default {
   autoStart    : true,
   autoUpdate   : true,
   autoPreload  : true,
-  startScene   : null,
-  preloadScene : 'skald.scenes.preloadDefault',
   manifest     : [],
 
   logger: {

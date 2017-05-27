@@ -4,11 +4,6 @@
 export let audioSystems = []
 
 /**
- * Map of registered scenes.
- */
-export let scenes = {}
-
-/**
  * Map of registered logger handlers.
  */
 export let loggerHandlers = {}

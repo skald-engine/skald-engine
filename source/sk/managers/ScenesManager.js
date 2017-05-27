@@ -70,15 +70,11 @@ export default class ScenesManager extends Manager {
    * @param {String|Scene} sceneOrId - Scene or ID for a registered scene.
    * @param {Transition} [transition] - The transition object.
    */
-  play(sceneOrId, transition) {
-    if (typeof sceneOrId === 'string') {
-      sceneOrId = this.game.create.scene(sceneOrId)
-    }
-
-    this._validateScene(sceneOrId)
+  play(scene, transition) {
+    this._validateScene(scene)
     this._validateTransition(transition)
 
-    this._startPlay(sceneOrId, transition)
+    this._startPlay(scene, transition)
   }
 
   /**
@@ -87,19 +83,15 @@ export default class ScenesManager extends Manager {
    * @param {String|Scene} sceneOrId - Scene or ID for a registered scene.
    * @param {Transition} [transition] - The transition object.
    */
-  push(sceneOrId, transition) {
+  push(scene, transition) {
     if (this._next) {
       throw new Error(`Cannot push a scene during a transition of the base`+
                       `scene (i.e., executing scenes.play action).`)
     }
 
-    if (typeof sceneOrId === 'string') {
-      sceneOrId = this.game.create.scene(sceneOrId)
-    }
-
-    this._validateScene(sceneOrId)
+    this._validateScene(scene)
     this._validateTransition(transition)
-    this._startPush(sceneOrId, transition)
+    this._startPush(scene, transition)
   }
 
   /**
@@ -180,7 +172,7 @@ export default class ScenesManager extends Manager {
     this._game.events.dispatch('scenes.enter', this._next)
 
     // Only apply transition if there is a current scene and a transition
-    if (this._current && transition) { 
+    if (this._current && transition) {
       // setup transition
       transition.setup(this.game, this._currentStage, this._nextStage)
       this._transitions.push({

@@ -9,8 +9,6 @@ export default {
     'autoUpdate',
     'autoPreload',
     'autoStart',
-    'startScene',
-    'preloadScene',
     'manifest',
     'logger',
     'managers',
@@ -32,8 +30,6 @@ export default {
     autoUpdate   : { type: 'boolean' },
     autoPreload  : { type: 'boolean' },
     autoStart    : { type: 'boolean' },
-    startScene   : { type: ['string', 'null'] },
-    preloadScene : { type: ['string', 'null'] },
     manifest     : { type: 'array' },
     
     // Logger

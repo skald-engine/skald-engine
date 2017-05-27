@@ -2,6 +2,8 @@ import EventEmitter from 'sk/core/EventEmitter'
 import gameDefaults from 'sk/config/gameDefaults'
 import gameSchema from 'sk/config/gameSchema'
 
+import PreloadDefault from 'sk/scenes/PreloadDefault'
+
 import {RENDERER} from 'sk/constants'
 
 import * as utils from 'sk/utils'
@@ -20,13 +22,14 @@ export default class Game extends EventEmitter {
    * 
    * @param {Object} config - The initial configuration of the game.
    */
-  constructor(config) {
+  constructor(config, startScene=null, preloadScene=PreloadDefault) {
     super()
-
     this._renderer = null
     this._stage = null
     this._parent = null
     this._config = null
+    this._startScene = startScene
+    this._preloadScene = preloadScene
     this._plugins = {}
     this._autoUpdate = true
 
@@ -192,13 +195,13 @@ export default class Game extends EventEmitter {
   /**
    * Initialize all elements of the game.
    */
-  _initialize(config, manifest) {
+  _initialize(config) {
     utils.profiling.begin('boot')
     this._initializeConfig(config)
     this._initializeLogger()
     this._initializeRenderer()
     this._initializeManagers()
-    this._initializeLoader(this.config.manifest)
+    this._initializeLoader()
     this._initializeGame()
     utils.profiling.end('boot')
   }
@@ -326,8 +329,8 @@ export default class Game extends EventEmitter {
       if (this.config.autoPreload) {
 
         // If there is a preload scene, play it before start the preload
-        if (this.config.preloadScene) {
-          this.scenes.play(this.config.preloadScene)
+        if (this._preloadScene) {
+          this.scenes.play(new this._preloadScene(this))
         }
 
         // Start the loading
@@ -427,8 +430,8 @@ export default class Game extends EventEmitter {
   start() {
     this.events.dispatch('start')
 
-    if (this.config.startScene) {
-      this.scenes.play(this.config.startScene)
+    if (this._startScene) {
+      this.scenes.play(new this._startScene(this))
     }
   }
 

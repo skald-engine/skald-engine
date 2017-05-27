@@ -16,8 +16,7 @@
 
   <script>
     // Configuration ----------------------------------------------------------
-    sk.scene({
-      name: 'base',
+    const BaseScene = sk.scene({
       initialize: function() {
         let container = new PIXI.ParticleContainer(5000, {
           position : true,
@@ -64,10 +63,9 @@
 
     // Game initialization ----------------------------------------------------
     let game = new sk.Game({
-      startScene: 'base',
       display: {
-        width: 1024,
-        height: 768,
+        width: 400,
+        height: 400,
         backgroundColor: '#000000'
       },
       manifest: [
@@ -77,7 +75,7 @@
           url  : '../../assets/spritesheets/particles.json'
         },
       ]
-    })
+    }, BaseScene)
   </script>
 
 </body>
