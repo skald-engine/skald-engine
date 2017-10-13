@@ -3,12 +3,12 @@ const webpack = require('webpack')
 const MinifyPlugin = require('babel-minify-webpack-plugin')
 const rev = require('git-rev-sync')
 
-const pkg = require('./package.json')
+const pkg = require('../package.json')
 
 module.exports = {
   entry: './source/index.js',
   output: {
-    path: path.resolve(__dirname, 'build'),
+    path: path.resolve(__dirname, '../build/dist/'),
     filename: 'skald.js'
   },
 

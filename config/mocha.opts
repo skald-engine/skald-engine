@@ -1,0 +1,3 @@
+--colors
+--reporter dot
+--require tests/unit/common.js
