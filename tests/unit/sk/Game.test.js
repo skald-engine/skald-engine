@@ -1,0 +1,2 @@
+describe('/sk/Game.js', () => {
+})
