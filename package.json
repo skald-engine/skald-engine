@@ -1,0 +1,21 @@
+{
+  "name": "skald-engine",
+  "version": "2.0.0.alpha.1",
+  "description": "Personal game engine based on PixiJS",
+  "main": "source/index.js",
+  "repository": "git@github.com:skaldengine/skald-engine.git",
+  "author": "Renato Pereira <renato.ppontes@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "build": "./node_modules/.bin/webpack --config=webpack.build.config.js"
+  },
+  "dependencies": {
+    "jsen": "^0.6.6",
+    "pixi.js": "^4.5.6"
+  },
+  "devDependencies": {
+    "babel-minify-webpack-plugin": "^0.2.0",
+    "git-rev-sync": "^1.9.1",
+    "webpack": "^3.7.1"
+  }
+}
