@@ -8,7 +8,9 @@
   "license": "MIT",
   "scripts": {
     "build": "./node_modules/.bin/webpack --config=config/webpack.build.config.js",
+    "build_watch": "./node_modules/.bin/webpack --config=config/webpack.build.config.js --watch",
     "test": "./node_modules/.bin/mocha tests/unit/sk/**/*.js --opts config/mocha.opts",
+    "test_watch": "./node_modules/.bin/mocha tests/unit/sk/**/*.js --opts config/mocha.opts --watch",
     "docs": "./node_modules/.bin/esdoc -c config/esdoc.json"
   },
   "dependencies": {
@@ -18,6 +20,7 @@
   "devDependencies": {
     "babel-minify-webpack-plugin": "^0.2.0",
     "chai": "^4.1.2",
+    "copy-webpack-plugin": "^4.1.1",
     "esdoc": "^1.0.3",
     "esdoc-standard-plugin": "^1.0.0",
     "git-rev-sync": "^1.9.1",

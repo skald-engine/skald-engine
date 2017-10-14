@@ -1,6 +1,7 @@
 const path = require('path')
 const webpack = require('webpack')
 const MinifyPlugin = require('babel-minify-webpack-plugin')
+const CopyPlugin = require('copy-webpack-plugin')
 const rev = require('git-rev-sync')
 
 const pkg = require('../package.json')
@@ -17,7 +18,13 @@ module.exports = {
   },
 
   plugins: [
-    new MinifyPlugin()
+    new MinifyPlugin(),
+    new CopyPlugin(
+      [{
+        from : path.resolve(__dirname, '../build/dist/skald.js'), 
+        to   : path.resolve(__dirname, '../tests/features/build/skald.js')
+      }]
+    )
   ]
 }
 
