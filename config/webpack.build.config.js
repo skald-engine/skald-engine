@@ -14,7 +14,7 @@ module.exports = {
   },
 
   resolve: {
-    modules: [path.resolve('./source')]
+    modules: [path.resolve('./source'), path.resolve('./node_modules')]
   },
 
   plugins: [
@@ -25,7 +25,7 @@ module.exports = {
         to   : path.resolve(__dirname, '../tests/build/skald.js')
       }]
     )
-  ]
+  ],
 }
 
 const now = new Date()
