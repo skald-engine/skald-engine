@@ -1,2 +1,0 @@
-describe('/sk/Game.js', () => {
-})

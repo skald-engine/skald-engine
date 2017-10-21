@@ -18,11 +18,11 @@ module.exports = {
   },
 
   plugins: [
-    new MinifyPlugin(),
+    // new MinifyPlugin(),
     new CopyPlugin(
       [{
         from : path.resolve(__dirname, '../build/dist/skald.js'), 
-        to   : path.resolve(__dirname, '../tests/features/build/skald.js')
+        to   : path.resolve(__dirname, '../tests/build/skald.js')
       }]
     )
   ]

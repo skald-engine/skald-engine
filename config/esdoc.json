@@ -2,6 +2,9 @@
   "source": "source",
   "destination": "build/docs/api",
   "plugins": [
-    {"name": "esdoc-standard-plugin"}
+    {"name": "esdoc-standard-plugin"},
+    {"name": "./config/docs/properMembers.js"},
+    {"name": "./config/docs/forceTags.js"},
+    {"name": "./config/docs/nodeModules.js"}
   ]
 }
