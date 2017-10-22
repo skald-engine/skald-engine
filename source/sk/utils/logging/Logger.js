@@ -86,10 +86,10 @@ class Logger {
     this._level = null
 
     /** Current formatter function. */
-    this._formatter = null
+    this._formatter = loggerFormatters.level
 
     /** Current handler function. */
-    this._handler = null
+    this._handler = loggerHandlers.console
   }
 
   /**

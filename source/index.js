@@ -1,3 +1,5 @@
+require('./bootstrap')
+
 const skald = require('sk')
 
 module.exports.sk = skald
