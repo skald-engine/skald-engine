@@ -7,6 +7,8 @@ const colors = require('sk/utils/colors')
 const enumeration = require('sk/utils/enumeration')
 const isFunction = require('sk/utils/isFunction')
 const lerp = require('sk/utils/lerp')
+const deepMerge = require('sk/utils/deepMerge')
+const validateJson = require('sk/utils/validateJson')
 
 module.exports = {
   easing,
@@ -17,5 +19,7 @@ module.exports = {
   colors,
   enumeration,
   isFunction,
-  lerp
+  lerp,
+  deepMerge,
+  validateJson
 }
