@@ -1,42 +1,47 @@
 const path = require('path')
 const webpack = require('webpack')
+const rev = require('git-rev-sync')
 const MinifyPlugin = require('babel-minify-webpack-plugin')
 const CopyPlugin = require('copy-webpack-plugin')
-const rev = require('git-rev-sync')
-
+const ConcatPlugin = require('webpack-concat-plugin');
 const pkg = require('../package.json')
+
+const leftPad = (str, pad) => {
+  str = `${str}`
+  return pad.substring(0, pad.length - str.length) + str
+}
+
+const now = new Date()
+const day = leftPad(now.getDate(), '00')
+const month = now.getMonth() + 1
+const year = now.getFullYear()
 
 module.exports = {
   entry: './source/index.js',
   output: {
-    path: path.resolve(__dirname, '../build/dist/'),
-    filename: 'skald.js'
+    path     : path.resolve(__dirname, '../build/dist/'),
+    filename : 'skald.js'
   },
 
   resolve: {
-    modules: [path.resolve('./source'), path.resolve('./node_modules')]
+    modules: [
+      path.resolve('./source'),
+      path.resolve('./node_modules')
+    ]
   },
 
   plugins: [
+    new webpack.DefinePlugin({
+      'process.env': {
+        VERSION  : JSON.stringify(pkg.version),
+        REVISION : JSON.stringify(rev.short()),
+        DATE     : JSON.stringify(`${year}-${month}-${day}`),
+      }
+    }),
     // new MinifyPlugin(),
-    // new CopyPlugin(
-    //   [{
-    //     from : path.resolve(__dirname, '../build/dist/skald.js'), 
-    //     to   : path.resolve(__dirname, '../tests/build/skald.js')
-    //   }]
-    // )
   ],
 }
 
-const now = new Date()
-const day = now.getDate()
-const month = now.getMonth() + 1
-const year = now.getFullYear()
 
-new webpack.DefinePlugin({
-  'process.env': {
-    VERSION  : pkg.version,
-    REVISION : rev.short(),
-    DATE     : `${year}-${month}-${day}`,
-  }
-})
+
+

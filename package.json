@@ -7,24 +7,27 @@
   "author": "Renato Pereira <renato.ppontes@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build"       : "./node_modules/.bin/webpack --config=config/webpack.build.config.js",
-    "build_watch" : "./node_modules/.bin/webpack --config=config/webpack.build.config.js --watch",
-    "test"        : "./node_modules/.bin/mocha tests/unit/sk/**/*.js --opts config/mocha.opts",
-    "test_watch"  : "./node_modules/.bin/mocha tests/unit/sk/**/*.js --opts config/mocha.opts --watch",
-    "docs"        : "./node_modules/.bin/esdoc -c config/esdoc.json"
+    "build": "./node_modules/.bin/webpack --config=config/webpack.build.config.js",
+    "build_watch": "./node_modules/.bin/webpack --config=config/webpack.build.config.js --watch",
+    "test": "./node_modules/.bin/mocha tests/unit/sk/**/*.js --opts config/mocha.opts",
+    "test_watch": "./node_modules/.bin/mocha tests/unit/sk/**/*.js --opts config/mocha.opts --watch",
+    "docs": "./node_modules/.bin/esdoc -c config/esdoc.json",
+    "server": "./node_modules/.bin/nodemon tests/features/app.js --watch tests/features --watch build/dist --ext js,html,css"
   },
   "dependencies": {
     "jsen": "^0.6.6",
+    "nodemon": "^1.12.1",
     "pixi.js": "^4.5.6"
   },
   "devDependencies": {
     "babel-minify-webpack-plugin": "^0.2.0",
     "chai": "^4.1.2",
-    "copy-webpack-plugin": "^4.1.1",
     "esdoc": "^1.0.3",
     "esdoc-standard-plugin": "^1.0.0",
+    "express": "^4.16.2",
     "git-rev-sync": "^1.9.1",
     "mocha": "^4.0.1",
+    "nunjucks": "^3.0.1",
     "webpack": "^3.7.1"
   }
 }
