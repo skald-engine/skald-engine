@@ -2,8 +2,6 @@ const path = require('path')
 const webpack = require('webpack')
 const rev = require('git-rev-sync')
 const MinifyPlugin = require('babel-minify-webpack-plugin')
-const CopyPlugin = require('copy-webpack-plugin')
-const ConcatPlugin = require('webpack-concat-plugin');
 const pkg = require('../package.json')
 
 const leftPad = (str, pad) => {

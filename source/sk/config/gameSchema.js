@@ -11,7 +11,6 @@ module.exports = {
     'autoStart',
     'manifest',
     'logger',
-    'managers',
     'display',
     'events',
     'pool',

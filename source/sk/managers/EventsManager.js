@@ -84,8 +84,10 @@ class EventsManager extends Manager {
     }
 
     if (!target) {
-      let scene = this.game.scenes.current
-      target = scene || this.game
+      // TODO use views here
+      // let scene = this.game.scenes.current
+      // target = scene || this.game
+      target = this.game
     }
 
     event.setup(target)

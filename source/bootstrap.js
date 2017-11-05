@@ -1,4 +1,10 @@
 const sk = require('sk')
+const PIXI = require('pixi.js')
+
+// Configure PIXI
+{
+  PIXI.utils.skipHello();
+}
 
 // Configure logging
 {

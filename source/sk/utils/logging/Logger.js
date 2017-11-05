@@ -1,5 +1,5 @@
 const LOGGER_LEVEL = require('sk/constants').LOGGER_LEVEL
-const isFunction = require('sk/utils').isFunction
+const isFunction = require('sk/utils/isFunction')
 const loggerHandlers = require('sk/engine').loggerHandlers
 const loggerFormatters = require('sk/engine').loggerFormatters
 

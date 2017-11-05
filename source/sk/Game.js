@@ -17,14 +17,12 @@ class Game extends EventEmitter {
    * 
    * @param {Object} config - The initial configuration of the game.
    */
-  constructor(config, startScene=null, preloadScene=PreloadDefault) {
+  constructor(config) {
     super()
     this._renderer = null
     this._stage = null
     this._parent = null
     this._config = null
-    this._startScene = startScene
-    this._preloadScene = preloadScene
     this._plugins = {}
     this._autoUpdate = true
 
@@ -43,7 +41,6 @@ class Game extends EventEmitter {
     this._gamepads = null
     this._touches = null
     this._storage = null
-    this._physics = null
     this._resources = null
 
     this._initialize(config)
@@ -283,30 +280,28 @@ class Game extends EventEmitter {
     this._events = new managers.EventsManager(this)
     this._device = new managers.DeviceManager(this)
     this._display = new managers.DisplayManager(this)
-    this._scenes = new managers.ScenesManager(this)
-    this._resources = new managers.ResourcesManager(this)
-    this._keyboard = new managers.KeyboardManager(this)
+    // this._resources = new managers.ResourcesManager(this)
+    // this._keyboard = new managers.KeyboardManager(this)
     this._pool = new managers.PoolManager(this)
-    this._mouse = new managers.MouseManager(this)
-    this._gamepads = new managers.GamepadsManager(this)
-    this._touches = new managers.TouchesManager(this)
-    this._inputs = new managers.InputsManager(this)
-    this._sounds = new managers.SoundsManager(this)
+    // this._mouse = new managers.MouseManager(this)
+    // this._gamepads = new managers.GamepadsManager(this)
+    // this._touches = new managers.TouchesManager(this)
+    // this._inputs = new managers.InputsManager(this)
+    // this._sounds = new managers.SoundsManager(this)
     utils.profiling.end('instatiation')
 
     this._time.setup()
     this._events.setup()
     this._device.setup()
     this._display.setup()
-    this._resources.setup()
-    this._scenes.setup()
+    // this._resources.setup()
     this._pool.setup()
-    this._keyboard.setup()
-    this._mouse.setup()
-    this._gamepads.setup()
-    this._touches.setup()
-    this._inputs.setup()
-    this._sounds.setup()
+    // this._keyboard.setup()
+    // this._mouse.setup()
+    // this._gamepads.setup()
+    // this._touches.setup()
+    // this._inputs.setup()
+    // this._sounds.setup()
     utils.profiling.end('managers')
   }
 
@@ -317,26 +312,21 @@ class Game extends EventEmitter {
     utils.profiling.begin('loader')
 
     // Only if manifest have item
-    if (this.config.manifest.length) {
-      this.resources.addManifest(this.config.manifest)
+    // if (this.config.manifest.length) {
+    //   this.resources.addManifest(this.config.manifest)
 
-      // Only load manifest is auto preload is on
-      if (this.config.autoPreload) {
+    //   // Only load manifest is auto preload is on
+    //   if (this.config.autoPreload) {
 
-        // If there is a preload scene, play it before start the preload
-        if (this._preloadScene) {
-          this.scenes.play(new this._preloadScene(this))
-        }
-
-        // Start the loading
-        this.resources.load(() => {
-          // when loader finishes
-          if (this.config.autoStart) {
-            this.start()
-          }
-        })
-      }
-    }
+    //     // Start the loading
+    //     this.resources.load(() => {
+    //       // when loader finishes
+    //       if (this.config.autoStart) {
+    //         this.start()
+    //       }
+    //     })
+    //   }
+    // }
     utils.profiling.end('loader')
   }
 
@@ -375,7 +365,7 @@ class Game extends EventEmitter {
 
     // Pre update
     this.display.preUpdate(delta)
-    this.gamepads.preUpdate(delta)
+    // this.gamepads.preUpdate(delta)
     for (let name in this._plugins) {
       this._plugins[name].preUpdate(delta)
     }
@@ -390,14 +380,13 @@ class Game extends EventEmitter {
     this.events.update(delta)
     this.events.dispatch('update')
 
-    this.scenes.update(delta)
     utils.profiling.end('update')
 
     // Post update
     utils.profiling.begin('postupdate')
-    this.keyboard.postUpdate(delta)
-    this.mouse.postUpdate(delta)
-    this.gamepads.postUpdate(delta)
+    // this.keyboard.postUpdate(delta)
+    // this.mouse.postUpdate(delta)
+    // this.gamepads.postUpdate(delta)
     for (let name in this._plugins) {
       this._plugins[name].postUpdate(delta)
     }
@@ -424,10 +413,6 @@ class Game extends EventEmitter {
 
   start() {
     this.events.dispatch('start')
-
-    if (this._startScene) {
-      this.scenes.play(new this._startScene(this))
-    }
   }
 
   step(delta=0.166666) {

@@ -89,3 +89,11 @@ const MAX_CONSOLE_ITEMS = 100
     }
   }
 }
+
+
+/**
+ * Change skald default configuration
+ */
+{
+  sk.config.gameDefaults.parent = 'sk-game'
+}

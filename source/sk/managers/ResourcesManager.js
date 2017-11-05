@@ -102,13 +102,13 @@ class ResourcesManager extends Manager {
     // pixi game running in the same page.
     this._loader._afterMiddleware = []
 
-    this._loader.use(middlewares.textureMiddleware(this.game))
-    this._loader.use(middlewares.jsonMiddleware(this.game))
-    this._loader.use(middlewares.rawMiddleware(this.game))
-    this._loader.use(middlewares.audioMiddleware(this.game))
-    this._loader.use(middlewares.audioSpriteMiddleware(this.game))
-    this._loader.use(middlewares.spriteSheetMiddleware(this.game))
-    this._loader.use(middlewares.bitmapFontMiddleware(this.game))
+    // this._loader.use(middlewares.textureMiddleware(this.game))
+    // this._loader.use(middlewares.jsonMiddleware(this.game))
+    // this._loader.use(middlewares.rawMiddleware(this.game))
+    // this._loader.use(middlewares.audioMiddleware(this.game))
+    // this._loader.use(middlewares.audioSpriteMiddleware(this.game))
+    // this._loader.use(middlewares.spriteSheetMiddleware(this.game))
+    // this._loader.use(middlewares.bitmapFontMiddleware(this.game))
   }
 
   /**
