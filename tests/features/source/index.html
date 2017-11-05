@@ -1,44 +1,42 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title></title>
+{% extends "common/templates/base.html" %}
 
-  <link rel="stylesheet" href="static/css/uikit.min.css" />
-  <script type="text/javascript" src="static/skald.js"></script>
-
-</head>
-<body>
-  <div class="uk-container-small uk-margin-auto">
+{% block body %}
+  <div class="uk-container-small uk-margin-auto uk-padding-small">
     <h1 class="uk-h1">Welcome to Skald feature tests</h1>
 
-    <div class="uk-card uk-card-default uk-card-body uk-padding-small">
+    <div class="uk-card uk-card-secondary uk-card-body uk-padding-small">
       <table class="uk-table uk-table-small">
         <tbody>
           <tr>
-            <td>Version:</td>
-            <td><script>document.write(sk.VERSION)</script></td>
-          </tr>
-          <tr>
-            <td>Revision:</td>
-            <td><script>document.write(sk.REVISION)</script></td>
+            <td width="100px">Version:</td>
+            <td><strong><script>document.write(sk.VERSION)</script></strong></td>
           </tr>
           <tr>
             <td>Build Date:</td>
-            <td><script>document.write(sk.BUILD_DATE)</script></td>
+            <td><strong><script>document.write(sk.BUILD_DATE)</script></strong></td>
+          </tr>
+          <tr>
+            <td>Revision:</td>
+            <td><strong><script>document.write(sk.REVISION)</script></strong></td>
           </tr>
           <tr>
             <td>PIXI Version:</td>
-            <td><script>document.write(sk.PIXI_VERSION)</script></td>
+            <td><strong><script>document.write(sk.PIXI_VERSION)</script></strong></td>
           </tr>
         </tbody>
       </table>
     </div>
 
+    <h2 class="uk-heading-divider">Tests</h2>
+  
     <p>Select one of the tests below to start:</p>
 
-    <ul>
-      <li>Sample</li>
-    </ul>
+    <div class="uk-card uk-card-default uk-card-body uk-padding-small">
+      <ul class="uk-list uk-list-divider">
+        {% for test in all_tests %}
+          <li><a href="/test/{{test | replace('/', '--')}}">{{test}}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
   </div>
-</body>
-</html>
+{% endblock %}
