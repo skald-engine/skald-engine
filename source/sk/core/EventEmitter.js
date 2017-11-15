@@ -56,7 +56,7 @@ class EventEmitter {
    *
    * @param {Event} event - The event object.
    */
-  emit(event) {
+  dispatch(event) {
     let listeners = this._listeners[event.type]
     if (listeners) {
       for (let i=0; i<listeners.length; i++) {

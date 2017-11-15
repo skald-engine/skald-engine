@@ -4,9 +4,12 @@ const utils = require('sk/utils')
 let globalPoolId = 0
 
 /**
- * Manager for object pooling
+ * Manager for object pooling.
+ *
+ * You can use this manager to reuse a set of generic objects.
  */
 class PoolManager extends Manager {
+  
   /**
    * Constructor
    *
@@ -145,6 +148,9 @@ class PoolManager extends Manager {
     return null
   }
 
+  /**
+   * Set the class ID.
+   */
   _setId(class_) {
     let id = globalPoolId++
     class_._$poolId = id

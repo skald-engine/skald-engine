@@ -2,7 +2,15 @@
 
 {% block script %}
 <script>
-  let game = new sk.Game()
+  window.game = new sk.Game({
+    logger: {
+      level: 'trace'
+    }
+  })
+
+  game.resources.addRaw('raw', '/static/misc/sample.txt')
+  game.resources.addRaw('json', '/static/json/sample.json')
+  game.resources.load()
 </script>
 {% endblock %}
 

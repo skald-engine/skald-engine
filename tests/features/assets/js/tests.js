@@ -1,29 +1,30 @@
 const MAX_CONSOLE_ITEMS = 100
 
+
 /**
  * Replace the default console log functions.
  */
 {
-  const log = console.log
-  const info = console.info
-  const warn = console.warn
-  const error = console.error
+  const console_log = console.log
+  const console_info = console.info
+  const console_warn = console.warn
+  const console_error = console.error
 
   console.log = (...args) => {
     skf.console.log(...args)
-    log.call(this, ...args)
+    console_log.call(this, ...args)
   }
   console.info = (...args) => {
     skf.console.info(...args)
-    info.call(this, ...args)
+    console_info.call(this, ...args)
   }
   console.warn = (...args) => {
     skf.console.warn(...args)
-    warn.call(this, ...args)
+    console_warn.call(this, ...args)
   }
   console.error = (...args) => {
     skf.console.error(...args)
-    error.call(this, ...args)
+    console_error.call(this, ...args)
   }
 }
 
@@ -96,4 +97,15 @@ const MAX_CONSOLE_ITEMS = 100
  */
 {
   sk.config.gameDefaults.parent = 'sk-game'
+  sk.config.gameDefaults.logger.level = 'debug'
+}
+
+
+/**
+ * Capture global errors
+ */
+{
+  window.onerror = (message) => {
+    skf.console.error(`[unhandled error] ${message}`)
+  }
 }

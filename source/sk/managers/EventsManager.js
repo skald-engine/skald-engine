@@ -66,13 +66,12 @@ class EventsManager extends Manager {
    */
   dispatch(event, target) {
     if (typeof event !== 'string' && !(event instanceof Event)) {
-      throw new Error(`Event must be an instance of skald.events.Event class.`)
+      throw new Error(`Event must be a string or an instance of `+
+                      `skald.events.Event class.`)
     }
 
-    if (target && !(target instanceof EventEmitter)) {
-      throw new Error(`Target must be an instance of skald.EventEmitter.`)
-    }
-
+    // If the event parameter is a string, create a new Event object from pool 
+    // (if enabled)
     if (typeof event === 'string') {
       if (this._usePool) {
         let type = event
@@ -83,14 +82,10 @@ class EventsManager extends Manager {
       }
     }
 
-    if (!target) {
-      // TODO use views here
-      // let scene = this.game.scenes.current
-      // target = scene || this.game
-      target = this.game
-    }
+    // Initialize the event
+    event.setup(target || null)
 
-    event.setup(target)
+    // Queue it up
     this._eventQueue.push(event)
   }
 
@@ -119,20 +114,10 @@ class EventsManager extends Manager {
         this.game.log.trace(`(events) Dispatching event "${event.type}".`)
       }
 
-      // Emit on target
-      target.emit(event)
-      if (event.stopped) continue
-
-      // Emit on scene
-      if (target.scene && target.scene.emit) {
-        target.scene.emit(event)
-        if (event.stopped) continue
-      }
-
-      // Emit on game
-      if (target.game && target.game.emit) {
-        target.game.emit(event)
-      }
+      // TODO: should dispatch to views
+      
+      // Dispatch event on game
+      this.game.dispatch(event)
 
       // Store the event on the pool, is enabled
       if (this._usePool) {
