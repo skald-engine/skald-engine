@@ -15,7 +15,13 @@ const month = now.getMonth() + 1
 const year = now.getFullYear()
 
 module.exports = {
-  entry: './source/index.js',
+  entry: './src/index.js',
+  mode: 'development',
+
+  performance: {
+    hints: false
+  },
+
   output: {
     path     : path.resolve(__dirname, '../build/dist/'),
     filename : 'skald.js'
@@ -23,9 +29,13 @@ module.exports = {
 
   resolve: {
     modules: [
-      path.resolve('./source'),
+      path.resolve('./src'),
       path.resolve('./node_modules')
     ]
+  },
+
+  optimization: {
+    minimize: false
   },
 
   plugins: [

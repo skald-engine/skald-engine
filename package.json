@@ -1,33 +1,26 @@
 {
-  "name": "skald-engine",
-  "version": "2.0.0.alpha.1",
-  "description": "Personal game engine based on PixiJS",
-  "main": "source/index.js",
+  "name": "skald",
+  "version": "2.0.0.alpha.2",
+  "description": "Pixi.js based engine",
+  "main": "src/index.js",
   "repository": "git@github.com:skaldengine/skald-engine.git",
   "author": "Renato Pereira <renato.ppontes@gmail.com>",
   "license": "MIT",
   "scripts": {
     "build": "./node_modules/.bin/webpack --config=config/webpack.build.config.js",
     "build_watch": "./node_modules/.bin/webpack --config=config/webpack.build.config.js --watch",
-    "test": "./node_modules/.bin/mocha tests/unit/sk/**/*.js --opts config/mocha.opts",
-    "test_watch": "./node_modules/.bin/mocha tests/unit/sk/**/*.js --opts config/mocha.opts --watch",
-    "docs": "./node_modules/.bin/esdoc -c config/esdoc.json",
-    "server": "./node_modules/.bin/nodemon tests/features/app.js --watch tests/features --watch build/dist --ext js,html,css"
+    "serve": "serve .",
+    "docs": "./node_modules/.bin/esdoc -c config/esdoc.json"
   },
   "dependencies": {
-    "jsen": "^0.6.6",
-    "nodemon": "^1.12.1",
-    "pixi.js": "^4.5.6"
+    "pixi.js": "^4.7.3"
   },
   "devDependencies": {
-    "babel-minify-webpack-plugin": "^0.2.0",
-    "chai": "^4.1.2",
-    "esdoc": "^1.0.3",
+    "babel-minify-webpack-plugin": "^0.3.1",
+    "esdoc": "^1.1.0",
     "esdoc-standard-plugin": "^1.0.0",
-    "express": "^4.16.2",
-    "git-rev-sync": "^1.9.1",
-    "mocha": "^4.0.1",
-    "nunjucks": "^3.0.1",
-    "webpack": "^3.7.1"
+    "git-rev-sync": "^1.12.0",
+    "webpack": "^4.6.0",
+    "webpack-cli": "^2.0.15"
   }
 }
