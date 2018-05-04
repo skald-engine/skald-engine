@@ -1,3 +1,4 @@
+const $ = require('sk/$')
 const Manager = require('sk/core/Manager')
 const Signal = require('sk/core/Signal')
 
@@ -6,6 +7,13 @@ class SignalsManager extends Manager {
     super()
 
     this._queue = []
+    this._updateSignal = null
+  }
+
+  setup() {
+    let injector = $.getInjector()
+
+    this._updateSignal = injector.resolve('updateSignal')
   }
 
   schedule(signal) {
@@ -24,6 +32,8 @@ class SignalsManager extends Manager {
       let signal = this._queue.shift()
       signal._emit()
     }
+
+    this._updateSignal.dispatch()
   }
 }
 

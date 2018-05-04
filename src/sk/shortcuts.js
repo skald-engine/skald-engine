@@ -13,6 +13,10 @@ module.exports.signal = (id, target) => {
   $.getInjector().registerSignal(id, target)
 }
 
+module.exports.view = (id, target) => {
+  $.getInjector().registerView(id, target)
+}
+
 module.exports.factory = (id, target, stateless=false) => {
   $.getInjector().registerFactory(id, target, stateless)
 }

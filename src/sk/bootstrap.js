@@ -19,6 +19,7 @@
   sk.manager('signals', managers.SignalsManager)
   sk.manager('display', managers.DisplayManager)
   sk.manager('device', managers.DeviceManager)
+  sk.manager('views', managers.ViewsManager)
 }
 
 // Register services
@@ -59,4 +60,10 @@
   sk.signal('leaveWrongOrientationSignal', signals.LeaveWrongOrientationSignal)
   sk.signal('fullscreenChangeSignal', signals.FullscreenChangeSignal)
   sk.signal('orientationChangeSignal', signals.OrientationChangeSignal)
+
+  sk.signal('viewAddedSignal', signals.ViewAddedSignal)
+  sk.signal('viewEnterSignal', signals.ViewEnterSignal)
+  sk.signal('viewRemovedSignal', signals.ViewRemovedSignal)
+
+  sk.signal('updateSignal', signals.UpdateSignal)
 }

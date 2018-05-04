@@ -2,6 +2,7 @@ const utils = require('sk/utils')
 const Manager = require('sk/core/Manager')
 const Service = require('sk/core/Service')
 const Signal = require('sk/core/Signal')
+const View = require('sk/core/View')
 
 TYPES = utils.enumeration({
   MANAGER   : 'managers',
@@ -9,7 +10,8 @@ TYPES = utils.enumeration({
   SIGNAL    : 'signals',
   PROVIDER  : 'providers',
   FACTORY   : 'factories',
-  INSTANCE  : 'instances'
+  INSTANCE  : 'instances',
+  VIEW      : 'views',
 })
 
 class InjectionTarget {
@@ -24,7 +26,7 @@ class InjectionTarget {
     if (this.type === TYPES.PROVIDER) {
       return this.target()
     
-    } else if (this.type === TYPES.INSTANCE) {
+    } else if (this.type === TYPES.INSTANCE || this.type === TYPES.VIEW) {
       return this.target
     
     } else {
@@ -44,6 +46,7 @@ class Injector {
     this.factories = []
     this.instances = []
     this.providers = []
+    this.views = []
 
     this.container = {}
   }
@@ -85,6 +88,16 @@ class Injector {
     } 
 
     this._register(id, target, TYPES.SIGNAL)
+  }
+  registerView(id, target) {
+    if (!target || !target.prototype || !(target.prototype instanceof View)) {
+      throw new Error(
+        `Invalid type for view "${id}". ` +
+        `A view must be a class inheriting from sk.core.View.`
+      )
+    }
+    
+    this._register(id, target, TYPES.VIEW)
   }
   registerFactory(id, target, stateless=false) {
     this._register(id, target, TYPES.FACTORY, stateless)
