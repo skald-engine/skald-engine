@@ -19,6 +19,7 @@ class DisplayManager extends Manager {
     this._renderer = null
     this._config = null
     this._stage = null
+    this._profile = null
 
     // internal due to getter access
     this._width = null
@@ -217,6 +218,7 @@ class DisplayManager extends Manager {
     this._logger = injector.resolve('logger')
     this._renderer = injector.resolve('renderer')
     this._stage = injector.resolve('stage')
+    this._profile = injector.resolve('profile')
     this._resizeSignal = injector.resolve('resizeSignal')
     this._enterWrongOrientationSignal = injector.resolve('enterWrongOrientationSignal')
     this._leaveWrongOrientationSignal = injector.resolve('leaveWrongOrientationSignal')
@@ -225,12 +227,15 @@ class DisplayManager extends Manager {
     this._fullscreenChanceSignal = injector.resolve('fullscreenChangeSignal')
     this._orientationChanceSignal = injector.resolve('orientationChangeSignal')
 
+
+    this._profile.begin('display')
     this._setupVariables()
     this._setupFullscreen()
     this._setupEvents()
 
     this._checkOrientation()
     this._doResize()
+    this._profile.end('display')
   }
 
   /**

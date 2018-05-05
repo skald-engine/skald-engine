@@ -1,9 +1,12 @@
+const $ = require('sk/$')
 const Manager = require('sk/core/Manager')
 const utils = require('sk/utils')
 
 class DeviceManager extends Manager {
   constructor() {
     super()
+
+    this._profile = null
 
     this._userAgent = null
     this._browser = null
@@ -357,6 +360,9 @@ class DeviceManager extends Manager {
    * be called directly.
    */
   setup() {
+    this._profile = $.getInjector().resolve('profile')
+
+    this._profile.begin('device')
     this._userAgent = navigator.userAgent
 
     this._getBrowser()
@@ -367,9 +373,11 @@ class DeviceManager extends Manager {
 
     this._setPlatformShortcuts()
     this._setFeaturesShortcuts()
+    this._profile.end('device')
   }
 
   _getBrowser() {
+    this._profile.begin('getBrowser')
     let ua = this._userAgent
     let guess = BROWSERS.find(guess => {
       return RegExp('\\b'+guess.pattern+'\\b', 'i').exec(ua)
@@ -379,9 +387,11 @@ class DeviceManager extends Manager {
       this._browser = guess.label
       this._getBrowserVersion(guess)
     }
+    this._profile.end('getBrowser')
   }
 
   _getBrowserVersion(guess) {
+    this._profile.begin('getBrowserVersion')
     let ua = this._userAgent
     let string = RegExp('\\b'+guess.pattern+'(?:/[\\d.]+|[ \\w.]*)', 'i').exec(ua)[0]
     let version = null
@@ -392,18 +402,22 @@ class DeviceManager extends Manager {
     }
 
     this._browserVersion = version
+    this._profile.end('getBrowserVersion')
   }
 
   _getLayoutEngine() {
+    this._profile.begin('getLayoutEngine')
     let ua = this._userAgent
     let guess = LAYOUTS.find(guess => {
       return RegExp('\\b'+guess.pattern+'\\b', 'i').exec(ua)
     })
     
     if (guess) { this._browserLayout = guess.label }
+    this._profile.end('getLayoutEngine')
   }
 
   _getOS() {
+    this._profile.begin('getOS')
     let ua = this._userAgent
     let guess = OSS.find(guess => {
       return RegExp('\\b'+guess.pattern+'(?:/[\\d.]+|[ \\w.]*)', 'i').test(ua)
@@ -413,9 +427,11 @@ class DeviceManager extends Manager {
       this._os = guess.label
       this._getOSVersion(guess)
     }
+    this._profile.end('getOS')
   }
 
   _getOSVersion(guess) {
+    this._profile.begin('getOSVersion')
     let ua = this._userAgent
     let os = this._os
     let string = RegExp('\\b'+guess.pattern+'(?:/[\\d.]+|[ \\w.]*)', 'i').exec(ua)[0]
@@ -435,9 +451,11 @@ class DeviceManager extends Manager {
     }
 
     this._osVersion = version
+    this._profile.end('getOSVersion')
   }
 
   _getDevice() {
+    this._profile.begin('getDevice')
     let ua = this._userAgent
     let guess = DEVICES.find(guess => {
       return (
@@ -448,9 +466,11 @@ class DeviceManager extends Manager {
     })
 
     if (guess) { this._device = guess.label }
+    this._profile.end('getDevice')
   }
 
   _getManufacturer() {
+    this._profile.begin('getManufacturer')
     let ua = this._userAgent
     let device = this._device
     let guess = MANUFACTURERS.find(guess => {
@@ -460,9 +480,11 @@ class DeviceManager extends Manager {
     })
 
     if (guess) { this._manufacturer = guess.label }
+    this._profile.end('getManufacturer')
   }
 
   _setPlatformShortcuts() {
+    this._profile.begin('setPlatformShortcuts')
     this._chrome = matchAny(this._browser, 'Chrome', 'Chrome Mobile')
     this._safari = matchAny(this._browser, 'Safari')
     this._edge = matchAny(this._browser, 'Edge')
@@ -484,15 +506,19 @@ class DeviceManager extends Manager {
                                          'Xbox 360', 'Xbox')
     this._desktop = (this._windows||this._linux||this._macOS)&&!this._console
     this._mobile = !this._desktop && !this._console
+    this._profile.end('setPlatformShortcuts')
   }
 
   _setFeaturesShortcuts() {
+    this._profile.begin('checkFeatures')
     this._checkAudio()
     this._checkVideo()
     this._checkFeatures()
+    this._profile.end('checkFeatures')
   }
 
   _checkAudio() {
+    this._profile.begin('checkAudio')
     try {
       let element = document.createElement('audio')
       let canPlay = type => !!element.canPlayType(type).replace(/^no$/, '')
@@ -512,9 +538,11 @@ class DeviceManager extends Manager {
         this._dolby = canPlay('audio/mp4; codecs="ec-3"') && this._edge
       }
     } catch(e) {}
+    this._profile.end('checkAudio')
   }
 
   _checkVideo() {
+    this._profile.begin('checkVideo')
     try {
       let element = document.createElement('video')
       let canPlay = type => !!element.canPlayType(type).replace(/^no$/, '')
@@ -528,9 +556,11 @@ class DeviceManager extends Manager {
         this._hlsVideo = canPlay('application/x-mpegURL; codecs="avc1.42E01E"')
       }
     } catch(e) {}
+    this._profile.end('checkVideo')
   }
 
   _checkFeatures() {
+    this._profile.begin('checkOtherFeatures')
     // vibration
     try {
       navigator.vibrate = navigator.vibrate ||
@@ -592,6 +622,7 @@ class DeviceManager extends Manager {
                 !!window.FileList &&
                 !!window.Blob
     this._pixelRatio = window.devicePixelRatio || 1;
+    this._profile.end('checkOtherFeatures')
   }
 }
 

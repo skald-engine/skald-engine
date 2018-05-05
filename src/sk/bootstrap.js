@@ -30,6 +30,7 @@
   sk.service('config', services.ConfigService)
   sk.service('logger', services.LoggerService)
   sk.service('resources', services.ResourcesService)
+  sk.service('profile', services.ProfileService)
 }
 
 // Register instances

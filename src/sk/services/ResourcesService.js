@@ -18,6 +18,7 @@ class ResourcesService extends Service {
 
     this._config = null
     this._logger = null
+    this._profile = null
   }
 
   static registerMiddleware(type, middleware) {
@@ -53,26 +54,32 @@ class ResourcesService extends Service {
 
     this._config = injector.resolve('config')
     this._logger = injector.resolve('logger')
+    this._profile = injector.resolve('profile')
 
+    this._profile.begin('resources')
     this._setupLoader()
     this._setupMiddlewares()
     this._setupEvents()
+    this._profile.end('resources')
   }
 
   /**
    * Setup the PIXI loader.
    */
   _setupLoader() {
+    this._profile.begin('setupLoader')
     let basePath = this._config.get('resources.base_path', '')
     let maxConcurrency = this._config.get('resources.max_concurrency')
 
     this._loader = new pixi.loaders.Loader(basePath, maxConcurrency)
+    this._profile.end('setupLoader')
   }
 
   /**
    * Setup the loader middlewares.
    */
   _setupMiddlewares() {
+    this._profile.begin('setupMiddlewares')
     // remove the current middlewares from the pixi loader. We don't change 
     // the Load._pixiMiddleware variable to avoid any conflit with non-skald 
     // pixi game running in the same page.
@@ -109,16 +116,19 @@ class ResourcesService extends Service {
         next()
       })
     }
+    this._profile.end('setupMiddlewares')
   }
 
   /**
    * Configure the PIXI loader events.
    */
   _setupEvents() {
+    this._profile.begin('setupEvents')
     this._loader.on('progress', (l, r) => this._onProgress(l, r))
     this._loader.on('error', (e, l, r) => this._onError(e, l, r))
     this._loader.on('load', (l, r) => this._onLoad(l, r))
     this._loader.on('complete', () => this._onComplete())
+    this._profile.end('setupEvents')
   }
 
   /**
