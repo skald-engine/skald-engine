@@ -41,30 +41,48 @@ class Engine {
   }
 
   _update() {
+    // this._profile.begin('update')
     requestAnimationFrame(() => this._update())
 
     let injector = this.injector
 
+    // this._profile.begin('preUpdate')
     for (let i in injector.managers) {
       injector.managers[i].preUpdate()
     }
+    // this._profile.end('preUpdate')
+
+    // this._profile.begin('update')
     for (let i in injector.managers) {
       injector.managers[i].update()
     }
+    // this._profile.end('update')
+
+
+    // this._profile.begin('postUpdate')
     for (let i in injector.managers) {
       injector.managers[i].postUpdate()
     }
+    // this._profile.end('postUpdate')
 
+    // this._profile.begin('preDraw')
     for (let i in injector.managers) {
       injector.managers[i].preDraw()
     }
+    // this._profile.end('preDraw')
 
+    // this._profile.begin('draw')
     injector.resolve('renderer')
             .render(injector.resolve('stage'))
+    // this._profile.end('draw')
 
+    // this._profile.begin('postDraw')
     for (let i in injector.managers) {
       injector.managers[i].postDraw()
     }
+    // this._profile.end('postDraw')
+
+    // this._profile.end('update')
   }
 }
 

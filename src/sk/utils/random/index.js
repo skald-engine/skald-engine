@@ -4,4 +4,5 @@ module.exports = {
   inclusive : require('sk/utils/random/inclusive'),
   choose    : require('sk/utils/random/choose'),
   uuid      : require('sk/utils/random/uuid'),
+  color     : require('sk/utils/random/color'),
 }

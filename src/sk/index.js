@@ -1,5 +1,9 @@
 require('sk/bootstrap')
 
+const $ = require('sk/$')
+const constants = require('sk/constants')
+const shortcuts = require('sk/shortcuts')
+
 const core = require('sk/core')
 const utils = require('sk/utils')
 const config = require('sk/config')
@@ -10,10 +14,7 @@ const services = require('sk/services')
 const middlewares = require('sk/middlewares')
 const providers = require('sk/providers')
 const signals = require('sk/signals')
-const $ = require('sk/$')
 
-const constants = require('sk/constants')
-const shortcuts = require('sk/shortcuts')
 
 module.exports.core = core
 module.exports.utils = utils

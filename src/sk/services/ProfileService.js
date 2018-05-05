@@ -10,12 +10,16 @@ class Profile {
     this.maximum = 0
   }
 
+  reset() {
+    this.current = performance.now()
+  }
+
   update() {
-    let time = performance.now() - this.current
+    let delta = performance.now() - this.current
     this.executions++
-    this.average += (time - this.average)/this.executions
-    this.minimum = this.executions === 1? time : Math.min(this.minimum, time)
-    this.maximum = this.executions === 1? time : Math.max(this.maximum, time)
+    this.average += (delta - this.average)/this.executions
+    this.minimum = this.executions === 1? delta : Math.min(this.average, delta)
+    this.maximum = this.executions === 1? delta : Math.max(this.average, delta)
   }
 }
 
@@ -83,6 +87,7 @@ class ProfileService extends Service {
     if (!this._profiles[fullId]) {
       this._profiles[fullId] = new Profile(fullId)
     }
+    this._profiles[fullId].reset()
   }
 
   /**
