@@ -1,3 +1,5 @@
+const COLOR = require('sk/constants/colors').COLOR
+
 module.exports = {
   'project' : 'skald_name',
   'version' : '1.0.0',
@@ -17,7 +19,7 @@ module.exports = {
   'display.force_orientation'     : null,
   'display.scale_mode'            : 'noscale',
   'display.fullscreen_scale_mode' : 'noscale',
-  'display.background_color'      : '#383838',
+  'display.background_color'      : COLOR.SK_BLUE,
   'display.resolution'            : 1,
   'display.antialias'             : true,
   'display.transparent'           : false, 

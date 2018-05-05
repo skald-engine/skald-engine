@@ -1,9 +1,6 @@
-const enumeration = require('sk/utils/enumeration')
-const deepCopy = require('sk/utils/deepCopy')
-const isFunction = require('sk/utils/isFunction')
-
 module.exports = {
-  enumeration,
-  deepCopy,
-  isFunction
+  enumeration : require('sk/utils/enumeration'),
+  deepCopy    : require('sk/utils/deepCopy'),
+  isFunction  : require('sk/utils/isFunction'),
+  colors      : require('sk/utils/colors'),
 }
