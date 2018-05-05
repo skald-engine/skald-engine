@@ -35,6 +35,7 @@ module.exports.inject = (id) => {
   }
   return $.getInjector().resolve(id)
 }
+module.exports.resolve = module.exports.inject
 
 // Game control
 module.exports.start = (config) => {

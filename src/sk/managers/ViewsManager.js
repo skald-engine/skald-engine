@@ -46,11 +46,11 @@ class ViewsManager extends Manager {
 
     try {
       view = new view()
+      view.setup()
     } catch (e) {
+      console.error(e)
       throw new Error(`Could not instantiate the view "${viewId}" due to:`, e)
     }
-
-    view.setup()
 
     let obj = new ViewData(viewId, view, modal)
     if (modal) {

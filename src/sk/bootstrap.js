@@ -29,6 +29,7 @@
 
   sk.service('config', services.ConfigService)
   sk.service('logger', services.LoggerService)
+  sk.service('resources', services.ResourcesService)
 }
 
 // Register instances
@@ -66,4 +67,29 @@
   sk.signal('viewRemovedSignal', signals.ViewRemovedSignal)
 
   sk.signal('updateSignal', signals.UpdateSignal)
+}
+
+// Register logger handlers and formatters
+{
+  const LoggerService = require('sk/services/LoggerService')
+  const formatters = require('sk/formatters')
+  const handlers = require('sk/handlers')
+
+  LoggerService.registerFormatter('detailed', formatters.detailedFormatter)
+  LoggerService.registerFormatter('level', formatters.levelFormatter)
+  LoggerService.registerFormatter('simple', formatters.simpleFormatter)
+
+  LoggerService.registerHandler('console', handlers.consoleHandler)
+  LoggerService.registerHandler('dom', handlers.domHandler)
+}
+
+// Register middlewares
+{
+  const C = require('sk/constants')
+  const ResourcesService = require('sk/services/ResourcesService')
+  const middlewares = require('sk/middlewares')
+
+  ResourcesService.registerMiddleware(C.RESOURCES.RAW, middlewares.RawMiddleware)
+  ResourcesService.registerMiddleware(C.RESOURCES.JSON, middlewares.JsonMiddleware)
+  ResourcesService.registerMiddleware(C.RESOURCES.TEXTURE, middlewares.TextureMiddleware)
 }

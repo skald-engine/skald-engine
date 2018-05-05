@@ -17,6 +17,14 @@ export const REVISION = process.env.REVISION
 export const PIXI_VERSION = PIXI.VERSION
 
 /**
+ * Resources types
+ */
+export const RESOURCES = enumeration({
+  RAW     : 'raw',
+  JSON    : 'json',
+  TEXTURE : 'texture',
+})
+/**
  * Position enum, it holds the following values:
  *
  * - TOP_LEFT

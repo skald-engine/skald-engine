@@ -52,8 +52,8 @@ class TimeManager extends Manager {
    * manually.
    */
   setup() {
-    this._time = Date.now()
-    this._previousTime = Date.now()
+    this._time = performance.now()
+    this._previousTime = performance.now()
     this._delta = 0
     this._elapsed = 0
     this._fps = 60
@@ -65,7 +65,7 @@ class TimeManager extends Manager {
    */
   preUpdate() {
     this._previousTime = this._time
-    this._time = Date.now()
+    this._time = performance.now()
     this._elapsed = Math.min(this._time - this._previousTime, this._maxElapsed) || 1
     this._delta = this._elapsed/1000
     this._fps = this._fps*0.99 + (1000/this._elapsed)*0.01

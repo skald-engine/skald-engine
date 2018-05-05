@@ -1,7 +1,5 @@
 const LOGGER_LEVEL = require('sk/constants').LOGGER_LEVEL
 const utils = require('sk/utils')
-const formatters = require('sk/formatters')
-const handlers = require('sk/handlers')
 const Service = require('sk/core/Service')
 
 class LoggerService extends Service {
@@ -186,14 +184,7 @@ class LoggerService extends Service {
   }
 }
 
-LoggerService._formatters = {
-  'detailed' : formatters.detailedFormatter,
-  'level'    : formatters.levelFormatter,
-  'simple'   : formatters.simpleFormatter
-}
-LoggerService._handlers = {
-  'console' : handlers.consoleHandler,
-  'dom'     : handlers.domHandler
-}
+LoggerService._formatters = {}
+LoggerService._handlers = {}
 
 module.exports = LoggerService

@@ -23,4 +23,7 @@ module.exports = {
   'display.transparent'           : false, 
   'display.force_FXAA'            : false,
   'display.round_pixels'          : false,
+
+  'resources.base_path'       : null,
+  'resources.max_concurrency' : 10,
 }
