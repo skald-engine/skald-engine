@@ -1,0 +1,51 @@
+{% extends "templates/base.html" %}
+
+
+{% block body %}
+  <div class="uk-container-small uk-margin-auto uk-padding-small">
+    <h1 class="uk-h1">Skald Dev</h1>
+    
+    <!-- BUILD INFO -->
+    <div class="uk-card uk-card-default uk-card-body uk-padding-small">
+      <ul class="uk-list uk-list-divider">
+        <li>
+          <div uk-grid>
+            <span class="uk-width-small">Version</span>
+            <span class="uk-width-expand"><strong><script>document.write(sk.VERSION)</script></strong></span>
+          </div>
+        </li>
+        <li>
+          <div uk-grid>
+            <span class="uk-width-small">Build Date</span>
+            <span class="uk-width-expand"><strong><script>document.write(sk.BUILD_DATE)</script></strong></span>
+          </div>
+        </li>
+        <li>
+          <div uk-grid>
+            <span class="uk-width-small">Revision</span>
+            <span class="uk-width-expand"><strong><script>document.write(sk.REVISION)</script></strong></span>
+          </div>
+        </li>
+        <li>
+          <div uk-grid>
+            <span class="uk-width-small">PIXI Version</span>
+            <span class="uk-width-expand"><strong><script>document.write(sk.PIXI_VERSION)</script></strong></span>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <!-- END BUILD INFO -->
+
+    <h2 class="uk-heading-divider">Feature Tests</h2>
+  
+    <p>Select one of the tests below to start:</p>
+
+    <div class="uk-card uk-card-default uk-card-body uk-padding-small">
+      <ul class="uk-list uk-list-divider">
+        {% for test in all_tests %}
+          <li><a href="/test/{{test | replace('/', '--')}}">{{test}}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+{% endblock %}

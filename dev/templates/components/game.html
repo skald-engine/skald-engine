@@ -1,0 +1,19 @@
+<div id="sk-game" class="c-game">
+  {% block game_container %}
+  {% endblock %}
+</div>
+
+<style>
+  .c-game {
+    width: calc(100vw - 250px);
+    height: calc(100vh - 331px);
+    overflow: hidden;
+    background: #DDD;
+  }
+  .c-game canvas {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+</style>

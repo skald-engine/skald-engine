@@ -1,4 +1,5 @@
 const Injector = require('sk/core/Injector')
+const defaults = require('sk/config/defaults')
 
 class Engine {
   constructor() {
@@ -6,6 +7,7 @@ class Engine {
     this.injector = new Injector()
 
     this._profile = null
+    this._config = null
   }
 
   start(config={}) {
@@ -16,6 +18,11 @@ class Engine {
 
     
     this._profile = this.injector.resolve('profile')
+    this._config = this.injector.resolve('config')
+
+    this._profile.begin('config')
+    this._config.load(defaults)
+    this._profile.end('config')
 
     this._profile.begin('boot')
     this._setup()

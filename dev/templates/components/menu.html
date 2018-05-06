@@ -1,0 +1,18 @@
+<div id="sk-menu" class="c-menu">
+  <ul class="uk-nav uk-nav-default">
+    {% for test in all_tests %}
+      <li {% if test == current_test %} class="uk-active" {% endif%}>
+        <a href="/test/{{test | replace('/', '--')}}">{{test}}</a>
+      </li>
+    {% endfor %}
+  </ul>
+</div>
+
+
+<style>
+  .c-menu {
+    padding: 0 10px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+</style>

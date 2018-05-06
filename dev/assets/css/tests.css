@@ -1,0 +1,45 @@
+/**
+ * GLOBAL
+ */
+html, body {
+  height: 100%;
+  width: 100%;
+  min-width: 1080px;
+  min-height: 932px;
+  overflow: hidden;
+
+}
+::-webkit-scrollbar-button{ 
+  display: none;
+}
+::-webkit-scrollbar-button:hover{
+  background-color: #AAA;
+}
+::-webkit-scrollbar-thumb{
+  background-color: #82C0FF;
+}
+::-webkit-scrollbar-thumb:hover{
+  background-color: #5BACFF;
+}
+::-webkit-scrollbar-track{
+  background-color: #efefef;
+}
+::-webkit-scrollbar-track:hover{
+  // background-color: #CCC;
+}
+::-webkit-scrollbar{
+  width: 6px;
+}
+
+.sk-panel {
+  background: #ffffff;
+}
+.sk-panel > .uk-tab {
+  background: #fdfdfe;
+  margin-bottom: 5px;
+}
+
+
+.uk-tooltip {
+  max-width: 300px;
+}

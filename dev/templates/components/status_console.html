@@ -1,0 +1,63 @@
+<div class="c-console">
+  <div id="sk-console" class="c-console-content">
+  </div>
+</div>
+
+<style>
+  .c-console {
+    height: 263px;
+  }
+  .c-console-content {
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  .c-console .item {
+    position: relative;
+    font-size: 14px;
+    padding: 0 10px 0 20px;
+    border-bottom: 1px solid #eaeaea;
+    word-wrap: break-word;
+  }
+  .c-console .item:before {
+    content: "›";
+    position: absolute;
+    left: 8px;
+    top: -2px;
+    color: #666666;
+  }
+  .c-console .item:last-child {
+    margin-bottom: 20px;
+  }
+  .c-console .item-log {}
+  .c-console .item-info {
+    color: #5EBDD4;
+    background: rgba(214, 247, 255, 0.4);
+  }
+  .c-console .item-info:before {
+    content: "☉";
+    left: 5px;
+    top: 1px;
+    color: #5EBDD4;
+  }
+  .c-console .item-warn {
+    color: #C59748;
+    background: rgba(255, 246, 231, 0.4);
+  }
+  .c-console .item-warn:before {
+    content: "⚠";
+    left: 4px;
+    top: 0;
+    color: #C59748;
+  }
+  .c-console .item-error {
+    color: #D45E5E;
+    background: rgba(255, 214, 214, 0.4);
+  }
+  .c-console .item-error:before {
+    content: "⊗";
+    left: 3px;
+    top: -1px;
+    color: #D45E5E;
+  }
+</style>

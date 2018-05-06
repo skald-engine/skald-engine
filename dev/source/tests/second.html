@@ -1,0 +1,34 @@
+{% extends "templates/test.html" %}
+
+{% block script %}
+<script>
+  console.log('log')
+  console.info('info')
+  console.warn('warn')
+  console.error('error')
+  
+  config = {sample: 1, a: 2, b: 'hehehe', c: ()=> {console.log('ping')}, d: true}
+
+  folder = skf.options.addFolder('lol')
+  folder.add(config, 'sample').onChange(to =>console.log(to))
+  folder.add(config, 'a', 0, 100)
+  folder.add(config, 'b')
+  folder.add(config, 'c')
+  folder.add(config, 'd')
+  folder.open()
+
+  folder = skf.options.addFolder('hehe')
+  folder.add(config, 'a')
+  folder.add(config, 'b')
+  folder.add(config, 'c')
+  folder.add(config, 'a')
+  folder.add(config, 'b')
+  folder.add(config, 'c')
+  folder.open()
+
+  sk.start()
+
+</script>
+{% endblock %}
+
+
