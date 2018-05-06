@@ -5,7 +5,7 @@
  *
  * 
  * @param {String} message - The message string.
- * @param {LOGGER_LEVEL} level - The logger level.
+ * @param {LOGGER_LEVELS} level - The logger level.
  * @return {String} The formatted string.
  */
 function levelFormatter(message, level) {

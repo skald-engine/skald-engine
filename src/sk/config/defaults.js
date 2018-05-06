@@ -1,4 +1,4 @@
-const COLOR = require('sk/constants/colors').COLOR
+const COLORS = require('sk/constants/colors').COLORS
 
 module.exports = {
   'project' : 'skald_name',
@@ -19,7 +19,7 @@ module.exports = {
   'display.force_orientation'     : null,
   'display.scale_mode'            : 'noscale',
   'display.fullscreen_scale_mode' : 'noscale',
-  'display.background_color'      : COLOR.SK_BLACK,
+  'display.background_color'      : COLORS.SK_BLACK,
   'display.resolution'            : 1,
   'display.antialias'             : true,
   'display.transparent'           : false, 

@@ -13,17 +13,11 @@ class Engine {
   start(config={}) {
     this.started = true
 
-    this.injector.resolve('config')
-                 .load(config)
-
-    
-    this._profile = this.injector.resolve('profile')
     this._config = this.injector.resolve('config')
-
-    this._profile.begin('config')
     this._config.load(defaults)
-    this._profile.end('config')
+    this._config.load(config)
 
+    this._profile = this.injector.resolve('profile')
     this._profile.begin('boot')
     this._setup()
     this._profile.end('boot')

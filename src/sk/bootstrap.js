@@ -18,7 +18,6 @@
   sk.manager('time', managers.TimeManager)
   sk.manager('signals', managers.SignalsManager)
   sk.manager('display', managers.DisplayManager)
-  sk.manager('device', managers.DeviceManager)
   sk.manager('views', managers.ViewsManager)
 }
 
@@ -29,6 +28,7 @@
 
   sk.service('config', services.ConfigService)
   sk.service('logger', services.LoggerService)
+  sk.service('device', services.DeviceService)
   sk.service('resources', services.ResourcesService)
   sk.service('profile', services.ProfileService)
 }
@@ -93,4 +93,5 @@
   ResourcesService.registerMiddleware(C.RESOURCES.RAW, middlewares.RawMiddleware)
   ResourcesService.registerMiddleware(C.RESOURCES.JSON, middlewares.JsonMiddleware)
   ResourcesService.registerMiddleware(C.RESOURCES.TEXTURE, middlewares.TextureMiddleware)
+  ResourcesService.registerMiddleware(C.RESOURCES.BITMAP_FONT, middlewares.BitmapFontMiddleware)
 }

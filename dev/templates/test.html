@@ -32,7 +32,13 @@
       overflow: hidden;
       height: calc(100vh - 331px);
     }
-    .p-test-game { grid-area: game; height: 100%; width: 100%; }
+    .p-test-game {
+      grid-area: game;
+      width: calc(100vw - 250px);
+      height: calc(100vh - 331px);
+      background: #EEE;
+      overflow: auto;
+    }
     .p-test-status { 
       grid-area: status;
       border-top: 1px solid #BBB;
@@ -68,7 +74,9 @@
     </div>
 
     <div class="sk-panel p-test-game">
-      {% include "templates/components/game.html" %}
+      {% block content %}
+        {% include "templates/components/game.html" %}
+      {% endblock %}
     </div>
 
     <div class="sk-panel p-test-options">
@@ -84,9 +92,9 @@
     <div class="sk-panel p-test-status">
       <ul uk-tab>
         <li class="uk-active"><a href="">Console</a></li>
-        <li><a href="">Performance</a></li>
-        <li><a href="">Display List</a></li>
-        <li><a href="">Signals</a></li>
+        <li class="uk-disabled"><a href="">Performance</a></li>
+        <li class="uk-disabled"><a href="">Display List</a></li>
+        <li class="uk-disabled"><a href="">Signals</a></li>
       </ul>
 
       <ul class="uk-switcher">

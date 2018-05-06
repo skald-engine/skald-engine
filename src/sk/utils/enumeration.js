@@ -40,6 +40,7 @@ function enumeration(map) {
   // utility methods
   enumeration.toString = enumeration.valueOf = () => `[${keys.join(', ')}]`
   enumeration.values = () => keys.map(key=>map[key])
+  enumeration.keys = () => keys.map(x=>x)
 
   return Object.freeze(enumeration)
 }

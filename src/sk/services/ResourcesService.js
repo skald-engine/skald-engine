@@ -112,8 +112,7 @@ class ResourcesService extends Service {
 
       this._middlewares[type] = middleware
       this._loader.use((pixiResource, next) => {
-        middleware.run(pixiResource)
-        next()
+        middleware.run(pixiResource).then(next)
       })
     }
     this._profile.end('setupMiddlewares')
@@ -248,23 +247,35 @@ class ResourcesService extends Service {
 
     this._resourcesById[resource.id] = resource
     this._resourcesByUrl[resource.url] = resource
+
+    resource.children.forEach(r => {
+      this._resourcesById[r.id] = r
+      if (r.url) this._resourcesByUrl[r.url] = r
+    })
   }
 
-  uncache(id) {
-    let resource = this.get(id)
+  uncache(id) {    
+    let resource = this.getResource(id)
     if (!resource) return
+
+    resource.children.forEach(r => {
+      delete this._resourcesById[r.id]
+      if (r.url) delete this._resourcesByUrl[r.url]
+    })
 
     delete this._resourcesById[id]
     delete this._resourcesByUrl[resource.url]
   }
 
   unload(id) {
-    let resource = this.get(id)
+    // TODO: dispatch unload signal
+    let resource = this.getResource(id)
     if (!resource) return
 
     let middleware = this._middlewares[resource.type]
-    middleware.unload(resouce)
+    
     this.uncache(id)
+    middleware.unload(resource)
   }
 
   isLoading() {

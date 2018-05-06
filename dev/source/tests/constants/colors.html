@@ -1,0 +1,84 @@
+{% extends "templates/test.html" %}
+
+
+{% block content %}
+<div class="sk-content">
+  <h2>Skald selected colors</h2>
+  <div id="sk-colors" class="color-list uk-flex uk-flex-wrap"></div>
+
+  <h2>FLAT UI colors</h2>
+  <div id="flat-colors" class="color-list uk-flex uk-flex-wrap"></div>
+
+  <h2>HTML colors</h2>
+  <div id="html-colors" class="color-list uk-flex uk-flex-wrap"></div>
+</div>
+{% endblock %}
+
+
+{% block script %}
+<script>
+  function createColor(to, name, color) {
+    let bgColor = sk.utils.colors.colorToHex(color)
+    let fgColor = sk.utils.colors.colorToHex(sk.COLORS.SK_BLACK)
+    if (sk.utils.colors.lightness(color) < 0.45) {
+      fgColor = sk.utils.colors.colorToHex(sk.COLORS.SK_WHITE)
+    }
+    let div = `<div class="color"
+                 style="background: ${bgColor}; color: ${fgColor};">
+                 <span class="name">${name}</span>
+                 <span class="code">${bgColor}</span></div>`
+
+    document.getElementById(to).innerHTML += div
+  }
+
+  function order(c1, c2) {
+     let c = sk.utils.colors
+     let a = sk.COLORS[c1]
+     let b = sk.COLORS[c2]
+
+     let h = c.hue(a) - c.hue(b)
+     let l = c.lightness(a) - c.lightness(b)
+     let s = c.saturation(a) - c.saturation(b)
+
+     if (Math.abs(h) > 5) return h
+     if (Math.abs(s) > 5) return s
+     return l
+  }
+
+  let colors = sk.COLORS.keys()
+
+  let skColors = colors.filter(x => x.startsWith('SK_'))
+  let flatColors = colors.filter(x => x.startsWith('FLAT_'))
+  let htmlColors = colors.filter(x => skColors.indexOf(x) < 0 && flatColors.indexOf(x) < 0)
+
+  skColors.sort(order).forEach(k => createColor('sk-colors', k, sk.COLORS[k]))
+  flatColors.sort(order).forEach(k => createColor('flat-colors', k, sk.COLORS[k]))
+  htmlColors.sort(order).forEach(k => createColor('html-colors', k, sk.COLORS[k]))
+
+</script>
+{% endblock %}
+
+
+{% block style %}
+<style>
+  .sk-content {
+    /*padding: 10px;*/
+  }
+  .sk-content .color {
+    display: inline-flex;
+    flex-direction: column;
+    width: 100px;
+    height: 100px;
+    margin: 0 10px 10px 0;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  }
+  .sk-content .color .name {
+    font-size: 0.7em;
+  }
+  .sk-content .color .code {
+  }
+</style>
+{% endblock %}
+

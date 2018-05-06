@@ -13,7 +13,7 @@ import {enumeration} from 'sk/utils'
  * - RIGHT
  * - CENTER
  */
-export const POSITION = enumeration({
+export const POSITIONS = enumeration({
   TOP_LEFT     : 'top_left',
   TOP_RIGHT    : 'top_right',
   BOTTOM_LEFT  : 'bottom_left',
@@ -37,7 +37,7 @@ export const POSITION = enumeration({
  * - LEFT
  * - RIGHT
  */
-export const DIRECTION = enumeration({
+export const DIRECTIONS = enumeration({
   TOP_LEFT     : 'top_left',
   TOP_RIGHT    : 'top_right',
   BOTTOM_LEFT  : 'bottom_left',

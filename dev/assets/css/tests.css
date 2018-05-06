@@ -38,7 +38,11 @@ html, body {
   background: #fdfdfe;
   margin-bottom: 5px;
 }
-
+.sk-content {
+  padding: 10px;
+  width: 100%;
+  max-width: 900px;
+}
 
 .uk-tooltip {
   max-width: 300px;

@@ -1,8 +1,8 @@
 const $ = require('sk/$')
-const Manager = require('sk/core/Manager')
+const Service = require('sk/core/Service')
 const utils = require('sk/utils')
 
-class DeviceManager extends Manager {
+class DeviceService extends Service {
   constructor() {
     super()
 
@@ -803,4 +803,4 @@ const WINDOWS_VERSION_NAMES = {
   '4.90' : 'ME'
 }
 
-module.exports = DeviceManager
+module.exports = DeviceService

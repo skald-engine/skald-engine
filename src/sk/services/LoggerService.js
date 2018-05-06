@@ -1,4 +1,4 @@
-const LOGGER_LEVEL = require('sk/constants').LOGGER_LEVEL
+const LOGGER_LEVELS = require('sk/constants').LOGGER_LEVELS
 const utils = require('sk/utils')
 const Service = require('sk/core/Service')
 
@@ -7,12 +7,12 @@ class LoggerService extends Service {
     super()
 
     /** List of levels, used to check priorities. */
-    this._levels = LOGGER_LEVEL.values()
+    this._levels = LOGGER_LEVELS.values()
 
     /** Current level priority, chached to avoid multiple lookups.  */
     this._levelPriority = null
 
-    /** Current level name, accordingly to the `LOGGER_LEVEL` enum. */
+    /** Current level name, accordingly to the `LOGGER_LEVELS` enum. */
     this._level = null
 
     /** Current formatter function. */
@@ -23,12 +23,12 @@ class LoggerService extends Service {
   }
 
   /**
-   * Current logger level, must be one value from `LOGGER_LEVEL` enum. If you
+   * Current logger level, must be one value from `LOGGER_LEVELS` enum. If you
    * set this variable to an invalid value, it won't be changed.
    */
   get level() { return this._level }
   set level(level) {
-    if (!LOGGER_LEVEL(level)) return
+    if (!LOGGER_LEVELS(level)) return
 
     this._level = level
     this._levelPriority = this._levels.indexOf(level)
@@ -118,7 +118,7 @@ class LoggerService extends Service {
    * Log the input message. This method calls the formatter and the logging 
    * handler.
    *
-   * @param {LOGGER_LEVEL} level - The message level.
+   * @param {LOGGER_LEVELS} level - The message level.
    * @param {String} message - The message to be logged.
    */
   log(level, message) {
@@ -130,57 +130,57 @@ class LoggerService extends Service {
   }
 
   /**
-   * Shortcut for `logger.log(LOGGER_LEVEL.TRACE, message)`
+   * Shortcut for `logger.log(LOGGER_LEVELS.TRACE, message)`
    *
    * @param {String} message - The message to be logged.
    */
   trace(message) {
-    this.log(LOGGER_LEVEL.TRACE, message)
+    this.log(LOGGER_LEVELS.TRACE, message)
   }
 
   /**
-   * Shortcut for `logger.log(LOGGER_LEVEL.DEBUG, message)`
+   * Shortcut for `logger.log(LOGGER_LEVELS.DEBUG, message)`
    *
    * @param {String} message - The message to be logged.
    */
   debug(message) {
-    this.log(LOGGER_LEVEL.DEBUG, message)
+    this.log(LOGGER_LEVELS.DEBUG, message)
   }
 
   /**
-   * Shortcut for `logger.log(LOGGER_LEVEL.INFO, message)`
+   * Shortcut for `logger.log(LOGGER_LEVELS.INFO, message)`
    *
    * @param {String} message - The message to be logged.
    */
   info(message) {
-    this.log(LOGGER_LEVEL.INFO, message)
+    this.log(LOGGER_LEVELS.INFO, message)
   }
 
   /**
-   * Shortcut for `logger.log(LOGGER_LEVEL.WARN, message)`
+   * Shortcut for `logger.log(LOGGER_LEVELS.WARN, message)`
    *
    * @param {String} message - The message to be logged.
    */
   warn(message) {
-    this.log(LOGGER_LEVEL.WARN, message)
+    this.log(LOGGER_LEVELS.WARN, message)
   }
 
   /**
-   * Shortcut for `logger.log(LOGGER_LEVEL.ERROR, message)`
+   * Shortcut for `logger.log(LOGGER_LEVELS.ERROR, message)`
    *
    * @param {String} message - The message to be logged.
    */
   error(message) {
-    this.log(LOGGER_LEVEL.ERROR, message)
+    this.log(LOGGER_LEVELS.ERROR, message)
   }
 
   /**
-   * Shortcut for `logger.log(LOGGER_LEVEL.FATAL, message)`
+   * Shortcut for `logger.log(LOGGER_LEVELS.FATAL, message)`
    *
    * @param {String} message - The message to be logged.
    */
   fatal(message) {
-    this.log(LOGGER_LEVEL.FATAL, message)
+    this.log(LOGGER_LEVELS.FATAL, message)
   }
 }
 

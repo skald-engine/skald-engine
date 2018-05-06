@@ -2,7 +2,6 @@ const MAX_CONSOLE_ITEMS = 100
 const MAX_MESSAGE_LENGTH = 100
 const MAX_TOOLTIP_LENGTH = 800
 
-
 /**
  * Replace the default console log functions.
  */
@@ -52,7 +51,11 @@ const MAX_TOOLTIP_LENGTH = 800
 
     if (newline) {
       s = s.replace(/\n/g, '<br/>')
-           .replace(/\s/g, '&nbsp;')
+           .replace(/\s\s/g, ' &nbsp;')
+           .replace(/&nbsp;\s/g, '&nbsp;&nbsp;')
+    } else {
+      s = s.replace(/\n/g, '')
+           .replace(/\s+/g, ' ')
     }
 
     return s 
@@ -83,8 +86,16 @@ const MAX_TOOLTIP_LENGTH = 800
             return `[${x.join(', ')}]`
 
           } else if (typeof x === 'object') {
-            let pairs = Object.keys(x).map(y => `${y}:${x[y]}`)
-            return JSON.stringify(x, undefined, 4)//`{${pairs.join(', ')}}`
+            try {
+              return JSON.stringify(x, undefined, 4)
+            } catch {
+              try {
+                let pairs = Object.keys(x).map(y => `${y}:${x[y]}`)
+                return `{${pairs.join(', ')}}`
+              } catch {
+                return `[Object]`
+              }
+            }
           
           } else {
             return `${x}`
@@ -99,13 +110,13 @@ const MAX_TOOLTIP_LENGTH = 800
           completeMessage = completeMessage.substring(0, MAX_TOOLTIP_LENGTH - 4) + ' ...'
         }
         let same = shortMessage === completeMessage
-        shortMessage = convert(shortMessage)
+        shortMessage = convert(shortMessage, false)
         completeMessage = convert(completeMessage, true)
 
         let itemElement = document.createElement('div')
         itemElement.className = `item item-${type}`
         if (same) {
-          itemElement.innerHTML = `${completeMessage}`
+          itemElement.innerHTML = `${shortMessage}`
         } else {
           itemElement.innerHTML = `<span uk-tooltip="title: ${completeMessage}; delay: 500">${shortMessage}</span>`
         }

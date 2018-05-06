@@ -12,7 +12,7 @@ import {enumeration} from 'sk/utils'
  * - FATAL - should be used to log errors that will abort the execution of the
  *   game.
  */
-export const LOGGER_LEVEL = enumeration({
+export const LOGGER_LEVELS = enumeration({
   TRACE  : 'trace',
   DEBUG  : 'debug',
   INFO   : 'info',

@@ -27,7 +27,6 @@ class Middleware {
    */
   constructor(type) {
     this._type = type
-
     this._resources = $.getInjector().resolve('resources')
   }
 
@@ -47,41 +46,50 @@ class Middleware {
 
     // If it is not the same type, simply ignore
     if (resource.type !== this.type) {
-      return
+      return Promise.resolve()
     }
 
     // Check for the data integrity
     if (!resource.rawData) {
       pixiResource.error = `File did not loaded.`
-      return
+      return Promise.resolve()
     }
 
-    console.log(resource)
-    
     // Validate the resource
     try {
       if (!this.validate(resource)) {
-        return
+        pixiResource.error = `Middleware for "${this.type}" rejected the loaded data `+
+                             `for the "${resource.id}" resource.` 
+        return Promise.resolve()
       }
     } catch(e) {
       pixiResource.error = (e && e.message)? e.message : e
-      return
+      return Promise.resolve()
     }
 
     // Process the loaded resource
-    let data = this.process(resource)
-    if (!data) {
-      pixiResource.error = `Middleware "${this.type}" did not returned the `+
-                           `processed object in the "process" method.`
-      return
+    let promise = this.process(resource)
+    if (!(promise instanceof Promise)) {
+      promise = Promise.resolve(promise)
     }
-    resource.data = data
 
-    // Cache it if needed
-    this.cache(resource)
+    return promise.then((data) => {
+      if (!data) {
+        pixiResource.error = `Middleware "${this.type}" did not returned the `+
+                             `processed object in the "process" method.`
+        return Promise.resolve()
+      }
+      resource.data = data
 
-    // Save the resource on the manager
-    this._resources.cache(resource)
+      // Cache it if needed
+      this.cache(resource)
+
+      // Save the resource on the manager
+      this._resources.cache(resource)
+
+      return Promise.resolve()
+    })
+
   }
 
   setup() {}

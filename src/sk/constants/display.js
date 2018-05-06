@@ -7,7 +7,7 @@ import {enumeration} from 'sk/utils'
  * - WEBGL
  * - CANVAS
  */
-export const RENDERER = enumeration({
+export const RENDERERS = enumeration({
   AUTO   : 'auto',
   WEBGL  : 'webgl',
   CANVAS : 'canvas',
@@ -19,7 +19,7 @@ export const RENDERER = enumeration({
  * - PORTRAIT
  * - LANDSCAPE
  */
-export const ORIENTATION = enumeration({
+export const ORIENTATIONS = enumeration({
   PORTRAIT  : 'portrait',
   LANDSCAPE : 'landscape',
 })
@@ -35,7 +35,7 @@ export const ORIENTATION = enumeration({
  *   ratio, thus, part of the game will be cut off the screen.
  * - NOSCALE - no automatic scale.
  */
-export const SCALE_MODE = enumeration({
+export const SCALE_MODES = enumeration({
   STRETCH : 'stretch',
   FIT     : 'fit',
   FILL    : 'fill',

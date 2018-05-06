@@ -28,6 +28,8 @@ class Resource {
     this._metadata = metadata
     this._pixiResource = pixiResource
     this._data = null
+    this._parent = null
+    this._children = []
   }
 
   /**
@@ -94,6 +96,19 @@ class Resource {
   }
   set data(value) {
     this._data = value
+  }
+
+  get parent() {
+    return this._parent
+  }
+  
+  get children() {
+    return this._children
+  }
+
+  addChild(resource) {
+    resource._parent = resource
+    this._children.push(resource)
   }
 
 }

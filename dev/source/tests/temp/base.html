@@ -1,0 +1,81 @@
+{% extends "templates/test.html" %}
+
+
+{% block script %}
+<script type="text/javascript">
+  function getUnmaskedInfo(gl) {
+    var unMaskedInfo = {
+      renderer: '',
+      vendor: ''
+    };
+
+    var dbgRenderInfo = gl.getExtension("WEBGL_debug_renderer_info");
+    if (dbgRenderInfo != null) {
+      unMaskedInfo.renderer = gl.getParameter(dbgRenderInfo.UNMASKED_RENDERER_WEBGL);
+      unMaskedInfo.vendor = gl.getParameter(dbgRenderInfo.UNMASKED_VENDOR_WEBGL);
+    }
+
+    return unMaskedInfo;
+  }
+
+  sk.start()
+
+  let resources = sk.resolve('resources')
+  let stage = sk.resolve('stage')
+  let display = sk.resolve('display')
+  let updateSignal = sk.resolve('updateSignal')
+  let time = sk.resolve('time')
+
+  resources.add(sk.RESOURCES.TEXTURE, 'heart', '/static/imgs/heart.png')
+  resources.add(sk.RESOURCES.TEXTURE, 'pac', '/static/imgs/pac.png')
+
+  let sprites = []
+  resources.load(() => {
+    for (let i=0; i<10000; i++) {
+      heart = new PIXI.Sprite(resources.get('heart'))
+      heart.pivot.set(heart.width/2, heart.height/2)
+      heart.position.set(sk.utils.random.int(0, display.width), sk.utils.random.int(115, display.height))
+      let scale = Math.random()*2
+      heart.scale.set(scale, scale)
+      heart.rotation = Math.random()*Math.PI*2
+      heart.alpha = Math.min(Math.random(), 1)
+      if (Math.random() > 0.1) {
+        heart.tint = sk.utils.random.color()
+      }
+      stage.views.addChild(heart)
+    }
+
+    for (let i=0; i<100; i++) {
+      sprite = new PIXI.Sprite(resources.get('pac'))
+      sprite.pivot.set(sprite.width/2, sprite.height/2)
+      // sprite.position.set(display.halfWidth, display.halfHeight)
+      sprite.position.set(sk.utils.random.int(0, display.width), sk.utils.random.int(50, display.height))
+      sprite.rotation = Math.random()*Math.PI*2
+      sprite.speed = Math.random()*0.5 + 0.5
+      sprite.direction = Math.random() < 0.5 ? -1 : 1
+      stage.views.addChild(sprite)
+      sprites.push(sprite)
+    }
+  })
+
+  let fps = new PIXI.Text('60',{fontFamily : 'Arial', fontSize: 24, fill : sk.COLORS.SK_LIME, align : 'center'});
+  fps.position.set(10, 10)
+
+
+  canvas = document.getElementsByTagName('canvas')[0];
+  let gl = canvas.getContext('experimental-webgl');
+
+  let info = new PIXI.Text(getUnmaskedInfo(gl).renderer, {fontFamily : 'Arial', fontSize: 18, fill : sk.COLORS.SK_LIME, align : 'center'});
+  info.position.set(50, 13)
+  stage.debug.addChild(fps, info)
+
+
+  updateSignal.add(() => {
+    fps.text = time.fps
+    for (let i=0; i<sprites.length; i++) {
+      sprites[i].rotation += 10*sprites[i].speed*time.delta * sprites[i].direction
+    }
+  })
+
+</script>
+{% endblock %}

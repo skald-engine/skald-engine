@@ -11,9 +11,9 @@ function rendererProvider() {
 
   // get the proper pixi renderer
   let renderers = {
-    [sk.RENDERER.AUTO]   : pixi.autoDetectRenderer,
-    [sk.RENDERER.WEBGL]  : pixi.WebGLRenderer,
-    [sk.RENDERER.CANVAS] : pixi.CanvasRenderer,
+    [sk.RENDERERS.AUTO]   : pixi.autoDetectRenderer,
+    [sk.RENDERERS.WEBGL]  : pixi.WebGLRenderer,
+    [sk.RENDERERS.CANVAS] : pixi.CanvasRenderer,
   }
 
   // create the pixi renderer

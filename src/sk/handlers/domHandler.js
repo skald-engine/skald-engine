@@ -1,11 +1,11 @@
-const LOGGER_LEVEL = require('sk/constants').LOGGER_LEVEL
+const LOGGER_LEVELS = require('sk/constants').LOGGER_LEVELS
 const ELEMENT_ID = 'SKALD-LOGGER-'+Math.random().toString(16).substring(2)
 
 /**
  * Not yet implemented.
  *
  * @param {String} message - The message string.
- * @param {LOGGER_LEVEL} level - The logger level.
+ * @param {LOGGER_LEVELS} level - The logger level.
  */
 function domHandler(message, level) {
   let element = document.getElementById(ELEMENT_ID)
@@ -49,15 +49,15 @@ function _createParagraph(element, text, level) {
   p.style['font-family'] = 'monospace'
   p.style['font-size'] = '10pt'
   
-  if (level === LOGGER_LEVEL.ERROR || level === LOGGER_LEVEL.FATAL){
+  if (level === LOGGER_LEVELS.ERROR || level === LOGGER_LEVELS.FATAL){
     p.style['color'] = '#832918'
   }
 
-  else if (level === LOGGER_LEVEL.WARN) {
+  else if (level === LOGGER_LEVELS.WARN) {
     p.style['color'] = '#EC9612'
   }
 
-  else if (level === LOGGER_LEVEL.DEBUG || level === LOGGER_LEVEL.TRACE) {
+  else if (level === LOGGER_LEVELS.DEBUG || level === LOGGER_LEVELS.TRACE) {
     p.style['color'] = '#A0A0A0'
   }
 

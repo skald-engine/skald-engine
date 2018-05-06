@@ -3,7 +3,7 @@ import {enumeration} from 'sk/utils'
 /**
  * Keyboard keys. Checkout the code to see all the values.
  */
-export const KEY = enumeration({
+export const KEYS = enumeration({
   BACKSPACE         : 8,
   TAB               : 9,
   NUMLOCK           : 12,
@@ -141,7 +141,7 @@ export const KEY = enumeration({
  * - BACK - or FORTHY
  * - FORWARD - or FIFTH
  */
-export const BUTTON = enumeration({
+export const BUTTONS = enumeration({
   PRIMARY   : 0,
   LEFT      : 0,
   AUXILIARY : 1,
@@ -180,7 +180,7 @@ export const BUTTON = enumeration({
  * - META
  * 
  */
-export const GAMEPAD = enumeration({
+export const GAMEPAD_BUTTONS = enumeration({
   A              : 0,
   B              : 1,
   X              : 2,
@@ -226,7 +226,7 @@ export const GAMEPAD = enumeration({
  * - RIGHT_TRIGGER - how pressed is the right trigger
  * 
  */
-export const GAMEPAD_AXIS = enumeration({
+export const GAMEPAD_AXES = enumeration({
   LEFT_STICK_X      : 'left_stick_x',
   LEFT_STICK_Y      : 'left_stick_y',
   LEFT_STICK_FORCE  : 'left_stick_force',
@@ -246,7 +246,7 @@ export const GAMEPAD_AXIS = enumeration({
  * - GAMEPAD
  * 
  */
-export const INPUT = enumeration({
+export const INPUTS = enumeration({
   KEYBOARD : 'keyboard',
   MOUSE    : 'mouse',
   TOUCH    : 'touch',

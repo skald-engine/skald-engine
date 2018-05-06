@@ -81,7 +81,7 @@ class DisplayManager extends Manager {
   /**
    * Returns the game orientation. This is computed using the window height
    * and width. Readonly.
-   * @type {ORIENTATION}
+   * @type {ORIENTATIONS}
    */
   get orientation() {
     let clientWidth = window.innerWidth ||
@@ -92,19 +92,19 @@ class DisplayManager extends Manager {
                        document.body.clientHeight
 
     if (clientWidth > clientHeight) {
-      return C.ORIENTATION.LANDSCAPE 
+      return C.ORIENTATIONS.LANDSCAPE 
     } else {
-      return C.ORIENTATION.PORTRAIT
+      return C.ORIENTATIONS.PORTRAIT
     }
   }
 
   /**
    * The auto scale mode of the game.
-   * @type {SCALE_MODE}
+   * @type {SCALE_MODES}
    */
   get scaleMode() { return this._scaleMode }
   set scaleMode(mode) {
-    if (!C.SCALE_MODE(mode)) {
+    if (!C.SCALE_MODES(mode)) {
       throw new Error(`Invalid scale mode "${mode}".`)
     }
     
@@ -114,11 +114,11 @@ class DisplayManager extends Manager {
 
   /**
    * The auto scale mode for when the game is fullscreen.
-   * @type {SCALE_MODE}
+   * @type {SCALE_MODES}
    */
   get fullscreenScaleMode() { return this._fullscreenScaleMode }
   set fullscreenScaleMode(mode) {
-    if (!C.SCALE_MODE(mode)) {
+    if (!C.SCALE_MODES(mode)) {
       throw new Error(`Invalid fullscreen scale mode "${mode}."`)
     }
     
@@ -129,11 +129,11 @@ class DisplayManager extends Manager {
   /**
    * Which orientation must be enforced by the game. If there is no restriction
    * of orientation, this value is `null`.
-   * @type {null|ORIENTATION}
+   * @type {null|ORIENTATIONS}
    */
   get forceOrientation() { return this._forceOrientation }
   set forceOrientation(orientation) {
-    if (orientation !== null && !C.ORIENTATION(orientation)) {
+    if (orientation !== null && !C.ORIENTATIONS(orientation)) {
       throw new Error(`Invalid orientation "${orientation}".`)
     }
     this._forceOrientation = orientation
@@ -330,21 +330,21 @@ class DisplayManager extends Manager {
     }
 
 
-    if (scaleMode === C.SCALE_MODE.NOSCALE) {
+    if (scaleMode === C.SCALE_MODES.NOSCALE) {
       stageScaleX = 1
       stageScaleY = 1
       this._canvasWidth = this._width
       this._canvasHeight = this._height
     }
 
-    else if (scaleMode === C.SCALE_MODE.STRETCH) {
+    else if (scaleMode === C.SCALE_MODES.STRETCH) {
       stageScaleX = clientWidth/width
       stageScaleY = clientHeight/height
       this._canvasWidth = clientWidth
       this._canvasHeight = clientHeight
     }
 
-    else if (scaleMode === C.SCALE_MODE.FIT) {
+    else if (scaleMode === C.SCALE_MODES.FIT) {
       let ratio = Math.min(clientWidth/width, clientHeight/height)
       stageScaleX = ratio
       stageScaleY = ratio
@@ -352,7 +352,7 @@ class DisplayManager extends Manager {
       this._canvasHeight = height*ratio
     }
 
-    else if (scaleMode === C.SCALE_MODE.FILL) {
+    else if (scaleMode === C.SCALE_MODES.FILL) {
       let ratio = Math.max(clientWidth/width, clientHeight/height)
       stageScaleX = ratio
       stageScaleY = ratio

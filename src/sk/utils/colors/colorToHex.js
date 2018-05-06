@@ -10,7 +10,8 @@ const assertColor = require('sk/utils/colors/_common').assertColor
 function colorToHex(color) {
   assertColor(color, `colorToHex`)
 
-  let c = (color.toString(16) + '000000').slice(0, 6)
+  let c = '000000' + color.toString(16)
+  c = c.substring(c.length - 6, c.length)
   return '#'+c.toUpperCase()
 }
 
