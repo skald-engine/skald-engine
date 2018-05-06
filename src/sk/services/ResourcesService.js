@@ -19,6 +19,13 @@ class ResourcesService extends Service {
     this._config = null
     this._logger = null
     this._profile = null
+
+    this._loadProgressSignal = null
+    this._loadErrorSignal = null
+    this._resourceLoadedSignal = null
+    this._loadCompletedSignal = null
+    this._loadStartedSignal = null
+    this._resourceUnloadedSignal = null
   }
 
   static registerMiddleware(type, middleware) {
@@ -52,9 +59,16 @@ class ResourcesService extends Service {
   setup() {
     let injector = $.getInjector()
 
-    this._config = injector.resolve('config')
-    this._logger = injector.resolve('logger')
+    this._config  = injector.resolve('config')
+    this._logger  = injector.resolve('logger')
     this._profile = injector.resolve('profile')
+
+    this._loadProgressSignal     = injector.resolve('loadProgressSignal')
+    this._loadErrorSignal        = injector.resolve('loadErrorSignal')
+    this._resourceLoadedSignal   = injector.resolve('resourceLoadedSignal')
+    this._loadCompletedSignal    = injector.resolve('loadCompletedSignal')
+    this._loadStartedSignal      = injector.resolve('loadStartedSignal')
+    this._resourceUnloadedSignal = injector.resolve('resourceUnloadedSignal')
 
     this._profile.begin('resources')
     this._setupLoader()
@@ -137,24 +151,18 @@ class ResourcesService extends Service {
     let total = this._queueSize
     let loaded = Math.floor(this._queueSize*loader.progress/100)
     
-    // TODO: dipatch progress signal
-    // let event = this.game.pool.create(ProgressEvent)
-    // event._type = 'resources.progress'
-    // event._loaded = loaded
-    // event._total = total
-    // this.game.events.dispatch(event)
+    this._loadProgressSignal.dispatch(loaded, total)
   }
   
   /**
    * Handle error event.
    */
   _onError(error, loader, pixiResource) {
-    // TODO: dispatch error signal
-    // let event = this.game.pool.create(ErrorEvent)
-    // event._type = 'resources.error'
-    // event._message = `Could not load the resource "${pixiResource.name}" `+
-    //                  `from "${pixiResource.url}".`
-    // this.game.events.dispatch(event)
+    this._loadErrorSignal.dispatch(
+      `Could not load the resource "${pixiResource.name}" from "${pixiResource.url}".`,
+      error,
+      {pixiResource}
+    )
 
     this._logger.error(
       `Could not load the resource "${pixiResource.name}" from `+
@@ -166,15 +174,10 @@ class ResourcesService extends Service {
    * Handle load event.
    */
   _onLoad(loader, pixiResource) {
-    
-    // TODO: dispatch load signal
-    // let resource = this._resourcesById[pixiResource.name] || {}
-    // let event = this.game.pool.create(ResourceEvent)
-    // event._type = 'resources.load'
-    // event._id = resource.id
-    // event._url = resource.url
-    // event._resource = resource
-    // this.game.events.dispatch(event)
+    this._resourceLoadedSignal.dispatch(pixiResource.name, pixiResource.skaldResource)
+    if (pixiResource.metadata.callback) {
+      pixiResource.metadata.callback(pixiResource.skaldResource)
+    }
 
     this._logger.trace(`(resources) Resource "${pixiResource.name}" loaded `+
                         `sucessfully.`)
@@ -184,8 +187,8 @@ class ResourcesService extends Service {
    * Handle complete event.
    */
   _onComplete(event) {
-    // TODO: dispatch complete signal
-    // this.game.events.dispatch('resources.complete')
+    this._loadCompletedSignal.dispatch()
+
     if (this._callback) {
       this._callback()
     }
@@ -233,6 +236,8 @@ class ResourcesService extends Service {
 
     this._queueSize = this._loader._queue._tasks.length
     this._callback = callback
+
+    this._loadStartedSignal.dispatch(this._queueSize)
     this._loader.load()
   }
 
@@ -268,7 +273,6 @@ class ResourcesService extends Service {
   }
 
   unload(id) {
-    // TODO: dispatch unload signal
     let resource = this.getResource(id)
     if (!resource) return
 
@@ -276,6 +280,8 @@ class ResourcesService extends Service {
     
     this.uncache(id)
     middleware.unload(resource)
+
+    this._resourceUnloadedSignal.dispatch(id, resource)
   }
 
   isLoading() {

@@ -10,6 +10,13 @@ module.exports = {
   ViewAddedSignal   : require('sk/signals/views/ViewAddedSignal'),
   ViewEnterSignal   : require('sk/signals/views/ViewEnterSignal'),
   ViewRemovedSignal : require('sk/signals/views/ViewRemovedSignal'),
+  
+  LoadProgressSignal     : require('sk/signals/resources/LoadProgressSignal'),
+  LoadErrorSignal        : require('sk/signals/resources/LoadErrorSignal'),
+  ResourceLoadedSignal   : require('sk/signals/resources/ResourceLoadedSignal'),
+  LoadCompletedSignal    : require('sk/signals/resources/LoadCompletedSignal'),
+  LoadStartedSignal      : require('sk/signals/resources/LoadStartedSignal'),
+  ResourceUnloadedSignal : require('sk/signals/resources/ResourceUnloadedSignal'),
 
   UpdateSignal : require('sk/signals/UpdateSignal'),
 }

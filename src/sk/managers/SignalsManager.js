@@ -16,12 +16,12 @@ class SignalsManager extends Manager {
     this._updateSignal = injector.resolve('updateSignal')
   }
 
-  schedule(signal) {
+  schedule(signal, params) {
     if (!(signal instanceof Signal)) {
       throw new Error(`You must provide an instance of Signal on SignalsManager`)
     }
 
-    this._queue.push(signal)
+    this._queue.push({signal, params})
   }
 
   update() {
@@ -29,8 +29,8 @@ class SignalsManager extends Manager {
 
     while (i > 0) {
       i--
-      let signal = this._queue.shift()
-      signal._emit()
+      let {signal, params} = this._queue.shift()
+      signal._emit(params)
     }
 
     this._updateSignal.dispatch()

@@ -4,7 +4,6 @@ class Signal {
   constructor() {
     this._listeners = []
     this._onceListeners = []
-    this._params = null
   }
 
   setup() {}
@@ -46,20 +45,18 @@ class Signal {
   }
 
   dispatch(...params) {
-    this._params = params
-
     let signals = sk.inject('signals')
-    signals.schedule(this)
+    signals.schedule(this, params)
   }
 
   destroy() {}
 
-  _emit() {
+  _emit(params=[]) {
     for (let i=0; i<this._listeners.length; i++) {
-      this._listeners[i](...this._params)
+      this._listeners[i](...params)
     }
     for (let i=0; i<this._onceListeners.length; i++) {
-      this._onceListeners[i](...this._params)
+      this._onceListeners[i](...params)
     }
     this._onceListeners = []
   }

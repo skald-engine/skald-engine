@@ -67,6 +67,13 @@
   sk.signal('viewEnterSignal', signals.ViewEnterSignal)
   sk.signal('viewRemovedSignal', signals.ViewRemovedSignal)
 
+  sk.signal('loadProgressSignal', signals.LoadProgressSignal)
+  sk.signal('loadErrorSignal', signals.LoadErrorSignal)
+  sk.signal('resourceLoadedSignal', signals.ResourceLoadedSignal)
+  sk.signal('loadCompletedSignal', signals.LoadCompletedSignal)
+  sk.signal('loadStartedSignal', signals.LoadStartedSignal)
+  sk.signal('resourceUnloadedSignal', signals.ResourceUnloadedSignal)
+
   sk.signal('updateSignal', signals.UpdateSignal)
 }
 
