@@ -19,6 +19,7 @@
   sk.manager('signals', managers.SignalsManager)
   sk.manager('display', managers.DisplayManager)
   sk.manager('views', managers.ViewsManager)
+  sk.manager('keyboard', managers.KeyboardManager)
 }
 
 // Register services
@@ -73,6 +74,10 @@
   sk.signal('loadCompletedSignal', signals.LoadCompletedSignal)
   sk.signal('loadStartedSignal', signals.LoadStartedSignal)
   sk.signal('resourceUnloadedSignal', signals.ResourceUnloadedSignal)
+
+  sk.signal('keyDownSignal', signals.KeyDownSignal)
+  sk.signal('keyHoldSignal', signals.KeyHoldSignal)
+  sk.signal('keyUpSignal', signals.KeyUpSignal)
 
   sk.signal('updateSignal', signals.UpdateSignal)
 }

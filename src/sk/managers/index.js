@@ -1,6 +1,7 @@
 module.exports = {
-  TimeManager    : require('sk/managers/TimeManager'),
-  SignalsManager : require('sk/managers/SignalsManager'),
-  DisplayManager : require('sk/managers/DisplayManager'),
-  ViewsManager   : require('sk/managers/ViewsManager'),
+  TimeManager     : require('sk/managers/TimeManager'),
+  SignalsManager  : require('sk/managers/SignalsManager'),
+  DisplayManager  : require('sk/managers/DisplayManager'),
+  ViewsManager    : require('sk/managers/ViewsManager'),
+  KeyboardManager : require('sk/managers/KeyboardManager'),
 }

@@ -1,0 +1,42 @@
+{% extends "templates/test.html" %}
+
+
+{% block script %}
+<script>
+  sk.start({'keyboard.prevent_default': true})
+
+  let display = sk.resolve('display')
+  let stage = sk.resolve('stage')
+  let time = sk.resolve('time')
+  let keyboard = sk.resolve('keyboard')
+
+  let ball = new PIXI.Graphics()
+  ball.beginFill(sk.COLORS.RED).drawCircle(0, 0, 50)
+  ball.pivot.set(0, 0)
+  ball.position.set(display.halfWidth, display.halfHeight)
+  stage.addChild(ball)
+
+  let log = (event, key, shift, ctrl, alt, meta) => console.log(event, {key, shift, ctrl, alt, meta})
+  sk.resolve('keyDownSignal').add((...params) => log('keyDownSignal', ...params))
+  sk.resolve('keyHoldSignal').add((...params) => log('keyHoldSignal', ...params))
+  sk.resolve('keyUpSignal').add((...params) => log('keyUpSignal', ...params))
+
+  sk.resolve('updateSignal').add(() => {
+    if (keyboard.isDown(sk.KEYS.RIGHT)) {
+      ball.x += 100 * time.delta
+    }
+
+    if (keyboard.isDown(sk.KEYS.LEFT)) {
+      ball.x -= 100 * time.delta
+    }
+
+    if (keyboard.isDown(sk.KEYS.UP)) {
+      ball.y -= 100 * time.delta
+    }
+
+    if (keyboard.isDown(sk.KEYS.DOWN)) {
+      ball.y += 100 * time.delta
+    }
+  })
+</script>
+{% endblock %}

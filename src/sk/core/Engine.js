@@ -28,16 +28,22 @@ class Engine {
   destroy() {}
 
   _setup() {
+    let injector = this.injector
+    
     this._profile.begin('injector')
     this.injector.build()
     this._profile.end('injector')
     
     this._profile.begin('managers')
-    this.injector.managers.forEach(x => x.setup())
+    for (let i in injector.managers) {
+      injector.managers[i].setup()
+    }
     this._profile.end('managers')
     
     this._profile.begin('services')
-    this.injector.services.forEach(x => x.setup())
+    for (let i in injector.services) {
+      injector.services[i].setup()
+    }
     this._profile.end('services')
   }
 

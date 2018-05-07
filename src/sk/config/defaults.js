@@ -28,4 +28,6 @@ module.exports = {
 
   'resources.base_path'       : null,
   'resources.max_concurrency' : 10,
+
+  'keyboard.prevent_default' : false,
 }

@@ -40,13 +40,13 @@ class Injector {
     this._injectionPool = {}
     this._resolveStack = []
 
-    this.managers = []
-    this.services = []
-    this.signals = []
-    this.factories = []
-    this.instances = []
-    this.providers = []
-    this.views = []
+    this.managers = {}
+    this.services = {}
+    this.signals = {}
+    this.factories = {}
+    this.instances = {}
+    this.providers = {}
+    this.views = {}
 
     this.container = {}
   }
@@ -143,7 +143,7 @@ class Injector {
 
     if (!target.stateless) {
       this.container[id] = object
-      this[target.type].push(object)
+      this[target.type][id] = object
     }
 
     return object

@@ -18,5 +18,9 @@ module.exports = {
   LoadStartedSignal      : require('sk/signals/resources/LoadStartedSignal'),
   ResourceUnloadedSignal : require('sk/signals/resources/ResourceUnloadedSignal'),
 
+  KeyDownSignal : require('sk/signals/keyboard/KeyDownSignal'),
+  KeyHoldSignal : require('sk/signals/keyboard/KeyHoldSignal'),
+  KeyUpSignal   : require('sk/signals/keyboard/KeyUpSignal'),
+
   UpdateSignal : require('sk/signals/UpdateSignal'),
 }
