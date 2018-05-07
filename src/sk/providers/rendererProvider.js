@@ -38,7 +38,8 @@ function rendererProvider() {
 
   // enable focus on the game
   renderer.view.setAttribute('tabindex', '1')
-  renderer.view.focus()
+  renderer.view.style.userSelect = 'none'
+  setTimeout(() => renderer.view.focus(), 1)
 
   // add the renderer to the html
   parent.appendChild(renderer.view)
