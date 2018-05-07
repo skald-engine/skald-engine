@@ -92,16 +92,16 @@
     <div class="sk-panel p-test-status">
       <ul uk-tab>
         <li class="uk-active"><a href="">Console</a></li>
+        <li><a href="">Signals</a></li>
         <li class="uk-disabled"><a href="">Performance</a></li>
         <li class="uk-disabled"><a href="">Display List</a></li>
-        <li class="uk-disabled"><a href="">Signals</a></li>
       </ul>
 
       <ul class="uk-switcher">
         <li>{% include "templates/components/status_console.html" %}</li>
+        <li>{% include "templates/components/status_signals.html" %}</li>
         <li>{% include "templates/components/status_performance.html" %}</li>
         <li>{% include "templates/components/status_displaylist.html" %}</li>
-        <li>{% include "templates/components/status_signals.html" %}</li>
       </ul>
     </div>
 

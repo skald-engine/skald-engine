@@ -35,12 +35,12 @@ class KeyboardManager extends Manager {
     this._state           = []
     this._preventDefault = null
 
-    this._profile = null
-    this._config = null
-    this._renderer = null
+    this._profile       = null
+    this._config        = null
+    this._renderer      = null
     this._keyDownSignal = null
     this._keyHoldSignal = null
-    this._keyUpSignal = null
+    this._keyUpSignal   = null
   }
 
   /**

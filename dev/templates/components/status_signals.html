@@ -1,0 +1,112 @@
+<div class="c-signals">
+  <div id="sk-signals" class="c-signals-content">
+    <table class="uk-table uk-table-divider">
+      <thead>
+        <tr>
+          <th width="40%">Signal</th>
+          <th width="10%">Calls</th>
+          <th width="50%">Last Params</th>
+        </tr>
+      </thead>
+
+      <tbody id="sk-signals-table">
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<style>
+  .c-signals {
+    height: 263px;
+  }
+  .c-signals-content {
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  .c-signals th,
+  .c-signals td {
+    padding: 5px 10px;
+  }
+</style>
+
+<script>
+  let injector = sk._$.getInjector()
+  let table = document.getElementById('sk-signals-table')
+  var signals = []
+  var signalsData = {}
+
+  function fill() {
+    table.innerHTML = ""
+    signals.forEach(signal => {
+      table.innerHTML += `
+        <tr id="c-signals-item-${signal}">
+          <td id="c-signals-item-${signal}-name">${signal}</td>
+          <td id="c-signals-item-${signal}-calls">0</td>
+          <td id="c-signals-item-${signal}-params"></td>
+        </tr>
+      `
+    })
+  }
+
+  function updateSignal(data) {
+    let calls = document.getElementById(`c-signals-item-${data.name}-calls`)
+    let params = document.getElementById(`c-signals-item-${data.name}-params`)
+
+    calls.innerHTML = data.calls
+    params.innerHTML = ''
+
+    if (data.params && data.params.length) {
+      let html = ''
+      try {
+        html = JSON.stringify(data.params)
+      } catch {
+        try {
+          html = `${data.params}`
+        } catch {}
+      }
+      html = html.replace(/&/g, '&amp;')
+                 .replace(/</g, '&lt;')
+                 .replace(/>/g, '&gt;')
+                 .replace(/'/g, '&apos;')
+                 .replace(/"/g, '&quot;')
+                 .replace(/\n/g, '&nbsp;')
+                 .replace(/\s/g, '&nbsp;')
+      // if (html.length > 60) {
+        // html = html.substring(0, 56) + ' ...'
+      // }
+
+      params.innerHTML = html
+    }
+  }
+
+  function update() {
+    let next = Object.keys(injector.signals)
+    next.sort()
+
+    if (next.some((value, i) => value !== signals[i])) {
+      signals = next
+
+      signals.forEach(signal => {
+        if (!signalsData[signal]) {
+          signalsData[signal] = {
+            name: signal,
+            calls: 0,
+            params: null
+          }
+          sk.resolve(signal).add((...params) => {
+            signalsData[signal].calls++
+            signalsData[signal].params = params
+            updateSignal(signalsData[signal])
+          })
+        }
+      })
+      fill()
+    }
+
+    requestAnimationFrame(update)
+  }
+
+  requestAnimationFrame(update)
+
+</script>

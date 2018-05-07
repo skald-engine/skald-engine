@@ -7,7 +7,6 @@ html, body {
   min-width: 1080px;
   min-height: 932px;
   overflow: hidden;
-
 }
 ::-webkit-scrollbar-button{ 
   display: none;
@@ -34,6 +33,7 @@ html, body {
 
 .sk-panel {
   background: #ffffff;
+  font-size: 14px;
 }
 .sk-panel > .uk-tab {
   background: #fdfdfe;
