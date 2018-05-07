@@ -1,0 +1,97 @@
+{% extends "templates/base.html" %}
+
+{% block title %}
+  {{current_test}} - Skald Feature Tests
+{% endblock %}
+
+
+{% block head %}
+  <script type="text/javascript" src="/static/js/dat.gui.min.js"></script>
+  <link rel="stylesheet" href="/static/css/tests.css" />
+
+  <style>
+    .p-test-main {
+      height: 100%;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 250px auto;
+      grid-template-rows: 31px auto 300px;
+      grid-template-areas: 
+        "header header"
+        "menu game"
+        "options game"
+    }
+    .p-test-header {
+      grid-area: header;
+      background: #272822;
+      border-bottom: 1px solid #BBB;
+    }
+    .p-test-menu {
+      grid-area: menu;
+      border-right: 1px solid #BBB;
+      overflow: hidden;
+      height: calc(100vh - 331px);
+    }
+    .p-test-game {
+      grid-area: game;
+      width: calc(100vw - 250px);
+      height: calc(100vh - 31px);
+      background: #EEE;
+      overflow: auto;
+    }
+    .p-test-status { 
+      grid-area: status;
+      border-top: 1px solid #BBB;
+      overflow: hidden;
+      height: 300px;
+    }
+    .p-test-options {
+      grid-area: options;
+      border-right: 1px solid #BBB;
+      border-top: 1px solid #BBB;
+      overflow: hidden;
+      height: 300px;
+    }
+
+  </style>
+{% endblock %}
+
+
+{% block body %}
+  <div class="p-test-main">
+    <div class="p-test-header">
+      {% include "templates/components/header.html" %}
+    </div>
+
+    <div class="sk-panel p-test-menu">
+      <ul uk-tab>
+        <li class="uk-active"><a href="">Available Tests</a></li>
+      </ul>
+
+      <ul class="uk-switcher">
+        <li>{% include "templates/components/menu.html" %}</li>
+      </ul>
+    </div>
+
+    <div class="sk-panel p-test-game">
+      {% block content %}
+        {% include "templates/components/game.html" %}
+      {% endblock %}
+    </div>
+
+    <div class="sk-panel p-test-options">
+      <ul uk-tab>
+        <li class="uk-active"><a href="">Options</a></li>
+      </ul>
+
+      <ul class="uk-switcher">
+        {% include "templates/components/options.html" %}
+      </ul> 
+    </div>
+
+  </div>
+
+  <!-- FINAL SCRIPTS -->
+  <script type="text/javascript" src="/static/js/tests.js"></script>
+  <!-- END FINAL SCRIPTS -->
+{% endblock %}
