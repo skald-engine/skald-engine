@@ -30,4 +30,5 @@ module.exports = {
   'resources.max_concurrency' : 10,
 
   'keyboard.prevent_default' : false,
+  'mouse.prevent_default'    : false,
 }

@@ -1,0 +1,45 @@
+{% extends "templates/test.html" %}
+
+
+{% block script %}
+<script>
+  sk.start({'mouse.prevent_default': true})
+
+  let display = sk.resolve('display')
+  let stage = sk.resolve('stage')
+  let time = sk.resolve('time')
+  let mouse = sk.resolve('mouse')
+
+  let ball = new PIXI.Graphics()
+  ball.beginFill(sk.COLORS.WHITE).drawCircle(0, 0, 50)
+  ball.pivot.set(0, 0)
+  ball.position.set(display.halfWidth, display.halfHeight)
+  stage.addChild(ball)
+
+  let log = (event, button, x, y) => console.log(event, {button, x, y})
+  sk.resolve('clickSignal').add((...params) => log('click', ...params))
+  sk.resolve('doubleClickSignal').add((...params) => log('doubleClick', ...params))
+  sk.resolve('mouseDownSignal').add((...params) => log('mouseDown', ...params))
+  sk.resolve('mouseUpSignal').add((...params) => log('mouseUp', ...params))
+  
+  log = (event, x, y) => console.log(event, {x, y})
+  sk.resolve('mouseMoveSignal').add((...params) => log('mouseMove', ...params))
+  sk.resolve('mouseLeaveSignal').add((...params) => log('mouseLeave', ...params))
+  sk.resolve('mouseEnterSignal').add((...params) => log('mouseEnter', ...params))
+
+  log = (event, deltaX, deltaY, deltaZ) => console.log(event, {deltaX, deltaY, deltaZ})
+  sk.resolve('mouseWheelSignal').add((...params) => log('mouseWheel', ...params))
+
+  sk.resolve('updateSignal').add(() => {
+    if (mouse.isPressed(sk.BUTTONS.LEFT)) {
+      ball.tint = sk.utils.random.color()
+    }
+
+    if (mouse.isPressed(sk.BUTTONS.RIGHT)) {
+      ball.tint = sk.COLORS.SK_VANILLA
+    }
+    
+    ball.position.set(mouse.x, mouse.y)
+  })
+</script>
+{% endblock %}

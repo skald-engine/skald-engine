@@ -21,6 +21,15 @@ module.exports = {
   KeyDownSignal : require('sk/signals/keyboard/KeyDownSignal'),
   KeyHoldSignal : require('sk/signals/keyboard/KeyHoldSignal'),
   KeyUpSignal   : require('sk/signals/keyboard/KeyUpSignal'),
+  
+  ClickSignal       : require('sk/signals/mouse/ClickSignal'),
+  DoubleClickSignal : require('sk/signals/mouse/DoubleClickSignal'),
+  MouseDownSignal   : require('sk/signals/mouse/MouseDownSignal'),
+  MouseUpSignal     : require('sk/signals/mouse/MouseUpSignal'),
+  MouseMoveSignal   : require('sk/signals/mouse/MouseMoveSignal'),
+  MouseLeaveSignal  : require('sk/signals/mouse/MouseLeaveSignal'),
+  MouseEnterSignal  : require('sk/signals/mouse/MouseEnterSignal'),
+  MouseWheelSignal  : require('sk/signals/mouse/MouseWheelSignal'),
 
   UpdateSignal : require('sk/signals/UpdateSignal'),
 }

@@ -20,6 +20,7 @@
   sk.manager('display', managers.DisplayManager)
   sk.manager('views', managers.ViewsManager)
   sk.manager('keyboard', managers.KeyboardManager)
+  sk.manager('mouse', managers.MouseManager)
 }
 
 // Register services
@@ -78,6 +79,15 @@
   sk.signal('keyDownSignal', signals.KeyDownSignal)
   sk.signal('keyHoldSignal', signals.KeyHoldSignal)
   sk.signal('keyUpSignal', signals.KeyUpSignal)
+
+  sk.signal('clickSignal', signals.ClickSignal)
+  sk.signal('doubleClickSignal', signals.DoubleClickSignal)
+  sk.signal('mouseDownSignal', signals.MouseDownSignal)
+  sk.signal('mouseUpSignal', signals.MouseUpSignal)
+  sk.signal('mouseMoveSignal', signals.MouseMoveSignal)
+  sk.signal('mouseLeaveSignal', signals.MouseLeaveSignal)
+  sk.signal('mouseEnterSignal', signals.MouseEnterSignal)
+  sk.signal('mouseWheelSignal', signals.MouseWheelSignal)
 
   sk.signal('updateSignal', signals.UpdateSignal)
 }

@@ -4,4 +4,5 @@ module.exports = {
   DisplayManager  : require('sk/managers/DisplayManager'),
   ViewsManager    : require('sk/managers/ViewsManager'),
   KeyboardManager : require('sk/managers/KeyboardManager'),
+  MouseManager    : require('sk/managers/MouseManager'),
 }
