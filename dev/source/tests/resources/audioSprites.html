@@ -1,0 +1,30 @@
+{% extends "templates/test.html" %}
+
+
+{% block script %}
+<script type="text/javascript">
+  sk.start()
+
+  const resources = sk.resolve('resources')
+  const stage     = sk.resolve('stage')
+  const display   = sk.resolve('display')
+
+  resources.add(sk.RESOURCES.AUDIO_SPRITE, 'sprite', '/static/sounds/sprite.mp3', [
+    {id: 'alien death', offset: 1000, duration: 1000 },
+    {id: 'boss hit', offset: 3000, duration: 500 },
+    {id: 'escape', offset: 4000, duration: 3200, loop: true },
+    {id: 'meow', offset: 8000, duration: 500 },
+    {id: 'numkey', offset: 9000, duration: 100 },
+    {id: 'ping', offset: 10000, duration: 1000 },
+    {id: 'death', offset: 12000, duration: 4200, allowMultiple: false },
+    {id: 'shot', offset: 17000, duration: 1000 },
+    {id: 'squit', offset: 19000, duration: 300, volume: 0.1 }
+  ])
+
+  resources.load(() => {
+    resources.get('death').play()
+    resources.get('boss hit').play()
+  })
+
+</script>
+{% endblock %}

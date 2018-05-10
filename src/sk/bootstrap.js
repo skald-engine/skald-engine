@@ -130,4 +130,5 @@
   ResourcesService.registerMiddleware(C.RESOURCES.TEXTURE, middlewares.TextureMiddleware)
   ResourcesService.registerMiddleware(C.RESOURCES.BITMAP_FONT, middlewares.BitmapFontMiddleware)
   ResourcesService.registerMiddleware(C.RESOURCES.AUDIO, middlewares.AudioMiddleware)
+  ResourcesService.registerMiddleware(C.RESOURCES.AUDIO_SPRITE, middlewares.AudioSpriteMiddleware)
 }

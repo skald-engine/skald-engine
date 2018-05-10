@@ -84,10 +84,26 @@ class SoundsService extends Service {
     this._renderer.view.addEventListener('touchend', unlock, true)
   }
 
+  createRaw(buffer, metadata) {
+    let baseAudio = new BaseAudio(this._context, this._masterNode, metadata)
+    return baseAudio
+  }
+  
+  createRawBash(buffer, metadatas) {
+    let bases = metadatas.map(m => new BaseAudio(this._context, this._masterNode, m))
+    return bases
+  }
+
   create(buffer, metadata) {
     let baseAudio = new BaseAudio(this._context, this._masterNode, metadata)
     this._context.decodeAudioData(buffer, buffer => baseAudio.buffer = buffer)
     return baseAudio
+  }
+
+  createBash(buffer, metadatas) {
+    let bases = metadatas.map(m => new BaseAudio(this._context, this._masterNode, m))
+    this._context.decodeAudioData(buffer, buffer => bases.forEach(b => b.buffer = buffer))
+    return bases
   }
 
   resume() {

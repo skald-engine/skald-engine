@@ -126,7 +126,7 @@ class BaseAudio {
   }
 
   play(id, offset, duration, volume, loop) {
-    if (typeof id !== undefined && id !== null) {
+    if (typeof id !== 'undefined' && id !== null) {
       let marker = this._markers[id]
       if (!marker) return // invalid marker
 
