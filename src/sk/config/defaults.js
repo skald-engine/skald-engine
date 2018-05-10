@@ -31,4 +31,5 @@ module.exports = {
 
   'keyboard.prevent_default' : false,
   'mouse.prevent_default'    : false,
+  'sounds.master_volume'     : 1,
 }

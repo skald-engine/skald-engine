@@ -8,4 +8,5 @@ export const RESOURCES = enumeration({
   JSON        : 'json',
   TEXTURE     : 'texture',
   BITMAP_FONT : 'bitmap_font',
+  AUDIO       : 'audio',
 })

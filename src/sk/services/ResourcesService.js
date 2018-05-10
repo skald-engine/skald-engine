@@ -195,7 +195,6 @@ class ResourcesService extends Service {
 
     this._queueSize = 0
     this._loader.reset()
-
   }
 
   add(type, id, url, metadata, callback) {
@@ -203,7 +202,7 @@ class ResourcesService extends Service {
     metadata = metadata || {}
 
     if (!type || !middleware) {
-      throw new Error(`Invalid (non-registered) resource type "${type}".`)
+      throw new Error(`Trying to add a resource with non-registered type "${type}".`)
     }
 
     if (!id) {

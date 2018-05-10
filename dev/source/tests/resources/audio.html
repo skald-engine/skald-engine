@@ -1,0 +1,22 @@
+{% extends "templates/test.html" %}
+
+
+{% block script %}
+<script type="text/javascript">
+  sk.start()
+
+  const resources = sk.resolve('resources')
+  const stage     = sk.resolve('stage')
+  const display   = sk.resolve('display')
+
+  resources.add(sk.RESOURCES.AUDIO, 'boing', '/static/sounds/boing.mp3', {volume: 0.2})
+  resources.add(sk.RESOURCES.AUDIO, 'applause', '/static/sounds/applause.{ogg,mp3}', {offset: 500})
+  resources.add(sk.RESOURCES.AUDIO, 'mechanical', '/static/sounds/mechanical.mp3')
+  resources.add(sk.RESOURCES.AUDIO, 'music', '/static/sounds/happy.{mp3,ogg}', {loop: true})
+
+  resources.load(() => {
+    //
+  })
+
+</script>
+{% endblock %}

@@ -7,6 +7,7 @@ module.exports = Object.assign(
   require('sk/constants/logger'),
   require('sk/constants/math'),
   require('sk/constants/positions'),
+  require('sk/constants/audios'),
   require('sk/constants/resources'),
   require('sk/constants/pixi_'),
 )
