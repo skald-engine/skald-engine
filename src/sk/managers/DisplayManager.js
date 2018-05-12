@@ -256,9 +256,9 @@ class DisplayManager extends Manager {
     this._height = this._config.get('display.height')
     this._canvasWidth = this._config.get('display.width')
     this._canvasHeight = this._config.get('display.height')
-    this._scaleMode = this._config.get('display.scaleMode')
-    this._fullscreenScaleMode = this._config.get('display.fullscreenScaleMode')
-    this._forceOrientation = this._config.get('display.forceOrientation')
+    this.scaleMode = this._config.get('display.scale_mode')
+    this.fullscreenScaleMode = this._config.get('display.fullscreen_scale_mode')
+    this.forceOrientation = this._config.get('display.force_orientation')
   }
 
   /**
@@ -369,6 +369,14 @@ class DisplayManager extends Manager {
     this._renderer.resize(this._canvasWidth, this._canvasHeight)
     this._renderer.view.style.width = this._canvasWidth+'px'
     this._renderer.view.style.height = this._canvasHeight+'px'
+    
+    if (scaleMode === C.SCALE_MODES.NOSCALE) {
+      this._renderer.view.style.minWidth = this._canvasWidth+'px'
+      this._renderer.view.style.minHeight = this._canvasHeight+'px'
+    } else {
+      this._renderer.view.style.minWidth = null
+      this._renderer.view.style.minHeight = null
+    }
 
     this._resizeSignal.dispatch(width, height)
   }

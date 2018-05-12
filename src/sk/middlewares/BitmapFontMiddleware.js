@@ -13,7 +13,7 @@ class BitmapFontMiddleware extends Middleware {
   }
 
   validate(resource) {
-    if (!resource.rawData || !resource.rawData.getElementsByTagName) return false
+    if (!resource.rawData.getElementsByTagName) return false
 
     let tagPage = resource.rawData.getElementsByTagName('page')
     let tagInfo = resource.rawData.getElementsByTagName('info')
@@ -28,9 +28,9 @@ class BitmapFontMiddleware extends Middleware {
     let textureUrl = this._getTextureUrl(resource)
 
     // check if texture already exists
-    let texture = this._resources.getByUrl(textureUrl)
-    if (texture) {
-      let data = this._parse(resource, texture, textureUrl)
+    let textureResource = this._resources.getResourceByUrl(textureUrl)
+    if (textureResource) {
+      let data = this._parse(resource, textureResource)
       return data
 
     } else {
@@ -44,8 +44,6 @@ class BitmapFontMiddleware extends Middleware {
         resolve(data)
       })
     }
-
-    return resource.rawData
   }
 
   cache(resource) {

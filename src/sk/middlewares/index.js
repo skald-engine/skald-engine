@@ -5,4 +5,5 @@ module.exports = {
   BitmapFontMiddleware  : require('sk/middlewares/BitmapFontMiddleware'),
   AudioMiddleware       : require('sk/middlewares/AudioMiddleware'),
   AudioSpriteMiddleware : require('sk/middlewares/AudioSpriteMiddleware'),
+  SpriteSheetMiddleware : require('sk/middlewares/SpriteSheetMiddleware'),
 }

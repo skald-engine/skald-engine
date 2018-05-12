@@ -1,0 +1,20 @@
+{% extends "templates/test.html" %}
+
+
+{% block script %}
+<script type="text/javascript">
+  sk.start()
+
+  const resources = sk.resolve('resources')
+  const stage     = sk.resolve('stage')
+  const display   = sk.resolve('display')
+
+  resources.add(sk.RESOURCES.SPRITE_SHEET, 'spritesheet', '/static/spritesheets/test.json')
+
+  resources.load(() => {
+    let ss = resources.get('spritesheet')
+    s = new PIXI.Sprite(ss.getFrame('heart.png')); s.x = 100; stage.addChild(s)
+    s = new PIXI.Sprite(ss.getFrame('pac.png')); s.x = 300; stage.addChild(s)
+  })
+</script>
+{% endblock %}

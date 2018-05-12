@@ -10,4 +10,5 @@ export const RESOURCES = enumeration({
   BITMAP_FONT  : 'bitmap_font',
   AUDIO        : 'audio',
   AUDIO_SPRITE : 'audio_sprite',
+  SPRITE_SHEET : 'sprite_sheet',
 })

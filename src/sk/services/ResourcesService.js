@@ -252,10 +252,19 @@ class ResourcesService extends Service {
     this._resourcesById[resource.id] = resource
     this._resourcesByUrl[resource.url] = resource
 
-    resource.children.forEach(r => {
-      this._resourcesById[r.id] = r
-      if (r.url) this._resourcesByUrl[r.url] = r
-    })
+    let bucket = [resource]
+    while (bucket.length) {
+      let r = bucket.shift()
+
+      if (!this._resourcesById[r.id]) {
+        this._resourcesById[r.id] = r
+      }
+      if (r.url && !this._resourcesByUrl[r.url]) {
+        this._resourcesByUrl[r.url] = r
+      }
+      
+      bucket = bucket.concat(r.children || [])
+    }
   }
 
   uncache(id) {    
@@ -314,6 +323,11 @@ class ResourcesService extends Service {
 
   getResource(id) {
     return this._resourcesById[id] || null
+  }
+
+  getResourceByUrl(url) {
+    let resource = this._resourcesByUrl[url]
+    return resource? resource : null
   }
 }
 

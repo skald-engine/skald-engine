@@ -131,4 +131,5 @@
   ResourcesService.registerMiddleware(C.RESOURCES.BITMAP_FONT, middlewares.BitmapFontMiddleware)
   ResourcesService.registerMiddleware(C.RESOURCES.AUDIO, middlewares.AudioMiddleware)
   ResourcesService.registerMiddleware(C.RESOURCES.AUDIO_SPRITE, middlewares.AudioSpriteMiddleware)
+  ResourcesService.registerMiddleware(C.RESOURCES.SPRITE_SHEET, middlewares.SpriteSheetMiddleware)
 }
