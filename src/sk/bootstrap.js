@@ -33,6 +33,7 @@
   sk.manager('views', managers.ViewsManager)
   sk.manager('keyboard', managers.KeyboardManager)
   sk.manager('mouse', managers.MouseManager)
+  sk.manager('gamepads', managers.GamepadsManager)
 }
 
 // Register services
@@ -101,6 +102,13 @@
   sk.signal('mouseLeaveSignal', signals.MouseLeaveSignal)
   sk.signal('mouseEnterSignal', signals.MouseEnterSignal)
   sk.signal('mouseWheelSignal', signals.MouseWheelSignal)
+
+  sk.signal('gamepadButtonDownSignal', signals.GamepadButtonDownSignal)
+  sk.signal('gamepadButtonHoldSignal', signals.GamepadButtonHoldSignal)
+  sk.signal('gamepadButtonUpSignal', signals.GamepadButtonUpSignal)
+  sk.signal('gamepadStickMoveSignal', signals.GamepadStickMoveSignal)
+  sk.signal('gamepadConnectedSignal', signals.GamepadConnectedSignal)
+  sk.signal('gamepadDisconnectedSignal', signals.GamepadDisconnectedSignal)
 
   sk.signal('updateSignal', signals.UpdateSignal)
 }

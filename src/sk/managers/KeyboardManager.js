@@ -181,7 +181,6 @@ class KeyboardManager extends Manager {
     this._lastState = this._state.slice()
   }
 
-
   /**
    * Verifies if a given key is down.
    *

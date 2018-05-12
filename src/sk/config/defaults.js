@@ -25,6 +25,9 @@ module.exports = {
   'resources.base_path'       : null,
   'resources.max_concurrency' : 10,
 
+  'gamepads.left_stick_deadzone'  : 0.25,
+  'gamepads.right_stick_deadzone' : 0.25,
+  
   'keyboard.prevent_default' : false,
   'mouse.prevent_default'    : false,
   'sounds.master_volume'     : 1,

@@ -1,0 +1,65 @@
+{% extends "templates/test.html" %}
+
+
+{% block script %}
+<script>
+  sk.start()
+
+  let display = sk.resolve('display')
+  let stage = sk.resolve('stage')
+  let time = sk.resolve('time')
+  let gamepads = sk.resolve('gamepads')
+
+  let ball = new PIXI.Graphics()
+  ball.beginFill(sk.COLORS.WHITE).drawCircle(0, 0, 50)
+  ball.pivot.set(0, 0)
+  ball.position.set(display.halfWidth, display.halfHeight)
+  stage.addChild(ball)
+
+  sk.resolve('gamepadButtonDownSignal').add((...params) => {
+    console.log('gamepadButtonDownSignal', ...params)
+  })
+  sk.resolve('gamepadButtonHoldSignal').add((...params) => {
+    console.log('gamepadButtonHoldSignal', ...params)
+  })
+  sk.resolve('gamepadButtonUpSignal').add((...params) => {
+    console.log('gamepadButtonUpSignal', ...params)
+  })
+  sk.resolve('gamepadStickMoveSignal').add((...params) => {
+    console.log('gamepadStickMoveSignal', ...params)
+  })
+  sk.resolve('gamepadConnectedSignal').add((...params) => {
+    console.log('gamepadConnectedSignal', ...params)
+  })
+  sk.resolve('gamepadDisconnectedSignal').add((...params) => {
+    console.log('gamepadDisconnectedSignal', ...params)
+  })
+
+  sk.resolve('updateSignal').add(() => {
+    if (gamepads.isDown(sk.GAMEPAD_BUTTONS.RIGHT)) {
+      ball.x += 100 * time.delta
+    }
+
+    if (gamepads.isDown(sk.GAMEPAD_BUTTONS.LEFT)) {
+      ball.x -= 100 * time.delta
+    }
+
+    if (gamepads.isDown(sk.GAMEPAD_BUTTONS.UP)) {
+      ball.y -= 100 * time.delta
+    }
+
+    if (gamepads.isDown(sk.GAMEPAD_BUTTONS.DOWN)) {
+      ball.y += 100 * time.delta
+    }
+
+    if (gamepads.isPressed(sk.GAMEPAD_BUTTONS.A)) {
+      ball.tint = sk.utils.random.color()
+    }
+
+    let gamepad = gamepads.getFirst()
+
+    if (Math.abs(gamepad.leftStickX) > 0.2) ball.x += 300 * time.delta * gamepad.leftStickX
+    if (Math.abs(gamepad.leftStickY) > 0.2) ball.y += 300 * time.delta * gamepad.leftStickY
+  })
+</script>
+{% endblock %}
