@@ -11,4 +11,5 @@ module.exports = {
   Signal      : require('sk/core/Signal'),
   SpriteSheet : require('sk/core/SpriteSheet'),
   View        : require('sk/core/View'),
+  Touch       : require('sk/core/Touch'),
 }

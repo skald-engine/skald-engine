@@ -34,6 +34,7 @@
   sk.manager('keyboard', managers.KeyboardManager)
   sk.manager('mouse', managers.MouseManager)
   sk.manager('gamepads', managers.GamepadsManager)
+  sk.manager('touches', managers.TouchesManager)
 }
 
 // Register services
@@ -109,6 +110,10 @@
   sk.signal('gamepadStickMoveSignal', signals.GamepadStickMoveSignal)
   sk.signal('gamepadConnectedSignal', signals.GamepadConnectedSignal)
   sk.signal('gamepadDisconnectedSignal', signals.GamepadDisconnectedSignal)
+
+  sk.signal('touchDownSignal', signals.TouchDownSignal)
+  sk.signal('touchMoveSignal', signals.TouchMoveSignal)
+  sk.signal('touchUpSignal', signals.TouchUpSignal  )
 
   sk.signal('updateSignal', signals.UpdateSignal)
 }

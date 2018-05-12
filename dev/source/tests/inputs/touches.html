@@ -1,0 +1,49 @@
+  {% extends "templates/test.html" %}
+
+
+{% block script %}
+<script>
+  sk.start()
+
+  let display = sk.resolve('display')
+  let stage = sk.resolve('stage')
+  let time = sk.resolve('time')
+  let touches = sk.resolve('touches')
+
+  let balls = []
+  for (let i=0; i<10; i++) {
+    let ball = new PIXI.Graphics()
+    ball.beginFill(sk.COLORS.WHITE).drawCircle(0, 0, 20)
+    ball.pivot.set(0, 0)
+    ball.position.set(display.halfWidth, display.halfHeight)
+    stage.addChild(ball)
+    balls.push(ball)
+  }
+
+  sk.resolve('touchDownSignal').add((...params) => {
+    console.log('touchDownSignal', ...params)
+  })
+  sk.resolve('touchMoveSignal').add((...params) => {
+    console.log('touchMoveSignal', ...params)
+  })
+  sk.resolve('touchUpSignal').add((...params) => {
+    console.log('touchUpSignal', ...params)
+  })
+
+  sk.resolve('updateSignal').add(() => {
+    let pieces = touches.getLiveTouches()
+
+    let i = 0;
+    for (; i<pieces.length; i++) {
+      let position = pieces[i].position
+      balls[i].x = position.x
+      balls[i].y = position.y
+      balls[i].visible = true
+    }
+
+    for (; i<balls.length; i++) {
+      balls[i].visible = false
+    }
+  })
+</script>
+{% endblock %}

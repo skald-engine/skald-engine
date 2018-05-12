@@ -6,4 +6,5 @@ module.exports = {
   KeyboardManager : require('sk/managers/KeyboardManager'),
   MouseManager    : require('sk/managers/MouseManager'),
   GamepadsManager : require('sk/managers/GamepadsManager'),
+  TouchesManager  : require('sk/managers/TouchesManager'),
 }

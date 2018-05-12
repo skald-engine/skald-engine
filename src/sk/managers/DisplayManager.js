@@ -385,7 +385,7 @@ class DisplayManager extends Manager {
    * Check the device and window orientation, dispatching orientation events
    * and checking for wrong orientation.
    */
-  _checkOrientation(a, b, g) {
+  _checkOrientation() {
     if (this._device.desktop) return
 
     let o = this.orientation
@@ -395,10 +395,10 @@ class DisplayManager extends Manager {
                              this.orientation !== this._forceOrientation
 
     if (!this._inWrongOrientation && inWrongOrientation) {
-      this._enterWrongOrientationSignal.dispatch(o, a, b, g)
+      this._enterWrongOrientationSignal.dispatch(o)
 
     } else if (this._inWrongOrientation && !inWrongOrientation) {
-      this._leaveWrongOrientationSignal.dispatch(o, a, b, g)
+      this._leaveWrongOrientationSignal.dispatch(o)
     }
 
     this._inWrongOrientation = inWrongOrientation
@@ -429,8 +429,9 @@ class DisplayManager extends Manager {
   _onOrientationChange(browserEvent) {
     if (this._device.desktop) return
 
-    this._orientationChanceSignal.dispatch(o, a, b, g)
-    this._checkOrientation(a, b, g)
+    let o = this.orientation
+    this._orientationChanceSignal.dispatch(o)
+    this._checkOrientation()
   }
 
 

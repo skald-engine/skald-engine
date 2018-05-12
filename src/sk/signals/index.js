@@ -38,5 +38,9 @@ module.exports = {
   GamepadConnectedSignal      : require('sk/signals/gamepads/GamepadConnectedSignal'),
   GamepadDisconnectedSignal   : require('sk/signals/gamepads/GamepadDisconnectedSignal'),
   
+  TouchDownSignal             : require('sk/signals/touches/TouchDownSignal'),
+  TouchMoveSignal             : require('sk/signals/touches/TouchMoveSignal'),
+  TouchUpSignal               : require('sk/signals/touches/TouchUpSignal'),
+
   UpdateSignal                : require('sk/signals/UpdateSignal'),
 }

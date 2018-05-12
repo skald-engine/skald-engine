@@ -26,7 +26,7 @@ module.exports.services = services
 module.exports.middlewares = middlewares
 module.exports.providers = providers
 module.exports.signals = signals
-module.exports._$ = $
+module.exports.$ = $
 
 module.exports = Object.assign(
   module.exports,
