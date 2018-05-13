@@ -1,7 +1,7 @@
-const assertColor = require('sk/utils/colors/_common').assertColor
-const assertFloat = require('sk/utils/colors/_common').assertFloat
-const colorToRgb = require('sk/utils/colors/colorToRgb')
-const rgbToColor = require('sk/utils/colors/rgbToColor')
+const assertColor = require('sk/colors/_common').assertColor
+const assertFloat = require('sk/colors/_common').assertFloat
+const colorToRgb = require('sk/colors/colorToRgb')
+const rgbToColor = require('sk/colors/rgbToColor')
 
 /**
  * Shortcut for `blend(0xFFFFFF, color2, amount)`.

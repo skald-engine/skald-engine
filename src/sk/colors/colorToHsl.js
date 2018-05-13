@@ -1,4 +1,4 @@
-const assertColor = require('sk/utils/colors/_common').assertColor
+const assertColor = require('sk/colors/_common').assertColor
 
 /**
  * Returns the HSL value from an int color. The return value is in the format

@@ -14,6 +14,10 @@ const services = require('sk/services')
 const middlewares = require('sk/middlewares')
 const providers = require('sk/providers')
 const signals = require('sk/signals')
+const colors = require('sk/colors')
+const random = require('sk/random')
+const ease = require('sk/ease')
+const tween = require('sk/tween')
 
 
 module.exports.core = core
@@ -26,6 +30,10 @@ module.exports.services = services
 module.exports.middlewares = middlewares
 module.exports.providers = providers
 module.exports.signals = signals
+module.exports.colors = colors
+module.exports.random = random
+module.exports.ease = ease
+module.exports.tween = tween
 module.exports.$ = $
 
 module.exports = Object.assign(

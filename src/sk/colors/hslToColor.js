@@ -1,5 +1,5 @@
-const assertFloat = require('sk/utils/colors/_common').assertFloat
-const hue2rgb = require('sk/utils/colors/_common').hue2rgb
+const assertFloat = require('sk/colors/_common').assertFloat
+const hue2rgb = require('sk/colors/_common').hue2rgb
 
 /**
  * Converts an HSL color to an int color. The hue value must be between 0 and

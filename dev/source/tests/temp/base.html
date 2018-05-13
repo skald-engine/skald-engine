@@ -34,13 +34,13 @@
     for (let i=0; i<10000; i++) {
       heart = new PIXI.Sprite(resources.get('heart'))
       heart.pivot.set(heart.width/2, heart.height/2)
-      heart.position.set(sk.utils.random.int(0, display.width), sk.utils.random.int(115, display.height))
+      heart.position.set(sk.random.int(0, display.width), sk.random.int(115, display.height))
       let scale = Math.random()*2
       heart.scale.set(scale, scale)
       heart.rotation = Math.random()*Math.PI*2
       heart.alpha = Math.min(Math.random(), 1)
       if (Math.random() > 0.1) {
-        heart.tint = sk.utils.random.color()
+        heart.tint = sk.random.color()
       }
       stage.views.addChild(heart)
     }
@@ -49,7 +49,7 @@
       sprite = new PIXI.Sprite(resources.get('pac'))
       sprite.pivot.set(sprite.width/2, sprite.height/2)
       // sprite.position.set(display.halfWidth, display.halfHeight)
-      sprite.position.set(sk.utils.random.int(0, display.width), sk.utils.random.int(50, display.height))
+      sprite.position.set(sk.random.int(0, display.width), sk.random.int(50, display.height))
       sprite.rotation = Math.random()*Math.PI*2
       sprite.speed = Math.random()*0.5 + 0.5
       sprite.direction = Math.random() < 0.5 ? -1 : 1

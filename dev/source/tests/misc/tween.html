@@ -1,0 +1,41 @@
+{% extends "templates/test.html" %}
+
+
+{% block script %}
+<script type="text/javascript">
+  sk.start()
+
+  const resources = sk.resolve('resources')
+  const stage     = sk.resolve('stage')
+  const display   = sk.resolve('display')
+
+  resources.load(() => {
+    let ball = new PIXI.Graphics()
+    ball.beginFill(sk.COLORS.WHITE).drawCircle(0, 0, 50)
+    ball.tint = sk.COLORS.SK_RED
+    ball.pivot.set(0, 0)
+    ball.position.set(display.halfWidth, display.halfHeight)
+    stage.addChild(ball)
+
+    let t1 = new sk.tween.Tween(ball, 2000, {x:0}, {x:display.width}, {
+      delay: 500,
+      repeat: 1,
+      repeatDelay: 1000,
+      yoyo: true,
+      ease: sk.ease.expoInOut,
+      yoyoEase: sk.ease.linear,
+      onStart: () => { console.log('onStart') },
+      onUpdate: (progress) => {
+        // console.log('onUpdate', progress)
+        ball.tint = sk.colors.blend(sk.COLORS.SK_RED, sk.COLORS.SK_GREEN, progress)
+      },
+      onComplete: () => { console.log('onComplete') },
+      onRepeat: () => { console.log('onRepeat') },
+      onReverse: () => { console.log('onReverse') },
+    })
+    t1.start()
+    console.log(t1)
+  })
+
+</script>
+{% endblock %}

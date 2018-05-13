@@ -2,7 +2,7 @@ const $ = require('sk/$')
 const C = require('sk/constants')
 const Gamepad = require('sk/core/Gamepad')
 const Manager = require('sk/core/Manager')
-const signals = require('sk/signals')
+
 
 class GamepadsManager extends Manager {
   

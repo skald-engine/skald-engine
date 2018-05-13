@@ -1,8 +1,6 @@
-const sk = require('sk')
+const pixi = require('pixi.js')
 
 function stageProvider() {
-  const pixi = sk.inject('pixi')
-
   let stage = new pixi.Container()
   
   stage.views = new pixi.Container()

@@ -2,7 +2,6 @@ const $ = require('sk/$')
 const C = require('sk/constants')
 const Touch = require('sk/core/Touch')
 const Manager = require('sk/core/Manager')
-const signals = require('sk/signals')
 
 /**
  * This manager is responsible for handling the browser touch events. It is

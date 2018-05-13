@@ -1,7 +1,7 @@
-const assertColor = require('sk/utils/colors/_common').assertColor
-const assertFloat = require('sk/utils/colors/_common').assertFloat
-const colorToHsl = require('sk/utils/colors/colorToHsl')
-const hslToColor = require('sk/utils/colors/hslToColor')
+const assertColor = require('sk/colors/_common').assertColor
+const assertFloat = require('sk/colors/_common').assertFloat
+const colorToHsl = require('sk/colors/colorToHsl')
+const hslToColor = require('sk/colors/hslToColor')
 
 /**
  * Spin the hue color by a given amount, changing from -360 to 360

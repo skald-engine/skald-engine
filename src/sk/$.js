@@ -10,7 +10,11 @@ class $ {
   }
 
   static getInjector() {
-    return $._engine && $._engine.injector
+    return $._engine && $._engine._injector
+  }
+
+  static getTicker() {
+    return $._engine && $._engine._ticker
   }
 }
 

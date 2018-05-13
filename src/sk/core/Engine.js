@@ -4,20 +4,22 @@ const defaults = require('sk/config/defaults')
 class Engine {
   constructor() {
     this.started = false
-    this.injector = new Injector()
+    this._injector = new Injector()
 
     this._profile = null
     this._config = null
   }
 
   start(config={}) {
+    if (this.started) return
+
     this.started = true
 
-    this._config = this.injector.resolve('config')
+    this._config = this._injector.resolve('config')
     this._config.load(defaults)
     this._config.load(config)
 
-    this._profile = this.injector.resolve('profile')
+    this._profile = this._injector.resolve('profile')
     this._profile.begin('boot')
     this._setup()
     this._profile.end('boot')
@@ -25,13 +27,15 @@ class Engine {
     this._update()
   }
 
-  destroy() {}
+  destroy() {
+    this._injector.destroy()
+  }
 
   _setup() {
-    let injector = this.injector
+    let injector = this._injector
     
     this._profile.begin('injector')
-    this.injector.build()
+    this._injector.build()
     this._profile.end('injector')
     
     this._profile.begin('managers')
@@ -45,13 +49,19 @@ class Engine {
       injector.services[i].setup()
     }
     this._profile.end('services')
+    
+    this._profile.begin('signals')
+    for (let i in injector.signals) {
+      injector.signals[i].setup()
+    }
+    this._profile.end('signals')
   }
 
   _update() {
     // this._profile.begin('update')
     requestAnimationFrame(() => this._update())
 
-    let injector = this.injector
+    let injector = this._injector
 
     // this._profile.begin('preUpdate')
     for (let i in injector.managers) {

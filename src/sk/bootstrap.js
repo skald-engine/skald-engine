@@ -35,6 +35,7 @@
   sk.manager('mouse', managers.MouseManager)
   sk.manager('gamepads', managers.GamepadsManager)
   sk.manager('touches', managers.TouchesManager)
+  sk.manager('schedule', managers.ScheduleManager)
 }
 
 // Register services

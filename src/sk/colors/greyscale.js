@@ -1,6 +1,6 @@
-const assertColor = require('sk/utils/colors/_common').assertColor
-const colorToHsl = require('sk/utils/colors/colorToHsl')
-const hslToColor = require('sk/utils/colors/hslToColor')
+const assertColor = require('sk/colors/_common').assertColor
+const colorToHsl = require('sk/colors/colorToHsl')
+const hslToColor = require('sk/colors/hslToColor')
 
 /**
  * Covert a color to greyscale. 

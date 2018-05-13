@@ -1,4 +1,4 @@
-const assertColor = require('sk/utils/colors/_common').assertColor
+const assertColor = require('sk/colors/_common').assertColor
 
 /**
  * Returns the green channel in the range [0, 255].

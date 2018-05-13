@@ -1,4 +1,4 @@
-const colorToHsl = require('sk/utils/colors/colorToHsl')
+const colorToHsl = require('sk/colors/colorToHsl')
 
 /**
  * Returns the lightness channel in the range [0, 359].

@@ -1,3 +1,4 @@
+const $ = require('sk/$')
 const LOGGER_LEVELS = require('sk/constants').LOGGER_LEVELS
 const utils = require('sk/utils')
 const Service = require('sk/core/Service')
@@ -107,7 +108,7 @@ class LoggerService extends Service {
   }
 
   setup() {
-    let config = sk.inject('config')
+    let config = $.getInjector().resolve('config')
 
     this.level = config.get('logger.level')
     this.handler = config.get('logger.handler')

@@ -1,6 +1,5 @@
 const $ = require('sk/$')
 const Manager = require('sk/core/Manager')
-const signals = require('sk/signals')
 
 /**
  * A manager that handles the keyboard state. It is created by the game and can be

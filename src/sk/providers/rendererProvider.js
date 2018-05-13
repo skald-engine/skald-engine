@@ -1,8 +1,9 @@
-const sk = require('sk')
+const pixi = require('pixi.js')
+const $ = require('sk/$')
 
 function rendererProvider() {
-  const config = sk.inject('config')
-  const pixi = sk.inject('pixi')
+  let injector = $.getInjector()
+  const config = injector.resolve('config')
 
   parent = document.body
   if (config.get('parent')) {

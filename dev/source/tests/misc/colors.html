@@ -18,10 +18,10 @@
 {% block script %}
 <script>
   function createColor(to, name, color) {
-    let bgColor = sk.utils.colors.colorToHex(color)
-    let fgColor = sk.utils.colors.colorToHex(sk.COLORS.SK_BLACK)
-    if (sk.utils.colors.lightness(color) < 0.45) {
-      fgColor = sk.utils.colors.colorToHex(sk.COLORS.SK_WHITE)
+    let bgColor = sk.colors.colorToHex(color)
+    let fgColor = sk.colors.colorToHex(sk.COLORS.SK_BLACK)
+    if (sk.colors.lightness(color) < 0.45) {
+      fgColor = sk.colors.colorToHex(sk.COLORS.SK_WHITE)
     }
     let div = `<div class="color"
                  style="background: ${bgColor}; color: ${fgColor};">
@@ -32,7 +32,7 @@
   }
 
   function order(c1, c2) {
-     let c = sk.utils.colors
+     let c = sk.colors
      let a = sk.COLORS[c1]
      let b = sk.COLORS[c2]
 

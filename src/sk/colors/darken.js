@@ -1,7 +1,7 @@
-const assertColor = require('sk/utils/colors/_common').assertColor
-const assertFloat = require('sk/utils/colors/_common').assertFloat
-const colorToHsl = require('sk/utils/colors/colorToHsl')
-const hslToColor = require('sk/utils/colors/hslToColor')
+const assertColor = require('sk/colors/_common').assertColor
+const assertFloat = require('sk/colors/_common').assertFloat
+const colorToHsl = require('sk/colors/colorToHsl')
+const hslToColor = require('sk/colors/hslToColor')
 
 /**
  * Darken a color by a given amount (in percentage as 0 to 1).

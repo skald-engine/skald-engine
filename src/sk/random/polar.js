@@ -1,4 +1,4 @@
-const inclusive = require('sk/utils/random/inclusive')
+const inclusive = require('sk/random/inclusive')
 
 /**
  * Chooses a value in the interval [-1, 1], which can be multiplied by the 

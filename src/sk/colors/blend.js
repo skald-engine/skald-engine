@@ -1,14 +1,14 @@
-const assertColor = require('sk/utils/colors/_common').assertColor
-const assertFloat = require('sk/utils/colors/_common').assertFloat
-const colorToRgb = require('sk/utils/colors/colorToRgb')
-const rgbToColor = require('sk/utils/colors/rgbToColor')
+const assertColor = require('sk/colors/_common').assertColor
+const assertFloat = require('sk/colors/_common').assertFloat
+const colorToRgb = require('sk/colors/colorToRgb')
+const rgbToColor = require('sk/colors/rgbToColor')
 
 /**
  * Blends two colors by a given amount.
  *
  * @param {Number} color1 - The first int color.
  * @param {Number} color2 - The second int color.
- * @param {Number} amount - Weight of the blend.
+ * @param {Number} amount - Weight of the blend, between 0 and 1.
  */
 function blend(color1, color2, amount) {
   assertColor(color1, `blend`)
