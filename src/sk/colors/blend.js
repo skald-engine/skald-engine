@@ -13,7 +13,7 @@ const rgbToColor = require('sk/colors/rgbToColor')
 function blend(color1, color2, amount) {
   assertColor(color1, `blend`)
   assertColor(color2, `blend`)
-  assertFloat(amount, `amount`, `blend`)
+  amount = assertFloat(amount, `amount`, `blend`)
 
   let c1 = colorToRgb(color1)
   let c2 = colorToRgb(color2)

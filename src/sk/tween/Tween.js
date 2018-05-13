@@ -53,6 +53,50 @@ class Tween {
     this._initialize(fromVars, toVars, options)
   }
 
+  static _add(tween) {
+    let index = Tween._tweens.indexOf(tween)
+    if (index < 0) {
+      Tween._tweens.push(tween)
+    }
+  }
+  static _remove(tween) {
+    let index = Tween._tweens.indexOf(tween)
+    if (index >= 0) {
+      Tween._tweens.splice(index, 1)
+    }
+  }
+  
+  static fromTo(target, duration, fromVars, toVars, options) {
+    return new Tween(target, duration, fromVars, toVars, options)
+  }
+
+  static from(target, duration, fromVars, options) {
+    return new Tween(target, duration, fromVars, {}, options)
+  }
+
+  static to(target, duration, toVars, options) {
+    return new Tween(target, duration, {}, toVars, options)
+  }
+
+  static isTweening() {
+    return !!Tween._tweens.length
+  }
+  static getAll() {
+    return Tween._tweens.slice()
+  }
+  static stopAll() {
+    let tweens = Tween._tweens.slice()
+    for (let i=0; i<tweens.length; i++) {
+      tweens[i].stop()
+    }
+  }
+  static destroyAll() {
+    let tweens = Tween._tweens.slice()
+    for (let i=0; i<tweens.length; i++) {
+      tweens[i].destroy()
+    }
+  }
+
   get target() { return this._target }
 
   get duration() { return this._duration }
@@ -208,61 +252,93 @@ class Tween {
     }
   }
 
+  _set(progress) {
+    for (let i=0; i<this._keys.length; i++) {
+      let key = this._keys[i]
+
+      let a = this._fromVars[key]
+      let b = this._toVars[key]
+      this._target[key] = (1 - progress)*a + (progress*b);
+    }
+  }
+
   start() {
-    if (this._active) return
+    if (this._active || !this._alive) return this
+    Tween._add(this)
 
     this._active = true
     this._alive = true
+    this._reversed = false
     
     this._currentTime = 0
     this._currentLoop = 0
     this._currentDelay = this._delay
 
     this._callback = (elapsed) => { this.update(elapsed) }
-    this._schedule.add(this._callback, this.duration/100)
+    this._schedule.add(this._callback)
 
     this._set(0)
 
     if (this._onStart) this._onStart()
+
+    return this
   }
 
   pause() {
+    Tween._remove(this)
     this._paused = true
     this._schedule.remove(this._callback)
+
+    return this
   }
 
   resume() {
-    if (!this._paused) return
+    if (!this._paused || !this._alive) return
+    Tween._add(this)
 
     this._active = true
     this._alive = true
 
-    this._schedule.add(this._callback, this.duration/100)
+    this._schedule.add(this._callback)
+
+    return this
   }
 
   stop() {
+    Tween._remove(this)
     this._active = false
     this._paused = false
 
     this._schedule.remove(this._callback)
 
     if (this._onComplete) this._onComplete()
+
+    return this
   }
 
   restart() {
+    if (!this._active || !this._alive) return this
     this._currentTime = 0
     this._currentLoop = 0
     this._currentDelay = this._delay
+    this._reversed = false
 
     if (this._onStart) this._onStart()
+    return this
   }
 
   destroy() {
+    Tween._remove(this)
     this.stop()
     this._alive = false
   }
 
-  reverse() {}
+  reverse() {
+    this._reversed = !this._reversed
+    this._currentTime = this._duration - this._currentTime
+    
+    return this
+  }
 
   update(elapsed) {
     this._currentTime += elapsed
@@ -302,26 +378,15 @@ class Tween {
 
       // Complete
       } else {
-        this._set(this._yoyo? 0 : 1)
+        this._set(this._reversed? 0 : 1)
         return this.stop()
       }
     }
 
     this._set(progress)
   }
-
-  _set(progress) {
-    for (let i=0; i<this._keys.length; i++) {
-      let key = this._keys[i]
-
-      let a = this._fromVars[key]
-      let b = this._toVars[key]
-      this._target[key] = (1 - progress)*a + (progress*b);
-    }
-  }
 }
 
-Tween._tween = []
-Tween._calls = []
+Tween._tweens = []
 
 module.exports = Tween

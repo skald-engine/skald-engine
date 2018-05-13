@@ -19,8 +19,10 @@ function assertColor(color, f) {
 }
 
 function assertFloat(number, p, f, min=0, max=1) {
-  if (isNaN(number) || !isFinite(number) || number < min || number > max)
+  if (isNaN(number) || !isFinite(number))
     throw new TypeError(`Invalid ${p} value "${number}" on '${f}' function.`)
+
+  return Math.min(Math.max(number, min), max)
 }
 
 

@@ -14,7 +14,7 @@ class ScheduleItem {
     this.currentTime += elapsed
 
     if (!this.interval || this.currentTime >= this.interval) {
-      this.callback(this.currentTime)
+      this.callback(this.interval? this.currentTime : elapsed)
 
       if (this.once) {
         return true

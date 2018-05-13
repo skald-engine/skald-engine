@@ -12,7 +12,7 @@ const hslToColor = require('sk/colors/hslToColor')
  */
 function spin(color, amount) {
   assertColor(color, `spin`)
-  assertFloat(amount, `amount`, `spin`, -360, 360)
+  amount = assertFloat(amount, `amount`, `spin`, -360, 360)
   
   let hsl = colorToHsl(color)
   let hue = (hsl.hue + amount)%360

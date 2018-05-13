@@ -12,7 +12,7 @@ const hslToColor = require('sk/colors/hslToColor')
  */
 function desaturate(color, amount) {
   assertColor(color, `desaturate`)
-  assertFloat(amount, `amount`, `desaturate`)
+  amount = assertFloat(amount, `amount`, `desaturate`)
   
   let hsl = colorToHsl(color)
   hsl.saturation = Math.max(Math.min(hsl.saturation-amount, 1), 0)

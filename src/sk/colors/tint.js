@@ -11,7 +11,7 @@ const rgbToColor = require('sk/colors/rgbToColor')
  */
 function tint(color, amount) {
   assertColor(color, `tint`)
-  assertFloat(amount, `amount`, `tint`)
+  amount = assertFloat(amount, `amount`, `tint`)
 
   let c2 = colorToRgb(color)
 

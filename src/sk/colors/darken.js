@@ -12,7 +12,7 @@ const hslToColor = require('sk/colors/hslToColor')
  */
 function darken(color, amount) {
   assertColor(color, `darken`)
-  assertFloat(amount, `amount`, `darken`)
+  amount = assertFloat(amount, `amount`, `darken`)
   
   let hsl = colorToHsl(color)
   hsl.lightness = Math.max(Math.min(hsl.lightness-amount, 1), 0)
