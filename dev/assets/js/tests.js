@@ -71,6 +71,14 @@ const MAX_TOOLTIP_LENGTH = 800
 
       addFolder: (...args) => {
         return gui.addFolder(...args)
+      },
+
+      update: (property) => {
+        gui.__controllers.forEach(x => {
+          if (!property || x.property === property) {
+            x.updateDisplay()
+          }
+        })
       }
     },
 

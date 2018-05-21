@@ -1,0 +1,48 @@
+{% extends "templates/test.html" %}
+
+
+{% block script %}
+<script type="text/javascript">
+  sk.start()
+
+  const resources = sk.resolve('resources')
+  const stage     = sk.resolve('stage')
+  const display   = sk.resolve('display')
+
+
+  let ball1 = new PIXI.Graphics()
+  ball1.beginFill(sk.COLORS.WHITE).drawCircle(0, 0, 30)
+  ball1.tint = sk.COLORS.FLAT_POMEGRANATE
+  ball1.pivot.set(0, 0)
+  ball1.position.set(50, display.height / 2)
+  stage.addChild(ball1)
+
+  let ball2 = new PIXI.Graphics()
+  ball2.beginFill(sk.COLORS.WHITE).drawCircle(0, 0, 30)
+  ball2.tint = sk.COLORS.SK_GREEN
+  ball2.pivot.set(0, 0)
+  ball2.position.set(50, 3*display.height / 4)
+  stage.addChild(ball2)
+
+  let t1 = new sk.tween.Timeline()
+  let t2 = new sk.tween.Timeline()
+
+  t2.to(ball1, 1000, {x: display.width - 50}, {ease: sk.ease.circInOut})
+    .to(ball1, 500, {y: 50}, {yoyo: true}, 0, 0)
+
+  t1.to(ball2, 500, {x: display.halfWidth}, {})
+    .tween(t2, 0, 0)
+    .to(ball2, 500, {x: display.width - 50}, {}, -500)
+    .sleep(1000)
+    .to(ball1, 1000, {x: 50}, {delay: 100})
+    .to(ball2, 1000, {x: 50}, {delay: 100}, -1100)
+
+  t1.start()
+
+  skf.options.add(t1, 'start')
+  skf.options.add(t1, 'pause')
+  skf.options.add(t1, 'resume')
+  skf.options.add(t1, 'stop')
+
+</script>
+{% endblock %}

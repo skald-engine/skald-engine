@@ -1,0 +1,68 @@
+{% extends "templates/test.html" %}
+
+
+{% block script %}
+<script type="text/javascript">
+  sk.start()
+
+  const resources = sk.resolve('resources')
+  const stage     = sk.resolve('stage')
+  const display   = sk.resolve('display')
+
+  let t1 = null
+
+
+  const options = {
+    progress: 0
+  }
+
+  let ball = new PIXI.Graphics()
+  ball.beginFill(sk.COLORS.WHITE).drawCircle(0, 0, 50)
+  ball.tint = sk.COLORS.FLAT_POMEGRANATE
+  ball.pivot.set(0, 0)
+  ball.position.set(display.halfWidth, display.halfHeight)
+  stage.addChild(ball)
+
+  t1 = sk.tween.Tween.fromTo(ball, 1000, {x:0}, {x:display.width}, {
+    delay: 500,
+    repeat: 2,
+    repeatDelay: 500,
+    yoyo: true,
+    yoyoDelay: 100,
+    ease: sk.ease.bounceOut,
+    yoyoEase: sk.ease.bounceIn,
+    onStart: () => { console.log('onStart') },
+    onUpdate: (tween, progress, realProgress) => {
+      if (tween.active) {
+        options.progress = progress
+        skf.options.update()
+      }
+
+      if (progress <= 0.5) {
+        ball.tint = sk.colors.blend(sk.COLORS.FLAT_POMEGRANATE, sk.COLORS.FLAT_SUNFLOWER, progress*2)
+      } else if (progress > 0.5) {
+        ball.tint = sk.colors.blend(sk.COLORS.FLAT_SUNFLOWER, sk.COLORS.SK_LIME, (progress - 0.5)*2)
+      }
+    },
+    onComplete: () => { console.log('onComplete') },
+    onRepeat: (_, loop, lastLoop) => { console.log('onRepeat', loop) },
+    onReverse: (_, backwards) => { console.log('onReverse', backwards) },
+  }).start()
+
+
+  skf.options
+     .add(options, 'progress', 0, 1, 0.001)
+     .onChange((value) => {
+       t1.stop()
+       t1.seek(t1.totalDuration * value)
+     })
+
+  skf.options.add(t1, 'start')
+  skf.options.add(t1, 'pause')
+  skf.options.add(t1, 'resume')
+  skf.options.add(t1, 'stop')
+  skf.options.add(t1, '_reset')
+
+
+</script>
+{% endblock %}

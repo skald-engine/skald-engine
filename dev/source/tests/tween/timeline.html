@@ -1,0 +1,53 @@
+{% extends "templates/test.html" %}
+
+
+{% block script %}
+<script type="text/javascript">
+  sk.start()
+
+  const resources = sk.resolve('resources')
+  const stage     = sk.resolve('stage')
+  const display   = sk.resolve('display')
+
+
+  let t1 = null
+  let ball = new PIXI.Graphics()
+  ball.beginFill(sk.COLORS.WHITE).drawCircle(0, 0, 50)
+  ball.tint = sk.COLORS.FLAT_POMEGRANATE
+  ball.pivot.set(0, 0)
+  ball.position.set(0, 0)
+  stage.addChild(ball)
+
+  t1 = new sk.tween.Timeline({
+    delay: 500,
+    
+    onStart: () => { console.log('onStart') },
+    onUpdate: (tween, progress) => {
+      let p = ball.x/display.height
+      if (p <= 0.5) {
+        ball.tint = sk.colors.blend(sk.COLORS.FLAT_POMEGRANATE, sk.COLORS.FLAT_SUNFLOWER, p*2)
+      } else if (p > 0.5) {
+        ball.tint = sk.colors.blend(sk.COLORS.FLAT_SUNFLOWER, sk.COLORS.SK_LIME, (p - 0.5)*2)
+      }
+    },
+    onComplete: () => { console.log('onComplete') },
+    onRepeat: () => { console.log('onRepeat') },
+    onReverse: () => { console.log('onReverse') },
+  })
+
+  t1.to(ball, 500, {x: 800}, {ease: sk.ease.expoInOut, yoyoEase: sk.ease.linear})
+    .to(ball, 500, {y: 600}, {ease: sk.ease.bounceOut, yoyoEase: sk.ease.linear})
+    .call(() => console.log('half way through'))
+    .call(() => console.log('relative position on second'), -500)
+    .to(ball, 500, {x: 0}, {ease: sk.ease.circInOut, yoyoEase: sk.ease.linear})
+    .to(ball, 500, {y: 0}, {ease: sk.ease.bounceOut, yoyoEase: sk.ease.linear})
+    .call(() => console.log('absolute positioning first'), 0, 0)
+    .start()
+
+  skf.options.add(t1, 'start')
+  skf.options.add(t1, 'pause')
+  skf.options.add(t1, 'resume')
+  skf.options.add(t1, 'stop')
+
+</script>
+{% endblock %}
