@@ -27,13 +27,12 @@
   let t1 = new sk.tween.Timeline()
   let t2 = new sk.tween.Timeline()
 
-  t2.to(ball1, 1000, {x: display.width - 50}, {ease: sk.ease.circInOut})
-    .to(ball1, 500, {y: 50}, {yoyo: true}, 0, 0)
+  t2.to(ball1, 1000, {x: display.width - 50}, {})
+    .to(ball1, 500, {y: 50}, {yoyo: true, ease: (x) => sk.ease.slowIn(x, 1)}, 0, 0)
 
   t1.to(ball2, 500, {x: display.halfWidth}, {})
     .tween(t2, 0, 0)
     .to(ball2, 500, {x: display.width - 50}, {}, -500)
-    .sleep(1000)
     .to(ball1, 1000, {x: 50}, {delay: 100})
     .to(ball2, 1000, {x: 50}, {delay: 100}, -1100)
 

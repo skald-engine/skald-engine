@@ -6,10 +6,10 @@ const MAX_TOOLTIP_LENGTH = 800
  * Replace the default console log functions.
  */
 {
-  const console_log = console.log
-  const console_info = console.info
-  const console_warn = console.warn
-  const console_error = console.error
+  window.console_log = console.log
+  window.console_info = console.info
+  window.console_warn = console.warn
+  window.console_error = console.error
 
   console.log = (...args) => {
     skf.console.log(...args)
