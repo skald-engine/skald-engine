@@ -13,7 +13,59 @@
 
   let emitter = null
   resources.load(() => {
-    emitter = new sk.particles.Emitter(resources.get('particle'))
+    emitter = new sk.particles.Emitter(resources.get('particle'), {
+      blendMode                 : sk.BLEND_MODE.NORMAL,
+      mode                      : sk.EMITTER_MODE.BOTH,
+
+      autoStart                 : true,
+      maxParticles              : 5000,
+      duration                  : -1,
+      
+      emissionRate              : 100,
+      emissionAngle             : 0,
+      emissionAngleVar          : Math.PI,
+      emissionAngleFromCenter   : true,
+      
+      burstInterval             : 500,
+      burstMin                  : 50,
+      burstMax                  : 100,
+      
+      life                      : 1000,
+      lifeVar                   : 0,
+      
+      startSpeed                : 100,
+      startSpeedVar             : 0,
+      endSpeed                  : 100,
+      endSpeedVar               : 0,
+      
+      startRotation             : 0,
+      startRotationVar          : 0,
+      endRotation               : 0,
+      endRotationVar            : 0,
+      
+      startScale                : 1,
+      startScaleVar             : 0,
+      endScale                  : 1,
+      endScaleVar               : 0,
+      
+      startAlpha                : 1,
+      startAlphaVar             : 0,
+      endAlpha                  : 0,
+      endAlphaVar               : 0,
+      
+      startColor                : [255, 150, 150],
+      startColorVar             : [100, 0, 0],
+      endColor                  : [255, 0, 0],
+      endColorVar               : [0, 0, 0],
+      
+      gravityX                  : 0,
+      gravityY                  : 0,
+      radialAcceleration        : 0,
+      radialAccelerationVar     : 0,
+      tangentialAcceleration    : 0,
+      tangentialAccelerationVar : 0,
+    })
+
     emitter.x = display.halfWidth
     emitter.y = display.halfHeight
     stage.addChild(emitter)

@@ -14,6 +14,8 @@ class Particle extends pixi.Sprite {
 
     this.emitter = emitter
 
+    this.initialX = 0
+    this.initialY = 0
     this.life = 0
     this.initialAlpha = 0
     this.stepAlpha = 0
@@ -45,25 +47,27 @@ class Particle extends pixi.Sprite {
     // stored values
     this.x = x
     this.y = y
+    this.initialX = x
+    this.initialY = y
     this.blendMode = e.blendMode
 
     this.life = e.life + r(e.lifeVar)
 
-    this.initialAlpha = e.initialAlpha + r(e.initialAlphaVar)
-    let finalAlpha = e.finalAlpha + r(e.finalAlphaVar)
-    this.stepAlpha = (finalAlpha - initialAlpha)/this.life
+    this.initialAlpha = c(e.initialAlpha + r(e.initialAlphaVar), 0, 1)
+    let finalAlpha = c(e.finalAlpha + r(e.finalAlphaVar), 0, 1)
+    this.stepAlpha = (finalAlpha - this.initialAlpha)/this.life
 
     this.initialRotation = e.initialRotation + r(e.initialRotationVar)
     let finalRotation = e.finalRotation + r(e.finalRotationVar)
-    this.stepRotation = (finalRotation - initialRotation)/this.life
+    this.stepRotation = (finalRotation - this.initialRotation)/this.life
 
     this.initialScale = e.initialScale + r(e.initialScaleVar)
     let finalScale = e.finalScale + r(e.finalScaleVar)
-    this.stepScale = (finalScale - initialScale)/this.life
+    this.stepScale = (finalScale - this.initialScale)/this.life
 
     this.initialSpeed = e.initialSpeed + r(e.initialSpeedVar)
     let finalSpeed = e.finalSpeed + r(e.finalSpeedVar)
-    this.stepSpeed = (finalSpeed - initialSpeed)/this.life
+    this.stepSpeed = (finalSpeed - this.initialSpeed)/this.life
 
     this.initialColor = [
       c(e.initialColor[0] + r(e.initialColorVar[0]), 0, 255),
@@ -85,29 +89,30 @@ class Particle extends pixi.Sprite {
     this.radialAcceleration = e.radialAcceleration + r(e.radialAccelerationVar)
     this.tangentialAcceleration = e.tangentialAcceleration + r(e.tangentialAccelerationVar)
     
-    // // set working values
-    // if (e.emissionAngleFromCenter) {
-    //   let angle = Math.atan2(
-    //     e.emissionY-this.initialY,
-    //     e.emissionX-this.initialX
-    //   )
-    //   this.dirX = -Math.cos(angle)
-    //   this.dirY = -Math.sin(angle)
-    // } else {
-    //   let angle = e.emissionAngle + r(e.emissionAngleVar)
-    //   this.dirX = Math.cos(angle)
-    //   this.dirY = Math.sin(angle)
-    // }
+    // set working values
+    if (e.emissionAngleFromCenter) {
+      let angle = Math.atan2(-this.y, -this.x)
+      this.dirX = -Math.cos(angle)
+      this.dirY = -Math.sin(angle)
+      this.initialX = e.x
+      this.initialY = e.y
+    } else {
+      let angle = e.emissionAngle + r(e.emissionAngleVar)
+      this.dirX = Math.cos(angle)
+      this.dirY = Math.sin(angle)
+    }
     
-    // this.visible = true
-    // this.life = this.initialLife
-    // this.scale.x = this.initialScale
-    // this.scale.y = this.scale.x
-    // this.x = this.initialX
-    // this.y = this.initialY
-    // this.alpha = this.initialAlpha
-    // this.rotation = this.initialRotation
-    // this.speed = this.initialSpeed
+    this.visible = true
+    this.color = [
+      this.initialColor[0],
+      this.initialColor[1],
+      this.initialColor[2],
+    ]
+    this.scale.x = this.initialScale
+    this.scale.y = this.initialScale
+    this.alpha = this.initialAlpha
+    this.rotation = this.initialRotation
+    this.speed = this.initialSpeed
   }
 
   /**
@@ -122,15 +127,10 @@ class Particle extends pixi.Sprite {
    * Update the particle, called by the emitter every update. Notice that, this
    * method is only called if the particle is alive.
    */
-  update(delta) {
-    let milliseconds = delta*1000
-
+  update(elapsed, delta) {
     // update life
-    this.life -= milliseconds
+    this.life -= elapsed
     if (this.life <= 0) return
-
-    // compute the progression of the particle
-    let t = 1 - this.life/this.initialLife
 
     // compute tangential and radial acceleration
     let x = this.x - this.initialX
@@ -152,58 +152,16 @@ class Particle extends pixi.Sprite {
     this.dirY += (radY + tanY + this.gravityY)*delta
 
     // interpolate the simple values
-    if (this.alphaEnabled) {
-      this.alpha = utils.lerp(
-        this.initialAlpha,
-        this.finalAlpha,
-        this.alphaEase(t)
-      )
-    }
-
-    if (this.scaleEnabled) {
-      this.scale.x = utils.lerp(
-        this.initialScale,
-        this.finalScale,
-        this.scaleEase(t)
-      )
-      this.scale.y = this.scale.x
-    }
-
-    if (this.rotationEnabled) {
-      this.rotation = utils.lerp(
-        this.initialRotation,
-        this.finalRotation,
-        this.rotationEase(t)
-      )
-    }
-
-    if (this.speedEnabled) {
-      this.speed = utils.lerp(
-        this.initialSpeed,
-        this.finalSpeed,
-        this.speedEase(t)
-      )
-    }
-
-    if (this.colorEnabled) {
-      let red = utils.lerp(
-        this.initialColor[0],
-        this.finalColor[0],
-        this.colorEase(t)
-      )
-      let green = utils.lerp(
-        this.initialColor[1],
-        this.finalColor[1],
-        this.colorEase(t)
-      )
-      let blue = utils.lerp(
-        this.initialColor[2],
-        this.finalColor[2],
-        this.colorEase(t)
-      )
-      this.tint = (red<<16) + (green<<8) + (blue)
-    }
-
+    this.alpha = this.alpha + this.stepAlpha*elapsed
+    this.scale.x = this.scale.x + this.stepScale*elapsed
+    this.scale.y =this.scale.x
+    this.rotation = this.rotation + this.stepRotation*elapsed
+    this.speed = this.speed + this.stepSpeed*elapsed
+    this.color[0] = this.color[0] + this.stepColor[0]*elapsed
+    this.color[1] = this.color[1] + this.stepColor[1]*elapsed
+    this.color[2] = this.color[2] + this.stepColor[2]*elapsed
+    this.tint = (this.color[0]<<16) + (this.color[1]<<8) + (this.color[2])
+    
     // compute new position
     this.x += this.dirX*this.speed*delta
     this.y += this.dirY*this.speed*delta

@@ -7,7 +7,7 @@ const Particle = require('sk/particles/Particle')
 
 const DEFAULTS = {
   blendMode                 : C.BLEND_MODE.NORMAL,
-  mode                      : C.EMITTER_MODE.BURST,
+  mode                      : C.EMITTER_MODE.EMISSION,
 
   autoStart                 : true,
   maxParticles              : 1000,
@@ -16,7 +16,7 @@ const DEFAULTS = {
   emissionRate              : 100,
   emissionAngle             : 0,
   emissionAngleVar          : Math.PI,
-  emissionAngleFromCenter   : false,
+  emissionAngleFromCenter   : true,
   
   burstInterval             : 1000,
   burstMin                  : 1,
@@ -76,7 +76,6 @@ class Emitter extends pixi.Container {
     this._active = false
     this._elapsed = 0
     this._burstTime = 0
-    this._burstIntervalTime = null
     this._emissionTime = 0
     this._particles = []
     this._counter = 0
@@ -317,7 +316,7 @@ class Emitter extends pixi.Container {
     this._maxParticles = options.maxParticles
     this._duration = options.duration
     
-    this._emissionRate = options.emissionRate
+    this._emissionRate = 1000/options.emissionRate
     this._emissionAngle = options.emissionAngle
     this._emissionAngleVar = options.emissionAngleVar
     this._emissionAngleFromCenter = options.emissionAngleFromCenter
@@ -408,7 +407,7 @@ class Emitter extends pixi.Container {
       this._container.onChildrenChange(p._$containerIndex)
     }
 
-    p.reset(x, y)
+    p.reset(x, y, this)
     this._counter++
   }
 
@@ -471,26 +470,26 @@ class Emitter extends pixi.Container {
     }
     
     // Update alive particles
-    // let i = 0
-    // let N = this._counter
-    // while (i < N) {
-    //   let p = this._particles[i]
+    let i = 0
+    let N = this._counter
+    while (i < N) {
+      let p = this._particles[i]
 
-    //   // Update life
-    //   p.update(elapsed)
+      // Update life
+      p.update(elapsed, elapsed/1000)
 
-    //   // Kill the particle
-    //   if (p.life <= 0) {
-    //     p.kill()
-    //     N -= 1
-    //     this._particles[i] = this._particles[N]
-    //     this._particles[N] = p
-    //     continue
-    //   }
+      // Kill the particle
+      if (p.life <= 0) {
+        p.kill()
+        N -= 1
+        this._particles[i] = this._particles[N]
+        this._particles[N] = p
+        continue
+      }
 
-    //   i++
-    // }
-    // this._counter = N
+      i++
+    }
+    this._counter = N
   
     // Cap emission time to avoid infinity accumulation
     this._emissionTime = Math.min(this._emissionTime, 1000)
