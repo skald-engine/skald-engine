@@ -9,5 +9,6 @@ module.exports = Object.assign(
   require('sk/constants/positions'),
   require('sk/constants/audios'),
   require('sk/constants/resources'),
+  require('sk/constants/game_objects'),
   require('sk/constants/pixi_'),
 )

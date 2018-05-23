@@ -1,0 +1,24 @@
+{% extends "templates/test.html" %}
+
+
+{% block script %}
+<script type="text/javascript">
+  sk.start()
+
+  const resources = sk.resolve('resources')
+  const stage     = sk.resolve('stage')
+  const display   = sk.resolve('display')
+
+  resources.add(sk.RESOURCES.TEXTURE, 'particle', '/static/imgs/particle.png')
+
+  let emitter = null
+  resources.load(() => {
+    emitter = new sk.particles.Emitter(resources.get('particle'))
+    emitter.x = display.halfWidth
+    emitter.y = display.halfHeight
+    stage.addChild(emitter)
+
+  })
+
+</script>
+{% endblock %}

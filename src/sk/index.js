@@ -18,6 +18,7 @@ const colors = require('sk/colors')
 const random = require('sk/random')
 const ease = require('sk/ease')
 const tween = require('sk/tween')
+const particles = require('sk/particles')
 
 
 module.exports.core = core
@@ -34,6 +35,7 @@ module.exports.colors = colors
 module.exports.random = random
 module.exports.ease = ease
 module.exports.tween = tween
+module.exports.particles = particles
 module.exports.$ = $
 
 module.exports = Object.assign(
