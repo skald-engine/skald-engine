@@ -40,6 +40,10 @@ class ResourcesService extends Service {
     ResourcesService._middlewares[type] = middleware
   }
 
+  static unregisterAll() {
+    ResourcesService._middlewares = {}
+  }
+
   /**
    * Bash path that will be used for all resources during loading.
    * @type {String}
@@ -328,6 +332,11 @@ class ResourcesService extends Service {
   getResourceByUrl(url) {
     let resource = this._resourcesByUrl[url]
     return resource? resource : null
+  }
+
+  destroy() {
+    this.list()
+        .forEach(x => this.unload(x))
   }
 }
 

@@ -3,15 +3,16 @@ const Manager = require('sk/core/Manager')
 const Service = require('sk/core/Service')
 const Signal = require('sk/core/Signal')
 const View = require('sk/core/View')
+const shallowCopy = require('sk/utils/shallowCopy')
 
 TYPES = utils.enumeration({
-  MANAGER   : 'managers',
-  SERVICE   : 'services',
-  SIGNAL    : 'signals',
-  PROVIDER  : 'providers',
-  FACTORY   : 'factories',
-  INSTANCE  : 'instances',
-  VIEW      : 'views',
+  MANAGER   : '_managers',
+  SERVICE   : '_services',
+  SIGNAL    : '_signals',
+  PROVIDER  : '_providers',
+  FACTORY   : '_factories',
+  INSTANCE  : '_instances',
+  VIEW      : '_views',
 })
 
 class InjectionTarget {
@@ -40,16 +41,26 @@ class Injector {
     this._injectionPool = {}
     this._resolveStack = []
 
-    this.managers = {}
-    this.services = {}
-    this.signals = {}
-    this.factories = {}
-    this.instances = {}
-    this.providers = {}
-    this.views = {}
+    this._managers = {}
+    this._services = {}
+    this._signals = {}
+    this._factories = {}
+    this._instances = {}
+    this._providers = {}
+    this._views = {}
 
-    this.container = {}
+    this._container = {}
   }
+
+  get managers() { return shallowCopy(this._managers) }
+  get services() { return shallowCopy(this._services) }
+  get signals() { return shallowCopy(this._signals) }
+  get factories() { return shallowCopy(this._factories) }
+  get instances() { return shallowCopy(this._instances) }
+  get providers() { return shallowCopy(this._providers) }
+  get views() { return shallowCopy(this._views) }
+
+  get container() { return shallowCopy(this._container) }
 
   _register(id, target, type, stateless=false) {
     if (this._injectionPool[id]) {
@@ -116,8 +127,8 @@ class Injector {
   }
 
   resolve(id) {
-    if (this.container[id]) {
-      return this.container[id]
+    if (this._container[id]) {
+      return this._container[id]
     }
 
     if (!this._injectionPool[id]) {
@@ -142,11 +153,34 @@ class Injector {
     this._resolveStack.pop()
 
     if (!target.stateless) {
-      this.container[id] = object
+      this._container[id] = object
       this[target.type][id] = object
     }
 
     return object
+  }
+
+  destroy() {
+    Object.keys(this._managers).forEach(x => {
+      this._managers[x].destroy()
+    })
+    Object.keys(this._services).forEach(x => {
+      this._services[x].destroy()
+    })
+    Object.keys(this._signals).forEach(x => {
+      this._signals[x].destroy()
+    })
+
+    this._injectionPool = null
+    this._resolveStack = null
+    this._managers = null
+    this._services = null
+    this._signals = null
+    this._factories = null
+    this._instances = null
+    this._providers = null
+    this._views = null
+    this._container = null
   }
 }
 

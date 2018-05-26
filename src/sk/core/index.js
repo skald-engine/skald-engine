@@ -1,9 +1,7 @@
 module.exports = {
   Audio       : require('sk/core/Audio'),
   BaseAudio   : require('sk/core/BaseAudio'),
-  Engine      : require('sk/core/Engine'),
   Gamepad     : require('sk/core/Gamepad'),
-  Injector    : require('sk/core/Injector'),
   Manager     : require('sk/core/Manager'),
   Middleware  : require('sk/core/Middleware'),
   Resource    : require('sk/core/Resource'),

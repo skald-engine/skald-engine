@@ -1,4 +1,4 @@
-const Engine = require('sk/core/Engine')
+const Engine = require('sk/engine/Engine')
 
 class $ {
   static getEngine() {
@@ -7,6 +7,12 @@ class $ {
 
   static createEngine() {
     $._engine = new Engine()
+    $._engine.boot()
+  }
+
+  static destroyEngine() {
+    $._engine.destroy()
+    $._engine = null
   }
 
   static getInjector() {

@@ -4,6 +4,7 @@ const $ = require('sk/$')
 const constants = require('sk/constants')
 const shortcuts = require('sk/shortcuts')
 
+const engine = require('sk/engine')
 const core = require('sk/core')
 const utils = require('sk/utils')
 const config = require('sk/config')
@@ -21,6 +22,7 @@ const tween = require('sk/tween')
 const particles = require('sk/particles')
 
 
+module.exports.engine = engine
 module.exports.core = core
 module.exports.utils = utils
 module.exports.config = config

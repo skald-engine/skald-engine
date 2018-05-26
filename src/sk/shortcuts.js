@@ -30,7 +30,7 @@ module.exports.instance = (id, target) => {
 }
 
 module.exports.inject = (id) => {
-  if (!$.getEngine().started) {
+  if (!$.getEngine()._started) {
     throw new Error(`You can only inject an object after the engine is started.`)
   }
   return $.getInjector().resolve(id)
@@ -40,4 +40,14 @@ module.exports.resolve = module.exports.inject
 // Game control
 module.exports.start = (config) => {
   $.getEngine().start(config)
+}
+module.exports.destroy = () => {
+  $.destroyEngine()
+}
+module.exports.boot = () => {
+  $.createEngine()
+}
+module.exports.reset = () => {
+  $.destroyEngine()
+  $.createEngine()
 }

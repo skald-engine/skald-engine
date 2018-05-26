@@ -38,6 +38,10 @@ class DisplayManager extends Manager {
     this._leaveFullscreenSignal = null
     this._fullscreenChanceSignal = null
     this._orientationChanceSignal = null
+
+    this._onFullscreenChange = this._onFullscreenChange.bind(this)
+    this._onResize = this._onResize.bind(this)
+    this._onOrientationChange = this._onOrientationChange.bind(this)
   }
 
   /**
@@ -248,6 +252,15 @@ class DisplayManager extends Manager {
     }
   }
 
+  destroy() {
+    document.removeEventListener('webkitfullscreenchange', this._onFullscreenChange)
+    document.removeEventListener('mozfullscreenchange', this._onFullscreenChange)
+    document.removeEventListener('MSFullscreenChange', this._onFullscreenChange)
+    document.removeEventListener('fullscreenchange', this._onFullscreenChange)
+    window.removeEventListener('resize', this._onResize)
+    window.removeEventListener('deviceorientation', this._onOrientationChange)
+  }
+
   /**
    * Setup the internal variables accordingly to the game config.
    */
@@ -290,17 +303,12 @@ class DisplayManager extends Manager {
    * sizing changes.
    */
   _setupEvents() {
-    let fullscreenEvent = e=>this._onFullscreenChange(e)
-    document.addEventListener('webkitfullscreenchange', fullscreenEvent, false)
-    document.addEventListener('mozfullscreenchange', fullscreenEvent, false)
-    document.addEventListener('MSFullscreenChange', fullscreenEvent, false)
-    document.addEventListener('fullscreenchange', fullscreenEvent, false)
-
-    let resizeEvent = e=>this._onResize(e)
-    window.addEventListener('resize', resizeEvent, false)
-
-    let orientationEvent = e=>this._onOrientationChange(e)
-    window.addEventListener('deviceorientation', orientationEvent, false)
+    document.addEventListener('webkitfullscreenchange', this._onFullscreenChange, false)
+    document.addEventListener('mozfullscreenchange', this._onFullscreenChange, false)
+    document.addEventListener('MSFullscreenChange', this._onFullscreenChange, false)
+    document.addEventListener('fullscreenchange', this._onFullscreenChange, false)
+    window.addEventListener('resize', this._onResize, false)
+    window.addEventListener('deviceorientation', this._onOrientationChange, false)
   }
 
   /**

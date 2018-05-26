@@ -24,6 +24,41 @@ class LoggerService extends Service {
   }
 
   /**
+   * Register a logger formatter. If the format is already registered, it will 
+   * returns an error.
+   *
+   * @param {String} name - The ID of the formatter.
+   * @param {Function} formatter - The formatter function.
+   */
+  static registerFormatter(name, formatter) {
+    if (LoggerService._formatters[name]) {
+      throw new Error(`Logger formatter "${name}" already registered.`)
+    }
+
+    LoggerService._formatters[name] = formatter
+  }
+
+  /**
+   * Register a logger handler. If the format is already registered, it will 
+   * throw an error.
+   *
+   * @param {String} name - The ID of the handler.
+   * @param {Function} handler - The handler function.
+   */
+  static registerHandler(name, handler) {
+    if (LoggerService._handlers[name]) {
+      throw new Error(`Logging handler "${name}" already registered.`)
+    }
+
+    LoggerService._handlers[name] = handler
+  }
+
+  static unregisterAll() {
+    LoggerService._formatters = {}
+    LoggerService._handlers = {}
+  }
+
+  /**
    * Current logger level, must be one value from `LOGGER_LEVELS` enum. If you
    * set this variable to an invalid value, it won't be changed.
    */
@@ -75,36 +110,6 @@ class LoggerService extends Service {
       throw new Error(`Invalid handler "${handlerOrName}". `+
                       `Please provide a function or a handler ID.`)
     }
-  }
-
-  /**
-   * Register a logger formatter. If the format is already registered, it will 
-   * returns an error.
-   *
-   * @param {String} name - The ID of the formatter.
-   * @param {Function} formatter - The formatter function.
-   */
-  static registerFormatter(name, formatter) {
-    if (LoggerService._formatters[name]) {
-      throw new Error(`Logger formatter "${name}" already registered.`)
-    }
-
-    LoggerService._formatters[name] = formatter
-  }
-
-  /**
-   * Register a logger handler. If the format is already registered, it will 
-   * throw an error.
-   *
-   * @param {String} name - The ID of the handler.
-   * @param {Function} handler - The handler function.
-   */
-  static registerHandler(name, handler) {
-    if (LoggerService._handlers[name]) {
-      throw new Error(`Logging handler "${name}" already registered.`)
-    }
-
-    LoggerService._handlers[name] = handler
   }
 
   setup() {

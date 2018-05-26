@@ -32,7 +32,6 @@
 
 <script>
   (() => {
-    let injector = sk.$.getInjector()
     let table = document.getElementById('sk-signals-table')
     var signals = []
     var signalsData = {}
@@ -82,6 +81,12 @@
     }
 
     function update() {
+      let injector = sk.$.getInjector()
+      if (!injector) {
+        signals = []
+        signalsData = {}
+        return
+      }
       let next = Object.keys(injector.signals)
       next.sort()
 

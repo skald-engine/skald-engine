@@ -8,6 +8,9 @@ class Manager {
   preDraw() {}
   postDraw() {}
 
+  pause() {}
+  resume() {}
+
   destroy() {}
 }
 
