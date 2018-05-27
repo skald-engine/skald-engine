@@ -1,7 +1,6 @@
 const path = require('path')
 const webpack = require('webpack')
 const rev = require('git-rev-sync')
-const MinifyPlugin = require('babel-minify-webpack-plugin')
 const pkg = require('../package.json')
 
 const leftPad = (str, pad) => {
@@ -45,8 +44,7 @@ module.exports = {
         REVISION : JSON.stringify(rev.short()),
         DATE     : JSON.stringify(`${year}-${month}-${day}`),
       }
-    }),
-    // new MinifyPlugin(),
+    })
   ],
 }
 

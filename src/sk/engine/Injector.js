@@ -5,7 +5,7 @@ const Signal = require('sk/core/Signal')
 const View = require('sk/core/View')
 const shallowCopy = require('sk/utils/shallowCopy')
 
-TYPES = utils.enumeration({
+const TYPES = utils.enumeration({
   MANAGER   : '_managers',
   SERVICE   : '_services',
   SIGNAL    : '_signals',

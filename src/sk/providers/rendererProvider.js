@@ -1,20 +1,21 @@
 const pixi = require('pixi.js')
 const $ = require('sk/$')
+const C = require('sk/constants')
 
 function rendererProvider() {
   let injector = $.getInjector()
   const config = injector.resolve('config')
 
-  parent = document.body
-  if (config.get('parent')) {
-    parent = document.getElementById(config.get('parent'))
+  parent = config.get('parent', document.body)
+  if (typeof parent === 'string') {
+    parent = document.getElementById(parent)
   }
 
   // get the proper pixi renderer
   let renderers = {
-    [sk.RENDERERS.AUTO]   : pixi.autoDetectRenderer,
-    [sk.RENDERERS.WEBGL]  : pixi.WebGLRenderer,
-    [sk.RENDERERS.CANVAS] : pixi.CanvasRenderer,
+    [C.RENDERERS.AUTO]   : pixi.autoDetectRenderer,
+    [C.RENDERERS.WEBGL]  : pixi.WebGLRenderer,
+    [C.RENDERERS.CANVAS] : pixi.CanvasRenderer,
   }
 
   // create the pixi renderer
@@ -26,7 +27,7 @@ function rendererProvider() {
     color = parseInt(color, 16)
   }
 
-  renderer = new renderers[config.get('display.renderer')]({
+  let renderer = new renderers[config.get('display.renderer')]({
     width           : config.get('display.width'),
     height          : config.get('display.height'),
     resolution      : config.get('display.resolution'),
