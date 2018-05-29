@@ -1645,10 +1645,6 @@ combined-stream@1.0.6, combined-stream@~1.0.5:
   dependencies:
     delayed-stream "~1.0.0"
 
-commander@~0.6.1:
-  version "0.6.1"
-  resolved "https://registry.yarnpkg.com/commander/-/commander-0.6.1.tgz#fa68a14f6a945d54dbbe50d8cdb3320e9e3b1a06"
-
 commander@~2.13.0:
   version "2.13.0"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.13.0.tgz#6964bca67685df7c1f1430c584f07d7597885b9c"
@@ -1702,10 +1698,6 @@ configstore@^3.0.0:
     unique-string "^1.0.0"
     write-file-atomic "^2.0.0"
     xdg-basedir "^3.0.0"
-
-connect-body-rewrite@0.0.4:
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/connect-body-rewrite/-/connect-body-rewrite-0.0.4.tgz#d2d444d19630dccf1bef81231aec145dad0f402b"
 
 console-browserify@^1.1.0:
   version "1.1.0"
@@ -1891,21 +1883,17 @@ dateformat@^3.0.2:
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/dateformat/-/dateformat-3.0.3.tgz#a6e37499a4d9a9cf85ef5872044d62901c9889ae"
 
-debug@*, debug@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/debug/-/debug-3.1.0.tgz#5bb5a0672628b64149566ba16819e61518c67261"
-  dependencies:
-    ms "2.0.0"
-
 debug@2.6.9, debug@^2.1.2, debug@^2.2.0, debug@^2.3.3, debug@^2.6.0, debug@^2.6.8, debug@^2.6.9:
   version "2.6.9"
   resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.9.tgz#5d128515df134ff327e90a4c93f4e077a536341f"
   dependencies:
     ms "2.0.0"
 
-debug@~0.7.0:
-  version "0.7.4"
-  resolved "https://registry.yarnpkg.com/debug/-/debug-0.7.4.tgz#06e1ea8082c2cb14e39806e22e2f6f757f92af39"
+debug@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/debug/-/debug-3.1.0.tgz#5bb5a0672628b64149566ba16819e61518c67261"
+  dependencies:
+    ms "2.0.0"
 
 decamelize@^1.0.0, decamelize@^1.1.1:
   version "1.2.0"
@@ -2091,15 +2079,6 @@ duplexify@^3.4.2, duplexify@^3.5.3:
 earcut@^2.1.3:
   version "2.1.3"
   resolved "https://registry.yarnpkg.com/earcut/-/earcut-2.1.3.tgz#ca579545f351941af7c3d0df49c9f7d34af99b0c"
-
-easy-livereload@^1.3.1:
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/easy-livereload/-/easy-livereload-1.3.1.tgz#7400d72104e3caf1d58b616935bebba2eeb7a008"
-  dependencies:
-    connect-body-rewrite "0.0.4"
-    livereload-js "^2.2.2"
-    livereload-server "^0.2.3"
-    node-watch "^0.3.5"
 
 ecc-jsbn@~0.1.1:
   version "0.1.1"
@@ -3725,24 +3704,6 @@ listr@^0.13.0:
     stream-to-observable "^0.2.0"
     strip-ansi "^3.0.1"
 
-livereload-js@^2.2.2:
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/livereload-js/-/livereload-js-2.3.0.tgz#c3ab22e8aaf5bf3505d80d098cbad67726548c9a"
-
-livereload-protocol@~0.2.2:
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/livereload-protocol/-/livereload-protocol-0.2.2.tgz#34a8541bcd4d18a61fb2e324f6ae314d4e7feb77"
-  dependencies:
-    debug "~0.7.0"
-
-livereload-server@^0.2.3:
-  version "0.2.3"
-  resolved "https://registry.yarnpkg.com/livereload-server/-/livereload-server-0.2.3.tgz#0204ba43f400e12ce6b427f41a7e9bd854cab756"
-  dependencies:
-    debug "~0.7.0"
-    livereload-protocol "~0.2.2"
-    websocket.io "~0.2.1"
-
 load-json-file@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/load-json-file/-/load-json-file-4.0.0.tgz#2f5f45ab91e33216234fd53adab668eb4ec0993b"
@@ -4229,10 +4190,6 @@ node-version@1.1.3:
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/node-version/-/node-version-1.1.3.tgz#1081c87cce6d2dbbd61d0e51e28c287782678496"
 
-node-watch@^0.3.5:
-  version "0.3.5"
-  resolved "https://registry.yarnpkg.com/node-watch/-/node-watch-0.3.5.tgz#a07f253a4f538de9d4ca522dd7f1996eeec0d97e"
-
 nodemon@^1.17.3:
   version "1.17.3"
   resolved "https://registry.yarnpkg.com/nodemon/-/nodemon-1.17.3.tgz#3b0bbc2ee05ccb43b1aef15ba05c63c7bc9b8530"
@@ -4430,10 +4387,6 @@ optionator@^0.8.1:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
     wordwrap "~1.0.0"
-
-options@latest:
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/options/-/options-0.0.6.tgz#ec22d312806bb53e731773e7cdaefcf1c643128f"
 
 ora@^0.2.3:
   version "0.2.3"
@@ -5751,10 +5704,6 @@ timers-browserify@^2.0.4:
   dependencies:
     setimmediate "^1.0.4"
 
-tinycolor@0.x:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/tinycolor/-/tinycolor-0.0.1.tgz#320b5a52d83abb5978d81a3e887d4aefb15a6164"
-
 tmp@^0.0.33:
   version "0.0.33"
   resolved "https://registry.yarnpkg.com/tmp/-/tmp-0.0.33.tgz#6d34335889768d21b2bcda0aa277ced3b1bfadf9"
@@ -6157,13 +6106,6 @@ webpack@^4.6.0:
     watchpack "^1.5.0"
     webpack-sources "^1.0.1"
 
-websocket.io@~0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/websocket.io/-/websocket.io-0.2.1.tgz#79eaf174b91ecfa4fbf14ffe268871c052e47d2a"
-  dependencies:
-    debug "*"
-    ws "0.4.20"
-
 whatwg-url-compat@~0.6.5:
   version "0.6.5"
   resolved "https://registry.yarnpkg.com/whatwg-url-compat/-/whatwg-url-compat-0.6.5.tgz#00898111af689bb097541cd5a45ca6c8798445bf"
@@ -6244,14 +6186,6 @@ write-file-atomic@^2.0.0:
     graceful-fs "^4.1.11"
     imurmurhash "^0.1.4"
     signal-exit "^3.0.2"
-
-ws@0.4.20:
-  version "0.4.20"
-  resolved "https://registry.yarnpkg.com/ws/-/ws-0.4.20.tgz#f44b63f46b9edfc457309c720bcc0f83f2fc5874"
-  dependencies:
-    commander "~0.6.1"
-    options latest
-    tinycolor "0.x"
 
 xdg-basedir@^3.0.0:
   version "3.0.0"

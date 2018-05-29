@@ -23,7 +23,9 @@ class ConfigService extends Service {
 
   get(name, default_=null) {
     let value = this._config[name]
-    return (typeof value === 'undefined' || value === null)? default_ : value
+    return (typeof value === 'undefined' || value === null)
+              ? default_
+              : value
   }
 }
 
