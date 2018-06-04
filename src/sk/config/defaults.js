@@ -21,6 +21,7 @@ module.exports = {
   'display.transparent'           : false, 
   'display.force_FXAA'            : false,
   'display.round_pixels'          : true,
+  'display.parent_scale'          : false,
 
   'resources.base_path'       : null,
   'resources.max_concurrency' : 10,

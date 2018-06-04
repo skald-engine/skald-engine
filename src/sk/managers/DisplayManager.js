@@ -29,6 +29,7 @@ class DisplayManager extends Manager {
     this._scaleMode = null
     this._fullscreenScaleMode = null
     this._forceOrientation = null
+    this._parentScale = null
 
     // signals
     this._resizeSignal = null
@@ -116,6 +117,11 @@ class DisplayManager extends Manager {
     this._pendingResize = true
   }
 
+  get parentScale() { return this._parentScale }
+  set parentScale(value) {    
+    this._parentScale = !!value
+    this._pendingResize = true
+  }
   /**
    * The auto scale mode for when the game is fullscreen.
    * @type {SCALE_MODES}
@@ -265,6 +271,7 @@ class DisplayManager extends Manager {
    * Setup the internal variables accordingly to the game config.
    */
   _setupVariables() {
+    this._parentScale = this._config.get('display.parent_scale')
     this._width = this._config.get('display.width')
     this._height = this._config.get('display.height')
     this._canvasWidth = this._config.get('display.width')
@@ -293,7 +300,7 @@ class DisplayManager extends Manager {
       'mozCancelFullScreen',    'mozExitFullscreen'
     ]
 
-    let element = this._renderer.view
+    let element = this._renderer.viewElement
     this._fullscreenRequest = requestGuesses.find(r=>element[r])
     this._fullscreenCancel = cancelGuesses.find(c=>document[c])
   }
@@ -326,6 +333,13 @@ class DisplayManager extends Manager {
     let clientHeight = window.innerHeight ||
                        document.documentElement.clientHeight ||
                        document.body.clientHeight
+
+    if (this._parentScale) {
+      let parent = this._renderer.view.parentElement
+      let rect = parent.getBoundingClientRect()
+      if (rect && rect.width > 0) clientWidth = rect.width
+      if (rect && rect.height > 0) clientHeight = rect.height
+    }
 
     let stagePositionX = 0
     let stagePositionY = 0
