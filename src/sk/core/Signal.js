@@ -4,7 +4,15 @@ class Signal {
   constructor() {
     this._listeners = []
     this._onceListeners = []
+    this._calls = 0
+    this._enabled = true
   }
+
+  get numListeners() { return this._listeners.length + this._onceListeners.length }
+  get numCalls() { return this._calls }
+
+  get enabled() { return this._enabled }
+  set enabled(value) { this._enabled = !!value}
 
   setup() {}
 
@@ -49,9 +57,16 @@ class Signal {
     signals.schedule(this, params)
   }
 
-  destroy() {}
+  destroy() {
+    delete this._listeners
+    delete this._onceListeners
+  }
 
   _emit(params=[]) {
+    if (!this._enabled) return
+
+    this._calls++
+
     for (let i=0; i<this._listeners.length; i++) {
       this._listeners[i](...params)
     }

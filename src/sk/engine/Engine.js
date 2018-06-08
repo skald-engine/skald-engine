@@ -216,26 +216,30 @@ class Engine {
 
     // this._profile.begin('preUpdate')
     for (let i in injector._managers) {
-      injector._managers[i].preUpdate()
+      let m = injector._managers[i]
+      if (m.enabled) m.preUpdate()
     }
     // this._profile.end('preUpdate')
 
     // this._profile.begin('update')
     for (let i in injector._managers) {
-      injector._managers[i].update()
+      let m = injector._managers[i]
+      if (m.enabled) m.update()
     }
     // this._profile.end('update')
 
 
     // this._profile.begin('postUpdate')
     for (let i in injector._managers) {
-      injector._managers[i].postUpdate()
+      let m = injector._managers[i]
+      if (m.enabled) m.postUpdate()
     }
     // this._profile.end('postUpdate')
 
     // this._profile.begin('preDraw')
     for (let i in injector._managers) {
-      injector._managers[i].preDraw()
+      let m = injector._managers[i]
+      if (m.enabled) m.preDraw()
     }
     // this._profile.end('preDraw')
 
@@ -246,7 +250,8 @@ class Engine {
 
     // this._profile.begin('postDraw')
     for (let i in injector._managers) {
-      injector._managers[i].postDraw()
+      let m = injector._managers[i]
+      if (m.enabled) m.postDraw()
     }
     // this._profile.end('postDraw')
 
