@@ -1,0 +1,15 @@
+{% extends "templates/test.html" %}
+
+
+{% block script %}
+<script type="text/javascript">
+  sk.start()
+
+  const resources    = sk.resolve('resources')
+  const stage        = sk.resolve('stage')
+  const display      = sk.resolve('display')
+
+  let rect = sk.display.shapes.Rect()
+
+</script>
+{% endblock %}

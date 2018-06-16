@@ -1,4 +1,3 @@
-const Engine = require('sk/engine/Engine')
 
 class $ {
   static getEngine() {
@@ -6,6 +5,8 @@ class $ {
   }
 
   static createEngine() {
+    // avoids circular references during initialization
+    const Engine = require('sk/engine/Engine')
     $._engine = new Engine()
     $._engine.boot()
   }
@@ -25,6 +26,5 @@ class $ {
 }
 
 $._engine = null
-
 
 module.exports = $

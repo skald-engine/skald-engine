@@ -1,12 +1,19 @@
-let pixi = require('pixi.js')
+const $ = require('sk/$')
+const Component = require('sk/core/Component')
 
-class View extends pixi.Container {
+class View extends Component {
+  constructor() {
+    super()
+  }
+
   setup() {}
-
   enter() {}
   update() {}
   leave() {}
-  destroy() {}
+
+  // destroy(...params) {
+  //   super(...params)
+  // }
 }
 
 module.exports = View

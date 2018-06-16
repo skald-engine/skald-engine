@@ -1,9 +1,7 @@
 class Service {
   setup() {}
-
   pause() {}
   resume() {}
-  
   destroy() {}
 }
 

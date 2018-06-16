@@ -1,0 +1,18 @@
+{% extends "templates/test.html" %}
+
+
+{% block script %}
+<script type="text/javascript">
+  sk.start()
+
+  const resources    = sk.resolve('resources')
+  const stage        = sk.resolve('stage')
+  const display      = sk.resolve('display')
+
+  let text = new sk.display.Text('Hello, World')
+  text.pivot.set(text.width/2, text.height/2)
+  text.position.set(display.halfWidth, display.halfHeight)
+  stage.addChild(text)
+
+</script>
+{% endblock %}

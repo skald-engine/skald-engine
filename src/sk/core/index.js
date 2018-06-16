@@ -8,6 +8,8 @@ module.exports = {
   Service     : require('sk/core/Service'),
   Signal      : require('sk/core/Signal'),
   SpriteSheet : require('sk/core/SpriteSheet'),
-  View        : require('sk/core/View'),
   Touch       : require('sk/core/Touch'),
+  FontStyle   : require('sk/core/FontStyle'),
+  Component   : require('sk/core/Component'),
+  View        : require('sk/core/View'),
 }

@@ -1,8 +1,3 @@
-/**
- * inputNode
- */
-
-
 const Audio = require('sk/core/Audio')
 
 class BaseAudio {

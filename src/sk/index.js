@@ -20,6 +20,7 @@ const random = require('sk/random')
 const ease = require('sk/ease')
 const tween = require('sk/tween')
 const particles = require('sk/particles')
+const display = require('sk/display')
 
 
 module.exports.engine = engine
@@ -38,6 +39,7 @@ module.exports.random = random
 module.exports.ease = ease
 module.exports.tween = tween
 module.exports.particles = particles
+module.exports.display = display
 module.exports.$ = $
 
 module.exports = Object.assign(

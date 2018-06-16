@@ -1,0 +1,91 @@
+{% extends "templates/test.html" %}
+
+
+{% block script %}
+<script type="text/javascript">
+  sk.start()
+
+  const resources = sk.resolve('resources')
+  const stage     = sk.resolve('stage')
+  const display   = sk.resolve('display')
+  const views     = sk.resolve('views')
+  const mouse     = sk.resolve('mouse')
+
+  class SampleView extends sk.core.View {
+    constructor() {
+      super()
+
+      let background = new sk.display.Rect(
+        display.width, 
+        display.height,
+        sk.random.color()
+      )
+      this.addChild(background)
+
+      this.id = sk.random.int(0, 100000)
+      console.log('Creating view', this.id)
+
+      // let mouseEnterSignal = sk.inject('mouseEnterSignal')
+      // let mouseLeaveSignal = sk.inject('mouseLeaveSignal')
+      // let mouseMoveSignal = sk.inject('mouseMoveSignal')
+
+      // this.addToSignal(mouseEnterSignal, () => {
+      //   console.log(`View ${this.id} mouse enter`)
+      // })
+      // this.onceToSignal(mouseLeaveSignal, () => {
+      //   console.log(`View ${this.id} mouse leave`)
+      // })
+
+      // let callback = () => { console.log('SHOULD NOT BE HERE') }
+      // this.addToSignal(mouseMoveSignal, callback)
+      // this.removeFromSignal(mouseMoveSignal, callback)
+      // // this.removeAllFromSignal()
+      
+
+      // this.addViewEventListener('mouseenter', () => {
+      //   console.log(`View ${this.id} mouse enter`)
+      // })
+
+      // let callback = () => { console.log('SHOULD NOT BE HERE') }
+      // this.addViewEventListener('mouseleave', callback)
+      // this.removeViewEventListener('mouseleave', callback)
+      // // this.removeAllViewEventListeners()
+      
+      
+      // this.addDocumentEventListener('mouseenter', () => {
+      //   console.log(`View ${this.id} mouse enter`)
+      // })
+
+      // let callback = () => { console.log('SHOULD NOT BE HERE') }
+      // this.addDocumentEventListener('mouseleave', callback)
+      // this.removeDocumentEventListener('mouseleave', callback)
+      // // this.removeAllDocumentEventListeners()
+      
+      
+      // this.addWindowEventListener('click', () => {
+      //   console.log(`View ${this.id} window click`)
+      // })
+
+      // let callback = () => { console.log('SHOULD NOT BE HERE') }
+      // this.addWindowEventListener('click', callback)
+      // this.removeWindowEventListener('click', callback)
+      // this.removeAllWindowEventListeners()
+    }
+
+    update() {
+      if (mouse.isPressed(sk.BUTTONS.LEFT)) {
+        views.remove('sampleView')
+        views.add('sampleView')
+      }
+
+      if (mouse.isPressed(sk.BUTTONS.RIGHT)) {
+        window.dis
+      }
+    }
+  }
+  sk.view('sampleView', SampleView)
+
+  sk.resolve('views').add('sampleView')
+
+</script>
+{% endblock %}

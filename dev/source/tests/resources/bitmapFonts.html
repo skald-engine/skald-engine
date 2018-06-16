@@ -11,7 +11,7 @@
 
   resources.add(sk.RESOURCES.BITMAP_FONT, 'desyrel', '/static/bitmapfonts/desyrel.xml')
   resources.load(() => {
-    let bitmapFontText = new PIXI.extras.BitmapText('Hello, World!', { font: '35px Desyrel', align: 'center' });
+    let bitmapFontText = new sk.display.BitmapText('Hello, World!', { font: '35px Desyrel', align: 'center' });
     bitmapFontText.pivot.set(bitmapFontText.width/2, bitmapFontText.height/2)
     bitmapFontText.position.set(display.halfWidth, display.halfHeight)
     stage.addChild(bitmapFontText);
