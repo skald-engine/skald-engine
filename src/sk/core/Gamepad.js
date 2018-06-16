@@ -45,6 +45,9 @@ class Gamepad {
     this._leftStickDeadzone = this._config.get('gamepads.left_stick_deadzone', 0)
     this._rightStickDeadzone = this._config.get('gamepads.right_stick_deadzone', 0)
   }
+
+  
+  
   /**
    * The gamepad id (and index of the manager list). Readonly.
    * @type {Number}

@@ -31,16 +31,21 @@ class ScheduleItem {
 
 class ScheduleManager extends Manager {
   constructor() {
-    super()
+    super('schedule')
 
     this._time = null
-    this._scheduled = []
+    this._scheduled = null
   }
 
   setup() {
     let injector = $.getInjector()
-
     this._time = injector.resolve('time')
+    this._scheduled = []
+  }
+
+  tearDown() {
+    this._time = null
+    this._scheduled = []
   }
 
   update() {

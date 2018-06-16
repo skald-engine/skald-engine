@@ -8,7 +8,7 @@ const BaseAudio = require('sk/core/BaseAudio')
  */
 class SoundsService extends Service {
   constructor() {
-    super()
+    super('sounds')
 
     this._context = null
     this._masterNode = null

@@ -12,11 +12,11 @@ class ViewData {
 
 class ViewsManager extends Manager {
   constructor() {
-    super()
+    super('views')
 
-    this._views = []
+    this._views = null
     this._modal = null
-    this._modalStack = []
+    this._modalStack = null
 
     this._viewAddedSignal = null
     this._viewEnterSignal = null
@@ -30,9 +30,19 @@ class ViewsManager extends Manager {
     this._viewAddedSignal = injector.resolve('viewAddedSignal')
     this._viewEnterSignal = injector.resolve('viewEnterSignal')
     this._viewRemovedSignal = injector.resolve('viewRemovedSignal')
+
+    this._views = []
+    this._modal = null
+    this._modalStack = []
+    this._viewAddedSignal = null
+    this._viewEnterSignal = null
+    this._viewRemovedSignal = null
+    this._stage = null
   }
 
   add(viewId, modal=false) {
+    if (!this._enabled) return
+      
     let injector = $.getInjector()
     let view = injector.resolve(viewId)
 

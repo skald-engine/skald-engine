@@ -25,7 +25,7 @@ class Profile {
 
 class ProfileService extends Service {
   constructor() {
-    super()
+    super('profile')
 
     // Map of profiles and execution information. A profile holds the information 
     // about `label` (profile id), `current` (unix-format time when this profile 
@@ -33,7 +33,7 @@ class ProfileService extends Service {
     // used), `average` (the average time used in this profile), `minimum` (the 
     // minimum time used in this profile), and `maximum` (with the largest time 
     // spent running this profile).
-    this._profiles = []
+    this._profiles = {}
 
     // The profiling stack is a list of all started-but-not-finished profiles. 
     // These profiles are concatenated with a '.' between each item, so it can 
@@ -43,7 +43,19 @@ class ProfileService extends Service {
     // `gameupdate.updatescene` counting only the time of the nested function, and 
     // a `gameupdate` profile with the total time of the update function (counting
     // the update scene as part of it).
-    this._stack = [] 
+    this._stack = []
+  }
+
+  setup() {
+    if (!this._profiles) {
+      this._profiles = {}
+      this._stack = [] 
+    }
+  }
+
+  tearDown() {
+    this._profiles = {}
+    this._stack = []
   }
 
   _formatInt(i, s=4, c=' ') {
@@ -81,6 +93,8 @@ class ProfileService extends Service {
    * @param {String} id The profile ID.
    */
   begin(id) {
+    if (!this._enabled) return
+
     this._stack.push(id)
     let fullId = this._stack.join('.')
 
@@ -103,6 +117,8 @@ class ProfileService extends Service {
    * @throws {Error} If trying finish an unstarted profile.
    */
   end(id) {
+    if (!this._enabled) return
+
     let fullId = this._stack.join('.')
 
     if (!this._profiles[fullId] || id !== this._stack[this._stack.length-1]) {

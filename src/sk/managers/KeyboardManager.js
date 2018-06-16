@@ -28,10 +28,10 @@ class KeyboardManager extends Manager {
    * @param {Game} game - The game instance.
    */
   constructor() {
-    super()
+    super('keyboard')
 
-    this._lastState       = []
-    this._state           = []
+    this._lastState      = null
+    this._state          = null
     this._preventDefault = null
 
     this._profile       = null
@@ -40,6 +40,12 @@ class KeyboardManager extends Manager {
     this._keyDownSignal = null
     this._keyHoldSignal = null
     this._keyUpSignal   = null
+
+    this._onBlur = this._onBlur.bind(this)
+    this._onFocus = this._onFocus.bind(this)
+    this._onKeyDown = this._onKeyDown.bind(this)
+    this._onKeyPress = this._onKeyPress.bind(this)
+    this._onKeyUp = this._onKeyUp.bind(this)
   }
 
   /**
@@ -64,9 +70,21 @@ class KeyboardManager extends Manager {
     this._keyUpSignal = injector.resolve('keyUpSignal')
 
     this._profile.begin('keyboard')
+    this._lastState = []
+    this._state = []
+    this._preventDefault = null
     this._setupConfig()
     this._setupEvents()
     this._profile.end('keyboard')
+  }
+
+  tearDown() {
+    let view = this._renderer.view
+    view.removeEventListener('blur', this._onBlur)
+    view.removeEventListener('focus', this._onFocus)
+    view.removeEventListener('keydown', this._onKeyDown)
+    view.removeEventListener('keypress', this._onKeyPress)
+    view.removeEventListener('keyup', this._onKeyUp)
   }
 
   /**
@@ -81,11 +99,11 @@ class KeyboardManager extends Manager {
    */
   _setupEvents() {
     let view = this._renderer.view
-    view.addEventListener('blur', e=>this._onBlur(e), false)
-    view.addEventListener('focus', e=>this._onFocus(e), false)
-    view.addEventListener('keydown', e=>this._onKeyDown(e), false)
-    view.addEventListener('keypress', e=>this._onKeyPress(e), false)
-    view.addEventListener('keyup', e=>this._onKeyUp(e), false)
+    view.addEventListener('blur', this._onBlur, false)
+    view.addEventListener('focus', this._onFocus, false)
+    view.addEventListener('keydown', this._onKeyDown, false)
+    view.addEventListener('keypress', this._onKeyPress, false)
+    view.addEventListener('keyup', this._onKeyUp, false)
   }
 
   /**

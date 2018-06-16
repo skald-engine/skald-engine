@@ -190,13 +190,17 @@ class Engine {
     
     this._profile.begin('managers')
     for (let i in injector.managers) {
-      injector.managers[i].setup()
+      if (injector.managers[i].enabled) {
+        injector.managers[i].setup()
+      }
     }
     this._profile.end('managers')
     
     this._profile.begin('services')
     for (let i in injector.services) {
-      injector.services[i].setup()
+      if (injector.services[i].enabled) {
+        injector.services[i].setup()
+      }
     }
     this._profile.end('services')
     

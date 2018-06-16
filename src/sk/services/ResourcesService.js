@@ -7,13 +7,13 @@ const Middleware = require('sk/core/Middleware')
 
 class ResourcesService extends Service {
   constructor() {
-    super()
+    super('resources')
     
     this._loader = null
-    this._resourcesById = {}
-    this._resourcesByUrl = {}
-    this._middlewares = {}
-    this._queueSize = 0
+    this._resourcesById = null
+    this._resourcesByUrl = null
+    this._middlewares = null
+    this._queueSize =null
     this._callback = null
 
     this._config = null
@@ -75,6 +75,12 @@ class ResourcesService extends Service {
     this._resourceUnloadedSignal = injector.resolve('resourceUnloadedSignal')
 
     this._profile.begin('resources')
+    this._loader = null
+    this._resourcesById = {}
+    this._resourcesByUrl = {}
+    this._middlewares = {}
+    this._queueSize = 0
+    this._callback = null
     this._setupLoader()
     this._setupMiddlewares()
     this._setupEvents()

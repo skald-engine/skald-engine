@@ -10,7 +10,7 @@ class GamepadsManager extends Manager {
    * @param {Game} game - The game instance.
    */
   constructor() {
-    super()
+    super('gamepads')
 
     this._gamepads       = null
     this._numConnected   = 0
@@ -39,6 +39,18 @@ class GamepadsManager extends Manager {
     this._profile.begin('keyboard')
     this._setupGamepads()
     this._profile.end('keyboard')
+  }
+
+  tearDown() {
+    for (let i=0; i<this._gamepads.length; i++) {
+      this._gamepad[i].unbind()
+    }
+    this._gamepads = null
+    this._numConnected = 0
+    this._profile = null
+    this._config = null
+    this._gamepadConnectedSignal = null
+    this._gamepadDisconnectedSignal = null
   }
 
   /**

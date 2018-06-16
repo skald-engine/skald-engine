@@ -30,16 +30,16 @@ class MouseManager extends Manager {
    * @param {Game} game - The game instance.
    */
   constructor() {
-    super()
+    super('mouse')
 
-    this._lastState      = []
-    this._state          = []
+    this._lastState      = null
+    this._state          = null
     this._preventDefault = null
-    this._x              = 0
-    this._y              = 0
-    this._deltaX         = 0
-    this._deltaY         = 0
-    this._deltaZ         = 0
+    this._x              = null
+    this._y              = null
+    this._deltaX         = null
+    this._deltaY         = null
+    this._deltaZ         = null
 
     this._profile  = null
     this._display  = null
@@ -54,6 +54,18 @@ class MouseManager extends Manager {
     this._mouseLeaveSignal  = null
     this._mouseEnterSignal  = null
     this._mouseWheelSignal  = null
+
+    this._onBlur = this._onBlur.bind(this)
+    this._onFocus = this._onFocus.bind(this)
+    this._onClick = this._onClick.bind(this)
+    this._onDblClick = this._onDblClick.bind(this)
+    this._onMouseDown = this._onMouseDown.bind(this)
+    this._onMouseUp = this._onMouseUp.bind(this)
+    this._onMouseMove = this._onMouseMove.bind(this)
+    this._onMouseOut = this._onMouseOut.bind(this)
+    this._onMouseOver = this._onMouseOver.bind(this)
+    this._onWheel = this._onWheel.bind(this)
+    this._onContextMenu = this._onContextMenu.bind(this)
   }
 
   /**
@@ -121,6 +133,12 @@ class MouseManager extends Manager {
     this._mouseWheelSignal = injector.resolve('mouseWheelSignal')
 
     this._profile.begin('mouse')
+    this._lastState = []
+    this._state = []
+    this._preventDefault = null
+    this._deltaX = 0
+    this._deltaY = 0
+    this._deltaZ = 0
     this._x = this._display.halfWidth
     this._y = this._display.halfHeight
     this._setupConfig()
@@ -152,17 +170,17 @@ class MouseManager extends Manager {
    */
   _setupEvents() {
     let view = this._renderer.view
-    view.addEventListener('blur', e=>this._onBlur(e), false);
-    view.addEventListener('focus', e=>this._onFocus(e), false);
-    view.addEventListener('click', e=>this._onClick(e), false)
-    view.addEventListener('dblclick', e=>this._onDblClick(e), false)
-    view.addEventListener('mousedown', e=>this._onMouseDown(e), false)
-    view.addEventListener('mouseup', e=>this._onMouseUp(e), false)
-    view.addEventListener('mousemove', e=>this._onMouseMove(e), false)
-    view.addEventListener('mouseout', e=>this._onMouseOut(e), false)
-    view.addEventListener('mouseover', e=>this._onMouseOver(e), false)
-    view.addEventListener('wheel', e=>this._onWheel(e), false)
-    view.addEventListener('contextmenu', e=>this._onContextMenu(e), false)
+    view.addEventListener('blur', this._onBlur, false)
+    view.addEventListener('focus', this._onFocus, false)
+    view.addEventListener('click', this._onClick, false)
+    view.addEventListener('dblclick', this._onDblClick, false)
+    view.addEventListener('mousedown', this._onMouseDown, false)
+    view.addEventListener('mouseup', this._onMouseUp, false)
+    view.addEventListener('mousemove', this._onMouseMove, false)
+    view.addEventListener('mouseout', this._onMouseOut, false)
+    view.addEventListener('mouseover', this._onMouseOver, false)
+    view.addEventListener('wheel', this._onWheel, false)
+    view.addEventListener('contextmenu', this._onContextMenu, false)
   }
 
   /**

@@ -4,14 +4,15 @@ const Signal = require('sk/core/Signal')
 
 class SignalsManager extends Manager {
   constructor() {
-    super()
+    super('signals')
 
-    this._queue = []
+    this._queue = null
     this._updateSignal = null
   }
 
   setup() {
     let injector = $.getInjector()
+    this._queue = []
 
     this._updateSignal = injector.resolve('updateSignal')
   }

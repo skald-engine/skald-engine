@@ -5,7 +5,7 @@ const Service = require('sk/core/Service')
 
 class LoggerService extends Service {
   constructor() {
-    super()
+    super('logger')
 
     /** List of levels, used to check priorities. */
     this._levels = LOGGER_LEVELS.values()
@@ -128,6 +128,8 @@ class LoggerService extends Service {
    * @param {String} message - The message to be logged.
    */
   log(level, message) {
+    if (!this._enabled) return
+      
     let weight = this._levels.indexOf(level)
 
     if (typeof weight !== undefined && weight >= this._levelPriority) {

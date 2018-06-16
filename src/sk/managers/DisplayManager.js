@@ -4,7 +4,7 @@ const C = require('sk/constants')
 
 class DisplayManager extends Manager {
   constructor() {
-    super()
+    super('display')
 
     // internal use
     this._pendingResize = false
@@ -222,7 +222,6 @@ class DisplayManager extends Manager {
 
   setup() {
     let injector = $.getInjector()
-
     this._config = injector.resolve('config')
     this._device = injector.resolve('device')
     this._logger = injector.resolve('logger')
@@ -237,7 +236,6 @@ class DisplayManager extends Manager {
     this._fullscreenChanceSignal = injector.resolve('fullscreenChangeSignal')
     this._orientationChanceSignal = injector.resolve('orientationChangeSignal')
 
-
     this._profile.begin('display')
     this._setupVariables()
     this._setupFullscreen()
@@ -248,6 +246,15 @@ class DisplayManager extends Manager {
     this._profile.end('display')
   }
 
+  tearDown() {
+    document.removeEventListener('webkitfullscreenchange', this._onFullscreenChange)
+    document.removeEventListener('mozfullscreenchange', this._onFullscreenChange)
+    document.removeEventListener('MSFullscreenChange', this._onFullscreenChange)
+    document.removeEventListener('fullscreenchange', this._onFullscreenChange)
+    window.removeEventListener('resize', this._onResize)
+    window.removeEventListener('deviceorientation', this._onOrientationChange)
+  }
+
   /**
    * Manager pre update. Called internally by the engine. Do not call it 
    * manually.
@@ -256,15 +263,6 @@ class DisplayManager extends Manager {
     if (this._pendingResize) {
       this._doResize()
     }
-  }
-
-  destroy() {
-    document.removeEventListener('webkitfullscreenchange', this._onFullscreenChange)
-    document.removeEventListener('mozfullscreenchange', this._onFullscreenChange)
-    document.removeEventListener('MSFullscreenChange', this._onFullscreenChange)
-    document.removeEventListener('fullscreenchange', this._onFullscreenChange)
-    window.removeEventListener('resize', this._onResize)
-    window.removeEventListener('deviceorientation', this._onOrientationChange)
   }
 
   /**
@@ -465,6 +463,8 @@ class DisplayManager extends Manager {
    * @return {Boolean} whether the resizing will be happening or not.
    */
   resize(width, height) {
+    if (!this._enabled) return
+
     if (width <= 0) {
       this._logger.error(`Trying to resize the game with an invalid width `+
                          `"${width}". Ignoring command.`)
@@ -491,6 +491,8 @@ class DisplayManager extends Manager {
    * @return {Boolean} whether the fullscreen will be happening or not.
    */
   toggleFullscreen() {
+    if (!this._enabled) return
+      
     return this.fullscreen = !this.fullscreen
   }
 

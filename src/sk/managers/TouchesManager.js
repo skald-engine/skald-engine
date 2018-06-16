@@ -12,7 +12,7 @@ const Manager = require('sk/core/Manager')
  */
 class TouchesManager extends Manager {
   constructor() {
-    super()
+    super('touches')
 
     this._preventDefaults = null
     this._touches         = null
@@ -25,6 +25,12 @@ class TouchesManager extends Manager {
     this._touchDownSignal = null
     this._touchMoveSignal = null
     this._touchUpSignal = null
+
+    this._onBlur = this._onBlur.bind(this)
+    this._onTouchStart = this._onTouchStart.bind(this)
+    this._onTouchMove = this._onTouchMove.bind(this)
+    this._onTouchEnd = this._onTouchEnd.bind(this)
+    this._onTouchCancel = this._onTouchCancel.bind(this)
   }
 
   /**
@@ -57,6 +63,15 @@ class TouchesManager extends Manager {
     this._profile.end('touches')
   }
 
+  tearDown() {
+    let view = this._renderer.view
+    view.removeEventListener('blur', this._onBlur)
+    view.removeEventListener('touchstart', this._onTouchStart)
+    view.removeEventListener('touchmove', this._onTouchMove)
+    view.removeEventListener('touchend', this._onTouchEnd)
+    view.removeEventListener('touchcancel', this._onTouchCancel)
+  }
+
   /**
    * Setup the manager variables using the game configuration.
    */
@@ -69,11 +84,11 @@ class TouchesManager extends Manager {
    */
   _setupEvents() {
     let view = this._renderer.view
-    view.addEventListener('blur', e=>this._onBlur(e), false);
-    view.addEventListener('touchstart', e=>this._onTouchStart(e), false);
-    view.addEventListener('touchmove', e=>this._onTouchMove(e), false);
-    view.addEventListener('touchend', e=>this._onTouchEnd(e), false);
-    view.addEventListener('touchcancel', e=>this._onTouchCancel(e), false);
+    view.addEventListener('blur', this._onBlur, false)
+    view.addEventListener('touchstart', this._onTouchStart, false)
+    view.addEventListener('touchmove', this._onTouchMove, false)
+    view.addEventListener('touchend', this._onTouchEnd, false)
+    view.addEventListener('touchcancel', this._onTouchCancel, false)
   }
 
   /**

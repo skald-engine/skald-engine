@@ -2,7 +2,7 @@ const Manager = require('sk/core/Manager')
 
 class TimeManager extends Manager {
   constructor() {
-    super()
+    super('time')
 
     this._time = 0
     this._previousTime = 0
