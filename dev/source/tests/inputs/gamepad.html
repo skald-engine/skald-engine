@@ -58,8 +58,10 @@
 
     let gamepad = gamepads.getFirst()
 
-    if (Math.abs(gamepad.leftStickX) > 0.2) ball.x += 300 * time.delta * gamepad.leftStickX
-    if (Math.abs(gamepad.leftStickY) > 0.2) ball.y += 300 * time.delta * gamepad.leftStickY
+    if (gamepad) {
+      if (Math.abs(gamepad.leftStickX) > 0.2) ball.x += 300 * time.delta * gamepad.leftStickX
+      if (Math.abs(gamepad.leftStickY) > 0.2) ball.y += 300 * time.delta * gamepad.leftStickY
+    }
   })
 </script>
 {% endblock %}

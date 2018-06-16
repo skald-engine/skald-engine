@@ -9,7 +9,17 @@
   const stage        = sk.resolve('stage')
   const display      = sk.resolve('display')
 
-  let rect = sk.display.shapes.Rect()
+  let rect = new sk.display.Rect(100, 100, sk.COLORS.SK_RED)
+  rect.position.set(10, 10)
+  stage.addChild(rect)
+
+  let circle = new sk.display.Circle(50, sk.COLORS.SK_BLUE)
+  circle.position.set(120, 10)
+  stage.addChild(circle)
+
+  let line = new sk.display.Line(110, 0, sk.COLORS.SK_YELLOW, 10)
+  line.position.set(60, 60)
+  stage.addChild(line)
 
 </script>
 {% endblock %}

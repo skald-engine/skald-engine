@@ -1,7 +1,7 @@
 const pixi = require('pixi.js')
 
 class Line extends pixi.Graphics {
-  constructor(x, y, width=1, color=0xFFFFFF, alignment=1) {
+  constructor(x, y, color=0xFFFFFF, width=1, alignment=1) {
     super()
 
     this.lineStyle(width, color, 1, alignment)

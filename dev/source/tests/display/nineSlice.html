@@ -1,0 +1,27 @@
+{% extends "templates/test.html" %}
+
+
+{% block script %}
+<script type="text/javascript">
+  sk.start()
+
+  const resources    = sk.resolve('resources')
+  const stage        = sk.resolve('stage')
+  const display      = sk.resolve('display')
+
+  let plane = null
+  resources.add(sk.RESOURCES.TEXTURE, '9slice', '/static/imgs/9slice.png')
+  resources.load(() => {
+    let texture = resources.get('9slice')
+    plane = new PIXI.mesh.NineSlicePlane(texture, 20, 50, 20, 20)
+
+    plane.width = 300
+    plane.height = 400
+    plane.pivot.set(150, 200)
+    plane.position.set(display.halfWidth, display.halfHeight)
+
+    stage.addChild(plane)
+  })
+
+</script>
+{% endblock %}
