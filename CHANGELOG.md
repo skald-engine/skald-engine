@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## 2.0.0-alpha.1
+## 2.0.0
 
 - Rewriting the whole engine with new architecture.
   Now Skald uses an arquitecture based on IoC for dependency management and signals 

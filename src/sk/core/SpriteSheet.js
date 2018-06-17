@@ -1,132 +1,101 @@
-class SpriteSheet {
-  static create(baseTexture, data) {
-    
-  }
+const SpriteSheetAnimation = require('sk/core/SpriteSheetAnimation')
 
-  constructor(textures, animations=null, metadata=null, frameRate=20) {
-    this._numFrames = 0
+class SpriteSheet {
+  constructor(textures, animations=null, metadata=null, frameRate=24) {
     this._textures = null
     this._animations = null
-    this._frameRate = frameRate
     this._metadata = metadata
+    this._frameRate = frameRate
+    this._numFrames = 0
 
-    this.textures = textures
-    if (animations) this.animations = animations
+    this._setupTextures(textures)
+    this._setupAnimations(animations)
+    console.log(this)
   }
 
-  /**
-   * The animation frame rate of this sprite sheet. This value is used to 
-   * describe the default framerate of all animations in this class. The metric
-   * is frames per seconds.
-   * @type {Integer}
-   */
-  set frameRate(value) { this._frameRate = parseInt(value) }
-  get frameRate() { return this._frameRate }
-
-  /**
-   * Map of textures in this object, can be an Array or an Object. If you are 
-   * looking for a specific frame, use the `getFrame` method.
-   * @type {Array<PIXI.Texture>|Object}
-   */
   get textures() { return this._textures }
-  set textures(value) {
-    this._numFrames = Object.keys(value).length
-    this._textures = value
-  }
+  set textures(v) { this._setupTextures(v) }
 
-  /**
-   * Map of animations. If you want to get a specific animation, use the 
-   * `getAnimation` method.
-   * @type {Array}
-   */
-  get animation() { return this._animations }
-  set animations(value) {
-    this._animations = value
+  get animations() { return this._animations }
+  set animations(v) { this._setupAnimations(v) }
 
-    let keys = Object.keys(this._animations)
-    for (let i=0; i<keys.length; i++) {
-      let animation = this._animations[keys[i]]
+  get metadata() { return this._metadata }
+  set metadata(v) { this._metadata = v }
 
-      // Set `repeat` default
-      if (typeof animation.repeat === 'undefined') {
-        animation.repeat = true
+  get frameRate() { return this._frameRate }
+  set frameRate(v) { this._frameRate = v }
+
+  get numFrames() { return this._numFrames }
+
+  _setupTextures(data) {
+    if (Array.isArray(data)) {
+      let temp = {}
+      for (let i=0; i<data.length; i++) {
+        temp[i] = data[i]
       }
-      animation.repeat = !!animation.repeat
-
-      // Set `speed` default
-      animation.speed = animation.speed || 1
-
-      // Set `name`
-      animation.name = keys[i]
+      data = temp
     }
+
+    this._textures = data
+    this._numFrames = Object.keys(data).length
   }
 
-  /**
-   * The number of frames registered in this sprite sheet. Readonly.
-   * @type {Integer}
-   */
-  get numFrames() {
-    return this._numFrames
+  _setupAnimations(data) {
+    if (!data) {
+      data = Object.keys(this._textures)
+    }
+
+    if (Array.isArray(data)) {
+      data = {
+        'default': data
+      }
+    }
+
+    let animations = {}
+    let names = Object.keys(data)
+    for (let i=0; i<names.length; i++) {
+      let name = names[i]
+      let spec = data[name]
+
+      if (Array.isArray(spec)) {
+        spec = {frames: spec}
+      }
+
+      if (!spec.frames) {
+        throw new Error(`Animation data ${names} require frames attribute.`)
+      }
+
+      let animation = new SpriteSheetAnimation(
+        name,
+        spec.frames,
+        spec.repeat,
+        spec.next,
+        spec.speed
+      )
+      animations[name] = animation
+    }
+
+    this._animations = animations
   }
 
-  /**
-   * Helper method to set a batch a variables to this object. Notice that, this
-   * methods uses `Object.assign` internally, thus it only shallow copy the
-   * input values. If you need a deep copy, check {@sk.utils.deepClone}.
-   *
-   * Example:
-   *
-   *     spritesheet.configure({frameRate:3, animations:{...}})
-   *
-   * @param {Object} config - The object containing the target variables.
-   * @return {Sprite} This object.
-   */
-  configure(config) {
-    Object.assign(this, config)
-    return this
+  getFrame(id) {
+    return this._textures? this._textures[id] : null
   }
 
-  /**
-   * Returns a specific frame texture by its name (or index).
-   *
-   * @param {Integer|String} name - The name or index of the frame.
-   * @return {PIXI.Texture} The frame texture.
-   */
-  getFrame(name) {
-    return this._textures[name]
+  getAnimation(id) {
+    return this._animations? this._animations[id] : null
   }
 
-  /**
-   * Returns an animation by its name.
-   *
-   * @param {String} name - The animation name.
-   * @return {Object} The animation data.
-   */
-  getAnimation(name) {
-    return this._animations? this._animations[name] : null
-  }
-
-  /**
-   * Returns the first frame in this sprite sheet.
-   *
-   * @return {PIXI.Texture} The frame texture.
-   */
   getFirstFrame() {
     let key = Object.keys(this._textures)[0]
     return this._textures[key]
   }
 
-  /**
-   * Returns the first animation in this sprite sheet.
-   *
-   * @return {PIXI.Texture} The animation data.
-   */
   getFirstAnimation() {
-    if (!this._animations) return
+    if (!this._animations) return null
 
     let key = Object.keys(this._animations)[0]
     return this._animations[key] 
   }
 }
-
 module.exports = SpriteSheet

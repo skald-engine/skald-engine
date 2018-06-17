@@ -63,11 +63,11 @@ class ScheduleManager extends Manager {
     }
   }
 
-  add(callback, interval) {
+  add(callback, interval=null) {
     this._scheduled.push(new ScheduleItem(callback, interval))
   }
 
-  addOnce(callback, delay) {
+  addOnce(callback, delay=null) {
     this._scheduled.push(new ScheduleItem(callback, delay, true))
   }
 

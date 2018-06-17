@@ -1,0 +1,27 @@
+{% extends "templates/test.html" %}
+
+
+{% block script %}
+<script type="text/javascript">
+  sk.start()
+
+  const resources = sk.resolve('resources')
+  const stage     = sk.resolve('stage')
+  const display   = sk.resolve('display')
+
+  let sprite = null
+  resources.add(
+    sk.RESOURCES.SPRITE_SHEET,
+    'samurai',
+    '/static/spritesheets/samurai_idle.json'
+  )
+
+  resources.load(() => {
+    sprite = new sk.display.AnimatedSprite(resources.get('samurai'))
+    sprite.position.set(display.halfWidth, display.halfHeight)
+    sprite.pivot.set(sprite.width/2, sprite.height/2)
+    stage.addChild(sprite)
+  })
+
+</script>
+{% endblock %}

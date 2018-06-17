@@ -1,6 +1,7 @@
 const pixi = require('pixi.js')
 
 module.exports = {
+  AnimatedSprite    : require('sk/display/AnimatedSprite'),
   Rect              : require('sk/display/Rect'),
   Circle            : require('sk/display/Circle'),
   Line              : require('sk/display/Line'),

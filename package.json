@@ -1,6 +1,6 @@
 {
   "name": "skald",
-  "version": "2.0.0.alpha.2",
+  "version": "2.0.0",
   "description": "Pixi.js based engine",
   "main": "src/index.js",
   "repository": "git@github.com:skaldengine/skald-engine.git",
