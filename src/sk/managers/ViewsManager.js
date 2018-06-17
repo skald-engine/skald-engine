@@ -34,10 +34,6 @@ class ViewsManager extends Manager {
     this._views = []
     this._modal = null
     this._modalStack = []
-    this._viewAddedSignal = null
-    this._viewEnterSignal = null
-    this._viewRemovedSignal = null
-    this._stage = null
   }
 
   add(viewId, modal=false) {
