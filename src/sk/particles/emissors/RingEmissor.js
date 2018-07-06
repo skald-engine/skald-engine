@@ -1,5 +1,5 @@
 const Emissor = require('sk/particles/Emissor')
-const random = reequire('sk/random')
+const random = require('sk/random')
 
 class RingEmissor extends Emissor {
   constructor(radius=50, width=30, uniform=false) {

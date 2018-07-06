@@ -206,7 +206,7 @@ class Emitter extends pixi.Container {
   get emissor() { return this._emissor }
   set emissor(v) { this._emissor = v }
 
-  get emissionRate() { return 1000*this._emissionRate }
+  get emissionRate() { return 1000/this._emissionRate }
   set emissionRate(v) { this._emissionRate = 1000/v }
 
   get emissionAngle() { return this._emissionAngle }
